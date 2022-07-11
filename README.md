@@ -10,7 +10,7 @@
 ・NOTE打込み情報を別ウィンドウでシーケンス確認が可能  
 
 
-以下、Google翻訳  
+Below, Google Translate  
 
 This app is a MIDI editor-like app created for drum ear copy.  
 
