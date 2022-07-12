@@ -9,4 +9,4 @@
 ・BGMを再生しながらのNOTE打込み  
 ・NOTE打込み情報を別ウィンドウでシーケンス確認が可能  
 
-![repository-open-graph-template](https://user-images.githubusercontent.com/97685486/178355753-de62187b-35ab-4065-b777-3e2bad152415.png)
+![image](https://user-images.githubusercontent.com/97685486/178395181-8dbacf4f-8edf-4d8d-aab4-ce9f17f6eecd.png)
