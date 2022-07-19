@@ -1,0 +1,158 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pEditer.PageMenuBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+>
+    <Page.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button" BasedOn="{StaticResource BasicButtonStyle}">
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BasicComboBoxStyle}">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+        <Style x:Key="ToggleButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource BasicToggleButtonStyle}">
+            <Setter Property="Width" Value="60" />
+            <Setter Property="Height" Value="100" />
+        </Style>
+        <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch" BasedOn="{StaticResource BasicToggleSwitchStyle}">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="OnContent" Value="" />
+            <Setter Property="OffContent" Value="" />
+            <Setter Property="Margin" Value="10 0 -20 0" />
+        </Style>
+
+        <Style TargetType="MenuBar">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Width" Value="80" />
+        </Style>
+        <Style TargetType="MenuBarItem">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="100" />
+            <Setter Property="Width" Value="80" />
+        </Style>
+        <Style TargetType="MenuFlyoutItem">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+       
+    </Page.Resources>
+
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            
+            <MenuBar>
+                <MenuBarItem x:Uid="MenuItemFile">
+                    <MenuFlyoutItem x:Name="_MenuItemNew"       x:Uid="MenuItemNew"     Click="_MenuItemNew_Click" />
+                    <MenuFlyoutItem x:Name="_MenuItemOpen"      x:Uid="MenuItemOpen"    Click="_MenuItemOpen_Click" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="_MenuItemSave"      x:Uid="MenuItemSave"    Click="_MenuItemSave_Click" />
+                    <MenuFlyoutItem x:Name="_MenuItemSaveAs"    x:Uid="MenuItemSaveAs"  Click="_MenuItemSaveAs_Click" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutSubItem x:Uid="MenuItemExport">
+                        <MenuFlyoutItem x:Name="_MenuItemExportMidi"        x:Uid="MenuItemExportMidi"      Click="_MenuItemExportMidi_Click" />
+                        <MenuFlyoutItem x:Name="_MenuItemExportVideo"       x:Uid="MenuItemExportVideo"     Click="_MenuItemExportVideo_Click" />
+                        <MenuFlyoutItem x:Name="_MenuItemExportTechMidi"    x:Uid="MenuItemExportTechMidi"  Click="_MenuItemExportTechMidi_Click" IsEnabled="False" />
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutSubItem x:Uid="MenuItemImport">
+                        <MenuFlyoutItem x:Name="_MenuItemImportMidi" x:Uid="MenuItemImportMidi" Click="_MenuItemImportMidi_Click" IsEnabled="False" />
+                    </MenuFlyoutSubItem>
+                </MenuBarItem>
+            </MenuBar>
+
+            <ComboBox x:Name="_ChannelNoComboBox" x:Uid="ChannelNoComboBox" Style="{StaticResource ComboBoxStyle}"
+                ItemsSource="{x:Bind _ConfigMedia.ChannelNoList}"
+                SelectedValue="{x:Bind _ConfigMedia.ChannelDrum, Mode=OneTime}"
+                SelectionChanged="_ChannelNoComboBox_SelectionChanged" />
+            
+            <Border BorderBrush="#CCC" />
+
+            <ToggleSwitch x:Name="_BgmToggleSwitch" x:Uid="BgmToggleSwitch" Style="{StaticResource ToggleSwitchStyle}" 
+                IsOn="{x:Bind _ConfigMedia.BgmPlayOn, Mode=TwoWay}" />
+
+            <ToggleSwitch x:Name="_MidiOutToggleSwitch" x:Uid="MidiOutToggleSwitch" Style="{StaticResource ToggleSwitchStyle}"
+                IsOn="{x:Bind _ConfigMedia.NotePlayOn, Mode=TwoWay}" />
+
+            <Border BorderBrush="#CCC" />
+
+            <Button x:Name="_PlayButton" x:Uid="PlayButton" Style="{StaticResource ButtonStyle}"
+                Click="_PlayButton_Click" />
+
+            <Button x:Name="_StopButton" x:Uid="StopButton" Style="{StaticResource ButtonStyle}"
+                Click="_StopButton_Click" />
+
+            <Button x:Name="_LoopPlayButton" x:Uid="LoopPlayButton" Style="{StaticResource ButtonStyle}"
+                Click="_LoopPlayButton_Click" />
+
+            <NumberBox x:Name="_LoopPlayMeasureStartNumberBox" x:Uid="LoopPlayMeasureStartNumberBox" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind _ConfigMedia.PlayLoopStart, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="{x:Bind _ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
+                    SmallChange="1" 
+                    ValueChanged="_LoopPlayMeasureNumberBox_ValueChanged"
+            />
+
+            <NumberBox x:Name="_LoopPlayMeasureEndNumberBox" x:Uid="LoopPlayMeasureEndNumberBox" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind _ConfigMedia.PlayLoopEnd, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="{x:Bind _ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
+                    SmallChange="1" 
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="_LoopPlayMeasureNumberBox_ValueChanged"
+            />
+
+            <ToggleSwitch x:Name="_LoopPlayMeasureConnectToggleSwitch" x:Uid="LoopPlayMeasureConnectToggleSwitch" Style="{StaticResource ToggleSwitchStyle}"
+                    IsOn="{x:Bind _ConfigMedia.PlayLoopConnectOn, Mode=TwoWay}"
+                    Toggled="_LoopPlayMeasureConnectToggleSwitch_Toggled"
+            />
+            
+            <NumberBox x:Name="_LoopPlayMeasureConnectNumberBox" x:Uid="LoopPlayMeasureConnectNumberBox" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind _ConfigMedia.PlayLoopConnect, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="{x:Bind _ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
+                    SmallChange="1" 
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="_LoopPlayMeasureNumberBox_ValueChanged"
+            />
+
+            <Border BorderBrush="#CCC" />
+
+            <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
+                IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
+
+            <Border BorderBrush="#CCC" />
+            
+        </StackPanel>
+    </Grid>
+</Page>

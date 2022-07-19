@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.22621.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>DrumMidiEditorApp</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
+    <PackageReference Include="Microsoft.ML" Version="1.7.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.1" />
+    <PackageReference Include="NAudio" Version="2.0.1" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.6.0.20220608" />
+    <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="pGeneralFunction\pLog\WindowLog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pGeneralFunction\pUserControl\GroupBoxUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pGeneralFunction\pUserControl\HGroupUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\PageEditerMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\PageMenuBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\PageNavigation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\PageStatusBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\WindowEditerMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\PageConfig.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\pEdit\PageEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\PageMidiMap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\PageMusic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\PageScore.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\pEdit\UserControlEditerPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\UserControlEqualizer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\UserControlScore.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\pEdit\WindowImportMidi.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidiMapSet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\pEdit\WindowInputBpm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pEditer\新しいフォルダー\WindowMidiMapDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pPlayer\PageConfig.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pPlayer\PagePlayer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pPlayer\WindowPlayer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,66 @@
+﻿<UserControl
+    x:Class="DrumMidiEditorApp.pView.pEditer.UserControlScore"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel
+            Margin="0"
+            Padding="10"
+            BorderBrush="#333"
+            BorderThickness="1"
+        >
+            <TextBlock 
+                x:Uid="EqualizerSettingTextBlock"
+            />
+            
+            <CommandBar
+                HorizontalAlignment="Left" 
+                IsSticky="True"
+                IsOpen="False"
+                OverflowButtonVisibility="Collapsed"
+            >
+                <AppBarButton x:Name="_EqualizerResetAppBarButton"
+                    x:Uid="EqualizerResetAppBarButton"
+                    Click="_EqualizerResetAppBarButton_Click"
+                />
+
+                <AppBarSeparator />
+
+                <AppBarToggleButton x:Name="_EqualizerAppBarToggleButton"
+                    x:Uid="EqualizerAppBarToggleButton"
+                    IsChecked="{x:Bind _DrawSet.EqualizerOn, Mode=OneWay}"
+                    Checked="_EqualizerAppBarToggleButton_CheckChanged"
+                    Unchecked="_EqualizerAppBarToggleButton_CheckChanged"
+                />
+
+                <AppBarSeparator />
+
+                <AppBarToggleButton x:Name="_EqualizerWaveFormAppBarToggleButton"
+                    x:Uid="EqualizerWaveFormAppBarToggleButton"
+                    IsChecked="{x:Bind _DrawSet.WaveFormOn, Mode=OneWay}"
+                    IsEnabled="False"
+                    Checked="_EqualizerWaveFormAppBarToggleButton_CheckChanged"
+                    Unchecked="_EqualizerWaveFormAppBarToggleButton_CheckChanged"
+                />
+            </CommandBar>
+            
+            <canvas:CanvasControl x:Name = "_EqualizerCanvas"
+                Width="500"
+                Height="500"
+                ClearColor="{x:Bind _DrawSet.BackGroundColor}" 
+                Draw="_EqualizerCanvas_Draw" 
+                PointerPressed="_EqualizerCanvas_PointerPressed"
+                PointerMoved="_EqualizerCanvas_PointerMoved"
+                PointerReleased="_EqualizerCanvas_PointerReleased"
+            />
+            
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,277 @@
+﻿using Microsoft.Graphics.Canvas.Text;
+using System.Text.Json.Serialization;
+using Windows.UI;
+
+using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+
+namespace DrumMidiEditorApp.pConfig;
+
+/// <summary>
+/// プレイヤー設定
+/// </summary>
+public class ConfigPlayerScore
+{
+    #region Bpm
+
+    /// <summary>
+    /// BPM行の高さ
+    /// </summary>
+    [JsonInclude]
+    public float BpmHeightSize { get; set; } = 18F;
+
+    /// <summary>
+    /// BPMテキスト表示横幅
+    /// </summary>
+    [JsonInclude]
+    public float BpmWidthSize { get; set; } = 40F;
+
+    /// <summary>
+    /// BPM描画アイテム
+    /// </summary>
+    [JsonInclude]
+    public FormatRect BpmFormatRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
+        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
+        LineSize    = 14F,
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 14F,
+            HorizontalAlignment = CanvasHorizontalAlignment.Left,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
+    };
+
+    /// <summary>
+    /// 現在のBPM値表示フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool BpmNowDisplay { get; set; } = false;
+
+    /// <summary>
+    /// 現在のBPM値描画アイテム
+    /// </summary>
+    [JsonInclude]
+    public FormatRect BpmNowFormatRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
+        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
+        LineSize    = 0.4F,
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 14F,
+            HorizontalAlignment = CanvasHorizontalAlignment.Left,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
+    };
+
+    #endregion
+
+    #region Measure number
+
+    /// <summary>
+    /// 小節番号行の高さ
+    /// </summary>
+    [JsonInclude]
+    public float MeasureNoHeightSize { get; set; } = 18F;
+
+    /// <summary>
+    /// 小節番号描画アイテム
+    /// </summary>
+    [JsonInclude]
+    public FormatRect MeasureNoFormatRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
+        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
+        LineSize    = 0.4F,
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 14F,
+            HorizontalAlignment = CanvasHorizontalAlignment.Left,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
+    };
+
+    #endregion
+
+    #region Header
+
+    /// <summary>
+    /// ヘッダーエフェクト
+    /// </summary>
+    [JsonInclude]
+    public bool HeaderEffectOn { get; set; } = false;
+
+    /// <summary>
+    /// ヘッダー横幅
+    /// </summary>
+    [JsonInclude]
+    public float HeaderWidthSize { get; set; } = 100F;
+
+    /// <summary>
+    /// ヘッダー描画アイテム
+    /// </summary>
+    [JsonInclude]
+    public FormatRect HeaderFormatRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
+        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
+        LineSize    = 0.4F,
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 14F,
+            HorizontalAlignment = CanvasHorizontalAlignment.Left,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
+    };
+
+    #endregion
+
+    #region Note
+
+    /// <summary>
+    /// ノート高さ
+    /// </summary>
+    [JsonInclude]
+    public float NoteHeightSize { get; set; } = 8F;
+
+    /// <summary>
+    /// ノート横幅
+    /// </summary>
+    [JsonInclude]
+    public float NoteWidthSize { get; set; } = 8F;
+
+    /// <summary>
+    /// 音量ゼロノート表示フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool NoteVolumeZeroOn { get; set; } = false;
+
+    /// <summary>
+    /// 音量サイズ変更フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool NoteVolumeSizeOn { get; set; } = true;
+
+    /// <summary>
+    /// ノート間隔：横
+    /// </summary>
+    [JsonInclude]
+    public float NoteTermWidthSize { get; set; } = 2F;
+
+    /// <summary>
+    /// ノート間隔：縦
+    /// </summary>
+    [JsonInclude]
+    public float NoteTermHeightSize { get; set; } = 8F;
+
+    #endregion
+
+    #region Line
+
+    /// <summary>
+    /// カーソルペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine CursolFormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 255, 255, 255 ),
+        LineSize    = 1.0F,
+    };
+
+    /// <summary>
+    /// 小節128分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure128FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
+        LineSize    = 1.0F,
+    };
+
+    /// <summary>
+    /// 小節64分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure064FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 70, 70, 70 ),
+        LineSize    = 0.5F,
+    };
+
+    /// <summary>
+    /// 小節32分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure032FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 60, 60, 60 ),
+        LineSize    = 0.3F,
+    };
+
+    /// <summary>
+    /// 小節16分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure016FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 50, 50, 50 ),
+        LineSize    = 0.0F,
+    };
+
+    /// <summary>
+    /// 小節8分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure008FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 40, 40, 40 ),
+        LineSize    = 0.0F,
+    };
+
+    /// <summary>
+    /// 小節4分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure004FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineSize    = 0.0F,
+    };
+
+    /// <summary>
+    /// 小節1分間隔の線ペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine SheetMeasure001FormatLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 20, 20, 20 ),
+        LineSize    = 0.0F,
+    };
+
+    #endregion
+
+    /// <summary>
+    /// スコア最大横幅
+    /// </summary>
+	public float ScoreMaxWidth => NoteTermWidthSize * Config.System.NoteCount;
+
+    /// <summary>
+    /// スコア最大高さ
+    /// </summary>
+    public float ScoreMaxHeight => NoteTermHeightSize * DMS.SCORE.EditMidiMapSet.DisplayGroupCount;
+
+    /// <summary>
+    /// １小節の横幅
+    /// </summary>
+    public float MeasureSize => NoteTermWidthSize * Config.System.MeasureNoteNumber;
+}
