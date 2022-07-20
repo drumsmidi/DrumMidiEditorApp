@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -17,6 +18,77 @@ namespace DrumMidiEditorApp.pIO;
 /// </summary>
 public static class FileIO
 {
+    /// <summary>
+    /// ドキュメントフォルダを構築
+    /// </summary>
+    public static void DocumentFolderStructure()
+    {
+        var folderList = new List<GeneralPath>()
+        {
+            Config.System.FolderDocBase,
+            Config.System.FolderBgm,
+            Config.System.FolderConfig,
+            Config.System.FolderDms,
+            Config.System.FolderMidiMapSet,
+            Config.System.FolderModel,
+            Config.System.FolderExport,
+        };
+
+        var targetFolderList = new List<GeneralPath>();
+
+        try
+        {
+            var message = $"下記フォルダを作成しますよろしいですか？{Environment.NewLine}";
+
+            // フォルダ存在チェック
+            foreach ( var folder in folderList )
+            {
+                if ( !folder.IsExistDirectory )
+                {
+                    targetFolderList.Add( folder );
+
+                    message += folder.AbsoulteFolderPath + Environment.NewLine;
+                }
+            }
+
+            if ( targetFolderList.Count == 0 )
+            {
+                return;
+            }
+
+            // フォルダ作成
+            targetFolderList.ForEach( folder => CreateFolder( folder ) );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// フォルダ作成
+    /// </summary>
+    /// <param name="aFolderPath"></param>
+    private static void CreateFolder( GeneralPath aFolderPath )
+    {
+        try
+        {
+            if ( aFolderPath.Length == 0 || aFolderPath.IsExistDirectory )
+            {
+                return;
+            }
+
+            aFolderPath.CreateDirectory();
+
+            Log.Info( $"Folder creation successful [{aFolderPath.AbsoulteFolderPath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Folder creation failure [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
     #region Config I/O
 
     /// <summary>
@@ -97,11 +169,6 @@ public static class FileIO
 #pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.System.FolderConfig );
 #pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
-
-        if ( !path.IsExistDirectory )
-        {
-            path.CreateDirectory();
-        }
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;

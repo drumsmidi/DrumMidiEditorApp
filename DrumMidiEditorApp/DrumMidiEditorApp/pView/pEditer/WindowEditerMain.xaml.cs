@@ -22,7 +22,7 @@ public sealed partial class WindowEditerMain : Window
 	public WindowEditerMain()
     {
 		// Configファイル読込
-		FileIO.LoadConfig();
+		//FileIO.LoadConfig();
 
 		// Midiデバイス初期化
 		MidiNet.InitDevice();
@@ -50,16 +50,20 @@ public sealed partial class WindowEditerMain : Window
 		// 通常ウィンドウのプレゼンター設定
 		AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
 
-		// アプリ終了処理
-		_AppWindow.Closing += ( sender, args ) =>
-        {
-            DmsControl.StopPreSequence();
-            DmsControl.End();
-
-            FileIO.SaveConfig();
-        };
-
 		// 再生コントロール開始
 		DmsControl.Start();
+	}
+
+	/// <summary>
+	/// アプリ終了処理
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void Window_Closed( object sender, WindowEventArgs args )
+    {
+		DmsControl.StopPreSequence();
+		DmsControl.End();
+
+		FileIO.SaveConfig();
 	}
 }

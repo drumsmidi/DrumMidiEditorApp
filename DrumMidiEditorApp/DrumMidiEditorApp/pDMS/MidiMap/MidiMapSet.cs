@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
@@ -686,20 +687,14 @@ public class MidiMapSet : DisposeBaseClass
 	/// </summary>
 	public bool IsSelectMidiMap()
 	{
-		foreach ( var group in DisplayMidiMapGroups )
-		{
-			if ( group.Selected )
-			{
-				return true;
-			}
+		if ( DisplayMidiMapGroups.Where( item => item.Selected ).Any() )
+		{ 
+			return true;
 		}
 
-		foreach ( var midiMap in DisplayMidiMaps )
-		{
-			if ( midiMap.Selected )
-			{
-				return true;
-			}
+		if ( DisplayMidiMaps.Where( item => item.Selected ).Any() )
+		{ 
+			return true;
 		}
 
 		return false;

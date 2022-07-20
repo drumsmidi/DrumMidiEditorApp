@@ -16,8 +16,10 @@ using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pDMS;
 using Windows.ApplicationModel.Resources;
+using DrumMidiEditorApp.pIO;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -37,7 +39,19 @@ public sealed partial class PageMenuBar : Page
 	public PageMenuBar()
     {
         InitializeComponent();
-    }
+
+#if DEBUG
+		var filepath = new GeneralPath("D:/CreateGame/DrumMidiEditor/build/net6.0-windows10.0.19041.0/Dms/test.dms");
+
+		FileIO.LoadScore( filepath, out var score );
+		//FileIO.SaveScore( filepath, score );
+
+		DMS.SCORE			= score;
+		DMS.OpenFilePath	= filepath;
+
+		ApplyScore();
+#endif
+	}
 
 	/// <summary>
 	/// スコアをシステム全体に反映

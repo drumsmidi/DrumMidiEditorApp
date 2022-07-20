@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     Unloaded="Page_Unloaded"
+    SizeChanged="UserControl_SizeChanged"
     mc:Ignorable="d">
 
     <Grid>

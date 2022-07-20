@@ -169,4 +169,14 @@ public class GeneralPath
     /// <returns>変換後パス</returns>
     private static string ConvertPath( string aPath )
         => aPath.Replace( _ConvertBef, _ConvertAft );
+
+
+    /// <summary>
+    /// ディレクトリ絶対パスにサブフォルダを結合して返す
+    /// </summary>
+    /// <param name="aSubFolder"></param>
+    /// <returns></returns>
+    public string GetAbsoulteFolderPathCombineSubFolder( string aSubFolder )
+        => Path.Combine( AbsoulteFolderPath, aSubFolder );
+
 }

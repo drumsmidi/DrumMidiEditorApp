@@ -9,6 +9,32 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <local:UserControlEditerPanel />
+        <RelativePanel>
+
+            <Frame 
+                x:Name="_LeftMenuBar" 
+                Background="#F00"
+                Width="200"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True" />
+
+            <Frame 
+                x:Name="_TopMenuBar" 
+                Background="#00F"
+                Height="100"
+                RelativePanel.RightOf="_LeftMenuBar"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True" />
+
+            <local:UserControlEditerPanel 
+                x:Name="_EditerPanel" 
+                Background="#0F0"
+                RelativePanel.RightOf="_LeftMenuBar"
+                RelativePanel.Below="_TopMenuBar"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True" />
+
+        </RelativePanel>
     </Grid>
 </Page>

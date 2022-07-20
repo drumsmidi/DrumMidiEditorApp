@@ -105,8 +105,8 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 				( 
 					(float)( rect.X + rect.Width  / 2 ),
 					(float)( rect.Y + rect.Height / 2 ),
-					rect._width,
-					rect._height,
+					rect._width  / 2,
+					rect._height / 2,
 					_FormatRect.BackColor
 				);
 
@@ -162,9 +162,6 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 		{
 			var format = Config.Editer.NoteSelectLine;
 
-			rect.X -= rect.Width  / 2;
-			rect.Y -= rect.Height / 2;
-
 			// ノート選択時の外枠を描画
 			aGraphics.DrawRectangle
 				( 
@@ -194,8 +191,8 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 			(
 				DrawRect.X + aDiffX,
 				DrawRect.Y + aDiffY,
-				DrawRect.Width  * 2d,
-				DrawRect.Height * 2d
+				DrawRect.Width,
+				DrawRect.Height
 			);
 
 		aGraphics.DrawEllipse

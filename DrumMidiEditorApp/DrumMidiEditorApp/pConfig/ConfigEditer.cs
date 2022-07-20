@@ -5,6 +5,7 @@ using Windows.UI;
 
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -122,6 +123,46 @@ public class ConfigEditer
 
     #endregion
 
+    #region 初期値設定
+
+    /// <summary>
+    /// 初期値：テキストカラー（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static Color _BassTextColor = Color.FromArgb( 255, 100, 200, 100 );
+
+    /// <summary>
+    /// 初期値：フォントファミリア（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static string _BassFontFamily = "system-ui";
+
+    /// <summary>
+    /// 初期値：フォントサイズ（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static float _BassFontSize = 14F;
+
+    /// <summary>
+    /// 初期値：ラインサイズ（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static Color _BassLineColor = Color.FromArgb( 255, 90, 90, 90 );
+
+    /// <summary>
+    /// 初期値：ラインサイズ（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static float _BassLineSize = 1F;
+
+    /// <summary>
+    /// 初期値：ライン高さ（共通）
+    /// </summary>
+    [JsonIgnore]
+    private static float _BassLineHeight = 16F;
+
+    #endregion
+
     #region Info
 
     /// <summary>
@@ -131,13 +172,13 @@ public class ConfigEditer
     public FormatRect InfoHeaderRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -151,7 +192,7 @@ public class ConfigEditer
     /// BPM行：高さ
     /// </summary>
     [JsonInclude]
-    public float BpmHeightSize { get; set; } = 12F;
+    public float BpmHeightSize { get; set; } = _BassLineHeight;
 
     /// <summary>
     /// BPMヘッダ背景色
@@ -160,13 +201,13 @@ public class ConfigEditer
     public FormatRect BpmHeadRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -179,13 +220,13 @@ public class ConfigEditer
     public FormatRect BpmBodyRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -199,12 +240,12 @@ public class ConfigEditer
     {
         BackColor   = Color.FromArgb( 255,   0, 200,   0 ),
         LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
+        LineSize    = _BassLineSize,
         TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -218,12 +259,12 @@ public class ConfigEditer
     {
         BackColor   = Color.FromArgb( 255, 200,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
+        LineSize    = _BassLineSize,
         TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -237,7 +278,7 @@ public class ConfigEditer
     /// 小節番号行：高さ
     /// </summary>
     [JsonInclude]
-    public float MeasureNoHeightSize { get; set; } = 12F;
+    public float MeasureNoHeightSize { get; set; } = _BassLineHeight;
 
     /// <summary>
     /// 小節番号ヘッダ背景色
@@ -246,13 +287,13 @@ public class ConfigEditer
     public FormatRect MeasureNoHeadRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -265,13 +306,13 @@ public class ConfigEditer
     public FormatRect MeasureNoBodyRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -285,7 +326,7 @@ public class ConfigEditer
     /// ヘッダー横幅
     /// </summary>
     [JsonInclude]
-    public float HeaderWidthSize { get; set; } = 150F;
+    public float HeaderWidthSize { get; set; } = 200F;
 
     /// <summary>
     /// ヘッダー非選択時の書式
@@ -294,13 +335,13 @@ public class ConfigEditer
     public FormatRect HeaderNonSelectRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,  20,  20,  20 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -313,13 +354,13 @@ public class ConfigEditer
     public FormatRect HeaderSelectRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 160,  80,  40,  40 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -342,7 +383,7 @@ public class ConfigEditer
     public FormatLine NoteSelectLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 150, 20, 20 ),
-        LineSize    = 2.0F,
+        LineSize    = _BassLineSize * 2,
     };
 
     /// <summary>
@@ -352,7 +393,7 @@ public class ConfigEditer
     public FormatLine NoteNonSelectLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 0, 0, 0 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -362,14 +403,14 @@ public class ConfigEditer
     public FormatLine NotePredictLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 200, 200, 200 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
     /// ノート高さ
     /// </summary>
     [JsonInclude]
-    public float NoteHeightSize { get; set; } = 10F;
+    public float NoteHeightSize { get; set; } = _BassLineHeight;
 
     /// <summary>
     /// ノート間の横間隔。
@@ -407,13 +448,13 @@ public class ConfigEditer
     public FormatRect VolumeHeadRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -426,13 +467,13 @@ public class ConfigEditer
     public FormatRect VolumeBodyRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = 1F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = _BassLineColor,
+        LineSize    = _BassLineSize,
+        TextColor   = _BassTextColor,
         TextFormat  = new()
         {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
+            FontFamily          = _BassFontFamily,
+            FontSize            = _BassFontSize,
             HorizontalAlignment = CanvasHorizontalAlignment.Left,
             VerticalAlignment   = CanvasVerticalAlignment.Center,
         },
@@ -445,7 +486,7 @@ public class ConfigEditer
     public FormatLine VolumeInputLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -488,6 +529,12 @@ public class ConfigEditer
     public double SheetTimerSecond { get; set; } = 0.1d;
 
     /// <summary>
+    /// ノート範囲選択・移動時にスコア内の外周付近でシート位置を移動させる範囲のサイズを指定
+    /// </summary>
+    [JsonInclude]
+    public Size SheetMovePaddingSize { get; set; } = new( 80, 60 );
+
+    /// <summary>
     /// シート背景色
     /// </summary>
     [JsonInclude]
@@ -503,7 +550,7 @@ public class ConfigEditer
     public FormatLine SheetCursorVerticleLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -522,7 +569,7 @@ public class ConfigEditer
     public FormatLine SheetMeasure128Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -532,7 +579,7 @@ public class ConfigEditer
     public FormatLine SheetMeasure064Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 70, 70, 70 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -542,7 +589,7 @@ public class ConfigEditer
     public FormatLine SheetMeasure032Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 60, 60, 60 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -552,7 +599,7 @@ public class ConfigEditer
     public FormatLine SheetMeasure016Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 50, 50, 50 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -562,7 +609,7 @@ public class ConfigEditer
     public FormatLine SheetMeasure008Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 40, 40, 40 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -592,7 +639,7 @@ public class ConfigEditer
     public FormatLine SheetStaffGroupLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 120, 120, 120 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -602,7 +649,7 @@ public class ConfigEditer
     public FormatLine SheetStaffMidiMapLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>
@@ -623,7 +670,7 @@ public class ConfigEditer
     public FormatLine SheetSupportLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 80, 100, 255 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     #endregion
@@ -637,7 +684,7 @@ public class ConfigEditer
     public FormatLine NoteRangeLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
-        LineSize    = 1.0F,
+        LineSize    = _BassLineSize,
     };
 
     /// <summary>

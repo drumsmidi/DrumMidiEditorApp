@@ -7,6 +7,7 @@ using Windows.UI;
 
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using System.IO;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -219,67 +220,52 @@ public class ConfigSystem
     #region Folder Path
 
     /// <summary>
-    /// アプリケーションインストールフォルダ情報
-    /// 
-    /// ファイルアクセスについて
-    /// https://docs.microsoft.com/ja-jp/windows/uwp/files/file-access-permissions
+    /// ドキュメントベースフォルダパス
     /// </summary>
-    [JsonIgnore]
-    private static readonly StorageFolder _InstalledLocation = Package.Current.InstalledLocation;
-
-    /// <summary>
-    /// アプリケーション起動フォルダパス
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderApp { get; private set; } = new( _InstalledLocation.Path + "\\" );
+    [JsonInclude]
+    public GeneralPath FolderDocBase { get; private set; } = new( AppDirectory.MyDocumentsDirectory + "\\");
 
     /// <summary>
     /// Bgmフォルダ（BGM格納）
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderBgm { get; private set; } = new( _InstalledLocation.Path + "Bgm\\" );
+    public GeneralPath FolderBgm 
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Bgm" ) );
 
     /// <summary>
     /// Configフォルダ（アプリの設定ファイル格納）
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderConfig { get; private set; } = new( _InstalledLocation.Path + "Config\\" );
+    public GeneralPath FolderConfig
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config" ) );
 
     /// <summary>
     /// Dmsフォルダ（譜面データ格納）
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderDms { get; private set; } = new( _InstalledLocation.Path + "Dms\\" );
+    public GeneralPath FolderDms
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Dms" ) );
 
     /// <summary>
     /// MidiMapSetフォルダ（MidiMapSetテンプレート格納）
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderMidiMapSet { get; private set; } = new( _InstalledLocation.Path + "MidiMapSet\\" );
-
-    /// <summary>
-    /// Midiフォルダ（Midiファイル格納）
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderMidi { get; private set; } = new( _InstalledLocation.Path + "Midi\\" );
+    public GeneralPath FolderMidiMapSet
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "MidiMapSet" ) );
 
     /// <summary>
     /// Modelフォルダ（機械学習用データ格納）
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderModel { get; private set; } = new( _InstalledLocation.Path + "Model\\" );
+    public GeneralPath FolderModel
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model" ) );
 
     /// <summary>
-    /// TechManiaフォルダ（Techファイル格納）
+    /// Exportフォルダ
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderTechMania { get; private set; } = new( _InstalledLocation.Path + "TechMania\\" );
-
-    /// <summary>
-    /// Videoフォルダ（動画ファイル格納）
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderVideo { get; private set; } = new( _InstalledLocation.Path + "Video\\" );
+    public GeneralPath FolderExport
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Video" ) );
 
     #endregion
 

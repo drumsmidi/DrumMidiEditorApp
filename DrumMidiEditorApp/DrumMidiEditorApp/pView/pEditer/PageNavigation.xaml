@@ -12,7 +12,9 @@
         <RelativePanel>
             <NavigationView x:Name="_PageNaviControl" 
                 RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"            
                 RelativePanel.AlignBottomWithPanel="True"            
+                Width="60"
                 PaneDisplayMode="LeftCompact" 
                 IsBackEnabled="False"
                 IsBackButtonVisible="Collapsed"
@@ -35,15 +37,15 @@
                     <NavigationViewItem Tag="_PageConfig"    Icon="Setting"      Content="Setting"   />
                     <NavigationViewItemSeparator />
                 </NavigationView.MenuItems>
+            </NavigationView>
 
-                <Frame x:Name="_ContentFrame" 
+            <Frame x:Name="_ContentFrame" 
                     RelativePanel.AlignTopWithPanel="True"
-                    RelativePanel.AlignLeftWith="_PageNaviControl"
+                    RelativePanel.RightOf="_PageNaviControl"
                     RelativePanel.AlignRightWithPanel="True"            
                     RelativePanel.AlignBottomWithPanel="True"            
                     Background="#333" />
 
-            </NavigationView>
         </RelativePanel>
     </Grid>
 </Page>

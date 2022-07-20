@@ -264,9 +264,9 @@ public static class Config
     }
 
     /// <summary>
-    /// フラグ更新：EditerFormリサイズ
+    /// フラグ更新：EditerPanelリサイズ
     /// </summary>
-    public static void EventEditerFormResize()
+    public static void EventEditerPanelResize()
     {
         Editer.UpdateScoreLayoutFlag    = true;
         Editer.UpdateScoreLineFlag      = true;
