@@ -11,6 +11,9 @@ namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 /// </summary>
 public static class AppWindowHelper
 {
+    public static AppWindow CreateAppWindow()
+        => AppWindow.Create();
+
     /// <summary>
     /// AppWindow取得
     /// </summary>
@@ -70,7 +73,15 @@ public static class AppWindowHelper
     /// </summary>
     /// <param name="aAppWindow"></param>
     public static void SetPresenterFixedDialog( AppWindow aAppWindow )
-        => SetPresenter( aAppWindow, false, false, false, true, true, true, true );
+    {
+        var op = CompactOverlayPresenter.Create();
+        op.InitialSize = CompactOverlaySize.Small;
+
+        aAppWindow.SetPresenter( op );
+
+        // OverlappedPresenter で設定しようとすると、IsAlwaysOnTop=true でエラーになる
+        // SetPresenter( aAppWindow, false, false, false, true, true, true, true );
+    }
 
     /// <summary>
     /// ウィンドウのプレゼンター設定

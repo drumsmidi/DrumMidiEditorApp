@@ -40,6 +40,18 @@ public sealed partial class WindowLog : Window
 	/// <param name="aText">追加テキスト</param>
     public void AddLog( string aText )
     {
+		// 必要かも？
+		//if (this.DispatcherQueue.HasThreadAccess)
+		//{
+		//	StatusBlock.Text = strMessage;
+		//}
+		//else
+		//{
+		//	bool isQueued = this.DispatcherQueue.TryEnqueue(
+		//	Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal,
+		//	() => StatusBlock.Text = strMessage);
+		//}
+
 		try
 		{
 			_LogTextLines.Add( aText ?? String.Empty );

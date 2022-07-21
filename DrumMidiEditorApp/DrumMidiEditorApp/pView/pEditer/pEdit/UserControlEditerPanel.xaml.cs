@@ -22,6 +22,7 @@ using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
+using Microsoft.UI.Windowing;
 
 namespace DrumMidiEditorApp.pView.pEditer.pEdit;
 
@@ -42,27 +43,27 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// System設定
     /// </summary>
-    private static ConfigSystem ConfigSystem => Config.System;
+    private ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Scale設定
     /// </summary>
-    private static ConfigScale ConfigScale => Config.Scale;
+    private ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
     /// Media設定
     /// </summary>
-    private static ConfigMedia ConfigMedia => Config.Media;
+    private ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
     /// </summary>
-    private static Score Score => DMS.SCORE;
+    private Score Score => DMS.SCORE;
 
     /// <summary>
     /// Score予測情報
     /// </summary>
-    private static Score ScorePredict => DMS.SCORE_PREDICT;
+    private Score ScorePredict => DMS.SCORE_PREDICT;
 
     /// <summary>
     /// 編集履歴管理
@@ -923,32 +924,41 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             if ( info_old == null )
             {
-                info_new = new( measure_no, note );
+                info_new = new( measure_no, note )
+                {
+                    Bpm = Score.Bpm
+                };
             }
             else
             {
                 info_new = info_old.Clone();
             }
 
-            // TODO: Editer
-            //try
-            //{ 
-            //    DMS.PlayerForm?.TemporaryHide();
+            var page = new PageInputBpm
+            {
+                Bpm = info_new.Bpm
+            };
 
-            //    using var fm = new BpmInputForm();
-            //    if ( fm.ShowDialog( info_new.Bpm ) != DialogResult.Yes )
-            //    {
-            //        return;
-            //    }
+            XamlHelper.InputDialogOkCancelAsync
+                (
+                    Content.XamlRoot,
+                    ResourcesHelper.GetString( "LabelBpm" ),
+                    page,
+                    new(() =>
+                    {
+                        info_new.Bpm = page.Bpm;
 
-            //    info_new.Bpm = fm.Bpm;
-            //}
-            //finally
-            //{
-            //    DMS.PlayerForm?.TemporaryShow();
-            //}
+                        rs.AddBpm( info_old, info_new );
 
-            rs.AddBpm( info_old, info_new );
+                        _EditResumeMng.ExcuteAndResume( rs );
+
+                        UpdateBpmMeasure( measure_no );
+
+                        Refresh();
+                    })
+                );
+
+            return;
         }
         #endregion
         #region Remove bpm

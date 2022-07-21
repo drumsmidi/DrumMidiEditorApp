@@ -1,4 +1,6 @@
-﻿namespace DrumMidiEditorApp.pDMS;
+﻿using DrumMidiEditorApp.pConfig;
+
+namespace DrumMidiEditorApp.pDMS;
 
 /// <summary>
 /// BPM情報
@@ -8,7 +10,7 @@ public class InfoBpm : InfoBase
     /// <summary>
     /// BPM
     /// </summary>
-    public double Bpm { get; set; } = 0;
+    public double Bpm { get; set; } = Config.System.DefaultBpm;
 
     /// <summary>
     /// 検索キー（小節番号✕1,000＋小節内ノート位置）

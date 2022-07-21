@@ -123,6 +123,12 @@
   <data name="BgmToggleSwitch.Header" xml:space="preserve">
     <value>Bgm</value>
   </data>
+  <data name="ButtonCancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ButtonOK.Content" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="ChannelNoComboBox.Header" xml:space="preserve">
     <value>Ch.</value>
   </data>
@@ -218,11 +224,20 @@
   <data name="MenuItemSaveAs.Text" xml:space="preserve">
     <value>SaveAs</value>
   </data>
+  <data name="MessageDialog.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="MessageDialog.Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
   <data name="MessageDialog.No" xml:space="preserve">
-    <value>いいえ</value>
+    <value>No</value>
+  </data>
+  <data name="MessageDialog.Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="MessageDialog.Yes" xml:space="preserve">
-    <value>はい</value>
+    <value>Yes</value>
   </data>
   <data name="MidiOutDeviceSetting.Header" xml:space="preserve">
     <value>Midi-Out デバイス設定</value>
@@ -239,11 +254,11 @@
   <data name="MusicInfoBgmVolumeNumberBox.Header" xml:space="preserve">
     <value>BGM音量</value>
   </data>
-  <data name="MusicInfoBpmNumberBox.Header" xml:space="preserve">
-    <value>BPM</value>
-  </data>
   <data name="MusicInfoMemoTextBox.Header" xml:space="preserve">
     <value>自由入力欄</value>
+  </data>
+  <data name="NumberBoxBpm.Header" xml:space="preserve">
+    <value>BPM</value>
   </data>
   <data name="PlayButton.Content" xml:space="preserve">
     <value>再生</value>

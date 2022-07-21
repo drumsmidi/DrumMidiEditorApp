@@ -41,7 +41,7 @@
                 </ContentControl>
                 
                 <NumberBox x:Name="_MusicInfoBpmNumberBox" 
-                    x:Uid="MusicInfoBpmNumberBox"
+                    x:Uid="NumberBoxBpm"
                     Value="{x:Bind _MusicInfo.Bpm, Mode=OneWay}" 
                     Minimum="{x:Bind _ConfigMedia.BpmMinVolume, Mode=OneTime}"
                     Maximum="{x:Bind _ConfigMedia.BpmMaxVolume, Mode=OneTime}"

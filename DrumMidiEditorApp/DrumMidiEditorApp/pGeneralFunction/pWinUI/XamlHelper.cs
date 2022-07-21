@@ -9,6 +9,8 @@ using Windows.Storage.Pickers;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using Microsoft.Graphics.Canvas;
+using Microsoft.UI.Windowing;
+using DrumMidiEditorApp.pView.pEditer.pEdit;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -44,6 +46,36 @@ public static class XamlHelper
             PrimaryButtonText   = aYesButtonText,
             CloseButtonText     = aNoButtonText,
             XamlRoot            = aContentXamlRoot
+        };
+
+        var result = await cd.ShowAsync();
+            
+        if ( result == ContentDialogResult.Primary )
+        {
+            aAction();
+        }
+    }
+
+    public static void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, Action aAction )
+        => InputDialogOkCancelAsync
+            (
+                aContentXamlRoot,
+                ResourcesHelper.GetString( "MessageDialog/Input" ),
+                aPageContent,
+                ResourcesHelper.GetString( "MessageDialog/Ok" ),
+                ResourcesHelper.GetString( "MessageDialog/Cancel" ),
+                aAction
+            );
+
+    public async static void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, string aYesButtonText, string aCancelButtonText, Action aAction )
+    {
+        var cd = new ContentDialog
+        {
+            Title               = aTitle,
+            Content             = aPageContent,
+            PrimaryButtonText   = aYesButtonText,
+            CloseButtonText     = aCancelButtonText,
+            XamlRoot            = aContentXamlRoot,
         };
 
         var result = await cd.ShowAsync();

@@ -44,7 +44,6 @@ public sealed partial class PageMusic : Page
         InitializeComponent();
 
 		// NumberBox の入力書式設定
-
 		_MusicInfoBpmNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 2, 1 );
 		_MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter 

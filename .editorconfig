@@ -8,3 +8,6 @@ dotnet_diagnostic.IDE0060.severity = none
 
 # IDE0051: 使用されていないプライベート メンバーを削除する
 dotnet_diagnostic.IDE0051.severity = none
+
+# CA1822: メンバーを static に設定します
+dotnet_diagnostic.CA1822.severity = none

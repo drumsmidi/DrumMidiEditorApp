@@ -9,7 +9,11 @@
     <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="pView\pEditer\pEdit\PageInputBpm.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
@@ -43,6 +47,10 @@
     <Page Update="pView\pEditer\PageStatusBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="pView\pEditer\pEdit\PageInputBpm.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="pView\pEditer\WindowEditerMain.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -70,13 +78,10 @@
     <Page Update="pView\pEditer\新しいフォルダー\UserControlScore.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pEdit\WindowImportMidi.xaml">
+    <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidi.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidiMapSet.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pEditer\pEdit\WindowInputBpm.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\新しいフォルダー\WindowMidiMapDialog.xaml">

@@ -63,16 +63,6 @@ public sealed partial class PagePlayer : Page
 	private Point _BeforePos = new();
 
 	/// <summary>
-	/// プレイヤー一時非表示前 表示状態
-	/// </summary>
-	private bool _PlayerStopBefore = false;
-
-	/// <summary>
-	/// プレイヤー一時非表示前 表示状態
-	/// </summary>
-	private bool _PlayerConfigStopBefore = false;
-
-	/// <summary>
 	/// FPS制御
 	/// </summary>
 	private readonly Fps _Fps = new();
@@ -417,97 +407,6 @@ public sealed partial class PagePlayer : Page
 			_ActionState = EActionState.None;
 		}
 	}
-
-	/// <summary>
-	/// 閉じるボタン無効
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-    private void PlayerForm_FormClosing( object sender, FormClosingEventArgs ev )
-	{
-        ev.Cancel = true;
-	}
-
-	/// <summary>
-	/// フォームレイアウト設定
-	/// </summary>
-	private void SetFormLayout()
-	{
-        #region PlayerFormの設定
-
-        if ( Config.Player.DisplayPlayer != Visible )
-		{
-			if ( Visible )
-			{
-				Hide();
-			}
-			else
-			{
-				Show();
-			}
-		}
-
-        #endregion
-
-        #region PlayerConfigFormの設定
-
-		if ( _PCForm != null )
-		{ 
-			if ( Config.Player.DisplayPlayerConfig )
-			{ 
-				_PCForm.Location = new Point( Location.X - _PCForm.Width, Location.Y );
-			}
-
-			if ( Config.Player.DisplayPlayer )
-			{
-				if ( Config.Player.DisplayPlayerConfig != _PCForm.Visible )
-				{
-					if ( _PCForm.Visible )
-					{
-						_PCForm.Hide();
-					}
-					else
-					{
-						_PCForm.Show();
-					}
-				}
-			}
-			else
-			{
-				if ( _PCForm.Visible )
-				{
-					_PCForm.Hide();
-				}
-			}
-		}
-
-        #endregion
-    }
-
-	/// <summary>
-	/// プレイヤーフォーム再表示
-	/// </summary>
-	public void TemporaryShow()
-    {
-		Config.Player.DisplayPlayer			= _PlayerStopBefore;
-		Config.Player.DisplayPlayerConfig	= _PlayerConfigStopBefore;
-
-		SetFormLayout();
-	}
-
-	/// <summary>
-	/// プレイヤーフォーム一時非表示
-	/// </summary>
-	public void TemporaryHide()
-    {
-		_PlayerStopBefore		= Config.Player.DisplayPlayer;
-		_PlayerConfigStopBefore	= Config.Player.DisplayPlayerConfig;
-
-		Config.Player.DisplayPlayer			= false;
-		Config.Player.DisplayPlayerConfig	= false;
-
-		SetFormLayout();
-    }
 
 #endif
 }

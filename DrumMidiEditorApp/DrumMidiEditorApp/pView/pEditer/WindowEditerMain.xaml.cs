@@ -6,6 +6,7 @@ using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pGeneralFunction.pAudio;
+using DrumMidiEditorApp.pView.pPlayer;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -15,6 +16,11 @@ public sealed partial class WindowEditerMain : Window
 	/// 本ウィンドウへのアクセス
 	/// </summary>
 	private readonly AppWindow _AppWindow;
+
+	/// <summary>
+	/// プレイヤーウィンドウ
+	/// </summary>
+	public readonly WindowPlayer WindowPlayer;
 
 	/// <summary>
 	/// コンストラクタ
@@ -52,6 +58,9 @@ public sealed partial class WindowEditerMain : Window
 
 		// 再生コントロール開始
 		DmsControl.Start();
+
+		// プレイヤーウィンドウ作成
+		WindowPlayer = new();
 	}
 
 	/// <summary>
