@@ -162,11 +162,23 @@
   <data name="InputMidiOutLatency.Header" xml:space="preserve">
     <value>Midi-Out 遅延（秒）</value>
   </data>
+  <data name="InputNoteHeight.Header" xml:space="preserve">
+    <value>ノート高さ</value>
+  </data>
+  <data name="InputNoteWidth.Header" xml:space="preserve">
+    <value>ノート横幅</value>
+  </data>
   <data name="InputVideoCodec.Header" xml:space="preserve">
     <value>ビデオエンコード</value>
   </data>
   <data name="InputVideoFps.Header" xml:space="preserve">
     <value>ビデオFPS</value>
+  </data>
+  <data name="InputVolumeSize.Header" xml:space="preserve">
+    <value>音量によるノートサイズ変更</value>
+  </data>
+  <data name="InputVolumeZero.Header" xml:space="preserve">
+    <value>音量０のノート表示</value>
   </data>
   <data name="LabelBpm" xml:space="preserve">
     <value>Bpm</value>

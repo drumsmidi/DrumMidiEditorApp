@@ -1,19 +1,61 @@
 ﻿<Page
-    x:Class="DrumMidiEditorApp.pView.pEditer.PageScore"
+    x:Class="DrumMidiEditorApp.pView.pEditer.pScore.PageScore"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
+    xmlns:local="using:DrumMidiEditorApp.pView.pEditer.pScore"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
-    Unloaded="Page_Unloaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch" BasedOn="{StaticResource BasicToggleSwitchStyle}">
+        </Style>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        </Style>
+    </Page.Resources>
+
     <Grid>
-        <canvas:CanvasControl x:Name = "_ScoreCanvas"
-            ClearColor="White" 
-            Draw="CanvasControl_Draw" 
-        />
+        <RelativePanel>
+            <Frame x:Name="_LeftMenuBar"
+                Width="200"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True">
+                
+                <StackPanel Orientation="Vertical">
+
+                    <ToggleSwitch x:Name="_VolumeSizeToggleSwitch" x:Uid="InputVolumeSize" Style="{StaticResource ToggleSwitchStyle}"
+                        IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
+                        Toggled="ToggleSwitch_Toggled" />
+
+                    <ToggleSwitch x:Name="_VolumeZeroToggleSwitch" x:Uid="InputVolumeZero" Style="{StaticResource ToggleSwitchStyle}"
+                        IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
+                        Toggled="ToggleSwitch_Toggled" />
+
+                    <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight" Style="{StaticResource NumberBoxStyle}"
+                            Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
+                            Minimum="0.1"
+                            Maximum="100"
+                            SmallChange="0.1" 
+                            ValueChanged="NumberBox_ValueChanged" />
+
+                    <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth" Style="{StaticResource NumberBoxStyle}"
+                            Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
+                            Minimum="0.1"
+                            Maximum="100"
+                            SmallChange="0.1" 
+                            ValueChanged="NumberBox_ValueChanged" />
+
+                </StackPanel>
+            </Frame>
+            
+            <local:UserControlScore x:Name="_ScorePanel"
+                RelativePanel.RightOf="_LeftMenuBar"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True" />
+            
+        </RelativePanel>
     </Grid>
 </Page>

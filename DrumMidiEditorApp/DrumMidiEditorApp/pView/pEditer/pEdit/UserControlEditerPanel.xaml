@@ -5,13 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    Unloaded="Page_Unloaded"
+    Unloaded="UserControl_Unloaded"
     SizeChanged="UserControl_SizeChanged"
     mc:Ignorable="d">
 
     <Grid>
         <canvas:CanvasControl x:Name = "_EditerCanvas"
             ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
+            Width="1000"
+            Height="1000"
             Draw="EditerCanvas_Draw" 
             PointerPressed="EditerCanvas_PointerPressed"
             PointerMoved="EditerCanvas_PointerMoved"

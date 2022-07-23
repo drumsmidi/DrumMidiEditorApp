@@ -2988,7 +2988,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    private void Page_Unloaded( object sender, RoutedEventArgs args )
+    private void UserControl_Unloaded( object sender, RoutedEventArgs args )
     {
         try
         {

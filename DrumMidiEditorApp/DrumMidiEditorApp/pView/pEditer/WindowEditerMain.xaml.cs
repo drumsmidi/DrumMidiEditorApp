@@ -73,6 +73,6 @@ public sealed partial class WindowEditerMain : Window
 		DmsControl.StopPreSequence();
 		DmsControl.End();
 
-		FileIO.SaveConfig();
+		//FileIO.SaveConfig();
 	}
 }

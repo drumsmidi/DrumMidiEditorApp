@@ -84,7 +84,7 @@ public sealed partial class PagePlayer : Page
     {
         InitializeComponent();
 
-		#region SetStyle
+	#region SetStyle
 
 		// true の場合、コントロールはウィンドウ メッセージ WM_ERASEBKGND を無視することによって、ちらつきを抑えます。
 		// このスタイルは、UserPaint ビットが true に設定されている場合だけ適用されます。 
@@ -149,7 +149,7 @@ public sealed partial class PagePlayer : Page
 		// コントロールの既定の Active Accessibility 名とショートカット キーが決定されます。
 		SetStyle( ControlStyles.UseTextForAccessibility, false );
 
-		#endregion
+	#endregion
 
 		SuspendLayout();
 		{
@@ -256,6 +256,8 @@ public sealed partial class PagePlayer : Page
 	/// <returns>画面ハードコピー</returns>
 	public Bitmap? GetFrame( double aFrameTime )
 	{
+	https://docs.microsoft.com/ja-jp/windows/uwp/audio-video-camera/screen-capture
+
 		Bitmap? bmp = null;
 
 		try

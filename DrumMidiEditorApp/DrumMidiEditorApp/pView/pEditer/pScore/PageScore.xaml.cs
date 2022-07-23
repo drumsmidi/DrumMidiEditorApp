@@ -1,186 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI;
-using Windows.UI;
+using System;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pEditer;
+namespace DrumMidiEditorApp.pView.pEditer.pScore;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class PageScore : Page
 {
-    public PageScore()
-    {
-        InitializeComponent();
-    }
-
-    private void Page_Unloaded( object sender, RoutedEventArgs args )
-    {
-        try
-        {
-            _ScoreCanvas.RemoveFromVisualTree();
-            _ScoreCanvas = null;
-        }
-        catch ( Exception e )
-        {
-
-        }
-    }
-
-
-    private void CanvasControl_Draw( CanvasControl sender, CanvasDrawEventArgs args )
-    {
-        try
-        {
-            args.DrawingSession.DrawText("Hello, World!", new(100,100), Color.FromArgb( 255, 33, 33, 33) );
-            args.DrawingSession.DrawCircle(125, 125, 100, Colors.Green);
-            args.DrawingSession.DrawLine(0, 0, 50, 200, Colors.Red);
-        }
-        catch ( Exception e )
-        {
-
-        }
-    }
-
-
-#if false
-
-
-
-
-
 	/// <summary>
-	/// プレイヤー描画設定
+	/// スコア設定
 	/// </summary>
-	private static ConfigScore DrawSet => Config.Score;
+	private ConfigScore DrawSet => Config.Score;
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	public ScoreControl()
-	{
-		InitializeComponent();
-
-		SuspendLayout();
-		{
-            #region Sequence
-
-			// Note
-			VolumeSizeCheckBox.Checked			= DrawSet.NoteVolumeSizeOn;
-			VolumeZeroCheckBox.Checked			= DrawSet.NoteVolumeZeroOn;
-			NoteHeightNumericUpDown.Value		= (Decimal)DrawSet.NoteHeightSize;
-			NoteWidthNumericUpDown.Value		= (Decimal)DrawSet.NoteWidthSize;
-
-			#endregion
-
-			#region ToolTip
-
-			ToolTip.SetToolTip( VolumeSizeCheckBox			, "Change note volume size on/off" );
-			ToolTip.SetToolTip( VolumeZeroCheckBox			, "Change note volume zero on/off" );
-			ToolTip.SetToolTip( NoteHeightNumericUpDown		, "Note height" );
-			ToolTip.SetToolTip( NoteWidthNumericUpDown		, "Note width" );
-
-			#endregion
-		}
-		ResumeLayout( false );
-    }
-
-	#region Note
-
-	/// <summary>
-	/// 音量サイズ変更フラグ　変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void VolumeSizeCheckBox_CheckedChanged( object sender, EventArgs ev )
+	public PageScore()
     {
-		try
-		{
-			DrawSet.NoteVolumeSizeOn = VolumeSizeCheckBox.Checked;
+        InitializeComponent();
 
-			UpdateScore();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-	/// <summary>
-	/// 音量０表示フラグ　変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void VolumeZeroCheckBox_CheckedChanged( object sender, EventArgs ev )
-	{
-		try
-		{
-			DrawSet.NoteVolumeZeroOn = VolumeZeroCheckBox.Checked;
-
-			UpdateScore();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
+		// NumberBox の入力書式設定
+		_NoteHeightNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_NoteWidthNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 	}
-
-	/// <summary>
-	/// ノートサイズ：縦　変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void NoteHeightNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-		try
-		{
-			DrawSet.NoteHeightSize = (int)NoteHeightNumericUpDown.Value;
-
-			UpdateScore();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-	/// <summary>
-	/// ノートサイズ：横　変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void NoteWidthNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-		try
-		{
-			DrawSet.NoteWidthSize = (int)NoteWidthNumericUpDown.Value;
-
-			UpdateScore();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-	#endregion
 
 	/// <summary>
 	/// スコア更新フラグ設定
@@ -188,25 +35,47 @@ public sealed partial class PageScore : Page
 	private void UpdateScore()
 	{
 		Config.EventUpdateScoreTab();
-		ScorePanel.Refresh();
+
+		_ScorePanel.Refresh();
 	}
 
 	/// <summary>
-	/// リサイズ
+	/// 共通：トグル切替
 	/// </summary>
 	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-    private void ScorePanel_Resize( object sender, EventArgs ev )
+	/// <param name="args"></param>
+	private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
     {
 		try
 		{
-			Config.EventEditerFormResize();
+			UpdateScore();
 		}
 		catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
-#endif
 
+	/// <summary>
+	/// 共通：数値変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+			UpdateScore();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 }
