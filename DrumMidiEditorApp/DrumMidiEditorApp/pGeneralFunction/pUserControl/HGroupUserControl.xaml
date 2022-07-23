@@ -2,25 +2,24 @@
     x:Class="DrumMidiEditorApp.pGeneralFunction.pUserControl.HGroupUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pGeneralFunction.pUserControl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Grid>
-        <Border x:Name="HeaderBorder" 
-            BorderBrush="#336" 
-            BorderThickness="0 0 0 4" 
-        >
+        <StackPanel Orientation="Vertical">
             <TextBlock x:Name="HeaderTitle" 
-                Text="Header"
-                Margin="0" 
-                Padding="4 0 0 4"
-                FontSize="24"
-                Foreground="#000"
-                HorizontalTextAlignment="Left"            
-                LayoutUpdated="HeaderTitle_LayoutUpdated" 
-            />
-        </Border>
+                Text="Header" 
+                Margin="7 0 0 0" />
+        
+            <Border 
+                BorderBrush="Black" 
+                BorderThickness="0 1 0 0" 
+                Margin="3 0 3 3">
+            
+                <ContentControl x:Name="Content"
+                    Margin="10" />
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>

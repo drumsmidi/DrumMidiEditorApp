@@ -38,7 +38,7 @@
     <Page Update="pView\pEditer\PageEditerMain.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\PageMenuBar.xaml">
+    <Page Update="pView\pEditer\新しいフォルダー\PageMenuBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\PageNavigation.xaml">
@@ -54,34 +54,34 @@
     <Page Update="pView\pEditer\WindowEditerMain.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\PageConfig.xaml">
+    <Page Update="pView\pEditer\pConfig\PageConfig.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\pEdit\PageEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\PageMidiMap.xaml">
+    <Page Update="pView\pEditer\pMidiMap\PageMidiMap.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\PageMusic.xaml">
+    <Page Update="pView\pEditer\pMusic\PageMusic.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\PageScore.xaml">
+    <Page Update="pView\pEditer\pScore\PageScore.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\pEdit\UserControlEditerPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\UserControlEqualizer.xaml">
+    <Page Update="pView\pEditer\pMusic\UserControlEqualizer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\UserControlScore.xaml">
+    <Page Update="pView\pEditer\pScore\UserControlScore.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidi.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidiMapSet.xaml">
+    <Page Update="pView\pEditer\pMidiMap\WindowImportMidiMapSet.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pEditer\新しいフォルダー\WindowMidiMapDialog.xaml">

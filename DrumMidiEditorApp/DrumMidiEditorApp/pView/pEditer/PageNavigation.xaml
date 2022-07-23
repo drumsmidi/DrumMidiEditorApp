@@ -2,7 +2,6 @@
     x:Class="DrumMidiEditorApp.pView.pEditer.PageNavigation"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -25,26 +24,21 @@
 
                 <NavigationView.MenuItems>
                     <NavigationViewItemSeparator />
-
-                    <NavigationViewItemHeader Content="Edit" />
-                    <NavigationViewItem Tag="_PageMusic"     Icon="MusicInfo"    Content="Music"     />
-                    <NavigationViewItem Tag="_PageMidiMap"   Icon="Keyboard"     Content="MidiMap"   />
-                    <NavigationViewItem Tag="_PageEdit"      Icon="Edit"         Content="Edit"      />
-                    <NavigationViewItem Tag="_PageScore"     Icon="ViewAll"      Content="Score"     />
+                    <NavigationViewItem Tag="PageMusic"     Icon="MusicInfo"    Content="Music"     />
+                    <NavigationViewItem Tag="PageMidiMap"   Icon="Keyboard"     Content="MidiMap"   />
+                    <NavigationViewItem Tag="PageEdit"      Icon="Edit"         Content="Edit"      />
+                    <NavigationViewItem Tag="PageScore"     Icon="ViewAll"      Content="Score"     />
                     <NavigationViewItemSeparator />
-
-                    <NavigationViewItemHeader Content="Setting" />
-                    <NavigationViewItem Tag="_PageConfig"    Icon="Setting"      Content="Setting"   />
+                    <NavigationViewItem Tag="PageConfig"    Icon="Setting"      Content="Setting"   />
                     <NavigationViewItemSeparator />
                 </NavigationView.MenuItems>
             </NavigationView>
 
             <Frame x:Name="_ContentFrame" 
-                    RelativePanel.AlignTopWithPanel="True"
-                    RelativePanel.RightOf="_PageNaviControl"
-                    RelativePanel.AlignRightWithPanel="True"            
-                    RelativePanel.AlignBottomWithPanel="True"            
-                    Background="#333" />
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.RightOf="_PageNaviControl"
+                RelativePanel.AlignRightWithPanel="True"            
+                RelativePanel.AlignBottomWithPanel="True" />
 
         </RelativePanel>
     </Grid>

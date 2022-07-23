@@ -168,7 +168,58 @@ public class ConfigMedia
     /// MP4出力コーデック
     /// </summary>
     [JsonInclude]
-    public int OutputVideoCodec { get; set; } = FourCC.Default;   // MP4コーデック
+    public string OutputVideoCodec { get; set; } = String.Empty;
+
+    /// <summary>
+    /// MP4出力コーデック一覧
+    /// </summary>
+    [JsonIgnore]
+    public List<string> OutputVideoCodecList = new()
+    {
+        "AVC",
+        "CVID",
+        "DIB",
+        "DIV3",
+        "DIVX",
+        "DV25",
+        "DV50",
+        "DVC",
+        "DVH1",
+        "DVHD",
+        "DVSD",
+        "DVSL",
+        "H261",
+        "H263",
+        "H264",
+        "H265",
+        "HEVC",
+        "I420",
+        "IV32",
+        "IV41",
+        "IV50",
+        "IYUB",
+        "IYUV",
+        "JPEG",
+        "M4S2",
+        "MJPG",
+        "MP42",
+        "MP43",
+        "MP4S",
+        "MP4V",
+        "MPG1",
+        "MPG2",
+        "MPG4",
+        "MSS1",
+        "MSS2",
+        "MSVC",
+        "PIM1",
+        "WMV1",
+        "WMV2",
+        "WMV3",
+        "WVC1",
+        "X264",
+        "XVID",
+    };
 
     #endregion
 

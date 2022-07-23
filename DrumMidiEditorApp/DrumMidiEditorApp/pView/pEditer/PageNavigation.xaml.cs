@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pView.pEditer.pEdit;
+using DrumMidiEditorApp.pView.pEditer.pConfig;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -27,11 +28,11 @@ public sealed partial class PageNavigation : Page
     /// </summary>
     private readonly List<(string Tag, Type Page)> _Pages = new()
         {
-            ( "_PageMusic"    , typeof( PageMusic )   ),
-            ( "_PageMidiMap"  , typeof( PageMidiMap ) ),
-            ( "_PageEdit"     , typeof( PageEdit )    ),
-            ( "_PageScore"    , typeof( PageScore )   ),
-            ( "_PageConfig"   , typeof( PageConfig )  ),
+            ( "PageMusic"    , typeof( PageMusic )   ),
+            ( "PageMidiMap"  , typeof( PageMidiMap ) ),
+            ( "PageEdit"     , typeof( PageEdit )    ),
+            ( "PageScore"    , typeof( PageScore )   ),
+            ( "PageConfig"   , typeof( PageConfig )  ),
         };
 
 	/// <summary>
@@ -44,7 +45,7 @@ public sealed partial class PageNavigation : Page
         try
         {
 			// 初期ページへ移動
-            NavigationView_Navigate( "_PageEdit" );
+            NavigationView_Navigate( "PageConfig" );
         }
         catch ( Exception e )
         {

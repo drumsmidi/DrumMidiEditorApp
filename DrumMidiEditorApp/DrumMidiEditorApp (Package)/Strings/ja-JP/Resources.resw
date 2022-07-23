@@ -147,11 +147,20 @@
   <data name="EqualizerWaveFormAppBarToggleButton.Content" xml:space="preserve">
     <value>波形</value>
   </data>
+  <data name="ErrMsgInitMidiDevice" xml:space="preserve">
+    <value>Midi device の初期化に失敗しました。[{0}]</value>
+  </data>
+  <data name="HGroupMidiOutDeviceSetting.Header" xml:space="preserve">
+    <value>Midi-Out デバイス設定</value>
+  </data>
+  <data name="HGroupVideoSetting.Header" xml:space="preserve">
+    <value>ビデオ設定</value>
+  </data>
   <data name="InputMidiOutDevice.Header" xml:space="preserve">
     <value>Midi-Out デバイス</value>
   </data>
   <data name="InputMidiOutLatency.Header" xml:space="preserve">
-    <value>Midi-Out 遅延（ミリ秒）</value>
+    <value>Midi-Out 遅延（秒）</value>
   </data>
   <data name="InputVideoCodec.Header" xml:space="preserve">
     <value>ビデオエンコード</value>
@@ -239,9 +248,6 @@
   <data name="MessageDialog.Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="MidiOutDeviceSetting.Header" xml:space="preserve">
-    <value>Midi-Out デバイス設定</value>
-  </data>
   <data name="MidiOutToggleSwitch.Header" xml:space="preserve">
     <value>Midi-Out</value>
   </data>
@@ -269,8 +275,5 @@
   </data>
   <data name="StopButton.Content" xml:space="preserve">
     <value>停止</value>
-  </data>
-  <data name="VideoSetting.Header" xml:space="preserve">
-    <value>ビデオ設定</value>
   </data>
 </root>

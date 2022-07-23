@@ -9,6 +9,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Height" Value="60" />
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <RelativePanel>
 
@@ -23,6 +37,7 @@
                     Background="#AAA"
                     Height="400"
                     VerticalAlignment="Top"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
                     ItemsSource="{x:Bind _MeasureNoList}">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="util:CollectionItem">
@@ -50,6 +65,120 @@
                     </GridView.ItemsPanel>
                 </GridView>
 
+                <!--
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                -->
+
+                <!--
+                <GridView 
+                    Background="#AAA"
+                    Height="400"
+                    VerticalAlignment="Top"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{x:Bind _MeasureNoList}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="util:CollectionItem">
+                            <StackPanel 
+                                Width="30" 
+                                Height="20"
+                                Margin="0"
+                                Padding="0" 
+                                Orientation="Vertical" >
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Margin="0" 
+                                    Width="30" 
+                                    Text="{x:Bind Value}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="8" 
+                                Orientation="Vertical" 
+                                HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+                -->
+
+                <!--
+                <ListBox 
+                    ItemsSource="{x:Bind Fonts}" 
+                    DisplayMemberPath="Item1" 
+                    SelectedValuePath="Item2" 
+                    Height="164" 
+                    Loaded="ListBox2_Loaded" />
+                -->
+
+                <!--
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                
+                <NumberBox x:Name="_BpmNumberBox" x:Uid="NumberBoxBpm" Style="{StaticResource NumberBoxStyle}"
+                    Value="{x:Bind Bpm, Mode=TwoWay}" 
+                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    SmallChange="1" 
+                    Width="200"
+                    SpinButtonPlacementMode="Inline"
+                    HorizontalAlignment="Left"
+                    ValidationMode="InvalidInputOverwritten"
+                    ValueChanged="BpmNumberBox_ValueChanged" />
+                
+                <Slider AutomationProperties.Name="Slider with ticks" TickFrequency="10" TickPlacement="Outside" />                
+                -->
             </Frame>
 
             <Frame 
@@ -58,7 +187,71 @@
                 Height="100"
                 RelativePanel.RightOf="_LeftMenuBar"
                 RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True" />
+                RelativePanel.AlignRightWithPanel="True">
+
+                <Rectangle />
+
+                <!--
+                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
+        
+                <GridView 
+                    Background="#AAA"
+                    Height="400"
+                    VerticalAlignment="Top"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{x:Bind _MeasureNoList}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="util:CollectionItem">
+                            <StackPanel 
+                                Width="30" 
+                                Height="20"
+                                Margin="0"
+                                Padding="0" 
+                                Orientation="Vertical" >
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Margin="0" 
+                                    Width="30" 
+                                    Text="{x:Bind Value}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="8" 
+                                Orientation="Vertical" 
+                                HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+                -->
+
+                <!--
+                <ListBox 
+                    ItemsSource="{x:Bind Fonts}" 
+                    DisplayMemberPath="Item1" 
+                    SelectedValuePath="Item2" 
+                    Height="164" 
+                    Loaded="ListBox2_Loaded" />
+                -->
+
+                <!--
+                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
+
+                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
+                
+                <Button x:Name="_StopButton" x:Uid="StopButton" Style="{StaticResource ButtonStyle}"
+                    Click="_StopButton_Click" />
+
+                <Button x:Name="_LoopPlayButton" x:Uid="LoopPlayButton" Style="{StaticResource ButtonStyle}"
+                    Click="_LoopPlayButton_Click" />
+                -->
+
+            </Frame>
 
             <local:UserControlEditerPanel 
                 x:Name="_EditerPanel" 
