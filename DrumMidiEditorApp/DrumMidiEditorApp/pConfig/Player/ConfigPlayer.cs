@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Windows.Foundation;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -48,18 +50,18 @@ public class ConfigPlayer
     /// 解像度リスト
     /// </summary>
     [JsonInclude]
-    public readonly List<(int Width, int Height)> ResolutionScreenList = new()
+    public readonly List<Size> ResolutionScreenList = new()
     {
-		new() { Width =  320, Height =  240 },
-		new() { Width =  480, Height =  360 },
-		new() { Width =  640, Height =  480 },
-	//	new() { Width = 1024, Height =  768 },
-	//	new() { Width = 1280, Height =  720 },
-	//	new() { Width = 1440, Height =  900 },
-	//	new() { Width = 1920, Height = 1024 },
-    //  new() { Width =  240, Height =  360 },  // MP4出力が正常にできない
-    //  new() { Width =  360, Height =  480 },  // MP4出力が正常にできない
-        new() { Width =  480, Height =  640 },
+        new(  320,  240 ),
+        new(  480,  360 ),
+        new(  640,  480 ),
+	//	new( 1024,  768 ),
+	//	new( 1280,  720 ),
+	//	new( 1440,  900 ),
+	//	new( 1920, 1024 ),
+    //  new(  240,  360 ),  // MP4出力が正常にできない
+    //  new(  360,  480 ),  // MP4出力が正常にできない
+        new(  480,  640 ),
     };
 
     /// <summary>
@@ -71,12 +73,12 @@ public class ConfigPlayer
     /// <summary>
     /// 解像度：横幅
     /// </summary>
-	public int ResolutionScreenWidth => ResolutionScreenList[ ResolutionScreenIndex ].Width;
+	public float ResolutionScreenWidth => ResolutionScreenList[ ResolutionScreenIndex ]._width;
 
     /// <summary>
     /// 解像度：高さ
     /// </summary>
-	public int ResolutionScreenHeight => ResolutionScreenList[ ResolutionScreenIndex ].Height;
+	public float ResolutionScreenHeight => ResolutionScreenList[ ResolutionScreenIndex ]._height;
 
     #endregion
 
@@ -108,7 +110,10 @@ public class ConfigPlayer
     /// 背景色
     /// </summary>
     [JsonInclude]
-    public Color SheetColor { get; set; } = Color.FromArgb( 255, 0, 0, 0 );
+    public FormatColor SheetColor { get; set; } = new()
+    {
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 

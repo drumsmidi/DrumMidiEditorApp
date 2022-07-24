@@ -35,7 +35,7 @@ public class ConfigPlayerSimuration
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowFormatRect { get; set; } = new()
+    public FormatRect BpmNowRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -76,7 +76,7 @@ public class ConfigPlayerSimuration
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoFormatRect { get; set; } = new()
+    public FormatRect MeasureNoRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -117,7 +117,7 @@ public class ConfigPlayerSimuration
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderFormatRect { get; set; } = new()
+    public FormatRect HeaderRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -140,7 +140,7 @@ public class ConfigPlayerSimuration
     /// ノート間隔：横
     /// </summary>
     [JsonInclude]
-    public double NoteTermSize { get; set; } = 2;
+    public float NoteTermSize { get; set; } = 2;
 
     /// <summary>
     /// １回の描画で描画する小節数
@@ -153,5 +153,5 @@ public class ConfigPlayerSimuration
     /// <summary>
     /// １小節の横幅
     /// </summary>
-    public double MeasureSize => NoteTermSize * Config.System.MeasureNoteNumber;
+    public float MeasureSize => NoteTermSize * Config.System.MeasureNoteNumber;
 }

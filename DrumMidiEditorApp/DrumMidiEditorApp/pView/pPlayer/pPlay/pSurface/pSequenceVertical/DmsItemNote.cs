@@ -1,10 +1,12 @@
 ﻿using Microsoft.Graphics.Canvas;
 using System;
+using Windows.Foundation;
 
+using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pSimuration;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface.pSequenceVertical;
 
 /// <summary>
 /// プレイヤー描画アイテム：ノート
@@ -12,9 +14,14 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSimuration;
 internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
 {
 	/// <summary>
-	/// １小節内のノート描画位置X座標
+	/// １小節内のノート描画位置Y座標
 	/// </summary>
-	private readonly float _NotePosX = 0;
+	private readonly float _NotePosY = 0;
+
+	/// <summary>
+	/// ノート描画範囲
+	/// </summary>
+	private Size _NoteSize = new();
 
 	/// <summary>
 	/// 描画書式
@@ -27,21 +34,30 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 	private DmsItemMidiMap? _DmsItemMidiMap = null;
 
 	/// <summary>
-	/// ノートヒットフラグ
+	/// NOTE情報
 	/// </summary>
-	private bool _HitFlag = false;
+	public InfoNote? InfoNote { get; private set; } = null;
+
+	/// <summary>
+	/// NoteOn-Off間の距離（ノートON右端⇔ノートON左端）
+	/// </summary>
+	public float NoteLength { get; set; } = 0;
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="aNotePosX">１小節内のノート描画位置X座標</param>
+	/// <param name="aNotePosY">１小節内のノート描画位置Y座標</param>
+	/// <param name="aWidth">横幅</param>
+	/// <param name="aHeight">高さ</param>
 	/// <param name="aFormatRect">描画書式</param>
-	/// <param name="aDmsItemMidiMap">ヘッダアイテム</param>
-	public DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap )
+	/// <param name="aDmsItemMidiMap">MidiMap描画アイテム</param>
+	public DmsItemNote( float aNotePosY, float aWidth, float aHeight, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap )
     {
-        _NotePosX		= aNotePosX;
-		_FormatRect		= aFormatRect;
-		_DmsItemMidiMap	= aDmsItemMidiMap;
+        _NotePosY			= aNotePosY;
+        _NoteSize.Width		= aWidth;
+        _NoteSize.Height	= aHeight;
+		_FormatRect			= aFormatRect;
+		_DmsItemMidiMap		= aDmsItemMidiMap;
 	}
 
 	protected override void Dispose( bool aDisposing )
@@ -53,6 +69,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 				// Dispose managed resources.
 				_FormatRect		= null;
 				_DmsItemMidiMap = null;
+				InfoNote		= null;
 			}
 
 			// Dispose unmanaged resources.
@@ -70,43 +87,31 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 	/// </summary>
 	/// <param name="aGraphics">グラフィック</param>
 	/// <param name="aDiffX">描画差分X</param>
-	public void Draw( CanvasDrawingSession aGraphics, float aDiffX )
+	/// <param name="aDiffY">描画差分Y</param>
+	public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
 		if ( _DmsItemMidiMap == null || _FormatRect == null )
         {
 			return;
         }
 
-		var distance = ( _NotePosX + aDiffX ) / 10F;
+		var rect = new Rect
+			( 
+				_DmsItemMidiMap.DrawRect.Left, 
+				_DmsItemMidiMap.DrawRect.Top, 
+				_NoteSize._width, 
+				_NoteSize._height 
+			);
 
-		if ( !_HitFlag && distance <= 0F )
-		{
-			_DmsItemMidiMap.Hit( _FormatRect.BackColor );
-
-			_HitFlag = true;
-		}
-
-		if ( distance < 0F && 9F < distance )
-		{
-			return;
-		}
-
-		// 1:0, 10:1
-		var sa = 1F + (float)Math.Log10( distance + 1 );
-
-		var rect = _DmsItemMidiMap.DrawRect;
-		rect.Width	*= sa;
-		rect.Height	*= sa;
-		rect.X		-= ( rect.Width  - _DmsItemMidiMap.DrawRect.Width  ) / 2.0F;
-		rect.Y		-= ( rect.Height - _DmsItemMidiMap.DrawRect.Height ) / 2.0F;
+		rect.X	+= ( _DmsItemMidiMap.DrawRect.Width - rect.Width ) / 2.0F + aDiffX;
+		rect.Y	+= aDiffY + _NotePosY;
 
         // 背景色
-        aGraphics.FillEllipse
+        aGraphics.FillRoundedRectangle
             (
-				rect._x,
-				rect._y,
-				rect._width,
-				rect._height,
+				rect,
+				_FormatRect.RadiusX,
+				_FormatRect.RadiusY,
 				_FormatRect.BackColor 
             );
     }
@@ -122,11 +127,11 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 		{
 			return 1;
 		}
-		else if ( _NotePosX > aOther._NotePosX )
+		else if ( _NotePosY > aOther._NotePosY )
 		{
 			return 1;
 		}
-		else if ( _NotePosX == aOther._NotePosX )
+		else if ( _NotePosY == aOther._NotePosY )
 		{
 			return 0;
 		}

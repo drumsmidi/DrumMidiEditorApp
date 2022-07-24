@@ -15,11 +15,17 @@ using Microsoft.UI.Xaml.Navigation;
 using DrumMidiEditorApp.pConfig;
 using Microsoft.UI.Windowing;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
 
 public sealed partial class WindowPlayer : Window
 {
+	/// <summary>
+	/// 描画設定
+	/// </summary>
+	private ConfigPlayer DrawSet => Config.Player;
+
 	/// <summary>
 	/// 本ウィンドウへのアクセス
 	/// </summary>
@@ -32,17 +38,20 @@ public sealed partial class WindowPlayer : Window
 		// 自身のウィンドウ情報取得
 		_AppWindow = AppWindowHelper.GetAppWindow(this);
 
-		// タイトル初期設定
-		Title = $"Player";
+		// 独自のタイトルバー設定
+		ExtendsContentIntoTitleBar = true;
+		
+		SetTitleBar( _AppTitleBar );
+		_AppTitleTextBlock.Text = $"Player";
 
 		// ウィンドウ初期サイズ変更
-		if ( Config.System.WindowSizeWidth > 0 && Config.System.WindowSizeHeight > 0 )
+		if ( (int)DrawSet.ResolutionScreenWidth > 0 && (int)DrawSet.ResolutionScreenHeight > 0 )
 		{
 			AppWindowHelper.ResizeWindow
 				(
 					_AppWindow,
-					Config.System.WindowSizeWidth,
-					Config.System.WindowSizeHeight
+					(int)DrawSet.ResolutionScreenWidth,
+					(int)DrawSet.ResolutionScreenHeight
 				);
 		}
 
@@ -50,10 +59,56 @@ public sealed partial class WindowPlayer : Window
 		_AppWindow.Closing += ( sender, args ) =>
         {
 			args.Cancel = true;
-        };
+
+			Hide();
+		};
 
 		// 通常ウィンドウのプレゼンター設定
 		AppWindowHelper.SetPresenterPlayerWindow( _AppWindow );
+	}
+
+	public void Exit()
+    {
+        try
+        {
+			_AppWindow.Destroy();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+	}
+
+	public void Show()
+    {
+        try
+        {
+			if ( !_AppWindow.IsVisible )
+			{
+				_AppWindow.Show();
+				DrawSet.DisplayPlayer = true;
+			}
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+	public void Hide()
+    {
+        try
+        {
+			if ( _AppWindow.IsVisible )
+			{
+				_AppWindow.Hide();
+				DrawSet.DisplayPlayer = false;
+			}
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
 	}
 
     #region Playerの一時非表示

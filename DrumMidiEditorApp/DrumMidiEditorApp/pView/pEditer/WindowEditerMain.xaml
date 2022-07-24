@@ -8,6 +8,24 @@
     Closed="Window_Closed"
     mc:Ignorable="d">
 
-    <local:PageEditerMain />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <Grid x:Name="_AppTitleBar">
+            <TextBlock
+                x:Name="_AppTitleTextBlock"
+                Margin="0"
+                Padding="10"
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                TextWrapping="NoWrap" />
+        </Grid>
+
+        <local:PageEditerMain Grid.Row="1" />
+
+    </Grid>
     
 </Window>

@@ -1,45 +1,42 @@
 ﻿<Page
-    x:Class="DrumMidiEditorApp.pView.pEditer.PageMusic"
+    x:Class="DrumMidiEditorApp.pView.pEditer.pMusic.PageMusic"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
+    xmlns:local="using:DrumMidiEditorApp.pView.pEditer.pMusic"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    NavigationCacheMode="Required"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <UserControl.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <RelativePanel>
-            <StackPanel
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True"
-                RelativePanel.AlignBottomWithPanel="True"
-                Margin="10"
-                Orientation="Vertical"
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Center" 
-            >
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
+
                 <ContentControl>
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left" 
-                    >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <TextBox x:Name="_MusicInfoBgmFilePathTextBox"
                             x:Uid="MusicInfoBgmFilePathTextBox"
                             Text="{x:Bind _MusicInfo.BgmFilePath.RelativeFilePath, Mode=OneWay}" 
                             PlaceholderText="{x:Bind _MusicInfo.BgmFilePath.RelativeFilePath, Mode=OneTime}"                   
                             HorizontalAlignment="Stretch"
-                            TextChanged="_MusicInfoBgmFilePathTextBox_TextChanged"
-                        />
+                            TextChanged="_MusicInfoBgmFilePathTextBox_TextChanged" />
 
                         <Button x:Name="_MusicInfoBgmFilePathButton"
                                 Content="TEST"
-                            Click="_MusicInfoBgmFilePathButton_Click"        
-                        />
+                            Click="_MusicInfoBgmFilePathButton_Click" />
                     </StackPanel>
                 </ContentControl>
-                
+
                 <NumberBox x:Name="_MusicInfoBpmNumberBox" 
                     x:Uid="NumberBoxBpm"
                     Value="{x:Bind _MusicInfo.Bpm, Mode=OneWay}" 
@@ -81,7 +78,7 @@
                     ValidationMode="InvalidInputOverwritten"
                     ValueChanged="_MusicInfoBgmVolumeNumberBox_ValueChanged"
                 />
-                
+
                 <TextBox x:Name="_MusicInfoMemoTextBox"
                     x:Uid="MusicInfoMemoTextBox"
                     Text="{x:Bind _MusicInfo.Info, Mode=TwoWay}" 
@@ -93,6 +90,6 @@
                 <local:UserControlEqualizer />
 
             </StackPanel>
-        </RelativePanel>
+        </ScrollViewer>
     </Grid>
 </Page>

@@ -282,8 +282,8 @@ public sealed partial class UserControlScore : UserControl
         try
         {
             // Win2D アンロード
-            _ScoreCanvas.RemoveFromVisualTree();
-            _ScoreCanvas = null;
+            //_ScoreCanvas.RemoveFromVisualTree();
+            //_ScoreCanvas = null;
         }
         catch ( Exception e )
         {

@@ -19,11 +19,8 @@ using DrumMidiEditorApp.pGeneralFunction.pDirectX;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
-namespace DrumMidiEditorApp.pView.pPlayer;
+namespace DrumMidiEditorApp.pView.pPlayer.nPlay.pSurface;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class PagePlayer : Page
 {
     public PagePlayer()
@@ -52,10 +49,6 @@ public sealed partial class PagePlayer : Page
 	/// </summary>
 	private readonly Graphic2D _Graphic2D;
 
-	/// <summary>
-	/// プレイヤーサーフェイス
-	/// </summary>
-	private IPlayerSurface? _PlayerSurface = null;
 
 	/// <summary>
 	/// フォーム移動前の位置
@@ -175,29 +168,6 @@ public sealed partial class PagePlayer : Page
 		Show();
 	}
 
-	/// <summary>
-	/// 描画モード変更
-	/// </summary>
-	public void ChangeDrawMode()
-    {
-		switch ( Config.Player.PlayerSurfaceModeSelect )
-        {
-			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-				_PlayerSurface = new pSequence.PlayerSurface( _Graphic2D );
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-				_PlayerSurface = new pSequenceVertical.PlayerSurface( _Graphic2D );
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Score:
-				_PlayerSurface = new pScore.PlayerSurface( _Graphic2D );
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-				_PlayerSurface = new pSimuration.PlayerSurface( _Graphic2D );
-				break;
-        }
-
-		Config.EventReloadScore();
-    }
 
 	/// <summary>
 	/// 解像度変更

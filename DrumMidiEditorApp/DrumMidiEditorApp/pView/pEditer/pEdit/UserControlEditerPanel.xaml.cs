@@ -2993,8 +2993,8 @@ public sealed partial class UserControlEditerPanel : UserControl
         try
         {
             // Win2D アンロード
-            _EditerCanvas.RemoveFromVisualTree();
-            _EditerCanvas = null;
+            //_EditerCanvas.RemoveFromVisualTree();
+            //_EditerCanvas = null;
         }
         catch ( Exception e )
         {

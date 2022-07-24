@@ -5,7 +5,7 @@ using Windows.Foundation;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pScore;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface.pScore;
 
 /// <summary>
 /// プレイヤー描画アイテム：ノート

@@ -19,7 +19,7 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pEditer;
+namespace DrumMidiEditorApp.pView.pEditer.pMusic;
 
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.

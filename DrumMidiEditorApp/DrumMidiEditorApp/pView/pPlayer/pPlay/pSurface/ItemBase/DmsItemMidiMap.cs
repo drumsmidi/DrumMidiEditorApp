@@ -1,14 +1,12 @@
 ﻿using Microsoft.Graphics.Canvas;
 using System;
 using Windows.Foundation;
-using Windows.UI;
 
-using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
 
 /// <summary>
 /// プレイヤー描画アイテム：MidiMapヘッダ
@@ -34,16 +32,6 @@ internal class DmsItemMidiMap : DisposeBaseClass
     /// 描画書式
     /// </summary>
     private FormatRect? _FormatRect = null;
-
-    /// <summary>
-    /// ノートヒットカラー
-    /// </summary>
-    private Color _HitColor = ColorHelper.EmptyColor;
-
-    /// <summary>
-    /// ノートヒット表示時間（秒）
-    /// </summary>
-    private double _HitTime = 0;
 
     /// <summary>
     /// コンストラクタ
@@ -116,31 +104,6 @@ internal class DmsItemMidiMap : DisposeBaseClass
     }
 
     /// <summary>
-    /// ノートヒット
-    /// </summary>
-    /// <param name="aColor">ノート色</param>
-    public void Hit( Color aColor )
-    {
-        _HitColor  = aColor;
-        _HitTime   = 0.1d;
-    }
-
-    /// <summary>
-    /// フレーム処理
-    /// </summary>
-    /// <param name="aFrameTime">フレーム時間（秒）</param>
-    public void Move( double aFrameTime )
-    {
-        _HitTime -= aFrameTime;
-
-        if ( _HitTime < 0 )
-        {
-            _HitColor  = ColorHelper.EmptyColor;
-            _HitTime   = 0;
-        }
-    }
-
-    /// <summary>
     /// 描画
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
@@ -157,32 +120,12 @@ internal class DmsItemMidiMap : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        // 背景色
-        aGraphics.FillRectangle
-            ( 
-                rect,
-                Config.Player.Sequence.HeaderEffectOn && _HitColor != ColorHelper.EmptyColor
-                    ? _HitColor : _FormatRect.BackColor 
-            );
-
-        // テキスト描画
-        aGraphics.DrawText
+        XamlHelper.FormatRectDraw
             (
-                _MidiMapGroup?.GroupName ?? _MidiMap?.MidiMapName ?? String.Empty,
+                aGraphics,
                 rect,
-                _FormatRect.TextColor,
-                _FormatRect.TextFormat
+                _FormatRect,
+                _MidiMapGroup?.GroupName ?? _MidiMap?.MidiMapName ?? String.Empty
             );
-
-        // 外枠
-        if ( _FormatRect.LineSize > 0 )
-        { 
-            aGraphics.DrawRectangle
-                (
-                    rect,
-                    _FormatRect.LineColor,
-                    _FormatRect.LineSize
-                );
-        }
     }
 }

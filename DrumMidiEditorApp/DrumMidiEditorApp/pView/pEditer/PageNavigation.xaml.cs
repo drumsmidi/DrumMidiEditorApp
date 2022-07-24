@@ -6,8 +6,10 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pView.pEditer.pEdit;
 using DrumMidiEditorApp.pView.pEditer.pConfig;
+using DrumMidiEditorApp.pView.pEditer.pEdit;
+using DrumMidiEditorApp.pView.pEditer.pMidiMap;
+using DrumMidiEditorApp.pView.pEditer.pMusic;
 using DrumMidiEditorApp.pView.pEditer.pScore;
 
 namespace DrumMidiEditorApp.pView.pEditer;
@@ -46,7 +48,7 @@ public sealed partial class PageNavigation : Page
         try
         {
 			// 初期ページへ移動
-            NavigationView_Navigate( "PageScore" );
+            NavigationView_Navigate( "PageMusic" );
         }
         catch ( Exception e )
         {

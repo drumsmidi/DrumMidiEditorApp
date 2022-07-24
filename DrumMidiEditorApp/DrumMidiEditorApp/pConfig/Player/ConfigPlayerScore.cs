@@ -30,7 +30,7 @@ public class ConfigPlayerScore
     /// BPM描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmFormatRect { get; set; } = new()
+    public FormatRect BpmRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -55,7 +55,7 @@ public class ConfigPlayerScore
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowFormatRect { get; set; } = new()
+    public FormatRect BpmNowRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -84,7 +84,7 @@ public class ConfigPlayerScore
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoFormatRect { get; set; } = new()
+    public FormatRect MeasureNoRect { get; set; } = new()
     {
         BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
         LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
@@ -119,19 +119,10 @@ public class ConfigPlayerScore
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderFormatRect { get; set; } = new()
+    public FormatLine HeaderLine { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0.4F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
+        LineSize    = 1.0F,
     };
 
     #endregion
@@ -182,7 +173,7 @@ public class ConfigPlayerScore
     /// カーソルペン
     /// </summary>
     [JsonInclude]
-    public FormatLine CursolFormatLine { get; set; } = new()
+    public FormatLine CursolLine { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 255, 255, 255 ),
         LineSize    = 1.0F,
@@ -192,7 +183,7 @@ public class ConfigPlayerScore
     /// 小節128分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure128FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure128Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
         LineSize    = 1.0F,
@@ -202,7 +193,7 @@ public class ConfigPlayerScore
     /// 小節64分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure064FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure064Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 70, 70, 70 ),
         LineSize    = 0.5F,
@@ -212,7 +203,7 @@ public class ConfigPlayerScore
     /// 小節32分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure032FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure032Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 60, 60, 60 ),
         LineSize    = 0.3F,
@@ -222,7 +213,7 @@ public class ConfigPlayerScore
     /// 小節16分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure016FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure016Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 50, 50, 50 ),
         LineSize    = 0.0F,
@@ -232,7 +223,7 @@ public class ConfigPlayerScore
     /// 小節8分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure008FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure008Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 40, 40, 40 ),
         LineSize    = 0.0F,
@@ -242,7 +233,7 @@ public class ConfigPlayerScore
     /// 小節4分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure004FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure004Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
         LineSize    = 0.0F,
@@ -252,7 +243,7 @@ public class ConfigPlayerScore
     /// 小節1分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure001FormatLine { get; set; } = new()
+    public FormatLine SheetMeasure001Line { get; set; } = new()
     {
         LineColor   = Color.FromArgb( 255, 20, 20, 20 ),
         LineSize    = 0.0F,

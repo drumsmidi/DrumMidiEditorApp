@@ -120,35 +120,43 @@
   <data name="AAA" xml:space="preserve">
     <value>日本語</value>
   </data>
-  <data name="BgmToggleSwitch.Header" xml:space="preserve">
-    <value>Bgm</value>
-  </data>
   <data name="ButtonCancel.Content" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="ButtonEqualizer.Content" xml:space="preserve">
+    <value>イコライザ</value>
+  </data>
+  <data name="ButtonEqualizerReset.Content" xml:space="preserve">
+    <value>リセット</value>
+  </data>
+  <data name="ButtonEqualizerWaveForm.Content" xml:space="preserve">
+    <value>波形</value>
+  </data>
+  <data name="ButtonLoopPlay.Content" xml:space="preserve">
+    <value>ループ
+再生</value>
   </data>
   <data name="ButtonOK.Content" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="ChannelNoComboBox.Header" xml:space="preserve">
-    <value>Ch.</value>
+  <data name="ButtonPlay.Content" xml:space="preserve">
+    <value>再生</value>
+  </data>
+  <data name="ButtonPlayerDisplay.Content" xml:space="preserve">
+    <value>プレイヤー
+表示</value>
+  </data>
+  <data name="ButtonStop.Content" xml:space="preserve">
+    <value>停止</value>
   </data>
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
   </data>
-  <data name="EqualizerAppBarToggleButton.Content" xml:space="preserve">
-    <value>イコライザ</value>
-  </data>
-  <data name="EqualizerResetAppBarButton.Content" xml:space="preserve">
-    <value>リセット</value>
-  </data>
-  <data name="EqualizerSettingTextBlock.Text" xml:space="preserve">
-    <value>イコライザ設定</value>
-  </data>
-  <data name="EqualizerWaveFormAppBarToggleButton.Content" xml:space="preserve">
-    <value>波形</value>
-  </data>
   <data name="ErrMsgInitMidiDevice" xml:space="preserve">
     <value>Midi device の初期化に失敗しました。[{0}]</value>
+  </data>
+  <data name="HGroupEqualizerSetting.Header" xml:space="preserve">
+    <value>イコライザ設定</value>
   </data>
   <data name="HGroupMidiOutDeviceSetting.Header" xml:space="preserve">
     <value>Midi-Out デバイス設定</value>
@@ -156,11 +164,32 @@
   <data name="HGroupVideoSetting.Header" xml:space="preserve">
     <value>ビデオ設定</value>
   </data>
+  <data name="InputBgmSwitch.Header" xml:space="preserve">
+    <value>Bgm</value>
+  </data>
+  <data name="InputChannelNo.Header" xml:space="preserve">
+    <value>Ch.</value>
+  </data>
+  <data name="InputLoopPlayMeasureConnect.Header" xml:space="preserve">
+    <value>小節接続数</value>
+  </data>
+  <data name="InputLoopPlayMeasureConnectSwitch.Header" xml:space="preserve">
+    <value>小節接続</value>
+  </data>
+  <data name="InputLoopPlayMeasureEnd.Header" xml:space="preserve">
+    <value>小節終了番号</value>
+  </data>
+  <data name="InputLoopPlayMeasureStart.Header" xml:space="preserve">
+    <value>小節開始番号</value>
+  </data>
   <data name="InputMidiOutDevice.Header" xml:space="preserve">
     <value>Midi-Out デバイス</value>
   </data>
   <data name="InputMidiOutLatency.Header" xml:space="preserve">
     <value>Midi-Out 遅延（秒）</value>
+  </data>
+  <data name="InputMidiOutSwitch.Header" xml:space="preserve">
+    <value>Midi-Out</value>
   </data>
   <data name="InputNoteHeight.Header" xml:space="preserve">
     <value>ノート高さ</value>
@@ -188,22 +217,6 @@
   </data>
   <data name="LabelVolume" xml:space="preserve">
     <value>Volume</value>
-  </data>
-  <data name="LoopPlayButton.Content" xml:space="preserve">
-    <value>ループ
-再生</value>
-  </data>
-  <data name="LoopPlayMeasureConnectNumberBox.Header" xml:space="preserve">
-    <value>小節接続数</value>
-  </data>
-  <data name="LoopPlayMeasureConnectToggleSwitch.Header" xml:space="preserve">
-    <value>小節接続</value>
-  </data>
-  <data name="LoopPlayMeasureEndNumberBox.Header" xml:space="preserve">
-    <value>小節終了番号</value>
-  </data>
-  <data name="LoopPlayMeasureStartNumberBox.Header" xml:space="preserve">
-    <value>小節開始番号</value>
   </data>
   <data name="MenuItemExport.Text" xml:space="preserve">
     <value>Export</value>
@@ -260,9 +273,6 @@
   <data name="MessageDialog.Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="MidiOutToggleSwitch.Header" xml:space="preserve">
-    <value>Midi-Out</value>
-  </data>
   <data name="MusicInfoBgmFilePathTextBox.Header" xml:space="preserve">
     <value>BGMファイルパス (ダブルクリックでファイル選択ダイアログ表示）</value>
   </data>
@@ -277,15 +287,5 @@
   </data>
   <data name="NumberBoxBpm.Header" xml:space="preserve">
     <value>BPM</value>
-  </data>
-  <data name="PlayButton.Content" xml:space="preserve">
-    <value>再生</value>
-  </data>
-  <data name="PlayerDisplayToggleButton.Content" xml:space="preserve">
-    <value>プレイヤー
-表示</value>
-  </data>
-  <data name="StopButton.Content" xml:space="preserve">
-    <value>停止</value>
   </data>
 </root>

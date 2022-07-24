@@ -62,6 +62,10 @@ public sealed partial class PageConfig : Page
     {
 		try
 		{
+#if DEBUG
+			Log.Info( $"{ConfigMedia.MidiOutDeviceName}={_MidiOutDeviceListView.SelectedValue}" );
+#endif
+
 			if ( !MidiNet.InitDevice() )
 			{
 				Log.Error( ResourcesHelper.GetString( "ErrMsgInitMidiDevice", ConfigMedia.MidiOutDeviceName ) );
@@ -83,6 +87,10 @@ public sealed partial class PageConfig : Page
     {
 		try
 		{ 
+#if DEBUG
+			Log.Info( $"{ConfigMedia.MidiOutLatency}={_MidiOutLatencyNumberBox.Value}" );
+#endif
+
 			// 必須入力チェック
 			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {

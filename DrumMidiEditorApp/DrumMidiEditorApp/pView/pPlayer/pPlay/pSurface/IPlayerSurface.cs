@@ -1,6 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
 
-namespace DrumMidiEditorApp.pView.pPlayer;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
 
 /// <summary>
 /// プレイヤーサーフェイスインタフェース
@@ -11,22 +12,22 @@ interface IPlayerSurface
     /// マウスダウンイベント
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="ev"></param>
-    void MouseDown( object sender, MouseEventArgs ev );
+    /// <param name="args"></param>
+    void MouseDown( object sender, PointerRoutedEventArgs args );
 
     /// <summary>
     /// マウス移動イベント
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="ev"></param>
-    void MouseMove( object sender, MouseEventArgs ev );
+    /// <param name="args"></param>
+    void MouseMove( object sender, PointerRoutedEventArgs args );
 
     /// <summary>
     /// マウスアップイベント
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="ev"></param>
-    void MouseUp( object sender, MouseEventArgs ev );
+    /// <param name="args"></param>
+    void MouseUp( object sender, PointerRoutedEventArgs args );
 
     /// <summary>
     /// フレーム処理
@@ -39,5 +40,5 @@ interface IPlayerSurface
     /// 描画
     /// </summary>
     /// <returns>True:処理続行、False:処理中断</returns>
-    bool OnDraw();
+    bool OnDraw( CanvasControl sender, CanvasDrawEventArgs args );
 }

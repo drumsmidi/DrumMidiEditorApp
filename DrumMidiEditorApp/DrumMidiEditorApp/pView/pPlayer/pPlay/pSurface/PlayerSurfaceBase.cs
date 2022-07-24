@@ -1,12 +1,12 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pDirectX;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using Windows.Foundation;
 
-namespace DrumMidiEditorApp.pView.pPlayer;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
 
 /// <summary>
 /// プレイヤーサーフェイス
@@ -14,9 +14,29 @@ namespace DrumMidiEditorApp.pView.pPlayer;
 public class PlayerSurfaceBase : IPlayerSurface
 {
     /// <summary>
-    /// DirectX2D
+    /// プレイヤー設定（共通）
     /// </summary>
-    protected readonly Graphic2D _Graphic2D;
+    protected ConfigPlayer DrawSetCom => Config.Player;
+
+    /// <summary>
+    /// システム設定
+    /// </summary>
+    protected ConfigSystem ConfigSystem => Config.System;
+
+    /// <summary>
+    /// メディア設定
+    /// </summary>
+    protected ConfigMedia ConfigMedia => Config.Media;
+
+    /// <summary>
+    /// スコア
+    /// </summary>
+    protected Score Score => DMS.SCORE;
+
+    /// <summary>
+    /// スクリーンサイズ
+    /// </summary>
+    protected Size _ScreenSize = new();
 
     /// <summary>
     /// ノート位置（絶対値）小数点あり
@@ -46,7 +66,7 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <summary>
     /// 再生状態一覧
     /// </summary>
-    private enum PlayState
+    private enum PlayState : int
     {
         Stop = 0,
         PrePlayStart,
@@ -57,32 +77,21 @@ public class PlayerSurfaceBase : IPlayerSurface
     }
 
     /// <summary>
-    /// プレイヤー設定
-    /// </summary>
-    private static ConfigPlayer DrawSet => Config.Player;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="aGraphic2D">DirectX2D</param>
-    public PlayerSurfaceBase( Graphic2D aGraphic2D )
-    {
-        _Graphic2D = aGraphic2D;
+    protected PlayerSurfaceBase() { }
 
-        //_Graphic2D.SetBackGroundColor( DrawSet.SheetColor );
-    }
+    public virtual void MouseDown( object sender, PointerRoutedEventArgs args ) { }
 
-    public virtual void MouseDown( object sender, MouseEventArgs ev ) { }
+    public virtual void MouseMove( object sender, PointerRoutedEventArgs args ) { }
 
-    public virtual void MouseMove( object sender, MouseEventArgs ev ) { }
-
-    public virtual void MouseUp( object sender, MouseEventArgs ev ) { }
+    public virtual void MouseUp( object sender, PointerRoutedEventArgs args ) { }
 
 	public virtual bool OnMove( double aFrameTime )
     {
         #region Request play or loop play or stop
         { 
-            switch ( DrawSet.PlayReq )
+            switch ( DrawSetCom.PlayReq )
             {
                 case ConfigPlayer.PlayRequest.PrePlay      : _DmsPlayState = PlayState.PrePlayStart;     break;
                 case ConfigPlayer.PlayRequest.PreLoopPlay  : _DmsPlayState = PlayState.PreLoopPlayStart; break;
@@ -90,58 +99,55 @@ public class PlayerSurfaceBase : IPlayerSurface
                 case ConfigPlayer.PlayRequest.PreRecord    : _DmsPlayState = PlayState.PreRecord;        break;
             }
 
-            DrawSet.PlayReq = ConfigPlayer.PlayRequest.None;
+            DrawSetCom.PlayReq = ConfigPlayer.PlayRequest.None;
 
             switch ( _DmsPlayState )
             {
                 case PlayState.Playing:
                     {
-                        if ( DrawSet.UpdateScoreFlag )
+                        if ( DrawSetCom.UpdateScoreFlag )
                         {
-                            //_Graphic2D?.ClearResource();
-                            //_Graphic2D?.SetBackGroundColor( DrawSet.SheetColor );
-
                             UpdateScore();
                             UpdateScoreLine();
                             UpdateScoreHeader();
 
                             if ( _DmsPlayStatePre == PlayState.PrePlayStart )
                             {
-                                var measureMaxNo = DMS.SCORE.GetMaxMeasureNo();
+                                var measureMaxNo = Score.GetMaxMeasureNo();
 
-                                for ( int i = 0; i <= measureMaxNo; i++ )
+                                for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                                 {
-									UpdateBpmMeasure( i );
-									UpdateScoreMeasure( i );
+									UpdateBpmMeasure( measure_no );
+									UpdateScoreMeasure( measure_no );
                                 }
                             }
                             else
                             {
-                                for ( int i = Config.Media.PlayLoopStart; i <= Config.Media.PlayLoopEnd; i++ )
+                                for ( int measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
                                 {
-                                    UpdateBpmMeasure( i );
-                                    UpdateScoreMeasure( i );
+                                    UpdateBpmMeasure( measure_no );
+                                    UpdateScoreMeasure( measure_no );
                                 }
                             }
 
-                            DrawSet.UpdateScoreFlag = false;
+                            DrawSetCom.UpdateScoreFlag = false;
                         }
 
                         // Calc sheet position
 						_DmsPlayTime = DmsControl.PlayTime;
 
-                        //var note_pos = (float)DmsControl.PlayNote( _DmsPlayTime );
+                        var note_pos = DmsControl.PlayNote( _DmsPlayTime );
 
-                        //_SheetPosX = (float)note_pos;
+                        _SheetPosX = note_pos;
 
-                        //int limit_width = Config.System.NoteCount;
+                        var limit_width = ConfigSystem.NoteCount;
 
-                        //if ( _SheetPosX > limit_width )
-                        //{
-                        //    _SheetPosX = limit_width;
-                        //}
+                        if ( _SheetPosX > limit_width )
+                        {
+                            _SheetPosX = limit_width;
+                        }
 
-                        //_NotePositionX = (int)note_pos;
+                        _NotePositionX = (int)note_pos;
                     }
                     break;
                 case PlayState.Recording:
@@ -149,26 +155,23 @@ public class PlayerSurfaceBase : IPlayerSurface
                         // Calc sheet position
                         _DmsPlayTime = aFrameTime;
 
-                        //var note_pos = (float)DmsControl.PlayNote( _DmsPlayTime );
+                        var note_pos = DmsControl.PlayNote( _DmsPlayTime );
 
-                        //_SheetPosX = (float)note_pos;
+                        _SheetPosX = note_pos;
 
-                        //int limit_width = Config.System.NoteCount;
+                        var limit_width = ConfigSystem.NoteCount;
 
-                        //if ( _SheetPosX > limit_width )
-                        //{
-                        //    _SheetPosX = limit_width;
-                        //}
+                        if ( _SheetPosX > limit_width )
+                        {
+                            _SheetPosX = limit_width;
+                        }
 
-                        //_NotePositionX = (int)note_pos;
+                        _NotePositionX = (int)note_pos;
                     }
                     break;
                 case PlayState.PrePlayStart:
                     {
                         _DmsPlayStatePre = _DmsPlayState;
-
-                        //_Graphic2D?.ClearResource();
-                        //_Graphic2D?.SetBackGroundColor( DrawSet.SheetColor );
 
                         UpdateScore();
                         UpdateScoreLine();
@@ -176,12 +179,12 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         ClearMeasure();
 
-                        var measureMaxNo = DMS.SCORE.GetMaxMeasureNo();
+                        var measureMaxNo = Score.GetMaxMeasureNo();
 
-                        for ( int i = 0; i <= measureMaxNo; i++ )
+                        for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                         {
-							UpdateBpmMeasure( i );
-							UpdateScoreMeasure( i );
+							UpdateBpmMeasure( measure_no );
+							UpdateScoreMeasure( measure_no );
                         }
 
                         DmsControl.WaitAudio();
@@ -196,18 +199,16 @@ public class PlayerSurfaceBase : IPlayerSurface
                     {
                         _DmsPlayStatePre = _DmsPlayState;
 
-                        //_Graphic2D?.SetBackGroundColor( DrawSet.SheetColor );
-
                         UpdateScore();
                         UpdateScoreLine();
                         UpdateScoreHeader();
 
                         ClearMeasure();
 
-                        for ( int i = Config.Media.PlayLoopStart; i <= Config.Media.PlayLoopEnd; i++ )
+                        for ( int measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
                         {
-                            UpdateBpmMeasure( i );
-                            UpdateScoreMeasure( i );
+                            UpdateBpmMeasure( measure_no );
+                            UpdateScoreMeasure( measure_no );
                         }
 
                         DmsControl.WaitAudio();
@@ -222,21 +223,18 @@ public class PlayerSurfaceBase : IPlayerSurface
                     {
                         _DmsPlayStatePre = _DmsPlayState;
 
-                        //_Graphic2D?.ClearResource();
-                        //_Graphic2D?.SetBackGroundColor( DrawSet.SheetColor );
-
                         UpdateScore();
                         UpdateScoreLine();
                         UpdateScoreHeader();
 
                         ClearMeasure();
 
-                        var measureMaxNo = DMS.SCORE.GetMaxMeasureNo();
+                        var measureMaxNo = Score.GetMaxMeasureNo();
 
-                        for ( int i = 0; i <= measureMaxNo; i++ )
+                        for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                         {
-							UpdateBpmMeasure( i );
-							UpdateScoreMeasure( i );
+							UpdateBpmMeasure( measure_no );
+							UpdateScoreMeasure( measure_no );
                         }
 
                         DmsControl.WaitAudio();
@@ -257,7 +255,12 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <summary>
     /// スコア範囲設定更新
     /// </summary>
-    protected virtual void UpdateScore() { }
+    protected virtual void UpdateScore() 
+    {
+        // screen
+        _ScreenSize.Height  = DrawSetCom.ResolutionScreenHeight;
+        _ScreenSize.Width   = DrawSetCom.ResolutionScreenWidth;
+    }
 
     /// <summary>
     /// 小節線表示更新
@@ -286,10 +289,10 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <param name="aMeasureNo">小節番号</param>
     protected virtual void UpdateBpmMeasure( int aMeasureNo ) { }
 
-    public virtual bool OnDraw()
+    public virtual bool OnDraw( CanvasControl sender, CanvasDrawEventArgs args )
     {
-        if ( this._DmsPlayState != PlayState.Playing 
-          && this._DmsPlayState != PlayState.Recording )
+        if ( _DmsPlayState != PlayState.Playing 
+          && _DmsPlayState != PlayState.Recording )
         {
             return false;
         }

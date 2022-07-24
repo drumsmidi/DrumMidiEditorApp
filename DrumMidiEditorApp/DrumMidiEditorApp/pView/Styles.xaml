@@ -3,8 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="Grid">
-        <Setter Property="BorderBrush" Value="Blue" />
-        <Setter Property="BorderThickness" Value="4" />
     </Style>
 
     <Style x:Key="BasicComboBoxStyle" TargetType="ComboBox">
@@ -13,6 +11,7 @@
     </Style>
     <Style x:Key="BasicNumberBoxStyle" TargetType="NumberBox">
         <Setter Property="SpinButtonPlacementMode" Value="Hidden" />
+        <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
     </Style>
 
     <Style x:Key="CheckBoxStyle" TargetType="CheckBox">

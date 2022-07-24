@@ -5,7 +5,7 @@ using Windows.Foundation;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pSequence;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface.pSequence;
 
 /// <summary>
 /// プレイヤー描画アイテム：ノート
@@ -31,11 +31,6 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 	/// MidiMapヘッダアイテム
 	/// </summary>
 	private DmsItemMidiMap? _DmsItemMidiMap = null;
-
-	/// <summary>
-	/// ノートヒットフラグ
-	/// </summary>
-	private bool _HitFlag = false;
 
 	/// <summary>
 	/// コンストラクタ
@@ -107,13 +102,6 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 				_FormatRect.RadiusY,
 				_FormatRect.BackColor 
             );
-
-		if ( !_HitFlag && rect.X <= _DmsItemMidiMap.DrawRect.Right )
-        {
-			_DmsItemMidiMap.Hit( _FormatRect.BackColor );
-
-			_HitFlag = true;
-		}
     }
 
 	/// <summary>

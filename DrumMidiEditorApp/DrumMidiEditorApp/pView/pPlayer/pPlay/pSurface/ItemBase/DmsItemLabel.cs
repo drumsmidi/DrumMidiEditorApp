@@ -5,7 +5,7 @@ using Windows.Foundation;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer;
+namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
 
 /// <summary>
 /// プレイヤー描画アイテム：ラベル
@@ -77,31 +77,12 @@ internal class DmsItemLabel : DisposeBaseClass
             return;
         }
 
-        // 背景色
-        aGraphics.FillRectangle
+        XamlHelper.FormatRectDraw
             (
+                aGraphics,
                 _DrawRect,
-                _FormatRect.BackColor 
+                _FormatRect,
+                Text ?? String.Empty
             );
-
-        // テキスト描画
-        aGraphics.DrawText
-            (
-                Text ?? String.Empty,
-                _DrawRect,
-                _FormatRect.TextColor,
-                _FormatRect.TextFormat
-            );
-
-        // 外枠
-        if ( _FormatRect.LineSize > 0 )
-        { 
-            aGraphics.DrawRectangle
-                (
-                    _DrawRect,
-                    _FormatRect.LineColor,
-                    _FormatRect.LineSize
-                );
-        }
     }
 }

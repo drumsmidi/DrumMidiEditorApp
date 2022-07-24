@@ -197,7 +197,7 @@ public static class DmsControl
 	/// </summary>
 	/// <param name="aPlayTime">再生位置の時間（秒）</param>
 	/// <returns>ノート位置（絶対値）小数点含む</returns>
-	public static float PlayNote( float aPlayTime )
+	public static float PlayNote( double aPlayTime )
 	{
 		int	max_note = Config.System.NoteCount - 1;
 

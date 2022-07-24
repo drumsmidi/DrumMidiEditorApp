@@ -25,13 +25,13 @@ namespace DrumMidiEditorApp.pView.pEditer;
 
 public sealed partial class PageMenuBar : Page
 {
-	private ResourceLoader _Resource = new();
+	private ConfigMedia ConfigMedia => Config.Media;
 
-	private ConfigMedia _ConfigMedia => Config.Media;
+	private ConfigSystem ConfigSystem => Config.System;
 
-	private ConfigSystem _ConfigSystem => Config.System;
+	private ConfigPlayer ConfigPlayer => Config.Player;
 
-	private ConfigPlayer _ConfigPlayer => Config.Player;
+	private Score Score => DMS.SCORE;
 
 	/// <summary>
 	/// コンストラクタ
@@ -39,6 +39,19 @@ public sealed partial class PageMenuBar : Page
 	public PageMenuBar()
     {
         InitializeComponent();
+
+		// NumberBox の入力書式設定
+		_LoopPlayMeasureStartNumberBox.NumberFormatter 
+			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+		_LoopPlayMeasureEndNumberBox.NumberFormatter 
+			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+		_LoopPlayMeasureConnectNumberBox.NumberFormatter 
+			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+		_LoopPlayMeasureStartNumberBox.NumberFormatter 
+			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+		_LoopPlayMeasureEndNumberBox.NumberFormatter 
+			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+
 
 #if DEBUG
 		var filepath = new GeneralPath("D:/CreateGame/DrumMidiEditor/build/net6.0-windows10.0.19041.0/Dms/test.dms");
@@ -90,7 +103,7 @@ public sealed partial class PageMenuBar : Page
     {
 		DmsControl.StopPreSequence();
 
-		//DMS.PlayerForm?.TemporaryHide();
+		WindowMange.WindowPlayer?.TemporaryHide();
 	}
 
 	/// <summary>
@@ -98,7 +111,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	private static void PlayerPlay()
 	{
-		//DMS.PlayerForm?.TemporaryShow();
+		WindowMange.WindowPlayer?.TemporaryShow();
 	}
 
 	/// <summary>
@@ -106,7 +119,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemNew_Click( object sender, RoutedEventArgs args )
+	private void MenuItemNew_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -115,10 +128,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						DMS.SCORE = new();
@@ -144,7 +157,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemOpen_Click( object sender, RoutedEventArgs args )
+	private void MenuItemOpen_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -153,10 +166,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//if ( !FormUtil.OpenShowDialog( Config.System.FolderDms, Config.System.SupportDmsOpen, out var filepath ) )
@@ -193,7 +206,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemSave_Click( object sender, RoutedEventArgs args )
+	private void MenuItemSave_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -202,10 +215,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//var filepath = Config.System.OpenFilePath;
@@ -247,7 +260,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemSaveAs_Click( object sender, RoutedEventArgs args )
+	private void MenuItemSaveAs_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -256,10 +269,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//if ( !FormUtil.SaveShowDialog( Config.System.FolderDms, Config.System.OpenFilePath, Config.System.SupportDmsSave, out var filepath ) )
@@ -296,7 +309,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemExportMidi_Click( object sender, RoutedEventArgs args )
+	private void MenuItemExportMidi_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -305,10 +318,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//if ( !FormUtil.SaveShowDialog( Config.System.FolderMidi, Config.System.OpenFilePath, Config.System.SupportMidi, out var filepath ) )
@@ -339,7 +352,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemExportVideo_Click( object sender, RoutedEventArgs args )
+	private void MenuItemExportVideo_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -348,10 +361,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//if ( !FormUtil.SaveShowDialog( Config.System.FolderVideo, Config.System.OpenFilePath, Config.System.SupportVideo, out var filepath ) )
@@ -382,7 +395,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MenuItemExportTechMidi_Click( object sender, RoutedEventArgs args )
+	private void MenuItemExportTechMidi_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -391,10 +404,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
 						//if ( !FormUtil.SaveShowDialog( Config.System.FolderTechMania, Config.System.OpenFilePath, Config.System.SupportTechMania, out var filepath ) )
@@ -425,7 +438,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void _MenuItemImportMidi_Click( object sender, RoutedEventArgs args )
+    private void MenuItemImportMidi_Click( object sender, RoutedEventArgs args )
     {
         try
         {
@@ -434,10 +447,10 @@ public sealed partial class PageMenuBar : Page
 			XamlHelper.MessageDialogYesNo
 				( 
 					Content.XamlRoot,
-					_Resource.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					_Resource.GetString( "MenuItemNewMsgBox/Content" ),
-					_Resource.GetString( "MessageDialog/Yes" ),
-					_Resource.GetString( "MessageDialog/No" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
+					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
+					ResourcesHelper.GetString( "MessageDialog/Yes" ),
+					ResourcesHelper.GetString( "MessageDialog/No" ),
 					new( () =>
                     {
                         //if (!FormUtil.OpenShowDialog(Config.System.FolderMidi, Config.System.SupportMidi, out var filepath))
@@ -484,14 +497,15 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void _ChannelNoComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    private void ChannelNoComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
 		try
 		{
-			DMS.SCORE.EditChannelNo = (byte)Convert.ToInt32( _ChannelNoComboBox.SelectedItem.ToString() ?? "0" );
+			Score.EditChannelNo = (byte)Convert.ToInt32( _ChannelNoComboBox.SelectedItem.ToString() ?? $"{ConfigMedia.ChannelDrum}" );
 
 			Config.EventChangeChannel();
 
+			// TODO: DataGrid が使えるようになったら実装検討
 			//if ( DMS.EditerForm != null )
 			//{ 
 			//	DMS.EditerForm.MidiMapSetCtl.LoadMidiMapSet( DMS.SCORE.EditMidiMapSet );
@@ -509,7 +523,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _PlayButton_Click( object sender, RoutedEventArgs args )
+	private void PlayButton_Click( object sender, RoutedEventArgs args )
     {
 		try
 		{
@@ -526,7 +540,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _StopButton_Click( object sender, RoutedEventArgs args )
+	private void StopButton_Click( object sender, RoutedEventArgs args )
     {
 		try
 		{
@@ -543,7 +557,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _LoopPlayButton_Click( object sender, RoutedEventArgs args )
+	private void LoopPlayButton_Click( object sender, RoutedEventArgs args )
     {
 		try
 		{
@@ -560,7 +574,7 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void _LoopPlayMeasureNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    private void LoopPlayMeasureNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
 		try
 		{
@@ -570,7 +584,7 @@ public sealed partial class PageMenuBar : Page
 				return;
             }
 
-			_SettingMeasureNo();
+			SettingMeasureNo();
 		}
 		catch ( Exception e )
 		{
@@ -583,11 +597,11 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void _LoopPlayMeasureConnectToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    private void LoopPlayMeasureConnectToggleSwitch_Toggled( object sender, RoutedEventArgs args )
     {
 		try
 		{
-			_SettingMeasureNo();
+			SettingMeasureNo();
 		}
 		catch ( Exception e )
 		{
@@ -598,13 +612,22 @@ public sealed partial class PageMenuBar : Page
 	/// <summary>
 	/// 小節番号設定
 	/// </summary>
-	private void _SettingMeasureNo()
+	private void SettingMeasureNo()
     {
 		// 初期設定時のエラー回避
 		if ( !IsLoaded )
         {
 			return;
         }
+
+#if DEBUG
+		Log.Info( $"-------------------------------------------------------------------" );
+		Log.Info( $"1.{ConfigMedia.PlayLoopStart}={_LoopPlayMeasureStartNumberBox.Value}" );
+		Log.Info( $"2.{ConfigMedia.PlayLoopEnd}={_LoopPlayMeasureEndNumberBox.Value}" );
+		Log.Info( $"3.{ConfigMedia.PlayLoopConnect}={_LoopPlayMeasureConnectNumberBox.Value}" );
+		Log.Info( $"4.{ConfigMedia.PlayLoopConnectOn}={_LoopPlayMeasureConnectToggleSwitch.IsOn}" );
+		Log.Info( $"-------------------------------------------------------------------" );
+#endif
 
 		var start	= (int)_LoopPlayMeasureStartNumberBox.Value;
 		var end		= (int)_LoopPlayMeasureEndNumberBox.Value;
@@ -640,5 +663,33 @@ public sealed partial class PageMenuBar : Page
 		_LoopPlayMeasureEndNumberBox.Value		= end;
     }
 
-    #endregion
+	/// <summary>
+	/// プレイヤー表示切替
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void PlayerDisplayToggleButton_ChangeChecked( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+#if DEBUG
+			Log.Info( $"{ConfigPlayer.DisplayPlayer}={_PlayerDisplayToggleButton.IsChecked}" );
+#endif
+
+			if ( _PlayerDisplayToggleButton.IsChecked ?? false )
+            {
+				WindowMange.WindowPlayer?.Show();
+            }
+			else
+            {
+				WindowMange.WindowPlayer?.Hide();
+			}
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
+
+	#endregion
 }

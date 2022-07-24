@@ -10,9 +10,12 @@
     <UseWinUI>true</UseWinUI>
     <Nullable>enable</Nullable>
     <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <StartupObject>DrumMidiEditorApp.Program</StartupObject>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="pView\pEditer\pEdit\PageInputBpm.xaml" />
+    <None Remove="pView\pPlayer\UserControlPlayerPanel.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -87,11 +90,15 @@
     <Page Update="pView\pEditer\新しいフォルダー\WindowMidiMapDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pPlayer\PageConfig.xaml">
+    <Page Update="pView\pPlayer\pConfig\PageConfig.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pPlayer\PagePlayer.xaml">
+    <Page Update="pView\pPlayer\pPlay\PagePlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pPlayer\pPlay\UserControlPlayerPanel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pPlayer\WindowPlayer.xaml">
       <Generator>MSBuild:Compile</Generator>

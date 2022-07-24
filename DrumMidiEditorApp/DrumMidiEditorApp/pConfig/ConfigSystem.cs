@@ -170,13 +170,13 @@ public class ConfigSystem
     /// エディターウィンドウ初期サイズ：横幅
     /// </summary>
     [JsonInclude]
-    public int WindowSizeWidth { get; private set; } = 1280;
+    public int WindowSizeWidth { get; private set; } = 1960;
 
     /// <summary>
     /// エディターウィンドウ初期サイズ：高さ
     /// </summary>
     [JsonInclude]
-    public int WindowSizeHeight { get; private set; } = 960;
+    public int WindowSizeHeight { get; private set; } = 1280;
 
     /// <summary>
     /// 小節最大数（0から開始）。
