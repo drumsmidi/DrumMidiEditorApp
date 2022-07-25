@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-using OpenCvSharp;
-
 namespace DrumMidiEditorApp.pConfig;
 
 /// <summary>
@@ -109,13 +107,13 @@ public class ConfigMedia
     /// BGM再生開始位置（秒）：最小値
     /// </summary>
     [JsonIgnore]
-    public double BgmPlaybackStartMinPosition { get; private set; } = -10000;
+    public double BgmPlaybackStartMinPosition { get; private set; } = -1000;
 
     /// <summary>
     /// BGM再生開始位置（秒）：最大値
     /// </summary>
     [JsonIgnore]
-    public double BgmPlaybackStartMaxPosition { get; private set; } = 10000;
+    public double BgmPlaybackStartMaxPosition { get; private set; } = 1000;
 
     /// <summary>
     /// 周波数解析：FFTレングス
@@ -155,13 +153,13 @@ public class ConfigMedia
     /// <summary>
     /// 動画出力FPS：最大値
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public int OutputVideoFpsMin { get; set; } = 30;
 
     /// <summary>
     /// 動画出力FPS：最小値
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public int OutputVideoFpsMax { get; set; } = 120;
 
     /// <summary>

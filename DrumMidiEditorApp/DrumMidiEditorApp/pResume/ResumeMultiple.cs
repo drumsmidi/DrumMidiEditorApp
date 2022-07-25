@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pView.pEditer.pEdit;
+using DrumMidiEditorApp.pView.pEditer;
 
 namespace DrumMidiEditorApp.pResume;
 

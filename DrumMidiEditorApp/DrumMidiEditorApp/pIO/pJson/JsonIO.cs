@@ -62,5 +62,6 @@ internal static class JsonIO
     {
 		aOption.Converters.Add( new ColorConverter() );
 		aOption.Converters.Add( new FontConverter() );
+		aOption.Converters.Add( new PointConverter() );
 	}
 }

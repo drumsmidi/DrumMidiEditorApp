@@ -11,9 +11,7 @@
     <Grid>
         <canvas:CanvasControl x:Name = "_PlayerCanvas"
             ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
-            Width="1000"
-            Height="1000"
-                              
+                             
             Draw="PlayerCanvas_Draw" 
             PointerPressed="PlayerCanvas_PointerPressed"
             PointerMoved="PlayerCanvas_PointerMoved"

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Windows.ApplicationModel;
 
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pView.pEditer;
+using DrumMidiEditorApp.pView;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -15,7 +15,9 @@ namespace DrumMidiEditorApp;
 /// </summary>
 public partial class App : Application
 {
-    private Window m_window;
+    private static Window _MainWindow;
+
+    public static WindowEditer? MainWindow => _MainWindow as WindowEditer;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -51,7 +53,7 @@ public partial class App : Application
     /// <param name="args">Details about the launch request and process.</param>
     protected override void OnLaunched( LaunchActivatedEventArgs args )
     {
-        m_window = new WindowEditerMain();
-        m_window.Activate();
+        _MainWindow = new WindowEditer();
+        _MainWindow.Activate();
     }
 }

@@ -294,7 +294,6 @@ public class PlayerSurface : PlayerSurfaceBase
         #endregion
 
         #region MidiMap
-        if ( !DrawSet.HeaderGroupOn )
         {
             x = head.X;
             y = head.Y;
@@ -321,18 +320,21 @@ public class PlayerSurface : PlayerSurfaceBase
                         _MidiMapNoteFormatList[ midiMap.MidiMapKey ].BackColor = midiMap.Color;
                     }
 
-                    // アイテム登録
-                    var obj = new DmsItemMidiMap
-				        ( 
-                            midiMap,
-                            (float)x,
-                            (float)y,
-                            (float)w,
-                            (float)h,
-					        DrawSet.HeaderRect
-				        );
+                    if ( !DrawSet.HeaderGroupOn )
+                    { 
+                        // アイテム登録
+                        var obj = new DmsItemMidiMap
+				            ( 
+                                midiMap,
+                                (float)x,
+                                (float)y,
+                                (float)w,
+                                (float)h,
+					            DrawSet.HeaderRect
+				            );
 
-                    _HeaderMidiMapList.Add( midiMap.MidiMapKey, obj );
+                        _HeaderMidiMapList.Add( midiMap.MidiMapKey, obj );
+                    }
                 }
 
 			    x += w;

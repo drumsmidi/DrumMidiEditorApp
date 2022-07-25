@@ -152,6 +152,28 @@
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="Dialog.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog.Input" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="Dialog.No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog.Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Dialog.Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DialogMenuItemNew.Content" xml:space="preserve">
+    <value>編集中の内容は保存されません。
+よろしいですか？</value>
+  </data>
+  <data name="DialogMenuItemNew.Title" xml:space="preserve">
+    <value>新規作成</value>
+  </data>
   <data name="ErrMsgInitMidiDevice" xml:space="preserve">
     <value>Midi device の初期化に失敗しました。[{0}]</value>
   </data>
@@ -166,6 +188,9 @@
   </data>
   <data name="InputBgmSwitch.Header" xml:space="preserve">
     <value>Bgm</value>
+  </data>
+  <data name="InputBpm.Header" xml:space="preserve">
+    <value>BPM</value>
   </data>
   <data name="InputChannelNo.Header" xml:space="preserve">
     <value>Ch.</value>
@@ -242,13 +267,6 @@
   <data name="MenuItemNew.Text" xml:space="preserve">
     <value>New</value>
   </data>
-  <data name="MenuItemNewMsgBox.Confirmation" xml:space="preserve">
-    <value>新規作成</value>
-  </data>
-  <data name="MenuItemNewMsgBox.Content" xml:space="preserve">
-    <value>編集中の内容は保存されません。
-よろしいですか？</value>
-  </data>
   <data name="MenuItemOpen.Text" xml:space="preserve">
     <value>Open</value>
   </data>
@@ -257,21 +275,6 @@
   </data>
   <data name="MenuItemSaveAs.Text" xml:space="preserve">
     <value>SaveAs</value>
-  </data>
-  <data name="MessageDialog.Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="MessageDialog.Input" xml:space="preserve">
-    <value>Input</value>
-  </data>
-  <data name="MessageDialog.No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="MessageDialog.Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="MessageDialog.Yes" xml:space="preserve">
-    <value>Yes</value>
   </data>
   <data name="MusicInfoBgmFilePathTextBox.Header" xml:space="preserve">
     <value>BGMファイルパス (ダブルクリックでファイル選択ダイアログ表示）</value>
@@ -284,8 +287,5 @@
   </data>
   <data name="MusicInfoMemoTextBox.Header" xml:space="preserve">
     <value>自由入力欄</value>
-  </data>
-  <data name="NumberBoxBpm.Header" xml:space="preserve">
-    <value>BPM</value>
   </data>
 </root>

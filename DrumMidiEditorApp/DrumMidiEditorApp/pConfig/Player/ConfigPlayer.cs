@@ -1,8 +1,9 @@
-﻿using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
+
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pConfig;
 

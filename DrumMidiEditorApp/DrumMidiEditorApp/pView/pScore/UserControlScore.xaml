@@ -1,0 +1,17 @@
+﻿<UserControl
+    x:Class="DrumMidiEditorApp.pView.pScore.UserControlScore"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    Unloaded="UserControl_Unloaded"
+    SizeChanged="UserControl_SizeChanged"
+    mc:Ignorable="d">
+
+    <Grid>
+        <canvas:CanvasControl x:Name = "_ScoreCanvas"
+            ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
+            Draw="ScoreCanvas_Draw" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,25 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pEditer.PageInputBpm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <RelativePanel>
+            <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm" Style="{StaticResource NumberBoxStyle}"
+                Value="{x:Bind Bpm, Mode=TwoWay}" 
+                Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                SmallChange="1" 
+                ValueChanged="BpmNumberBox_ValueChanged" />
+        </RelativePanel>
+    </Grid>
+</Page>

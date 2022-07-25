@@ -25,13 +25,13 @@ public static class FileIO
     {
         var folderList = new List<GeneralPath>()
         {
-            Config.System.FolderDocBase,
-            Config.System.FolderBgm,
-            Config.System.FolderConfig,
-            Config.System.FolderDms,
-            Config.System.FolderMidiMapSet,
-            Config.System.FolderModel,
-            Config.System.FolderExport,
+            //Config.System.FolderDocBase,
+            //Config.System.FolderBgm,
+            //Config.System.FolderConfig,
+            //Config.System.FolderDms,
+            //Config.System.FolderMidiMapSet,
+            //Config.System.FolderModel,
+            //Config.System.FolderExport,
         };
 
         var targetFolderList = new List<GeneralPath>();
@@ -476,7 +476,7 @@ public static class FileIO
                 throw new NotSupportedException( $"Extension {ext} is not supported" );
             }
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+            //Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
         }
         catch ( Exception e )
         {
@@ -484,6 +484,6 @@ public static class FileIO
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }
-        return true;
+        //return true;
     }
 }

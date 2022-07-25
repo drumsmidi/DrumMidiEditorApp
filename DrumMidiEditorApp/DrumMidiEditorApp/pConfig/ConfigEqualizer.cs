@@ -1,8 +1,10 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Text.Json.Serialization;
+using Windows.Foundation;
 using Windows.UI;
+
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -21,37 +23,44 @@ public class ConfigEqualizer
     /// 背景色色
     /// </summary>
     [JsonInclude]
-    public Color BackGroundColor { get; set; } = Color.FromArgb( 255, 0, 0, 0 );
+    public FormatColor BackGround { get; set; } = new()
+    {
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #region Text
 
     /// <summary>
     /// テキスト書式（右寄せ）
     /// </summary>
-    [JsonIgnore]
-    public CanvasTextFormat TextFormatRight { get; set; } = new()
-    {
-        FontFamily          = "system-ui",
-        FontSize            = 12,
-        HorizontalAlignment = CanvasHorizontalAlignment.Right,
+    [JsonInclude]
+    public FormatRect TextRightRect { get; set; } = new()
+    { 
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 12,
+            HorizontalAlignment = CanvasHorizontalAlignment.Right,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
     };
 
     /// <summary>
     /// テキスト書式（中央寄せ）
     /// </summary>
-    [JsonIgnore]
-    public CanvasTextFormat TextFormatCenter { get; set; } = new()
-    {
-        FontFamily          = "system-ui",
-        FontSize            = 12,
-        HorizontalAlignment = CanvasHorizontalAlignment.Center,
-    };
-
-    /// <summary>
-    /// 文字色
-    /// </summary>
     [JsonInclude]
-    public Color TextColor { get; set; } = Color.FromArgb( 255, 100, 200, 100 );
+    public FormatRect TextCenterRect { get; set; } = new()
+    { 
+        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        TextFormat  = new()
+        {
+            FontFamily          = "system-ui",
+            FontSize            = 12,
+            HorizontalAlignment = CanvasHorizontalAlignment.Center,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        },
+    };
 
     #endregion
 
@@ -61,29 +70,37 @@ public class ConfigEqualizer
     /// ライン色
     /// </summary>
     [JsonInclude]
-    public Color LineColor { get; set; } = Color.FromArgb( 255, 30, 30, 30 );
+    public FormatLine Line { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineSize    = 1,
+    };
 
     #endregion
 
     #region Point
 
     /// <summary>
-    /// イコライザ入力：外枠ペン
-    /// </summary>
-    [JsonInclude]
-    public Color PointColor { get; set; } = Color.FromArgb( 255, 0, 100, 255 );
-
-    /// <summary>
     /// イコライザ入力：選択背景色
     /// </summary>
     [JsonInclude]
-    public Color PointSelectColor { get; set; } = Color.FromArgb( 255, 100, 200, 100 );
+    public FormatRect PointSelectRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb( 255, 100, 200, 100 ),
+        LineColor   = Color.FromArgb( 255,   0, 100, 255 ),
+        LineSize    = 1,
+    };
 
     /// <summary>
     /// イコライザ入力：非選択背景色
     /// </summary>
     [JsonInclude]
-    public Color PointNonSelectColor { get; set; } = Color.FromArgb( 255, 0, 100, 255 );
+    public FormatRect PointNonSelectRect { get; set; } = new()
+    {
+        BackColor   = Color.FromArgb( 255, 0, 100, 255 ),
+        LineColor   = Color.FromArgb( 255,   0, 100, 255 ),
+        LineSize    = 1,
+    };
 
     /// <summary>
     /// イコライザ入力：サイズ
@@ -99,13 +116,13 @@ public class ConfigEqualizer
     /// イコライザ X/Y軸左上余白
     /// </summary>
     [JsonInclude]
-    public Vector2 EqulizerBodyMarginLeftTop { get; set; } = new( 50F, 20F );
+    public Point EqulizerBodyMarginLeftTop { get; set; } = new( 50F, 20F );
 
     /// <summary>
     /// イコライザ X/Y軸右下余白
     /// </summary>
     [JsonInclude]
-    public Vector2 EqulizerBodyMarginRightBottom { get; set; } = new( 20F, 50F );
+    public Point EqulizerBodyMarginRightBottom { get; set; } = new( 20F, 50F );
 
     /// <summary>
     /// ラベル表示：X軸下側余白
@@ -151,7 +168,8 @@ public class ConfigEqualizer
     /// Y軸：高さ合計
     /// </summary>
     /// <returns>Y軸高さ</returns>
-    public float GetDbTotalHeight() => DbGainSeparateHeightCount * DbGainSeparateHeightTermSize;
+    [JsonIgnore]
+    public float DbTotalHeight => DbGainSeparateHeightCount * DbGainSeparateHeightTermSize;
 
     /// <summary>
     /// Y軸：１メモリ分のDbGain
@@ -164,10 +182,47 @@ public class ConfigEqualizer
     #region Hz
 
     /// <summary>
+    /// X軸：Hzアイテム
+    /// </summary>
+    public class HzItem
+    {
+        /// <summary>
+        /// Hz値
+        /// </summary>
+        [JsonInclude]
+        public int Hz { get; set; }
+
+        /// <summary>
+        /// ラベル名称
+        /// </summary>
+        [JsonInclude]
+        public string LabelName { get; set; }
+
+        /// <summary>
+        /// 横幅
+        /// </summary>
+        [JsonInclude]
+        public int Width { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="aHz">Hz値</param>
+        /// <param name="aLabelName">ラベル名称</param>
+        /// <param name="aWidth">横幅</param>
+        public HzItem( int aHz, string aLabelName, int aWidth )
+        {
+            Hz          = aHz;
+            LabelName   = aLabelName;
+            Width       = aWidth;
+        }
+    }
+
+    /// <summary>
     /// X軸：Hzリスト
     /// </summary>
     [JsonInclude]
-    public readonly List<(float Hz, string LabelName, float Width)> HzList = new()
+    public readonly List<HzItem> HzList = new()
         {
             new(    20,  "20",   0 ),
             new(    50,  "50",  15 ),
@@ -190,9 +245,9 @@ public class ConfigEqualizer
     {
         float width = 0;
 
-        foreach ( var ( Hz, LabelName, Width ) in HzList )
+        foreach ( var item in HzList )
         {
-            width += Width;
+            width += item.Width;
         }
         return width;
     }
@@ -211,19 +266,27 @@ public class ConfigEqualizer
     /// 波形描画間隔（秒）
     /// </summary>
     [JsonInclude]
-    public float WaveFormDrawInterval { get; set; } = 1;
+    public double WaveFormDrawInterval { get; set; } = 1;
 
     /// <summary>
     /// 波形：左チャンネルペン
     /// </summary>
     [JsonInclude]
-    public Color WaveLeftColor { get; set; } = Color.FromArgb( 255, 255, 0, 0 );
+    public FormatLine WaveLeftLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
+        LineSize    = 1,
+    };
 
     /// <summary>
     /// 波形：右チャンネルペン
     /// </summary>
     [JsonInclude]
-    public Color WaveRightColor { get; set; } = Color.FromArgb( 255, 0, 255, 0 );
+    public FormatLine WaveRightLine { get; set; } = new()
+    {
+        LineColor   = Color.FromArgb( 255, 0, 255, 0 ),
+        LineSize    = 1,
+    };
 
     #endregion
 }

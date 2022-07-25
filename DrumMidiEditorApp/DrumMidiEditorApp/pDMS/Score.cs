@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pDMS;
 public class Score : DisposeBaseClass
 {
     /// <summary>
-    /// ファイルパス
+    /// ファイルパス（現状未使用）
     /// </summary>
     public GeneralPath FilePath { get; set; } = Config.System.DefaultScoreFilePath;
 

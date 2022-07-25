@@ -99,30 +99,39 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
 		Config.EventReloadScore();
 
-        var fps = new Fps();
-        fps.Set( 1, 0 );
-        fps.Set( 2, DrawSet.Fps );
-        fps.Start();
-
-        _Timer?.Dispose();
-
-        _Timer = new PeriodicTimer( TimeSpan.FromSeconds( 0.001 ) );
-
-        while ( await _Timer.WaitForNextTickAsync() )
+        try
         {
-            fps.Tick();
+            var fps = new Fps();
+            fps.Set( 1, 0 );
+            fps.Set( 2, DrawSet.Fps );
+            fps.Start();
 
-			if ( fps.TickFpsWeight( 1 ) )
-			{ 
-				_PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
-			}
+            _Timer?.Dispose();
 
-			if ( fps.TickFpsWeight( 2 ) )
-			{
-                Refresh();
+            _Timer = new PeriodicTimer( TimeSpan.FromSeconds( 0.001 ) );
 
-                fps.TickFpsWeight( 2 );
-			}
+            while ( await _Timer.WaitForNextTickAsync() )
+            {
+                fps.Tick();
+
+			    if ( fps.TickFpsWeight( 1 ) )
+			    { 
+				    _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
+			    }
+
+			    if ( fps.TickFpsWeight( 2 ) )
+			    {
+                    Refresh();
+
+                    fps.TickFpsWeight( 2 );
+			    }
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            _Timer?.Dispose();
         }
     }
 

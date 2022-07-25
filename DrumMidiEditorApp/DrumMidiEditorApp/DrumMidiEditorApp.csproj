@@ -14,7 +14,8 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="pView\pEditer\pEdit\PageInputBpm.xaml" />
+    <None Remove="pGeneralFunction\pLog\PageLog.xaml" />
+    <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pPlayer\UserControlPlayerPanel.xaml" />
   </ItemGroup>
 
@@ -29,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="pGeneralFunction\pLog\PageLog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="pGeneralFunction\pLog\WindowLog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -38,56 +43,71 @@
     <Page Update="pGeneralFunction\pUserControl\HGroupUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\PageEditerMain.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\PageMenuBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pEditer\PageNavigation.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pEditer\PageStatusBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pEditer\pEdit\PageInputBpm.xaml">
+    <Page Update="pView\PageEditerMain.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pEditer\WindowEditerMain.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pConfig\PageConfig.xaml">
+    <Page Update="pView\PageMenuBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pEdit\PageEdit.xaml">
+    <Page Update="pView\PageNavigation.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pMidiMap\PageMidiMap.xaml">
+    <Page Update="pView\PageStatusBar.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pMusic\PageMusic.xaml">
+    <Page Update="pView\pConfig\PageConfig.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pScore\PageScore.xaml">
+    <Page Update="pView\pEdit\PageEdit.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pEdit\UserControlEditerPanel.xaml">
+    <Page Update="pView\pEdit\PageInputBpm.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pMusic\UserControlEqualizer.xaml">
+    <Page Update="pView\pEdit\UserControlEditerPanel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pScore\UserControlScore.xaml">
+    <Page Update="pView\pEdit\WindowImportMidi.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\WindowImportMidi.xaml">
+    <Page Update="pView\pEdit\WindowMidiMapDialog.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\pMidiMap\WindowImportMidiMapSet.xaml">
+    <Page Update="pView\pMidiMap\PageMidiMap.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pEditer\新しいフォルダー\WindowMidiMapDialog.xaml">
+    <Page Update="pView\pMidiMap\WindowImportMidiMapSet.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pMusic\PageMusic.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pMusic\UserControlEqualizer.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pPlayer\pConfig\PageConfig.xaml">
@@ -100,10 +120,22 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="pView\pPlayer\WindowPlayer.xaml">
+    <Page Update="pView\pScore\PageScore.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pScore\UserControlScore.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\WindowEditer.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

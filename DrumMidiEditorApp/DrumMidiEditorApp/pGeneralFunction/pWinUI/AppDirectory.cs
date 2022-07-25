@@ -9,7 +9,7 @@ public static class AppDirectory
     /// <summary>
     /// アプリケーションベースディレクトリ
     /// </summary>
-    //public static string AppBaseDirectory => AppContext.BaseDirectory;
+    public static string AppBaseDirectory => AppContext.BaseDirectory;
 
     /// <summary>
     /// マイドキュメントフォルダ

@@ -7,16 +7,9 @@
     mc:Ignorable="d">
 
     <Grid>
-        <RelativePanel>
+        <ScrollViewer>
             <TextBlock x:Name = "_LogTextBox"
-                RelativePanel.Above="True"
-                RelativePanel.LeftOf="True"
-                RelativePanel.RightOf="True"
-                RelativePanel.Below="True"     
-                TextWrapping="NoWrap"
-                ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                ScrollViewer.VerticalScrollBarVisibility="Visible"
-            />
-        </RelativePanel>
+            TextWrapping="NoWrap" />
+        </ScrollViewer>
     </Grid>
 </Window>

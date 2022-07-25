@@ -107,7 +107,7 @@ public class ConfigPlayerSequence
     /// ヘッダーグループ表示
     /// </summary>
     [JsonInclude]
-    public bool HeaderGroupOn { get; set; } = false;
+    public bool HeaderGroupOn { get; set; } = true;
 
     /// <summary>
     /// ヘッダーエフェクト

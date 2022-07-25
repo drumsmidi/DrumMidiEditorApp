@@ -1,7 +1,7 @@
-﻿using System;
+﻿using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using System;
 using System.IO;
 using System.Text.Json.Serialization;
-using System.Windows.Forms;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pUtil;
 
@@ -79,7 +79,7 @@ public class GeneralPath
     /// アプレケーション起動ディレクトリパス
     /// </summary>
     [JsonIgnore]
-    public static string StartupFolderPath => ConvertPath( Application.StartupPath );
+    public static string StartupFolderPath => ConvertPath( AppDirectory.AppBaseDirectory );
 
     /// <summary>
     /// 基準ディレクトリパス

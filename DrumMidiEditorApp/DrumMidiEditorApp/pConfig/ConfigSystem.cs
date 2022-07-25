@@ -25,7 +25,7 @@ public class ConfigSystem
     public GeneralPath DefaultScoreFilePath { get; private set; } = new();
 
     /// <summary>
-    /// ScoreInfoファイルパス初期値
+    /// メモ情報初期値
     /// </summary>
     [JsonInclude]
     public string DefaultScoreInfo { get; private set; } = String.Empty;
@@ -223,14 +223,7 @@ public class ConfigSystem
     /// ドキュメントベースフォルダパス
     /// </summary>
     [JsonInclude]
-    public GeneralPath FolderDocBase { get; private set; } = new( AppDirectory.MyDocumentsDirectory + "\\");
-
-    /// <summary>
-    /// Bgmフォルダ（BGM格納）
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderBgm 
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Bgm" ) );
+    public GeneralPath FolderDocBase { get; private set; } = new( $"{AppDirectory.AppBaseDirectory}\\");
 
     /// <summary>
     /// Configフォルダ（アプリの設定ファイル格納）
@@ -240,20 +233,6 @@ public class ConfigSystem
         => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config" ) );
 
     /// <summary>
-    /// Dmsフォルダ（譜面データ格納）
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderDms
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Dms" ) );
-
-    /// <summary>
-    /// MidiMapSetフォルダ（MidiMapSetテンプレート格納）
-    /// </summary>
-    [JsonIgnore]
-    public GeneralPath FolderMidiMapSet
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "MidiMapSet" ) );
-
-    /// <summary>
     /// Modelフォルダ（機械学習用データ格納）
     /// </summary>
     [JsonIgnore]
@@ -261,11 +240,28 @@ public class ConfigSystem
         => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model" ) );
 
     /// <summary>
+    /// Bgmフォルダ（BGM格納）
+    /// </summary>
+    [JsonIgnore]
+    public string FolderBgm = "DrumMidiEditorBgm";
+
+    /// <summary>
+    /// Dmsフォルダ（譜面データ格納）
+    /// </summary>
+    [JsonIgnore]
+    public string FolderDms = "DrumMidiEditorDms";
+
+    /// <summary>
+    /// MidiMapSetフォルダ（MidiMapSetテンプレート格納）
+    /// </summary>
+    [JsonIgnore]
+    public string FolderMidiMapSet = "DrumMidiEditorMidiMapSet";
+
+    /// <summary>
     /// Exportフォルダ
     /// </summary>
     [JsonIgnore]
-    public GeneralPath FolderExport
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Video" ) );
+    public string FolderExport = "DrumMidiEditorExport";
 
     #endregion
 

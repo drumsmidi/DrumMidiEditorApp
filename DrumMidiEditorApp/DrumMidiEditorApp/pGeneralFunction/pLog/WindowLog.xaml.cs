@@ -17,7 +17,7 @@ public sealed partial class WindowLog : Window
 	/// <summary>
 	/// 本ウィンドウへのアクセス
 	/// </summary>
-    private readonly AppWindow _ThisAppWindow;
+    private readonly AppWindow _AppWindow;
 
 	/// <summary>
 	/// ログテキストリスト
@@ -31,8 +31,45 @@ public sealed partial class WindowLog : Window
     {
         InitializeComponent();
 
-        _ThisAppWindow = AppWindowHelper.GetAppWindow( this );
+		_AppWindow = AppWindowHelper.GetAppWindow( this );
+
+		// 独自のタイトルバー設定
+		// ExtendsContentIntoTitleBar = true;
+		
+		// SetTitleBar( _AppTitleBar );
+		// _AppTitleTextBlock.Text = $"Player";
+
+		//// ウィンドウ初期サイズ変更
+		//if ( (int)DrawSet.ResolutionScreenWidth > 0 && (int)DrawSet.ResolutionScreenHeight > 0 )
+		//{
+		//	AppWindowHelper.ResizeWindow
+		//		(
+		//			_AppWindow,
+		//			(int)DrawSet.ResolutionScreenWidth,
+		//			(int)DrawSet.ResolutionScreenHeight
+		//		);
+		//}
+
+		// ウィンドウを閉じれないように設定
+		_AppWindow.Closing += ( sender, args ) =>
+        {
+			args.Cancel = true;
+
+			SetDisplay( false );
+		};
     }
+
+	public void Exit()
+    {
+        try
+        {
+			_AppWindow.Destroy();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+	}
 
 	/// <summary>
 	/// ログ追加
@@ -40,20 +77,19 @@ public sealed partial class WindowLog : Window
 	/// <param name="aText">追加テキスト</param>
     public void AddLog( string aText )
     {
-		// 必要かも？
-		//if (this.DispatcherQueue.HasThreadAccess)
-		//{
-		//	StatusBlock.Text = strMessage;
-		//}
-		//else
-		//{
-		//	bool isQueued = this.DispatcherQueue.TryEnqueue(
-		//	Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal,
-		//	() => StatusBlock.Text = strMessage);
-		//}
-
 		try
 		{
+			if ( !DispatcherQueue.HasThreadAccess )
+            {
+                var isQueued = DispatcherQueue.TryEnqueue
+					(
+						Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal,
+						() => AddLog( aText )
+					);
+
+				return;
+            }
+
 			_LogTextLines.Add( aText ?? String.Empty );
 
 			// ログ出力行数上限チェック
@@ -89,13 +125,24 @@ public sealed partial class WindowLog : Window
     {
 		try
 		{
-			if ( aDisplay && !_ThisAppWindow.IsVisible )
+			if ( !DispatcherQueue.HasThreadAccess )
             {
-				_ThisAppWindow.Show();
+                var isQueued = DispatcherQueue.TryEnqueue
+					(
+						Microsoft.UI.Dispatching.DispatcherQueuePriority.Normal,
+						() => SetDisplay( aDisplay )
+					);
+
+				return;
+            }
+
+            if ( aDisplay && !_AppWindow.IsVisible )
+            {
+				_AppWindow.Show();
 			}
-			else if ( !aDisplay && _ThisAppWindow.IsVisible )
+			else if ( !aDisplay && _AppWindow.IsVisible )
             {
-				_ThisAppWindow.Hide();
+				_AppWindow.Hide();
 			}
 		}
 		catch ( Exception e )

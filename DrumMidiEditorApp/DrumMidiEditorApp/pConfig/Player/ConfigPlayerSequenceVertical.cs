@@ -1,9 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.Graphics.Canvas.Text;
+using System.Text.Json.Serialization;
+using Windows.UI;
 
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using Microsoft.Graphics.Canvas.Text;
-using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -107,7 +107,7 @@ public class ConfigPlayerSequenceVertical
     /// ヘッダーグループ表示
     /// </summary>
     [JsonInclude]
-    public bool HeaderGroupOn { get; set; } = false;
+    public bool HeaderGroupOn { get; set; } = true;
 
     /// <summary>
     /// ヘッダーエフェクト

@@ -2,6 +2,7 @@
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Hosting;
 using WinRT.Interop;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
@@ -11,17 +12,35 @@ namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 /// </summary>
 public static class AppWindowHelper
 {
-    public static AppWindow CreateAppWindow()
-        => AppWindow.Create();
+    public static AppWindow CreateAppWindow( Window aWindow )
+    {
+        var op = OverlappedPresenter.Create();
+        op.IsMaximizable    = true;
+        op.IsMinimizable    = true;
+        op.IsResizable      = true;
+        op.IsAlwaysOnTop    = true;
+        op.IsModal          = true;
+        op.SetBorderAndTitleBar( true, true );
+
+        var hwnd = WindowNative.GetWindowHandle( aWindow );
+
+        var windowId = Win32Interop.GetWindowIdFromWindow( hwnd );
+
+        var appwindow = AppWindow.Create( op, windowId );
+
+        //ElementCompositionPreview.SetElementChildVisual()
+
+        return appwindow;
+    }
 
     /// <summary>
     /// AppWindow取得
     /// </summary>
     /// <param name="window">Windowインスタンス</param>
     /// <returns>AppWindow</returns>
-    public static AppWindow GetAppWindow( this Window window )
+    public static AppWindow GetAppWindow( this Window aWindow )
     {
-        var hwnd = WindowNative.GetWindowHandle( window );
+        var hwnd = WindowNative.GetWindowHandle( aWindow );
         return GetAppWindowFromWindowHandle( hwnd );
     }
 

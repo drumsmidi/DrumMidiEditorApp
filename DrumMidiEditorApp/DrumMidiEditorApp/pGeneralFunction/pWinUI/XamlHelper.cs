@@ -10,7 +10,8 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using Microsoft.Graphics.Canvas;
 using Microsoft.UI.Windowing;
-using DrumMidiEditorApp.pView.pEditer.pEdit;
+using DrumMidiEditorApp.pView.pEditer;
+using WinRT.Interop;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -37,7 +38,7 @@ public static class XamlHelper
         }
     }
 
-    public async static void MessageDialogYesNo( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aYesButtonText, string aNoButtonText, Action aAction )
+    public async static void MessageDialogYesNoAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aYesButtonText, string aNoButtonText, Action aAction )
     {
         var cd = new ContentDialog
         {
@@ -60,10 +61,10 @@ public static class XamlHelper
         => InputDialogOkCancelAsync
             (
                 aContentXamlRoot,
-                ResourcesHelper.GetString( "MessageDialog/Input" ),
+                ResourcesHelper.GetString( "Dialog/Input" ),
                 aPageContent,
-                ResourcesHelper.GetString( "MessageDialog/Ok" ),
-                ResourcesHelper.GetString( "MessageDialog/Cancel" ),
+                ResourcesHelper.GetString( "Dialog/Ok" ),
+                ResourcesHelper.GetString( "Dialog/Cancel" ),
                 aAction
             );
 
@@ -90,12 +91,19 @@ public static class XamlHelper
     /// <summary>
     /// ファイルを開くダイアログ共通処理
     /// </summary>
+    /// <param name="aOwnerWindow">親ウィンドウ</param>
     /// <param name="aFileTypeFilters">フィルター設定</param>
     /// <param name="aOpenFilePath">選択したファイルパス名（戻り値）</param>
     /// <param name="aInitialLocation">初期ロケーション</param>
+    /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void OpenShowDialog( List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation = PickerLocationId.ComputerFolder )
+    public async static void OpenShowDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier )
     {
+        if ( aOwnerWindow == null )
+        {
+            return;
+        }
+
         try
         {
             // 参考URL：ピッカーでファイルやフォルダーを開く
@@ -106,7 +114,10 @@ public static class XamlHelper
                 // 表示モード：リスト
                 ViewMode = PickerViewMode.List,
                 // 初期ディレクトリ（初回のみ）
-                SuggestedStartLocation = PickerLocationId.ComputerFolder,   
+                SuggestedStartLocation = aInitialLocation,
+                // ピッカー識別子（前回開いたフォルダ情報などを共有する際に使用）
+                // https://docs.microsoft.com/ja-JP/uwp/api/windows.storage.pickers.fileopenpicker.settingsidentifier?view=winrt-22621#windows-storage-pickers-fileopenpicker-settingsidentifier
+                SettingsIdentifier = aSettingsIdentifier,
             };
 
             // ファイルタイプのフィルタ設定
@@ -116,6 +127,12 @@ public static class XamlHelper
             {
                 picker.FileTypeFilter.Add( "*" );
             }
+
+            // WinUI3 だと手間が増えてる・・・
+            // https://docs.microsoft.com/ja-jp/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/winui3
+            // https://docs.microsoft.com/ja-JP/windows/apps/develop/ui-input/display-ui-objects
+
+            InitializeWithWindow.Initialize( picker, WindowNative.GetWindowHandle( aOwnerWindow ) );
 
             // ファイル選択
             var file = await picker.PickSingleFileAsync();

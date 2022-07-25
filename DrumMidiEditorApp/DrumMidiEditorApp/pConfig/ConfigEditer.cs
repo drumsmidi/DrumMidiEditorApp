@@ -1,11 +1,11 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Windows.Foundation;
 using Windows.UI;
 
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -135,13 +135,13 @@ public class ConfigEditer
     /// 初期値：フォントファミリア（共通）
     /// </summary>
     [JsonIgnore]
-    private static string _BassFontFamily = "system-ui";
+    private static readonly string _BassFontFamily = "system-ui";
 
     /// <summary>
     /// 初期値：フォントサイズ（共通）
     /// </summary>
     [JsonIgnore]
-    private static float _BassFontSize = 14F;
+    private static readonly float _BassFontSize = 14F;
 
     /// <summary>
     /// 初期値：ラインサイズ（共通）
@@ -153,13 +153,13 @@ public class ConfigEditer
     /// 初期値：ラインサイズ（共通）
     /// </summary>
     [JsonIgnore]
-    private static float _BassLineSize = 1F;
+    private static readonly float _BassLineSize = 1F;
 
     /// <summary>
     /// 初期値：ライン高さ（共通）
     /// </summary>
     [JsonIgnore]
-    private static float _BassLineHeight = 16F;
+    private static readonly float _BassLineHeight = 16F;
 
     #endregion
 
