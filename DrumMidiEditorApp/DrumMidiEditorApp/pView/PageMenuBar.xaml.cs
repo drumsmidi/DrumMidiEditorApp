@@ -665,16 +665,16 @@ public sealed partial class PageMenuBar : Page
     {
         try
         {
-#if DEBUG
-			Log.Info( $"{ConfigPlayer.DisplayPlayer}={_PlayerDisplayToggleButton.IsChecked}" );
-#endif
-
 			if ( _PlayerDisplayToggleButton.IsChecked ?? false )
             {
+				ConfigPlayer.PlayerLayoutModeSelect = ConfigPlayer.PlayerLayoutMode.Bottom;
             }
 			else
             {
+				ConfigPlayer.PlayerLayoutModeSelect = ConfigPlayer.PlayerLayoutMode.Right;
 			}
+
+			ControlAccess.PageEditerMain?.UpdateGridLayout();
 		}
 		catch ( Exception e )
 		{

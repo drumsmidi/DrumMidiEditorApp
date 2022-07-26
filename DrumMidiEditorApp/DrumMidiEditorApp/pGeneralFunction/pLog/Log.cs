@@ -1,15 +1,7 @@
-﻿using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Hosting;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using Windows.ApplicationModel.Core;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pLog;
 
@@ -106,8 +98,6 @@ public static class Log
         {
             Callback( 2, aText );
         }
-
-        DisplayLogForm( true );
     }
 
     /// <summary>
@@ -146,8 +136,6 @@ public static class Log
     private static void SetLog( string aText )
     {
         Trace.WriteLine( aText );
-
-        AddLog( aText );
     }
 
     /// <summary>
@@ -205,82 +193,6 @@ public static class Log
             callback( aLevel, aText );
         }
     }
-
-    #endregion
-
-    #region ログ出力フォーム
-
-    /// <summary>
-    /// ログ表示用ウィンドウ
-    /// </summary>
-    private static WindowLog? _WindowLog = null;
-
-    //private static AppWindow? _AppWindowLog = null;
-
-    /// <summary>
-    /// ログ表示ウィンドウ作成
-    /// </summary>
-    //[Conditional("RELEASE")]
-    public static void CreateWindowLog( Window aOwnerWindow )
-    {
-        if ( _WindowLog == null )
-        {
-            //var newView = CoreApplication.CreateNewView();
-
-            //int newViewId = 0;
-
-            //await newView.Dispatcher.RunAsync
-            //    (
-            //        CoreDispatcherPriority.Normal, 
-            //        () =>
-            //        {
-            //            var frame = new Frame();
-            //            frame.Navigate( typeof( PageLog ), null);
-
-            //            Window.Current.Content = frame;
-
-            //            // 後で表示するには、ウィンドウをアクティブにする必要があります
-            //            Window.Current.Activate();
-
-            //            newViewId = ApplicationView.GetForCurrentView().Id;
-            //        }
-            //    );
-
-            //bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync( newViewId );
-
-            //_WindowLog = new();
-            //_WindowLog.Activate();
-
-            //_AppWindowLog = AppWindowHelper.CreateAppWindow( aOwnerWindow );
-            //ElementCompositionPreview.SetAppWindowContent( appWindow, appWindowContentFrame );
-        }
-    }
-
-    /// <summary>
-    /// ログ表示ウィンドウ破棄
-    /// </summary>
-    //[Conditional("RELEASE")]
-    public static void DestroyWindowLog()
-    {
-        _WindowLog?.Exit();
-        _WindowLog = null;
-    }
-
-    /// <summary>
-    /// ログ出力
-    /// </summary>
-    /// <param name="aText">出力内容</param>
-    //[Conditional("RELEASE")]
-    private static void AddLog( string aText ) 
-        => _WindowLog?.AddLog( aText );
-
-    /// <summary>
-    /// LogFormの表示切替
-    /// </summary>
-    /// <param name="aDisplay">表示設定</param>
-    //[Conditional("RELEASE")]
-    public static void DisplayLogForm( bool aDisplay ) 
-        => _WindowLog?.SetDisplay( aDisplay );
 
     #endregion
 }

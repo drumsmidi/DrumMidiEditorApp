@@ -8,5 +8,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+
+        <InfoBar x:Name="_InfoBar"
+            IsOpen="False"
+            IsClosable="True" />
+
+        <ProgressBar x:Name="_ProgressBar"
+            Value="{x:Bind ConfigSystem.ProgressBarValue, Mode=OneWay}" />
+
     </Grid>
 </Page>

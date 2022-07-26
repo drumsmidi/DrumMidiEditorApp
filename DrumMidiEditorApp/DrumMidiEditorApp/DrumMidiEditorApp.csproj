@@ -14,7 +14,6 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="pGeneralFunction\pLog\PageLog.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pPlayer\UserControlPlayerPanel.xaml" />
   </ItemGroup>
@@ -30,13 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="pGeneralFunction\pLog\PageLog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pGeneralFunction\pLog\WindowLog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Update="pGeneralFunction\pUserControl\GroupBoxUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

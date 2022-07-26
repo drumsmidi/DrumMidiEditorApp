@@ -48,6 +48,8 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         InitializeComponent();
 
+        ControlAccess.UCEqualizer = this;
+
         // イコライザ描画範囲初期化
         UpdateRange();
     }

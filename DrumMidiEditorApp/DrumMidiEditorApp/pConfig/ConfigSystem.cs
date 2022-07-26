@@ -215,6 +215,12 @@ public class ConfigSystem
     [JsonIgnore]
     public int NoteCount => MeasureCount * MeasureNoteNumber;
 
+    /// <summary>
+    /// 進捗バー
+    /// </summary>
+    [JsonIgnore]
+    public int ProgressBarValue { get; set; } = 0;
+
     #endregion
 
     #region Folder Path

@@ -173,7 +173,7 @@
             <StackPanel Orientation="Horizontal">
 
                 <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="ButtonPlayerDisplay" Style="{StaticResource ToggleButtonStyle}"
-                    IsChecked="{x:Bind ConfigPlayer.DisplayPlayer, Mode=TwoWay}"
+                    IsChecked="True"
                     Checked="PlayerDisplayToggleButton_ChangeChecked"
                     Unchecked="PlayerDisplayToggleButton_ChangeChecked" />
                     

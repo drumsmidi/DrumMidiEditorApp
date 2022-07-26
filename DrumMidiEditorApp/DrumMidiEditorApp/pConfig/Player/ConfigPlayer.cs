@@ -4,6 +4,8 @@ using Windows.Foundation;
 using Windows.UI;
 
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using System;
+using Microsoft.UI.Xaml;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -36,6 +38,28 @@ public class ConfigPlayer
     /// </summary>
     [JsonInclude]
     public PlayerSurfaceMode PlayerSurfaceModeSelect = PlayerSurfaceMode.Sequence;
+
+
+    /// <summary>
+    /// プレイヤーレイアウトモード
+    /// </summary>
+    public enum PlayerLayoutMode : int
+    {
+        Right = 0,
+        Bottom,
+    }
+
+    /// <summary>
+    /// レイヤー描画レイアウト：
+    /// </summary>
+    [JsonInclude]
+    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.Bottom;
+
+    /// <summary>
+    /// プレイヤー描画レイアウト：横幅
+    /// </summary>
+    [JsonIgnore]
+    public GridLength PlayerLayoutSize { get; set; } = new( 300 );
 
     #endregion
 
@@ -90,12 +114,6 @@ public class ConfigPlayer
     /// </summary>
     [JsonIgnore]
     public bool DisplayPlayerConfig { get; set; } = false;
-
-    /// <summary>
-    /// Player表示フラグ
-    /// </summary>
-    [JsonIgnore]
-    public bool DisplayPlayer { get; set; } = false;
 
     /// <summary>
     /// スコア更新フラグ

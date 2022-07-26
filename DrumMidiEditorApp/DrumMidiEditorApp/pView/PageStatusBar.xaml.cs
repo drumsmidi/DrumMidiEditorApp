@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using System;
+
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using Windows.UI;
 
 namespace DrumMidiEditorApp.pView;
 
 public sealed partial class PageStatusBar : Page
 {
+	/// <summary>
+	/// システム設定
+	/// </summary>
+	private ConfigSystem ConfigSystem => Config.System;
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -27,10 +22,10 @@ public sealed partial class PageStatusBar : Page
         InitializeComponent();
 
 		// ログ出力の通知を受け取る
-		//Log.LogOutputCallback.Enqueue( SetStatusText );
+		Log.LogOutputCallback.Enqueue( SetStatusText );
 	}
 
-	#region StatusLabel
+	#region InfoBar
 
 	/// <summary>
 	/// ステータスバーへのログ出力
@@ -39,25 +34,14 @@ public sealed partial class PageStatusBar : Page
 	/// <param name="aText">出力内容</param>
 	private void SetStatusText( int aLevel, string aText )
     {
-		switch ( aLevel )
-        {
-			case 0: SetStatusText( aText, Color.FromArgb( 255,   0,   0, 255 ) ); break;
-			case 1: SetStatusText( aText, Color.FromArgb( 255,   0, 255,   0 ) ); break;
-   			case 2: SetStatusText( aText, Color.FromArgb( 255, 255,   0,   0 ) ); break;
-		}
-    }
-
-	/// <summary>
-	/// ステータスバーテキスト出力
-	/// </summary>
-	/// <param name="aText">出力内容</param>
-	/// <param name="aColor">文字色</param>
-	private void SetStatusText( string aText, Color aColor )
-    {
 		try
 		{
-			//MainToolStripStatusLabel.Text		= aText ?? String.Empty ;
-			//MainToolStripStatusLabel.ForeColor	= aColor;
+			switch ( aLevel )
+			{
+				case 0: SetStatusText( "", aText, InfoBarSeverity.Informational ); break;
+				case 1: SetStatusText( "", aText, InfoBarSeverity.Warning		); break;
+   				case 2: SetStatusText( "", aText, InfoBarSeverity.Error			); break;
+			}
 		}
 		catch ( Exception e )
 		{
@@ -65,26 +49,37 @@ public sealed partial class PageStatusBar : Page
 		}
     }
 
-    #endregion
- 
-    #region LogView
-		
 	/// <summary>
-	/// ログフォームの表示切替
+	/// ステータスバーテキスト出力
 	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-    private void LogToolStripSplitButton_ButtonClick( object sender, EventArgs ev )
+	/// <param name="aTitle">タイトル</param>
+	/// <param name="aContent">出力内容</param>
+	/// <param name="aSeverity"></param>
+	private void SetStatusText( string aTitle, string aContent, InfoBarSeverity aSeverity )
     {
-        try
-        {
-			//Log.ChangeDisplayLogForm();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-	}
+		try
+		{
+			if ( !DispatcherQueue.HasThreadAccess )
+            {
+                DispatcherQueue.TryEnqueue
+                    (
+                        DispatcherQueuePriority.Normal,
+                        () => SetStatusText( aTitle, aContent, aSeverity )
+                    );
+
+				return;
+            }
+
+			_InfoBar.Title		= aTitle;
+			_InfoBar.Content	= aContent;
+			_InfoBar.Severity	= aSeverity;
+			_InfoBar.IsOpen		= true;
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
 
     #endregion
 }

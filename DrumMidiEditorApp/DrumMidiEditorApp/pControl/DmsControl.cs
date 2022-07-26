@@ -9,6 +9,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pControl;
 
@@ -634,10 +635,8 @@ public static class DmsControl
 				_BgmAudio = AudioFactory.CreateBgm( DMS.SCORE.BgmFilePath, DMS.SCORE.BgmVolume );
 			}
 
-			// TODO: イコライザ設定が必要
-
 			// ＢＧＭへのイコライザ適用
-			//DMS.EditerForm?.MusicCtl.ApplyEqulizer();
+			ControlAccess.UCEqualizer?.ApplyEqulizer();
 		}
 		catch ( Exception e )
 		{
