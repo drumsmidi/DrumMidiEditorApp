@@ -149,8 +149,14 @@
     <value>プレイヤー
 表示</value>
   </data>
+  <data name="ButtonRedo.Content" xml:space="preserve">
+    <value>Redo</value>
+  </data>
   <data name="ButtonStop.Content" xml:space="preserve">
     <value>停止</value>
+  </data>
+  <data name="ButtonUndo.Content" xml:space="preserve">
+    <value>Undo</value>
   </data>
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
@@ -236,6 +242,9 @@
   </data>
   <data name="InputNoteWidth.Header" xml:space="preserve">
     <value>ノート横幅</value>
+  </data>
+  <data name="InputPlayerDisplay.Header" xml:space="preserve">
+    <value>プレイヤー表示</value>
   </data>
   <data name="InputVideoCodec.Header" xml:space="preserve">
     <value>ビデオエンコード</value>

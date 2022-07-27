@@ -45,15 +45,23 @@ public class ConfigPlayer
     /// </summary>
     public enum PlayerLayoutMode : int
     {
-        Right = 0,
+        None = 0,
+        Right,
         Bottom,
     }
 
     /// <summary>
-    /// レイヤー描画レイアウト：
+    /// レイヤー描画レイアウトモード
     /// </summary>
     [JsonInclude]
-    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.Right;
+    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.None;
+
+    /// <summary>
+    /// レイヤー描画レイアウトモード（テキスト取得）
+    /// </summary>
+    [JsonIgnore]
+    public string PlayerLayoutModeSelectText
+        => Enum.GetName<PlayerLayoutMode>( PlayerLayoutModeSelect ) ?? "None" ;
 
     /// <summary>
     /// プレイヤー描画レイアウト：横幅

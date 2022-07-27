@@ -479,7 +479,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="aPoint">イコライザ入力情報</param>
     private void SetEqualizerInfo( Point aGainInfo )
     {
-        _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )},db={CalcGain( aGainInfo.Y )}";
+        _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )}   db={CalcGain( aGainInfo.Y )}";
     }
 
     /// <summary>

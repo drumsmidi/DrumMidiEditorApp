@@ -13,13 +13,12 @@
     </Page.Resources>
 
     <Grid>
-        <RelativePanel>
-            <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm" Style="{StaticResource NumberBoxStyle}"
-                Value="{x:Bind Bpm, Mode=TwoWay}" 
-                Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
-                Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
-                SmallChange="1" 
-                ValueChanged="BpmNumberBox_ValueChanged" />
-        </RelativePanel>
+        <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm" Style="{StaticResource NumberBoxStyle}"
+            Value="{x:Bind Bpm, Mode=TwoWay}" 
+            Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+            Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+            SmallChange="1" 
+            LargeChange="10"                       
+            ValueChanged="BpmNumberBox_ValueChanged" />
     </Grid>
 </Page>

@@ -16,6 +16,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using System.Collections.ObjectModel;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -62,7 +63,11 @@ public sealed partial class PageEdit : Page
 			_MeasureNoList.Add( new( measure_no.ToString().PadLeft( keta, '0' ) ) );
 		}
 
-
+		// NumberBox の入力書式設定
+		_NoteHeightNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_NoteWidthNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
     }
 
     private void MeasureNoGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -74,6 +79,75 @@ public sealed partial class PageEdit : Page
     {
 
     }
+
+	/// <summary>
+	/// 共通：数値変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #region Resume
+
+    /// <summary>
+    /// Undo実行
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void UndoButton_Click( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+			Config.EventEditerUndo();
+
+			Refresh();
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
+
+	/// <summary>
+	/// Redo実行
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void RedoButton_Click( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+			Config.EventEditerRedo();
+
+			Refresh();
+		}
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// EditerPanel描画更新
+    /// </summary>
+    public void Refresh() => _EditerPanel.Refresh();
+
 }
 
 
@@ -183,10 +257,6 @@ public EditerControl()
 	ResumeLayout( false );
     }
 
-/// <summary>
-/// EditerPanel描画更新
-/// </summary>
-public void RefreshScreen() => EditerPanel.Invalidate( true );
 
 #region SheetMove
 
@@ -485,79 +555,6 @@ private void VolumeRadioButton_CheckedChanged( object sender, EventArgs ev )
 }
 
 #endregion
-
-#region Resume
-
-/// <summary>
-/// Undo実行
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-    private void UndoButton_Click( object sender, EventArgs ev )
-    {
-	try
-	{
-            Config.EventEditerUndo();
-
-		RefreshScreen();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// Redo実行
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void RedoButton_Click( object sender, EventArgs ev )
-    {
-	try
-	{
-		Config.EventEditerRedo();
-
-		RefreshScreen();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-#endregion
-
-/// <summary>
-/// スクロールバー最大値更新
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-    private void EditerControl_Enter( object sender, EventArgs ev )
-    {
-	try
-	{
-		UpdateScrollBar();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// スクロールバー最大値更新
-/// </summary>
-    private void UpdateScrollBar()
-    {
-	// Vertical scroll bar
-	EditVScrollBar.Maximum = DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount - 1 >= 0
-		? DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount - 1 : 0 ;
-
-	// Horizontal scroll bar
-	EditHScrollBar.Maximum = Config.System.NoteCount - 1 >= 0 
-		? Config.System.NoteCount - 1 : 0;
-    }
 
 #region Edit
 
@@ -894,6 +891,3 @@ private void ScaleSensitivityTrackBar_Scroll( object sender, EventArgs ex )
 #endregion
 
 #endif
-
-
-

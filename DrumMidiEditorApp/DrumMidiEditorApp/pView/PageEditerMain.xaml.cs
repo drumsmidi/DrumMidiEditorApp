@@ -36,6 +36,12 @@ public sealed partial class PageEditerMain : Page
 
             switch ( ConfigPlayer.PlayerLayoutModeSelect )
             {
+                case ConfigPlayer.PlayerLayoutMode.None:
+                    row     = 4;
+                    rowspan = 2;
+                    col     = 0;
+                    colspan = 2;
+                    break;
                 case ConfigPlayer.PlayerLayoutMode.Right:
                     row     = 1;
                     rowspan = 2;

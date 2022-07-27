@@ -74,7 +74,7 @@
             <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0">
+        <Grid Grid.Column="0">
             <StackPanel Orientation="Horizontal">
 
                 <MenuBar>
@@ -98,9 +98,9 @@
                 </MenuBar>
 
             </StackPanel>
-        </Border>
+        </Grid>
 
-        <Border Grid.Column="1">
+        <Grid Grid.Column="1">
             <StackPanel Orientation="Horizontal">
 
                 <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo" Style="{StaticResource ComboBoxStyle}"
@@ -109,9 +109,9 @@
                     SelectionChanged="ChannelNoComboBox_SelectionChanged" />
                 
             </StackPanel>
-        </Border>
+        </Grid>
 
-        <Border Grid.Column="2">
+        <Grid Grid.Column="2">
             <StackPanel Orientation="Horizontal">
 
                 <ToggleSwitch x:Name="_BgmToggleSwitch" x:Uid="InputBgmSwitch" Style="{StaticResource ToggleSwitchStyle}" 
@@ -121,9 +121,9 @@
                     IsOn="{x:Bind ConfigMedia.NotePlayOn, Mode=TwoWay}" />
                     
             </StackPanel>
-        </Border>
+        </Grid>
 
-        <Border Grid.Column="3">
+        <Grid Grid.Column="3">
             <StackPanel Orientation="Horizontal">
                     
                 <Button x:Name="_PlayButton" x:Uid="ButtonPlay" Style="{StaticResource ButtonStyle}"
@@ -136,9 +136,9 @@
                     Click="LoopPlayButton_Click" />
 
             </StackPanel>
-        </Border>
+        </Grid>
 
-        <Border Grid.Column="4">
+        <Grid Grid.Column="4">
             <StackPanel Orientation="Horizontal">
                 
                 <NumberBox x:Name="_LoopPlayMeasureStartNumberBox" x:Uid="InputLoopPlayMeasureStart" Style="{StaticResource NumberBoxStyle}"
@@ -167,18 +167,24 @@
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
                     
             </StackPanel>
-        </Border>
+        </Grid>
 
-        <Border Grid.Column="5">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Column="5">
 
-                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="ButtonPlayerDisplay" Style="{StaticResource ToggleButtonStyle}"
-                    IsChecked="True"
-                    Checked="PlayerDisplayToggleButton_ChangeChecked"
-                    Unchecked="PlayerDisplayToggleButton_ChangeChecked" />
-                    
-            </StackPanel>
-        </Border>
+            <ComboBox x:Name="_PlayerDisplayComboBox" x:Uid="InputPlayerDisplay" Style="{StaticResource ComboBoxStyle}"
+                ItemsSource="{x:Bind _PlayerDisplayList, Mode=OneTime}"
+                SelectedValue="{x:Bind ConfigPlayer.PlayerLayoutModeSelectText}"
+                SelectionChanged="PlayerDisplayComboBox_SelectionChanged">
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <TextBlock Text="{x:Bind}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                
+            </ComboBox>
+
+        </Grid>
             
     </Grid>
 </Page>

@@ -21,6 +21,7 @@ using DrumMidiEditorApp.pDMS;
 using Windows.ApplicationModel.Resources;
 using DrumMidiEditorApp.pIO;
 using Windows.Storage.Pickers;
+using System.Collections.ObjectModel;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -34,12 +35,23 @@ public sealed partial class PageMenuBar : Page
 
 	private Score Score => DMS.SCORE;
 
+	private ObservableCollection<string> _PlayerDisplayList = new();
+
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	public PageMenuBar()
     {
         InitializeComponent();
+
+		// プレイヤー表示タイプリスト
+		foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerLayoutMode>() )
+		{
+			if ( name != null )
+			{ 
+				_PlayerDisplayList.Add( name );
+			}
+		}
 
 		// NumberBox の入力書式設定
 		_LoopPlayMeasureStartNumberBox.NumberFormatter 
@@ -665,18 +677,16 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void PlayerDisplayToggleButton_ChangeChecked( object sender, RoutedEventArgs args )
-    {
+	private void PlayerDisplayComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+	{
         try
         {
-			if ( _PlayerDisplayToggleButton.IsChecked ?? false )
-            {
-				ConfigPlayer.PlayerLayoutModeSelect = ConfigPlayer.PlayerLayoutMode.Bottom;
-            }
-			else
-            {
-				ConfigPlayer.PlayerLayoutModeSelect = ConfigPlayer.PlayerLayoutMode.Right;
-			}
+			var tag = args.AddedItems[ 0 ].ToString();
+
+			var value = Enum.GetValues<ConfigPlayer.PlayerLayoutMode>()
+							.FirstOrDefault( e => Enum.GetName<ConfigPlayer.PlayerLayoutMode>( e ) == tag );
+
+			ConfigPlayer.PlayerLayoutModeSelect = value;
 
 			ControlAccess.PageEditerMain?.UpdateGridLayout();
 		}
@@ -684,7 +694,7 @@ public sealed partial class PageMenuBar : Page
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-    }
+	}
 
-	#endregion
+    #endregion
 }
