@@ -113,8 +113,10 @@ public sealed partial class UserControlEqualizer : UserControl
 	{
 		try
 		{
+            var ischecked = ( sender as AppBarToggleButton )?.IsChecked ?? false ;
+
             // 波形描画用のタイマー設定
-            if ( DrawSet.WaveFormOn )
+            if ( ischecked )
             {
                 StartWaveFormAsync();
             }
@@ -154,6 +156,8 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         _Timer?.Dispose();
         _Timer = null;
+
+        Refresh();
     }
 
     #endregion
@@ -440,6 +444,11 @@ public sealed partial class UserControlEqualizer : UserControl
             }
         }
 
+        if ( aAddFlag )
+        {
+            SetEqualizerInfo( aMousePos );
+        }
+
         UpdateEqualizer();
     }
 
@@ -455,9 +464,22 @@ public sealed partial class UserControlEqualizer : UserControl
             return;
         }
 
-        _GainCenters[ aGearIndex ] = XamlHelper.AdjustRangeIn( aMousePos, _EqulizerBodyRange );
+        var p = XamlHelper.AdjustRangeIn( aMousePos, _EqulizerBodyRange );
+
+        _GainCenters[ aGearIndex ] = p;
+
+        SetEqualizerInfo( p );
 
         UpdateEqualizer();
+    }
+
+    /// <summary>
+    /// イコライザ入力情報ログ表示
+    /// </summary>
+    /// <param name="aPoint">イコライザ入力情報</param>
+    private void SetEqualizerInfo( Point aGainInfo )
+    {
+        _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )},db={CalcGain( aGainInfo.Y )}";
     }
 
     /// <summary>
@@ -656,7 +678,7 @@ public sealed partial class UserControlEqualizer : UserControl
                         var format = pen[ k % bgm.Channels ];
 
                         r.X         = body.X - k % bgm.Channels * format.LineSize;
-                        r.Height    = fft[k] * body.Height;
+                        r.Height    = fft[ k ] * body.Height;
                         r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
 
                         var hz_b    = 0d;
@@ -733,7 +755,7 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         try
         {
-            // Win2D アンロード
+            // Win2D アンロード（ページキャッシュしているので処理しない）
             //_EqualizerCanvas.RemoveFromVisualTree();
             //_EqualizerCanvas = null;
         }

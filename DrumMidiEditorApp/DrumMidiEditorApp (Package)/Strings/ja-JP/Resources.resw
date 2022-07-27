@@ -132,6 +132,9 @@
   <data name="ButtonEqualizerWaveForm.Content" xml:space="preserve">
     <value>波形</value>
   </data>
+  <data name="ButtonFileReference.Content" xml:space="preserve">
+    <value>参照</value>
+  </data>
   <data name="ButtonLoopPlay.Content" xml:space="preserve">
     <value>ループ
 再生</value>
@@ -186,8 +189,17 @@
   <data name="HGroupVideoSetting.Header" xml:space="preserve">
     <value>ビデオ設定</value>
   </data>
+  <data name="InputBgmFilePath.Header" xml:space="preserve">
+    <value>BGMファイルパス</value>
+  </data>
+  <data name="InputBgmPlaybackStartPosition.Header" xml:space="preserve">
+    <value>BGM再生開始位置（秒）</value>
+  </data>
   <data name="InputBgmSwitch.Header" xml:space="preserve">
     <value>Bgm</value>
+  </data>
+  <data name="InputBgmVolume.Header" xml:space="preserve">
+    <value>BGM音量</value>
   </data>
   <data name="InputBpm.Header" xml:space="preserve">
     <value>BPM</value>
@@ -215,6 +227,9 @@
   </data>
   <data name="InputMidiOutSwitch.Header" xml:space="preserve">
     <value>Midi-Out</value>
+  </data>
+  <data name="InputMusicInfoMemo.Header" xml:space="preserve">
+    <value>自由入力欄</value>
   </data>
   <data name="InputNoteHeight.Header" xml:space="preserve">
     <value>ノート高さ</value>
@@ -275,17 +290,5 @@
   </data>
   <data name="MenuItemSaveAs.Text" xml:space="preserve">
     <value>SaveAs</value>
-  </data>
-  <data name="MusicInfoBgmFilePathTextBox.Header" xml:space="preserve">
-    <value>BGMファイルパス (ダブルクリックでファイル選択ダイアログ表示）</value>
-  </data>
-  <data name="MusicInfoBgmPlaybackStartPositionNumberBox.Header" xml:space="preserve">
-    <value>BGM再生開始位置（ミリ秒）</value>
-  </data>
-  <data name="MusicInfoBgmVolumeNumberBox.Header" xml:space="preserve">
-    <value>BGM音量</value>
-  </data>
-  <data name="MusicInfoMemoTextBox.Header" xml:space="preserve">
-    <value>自由入力欄</value>
   </data>
 </root>

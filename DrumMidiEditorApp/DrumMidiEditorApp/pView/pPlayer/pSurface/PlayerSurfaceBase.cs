@@ -6,7 +6,7 @@ using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
 using Windows.Foundation;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 /// <summary>
 /// プレイヤーサーフェイス

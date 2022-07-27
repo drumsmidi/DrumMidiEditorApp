@@ -19,7 +19,7 @@ using DrumMidiEditorApp.pGeneralFunction.pDirectX;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
-namespace DrumMidiEditorApp.pView.pPlayer.nPlay.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 public sealed partial class PagePlayer : Page
 {

@@ -1,29 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using System;
+using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class PageMusic : Page
 {
 	/// <summary>
@@ -37,6 +23,11 @@ public sealed partial class PageMusic : Page
 	private ConfigMedia ConfigMedia => Config.Media;
 
 	/// <summary>
+	/// 設定
+	/// </summary>
+	private ConfigSystem ConfigSystem => Config.System;
+
+	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	public PageMusic()
@@ -47,7 +38,7 @@ public sealed partial class PageMusic : Page
 		_MusicInfoBpmNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 2, 1 );
 		_MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter 
-			= XamlHelper.CreateNumberFormatter( 1, 0, 100 );
+			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
 		_MusicInfoBgmVolumeNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 10 );
 	}
@@ -57,39 +48,33 @@ public sealed partial class PageMusic : Page
 	/// <summary>
 	/// BGM再読込
 	/// </summary>
-	private static void UpdateMusicInfo() { } // => Config.EventReloadBgm();
+	private static void UpdateMusicInfo() => Config.EventReloadBgm();
 
 	/// <summary>
 	/// BGMファイルの選択
 	/// </summary>
 	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void MusicInfoBgmFilePathButton_Click( object sender, RoutedEventArgs args )
+	/// <param name="args"></param>
+	private void _MusicInfoBgmFilePathButton_Click( object sender, RoutedEventArgs args )
 	{
 		try
 		{
-            //DMS.PlayerForm?.TemporaryHide();
-
-			//var filepath = new GeneralPath();
-
-   //         XamlUtil.OpenShowDialog( Config.System.SupportBgm, filepath );
-
-			//if ( !filepath.IsExistFile )
-			//{
-			//	return;
-			//}
-
-			//_MusicInfoBgmFilePathTextBox.Text = filepath.RelativeFilePath ?? String.Empty ;
-
-			//_MusicInfo.BgmFilePath = new( filepath );
+			XamlHelper.OpenShowDialogAsync
+				(
+					App.MainWindow,
+					ConfigSystem.SupportBgm,
+					MusicInfo.BgmFilePath,
+					PickerLocationId.MusicLibrary,
+					ConfigSystem.FolderBgm,
+					() =>
+                    {
+						_MusicInfoBgmFilePathTextBox.Text = MusicInfo.BgmFilePath.AbsoulteFilePath;
+					}
+				);
 		}
-		catch ( Exception e )
+        catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-		finally
-        {
-			//DMS.PlayerForm?.TemporaryShow();
 		}
 	}
 
@@ -98,7 +83,7 @@ public sealed partial class PageMusic : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void MusicInfoBgmFilePathTextBox_TextChanged( object sender, TextChangedEventArgs args )
+	private void MusicInfoBgmFilePathTextBox_TextChanged( object sender, TextChangedEventArgs args )
     {
 		try
 		{

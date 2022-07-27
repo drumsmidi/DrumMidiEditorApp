@@ -53,7 +53,7 @@ public class ConfigPlayer
     /// レイヤー描画レイアウト：
     /// </summary>
     [JsonInclude]
-    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.Bottom;
+    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.Right;
 
     /// <summary>
     /// プレイヤー描画レイアウト：横幅

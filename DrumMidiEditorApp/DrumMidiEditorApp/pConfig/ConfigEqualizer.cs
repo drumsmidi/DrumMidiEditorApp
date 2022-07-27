@@ -106,7 +106,7 @@ public class ConfigEqualizer
     /// イコライザ入力：サイズ
     /// </summary>
     [JsonInclude]
-    public float PointSize { get; set; } = 10F;
+    public float PointSize { get; set; } = 14F;
 
     #endregion
 
@@ -266,7 +266,7 @@ public class ConfigEqualizer
     /// 波形描画間隔（秒）
     /// </summary>
     [JsonInclude]
-    public double WaveFormDrawInterval { get; set; } = 1;
+    public double WaveFormDrawInterval { get; set; } = 0.5;
 
     /// <summary>
     /// 波形：左チャンネルペン
@@ -274,8 +274,8 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatLine WaveLeftLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
-        LineSize    = 1,
+        LineColor   = Color.FromArgb( 100, 255, 0, 0 ),
+        LineSize    = 0.4F,
     };
 
     /// <summary>
@@ -284,8 +284,8 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatLine WaveRightLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 0, 255, 0 ),
-        LineSize    = 1,
+        LineColor   = Color.FromArgb( 100, 0, 255, 0 ),
+        LineSize    = 0.4F,
     };
 
     #endregion

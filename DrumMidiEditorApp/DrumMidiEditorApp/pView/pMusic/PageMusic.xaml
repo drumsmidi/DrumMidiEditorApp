@@ -10,86 +10,82 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <UserControl.Resources>
-        <Style TargetType="Grid">
+        <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch" BasedOn="{StaticResource BasicToggleSwitchStyle}">
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+            <Setter Property="Width" Value="180" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource BasicTextBoxStyle}">
         </Style>
     </UserControl.Resources>
 
     <Grid>
-        <ScrollViewer>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox x:Name="_MusicInfoBgmFilePathTextBox" x:Uid="InputBgmFilePath" Style="{StaticResource TextBoxStyle}"
+                    Text="{x:Bind MusicInfo.BgmFilePath.AbsoulteFilePath, Mode=OneWay}" 
+                    VerticalAlignment="Bottom"
+                    TextChanged="MusicInfoBgmFilePathTextBox_TextChanged" />
+            
+                <Button x:Name="_MusicInfoBgmFilePathButton" x:Uid="ButtonFileReference"
+                    VerticalAlignment="Bottom"
+                    Click="_MusicInfoBgmFilePathButton_Click" />
+
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Vertical">
 
-                <ContentControl>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <TextBox x:Name="_MusicInfoBgmFilePathTextBox"
-                            x:Uid="MusicInfoBgmFilePathTextBox"
-                            Text="{x:Bind MusicInfo.BgmFilePath.RelativeFilePath, Mode=OneWay}" 
-                            PlaceholderText="{x:Bind MusicInfo.BgmFilePath.RelativeFilePath, Mode=OneTime}"                   
-                            HorizontalAlignment="Stretch"
-                            TextChanged="MusicInfoBgmFilePathTextBox_TextChanged" />
-
-                        <Button x:Name="_MusicInfoBgmFilePathButton"
-                                Content="TEST"
-                            Click="MusicInfoBgmFilePathButton_Click" />
-                    </StackPanel>
-                </ContentControl>
-
-                <NumberBox x:Name="_MusicInfoBpmNumberBox" 
-                    x:Uid="NumberBoxBpm"
+                <NumberBox x:Name="_MusicInfoBpmNumberBox" x:Uid="InputBpm" Style="{StaticResource NumberBoxStyle}"
                     Value="{x:Bind MusicInfo.Bpm, Mode=OneWay}" 
                     Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
                     Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
-                    PlaceholderText="{x:Bind MusicInfo.Bpm, Mode=OneTime}"                   
                     SmallChange="1" 
-                    Width="200"
-                    SpinButtonPlacementMode="Inline"
-                    HorizontalAlignment="Left"
-                    ValidationMode="InvalidInputOverwritten"
-                    ValueChanged="MusicInfoBpmNumberBox_ValueChanged"
-                />
+                    LargeChange="10"        
+                    ValueChanged="MusicInfoBpmNumberBox_ValueChanged" />
 
-                <NumberBox x:Name="_MusicInfoBgmPlaybackStartPositionNumberBox" 
-                    x:Uid="MusicInfoBgmPlaybackStartPositionNumberBox"
+                <NumberBox x:Name="_MusicInfoBgmPlaybackStartPositionNumberBox" x:Uid="InputBgmPlaybackStartPosition" Style="{StaticResource NumberBoxStyle}"
                     Value="{x:Bind MusicInfo.BgmPlaybackStartPosition, Mode=OneWay}" 
                     Minimum="{x:Bind ConfigMedia.BgmPlaybackStartMinPosition, Mode=OneTime}"
                     Maximum="{x:Bind ConfigMedia.BgmPlaybackStartMaxPosition, Mode=OneTime}"
-                    PlaceholderText="{x:Bind MusicInfo.BgmPlaybackStartPosition, Mode=OneTime}"                   
-                    SmallChange="100" 
-                    Width="200"
-                    SpinButtonPlacementMode="Inline"
-                    HorizontalAlignment="Left"
-                    ValidationMode="InvalidInputOverwritten"
-                    ValueChanged="MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged"
-                />
+                    SmallChange="0.01" 
+                    LargeChange="0.1" 
+                    ValueChanged="MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged" />
 
-                <NumberBox x:Name="_MusicInfoBgmVolumeNumberBox" 
-                    x:Uid="MusicInfoBgmVolumeNumberBox"
+                <NumberBox x:Name="_MusicInfoBgmVolumeNumberBox" x:Uid="InputBgmVolume" Style="{StaticResource NumberBoxStyle}"
                     Value="{x:Bind MusicInfo.BgmVolume, Mode=TwoWay}" 
                     Minimum="{x:Bind ConfigMedia.BgmMinVolume, Mode=OneTime}"
                     Maximum="{x:Bind ConfigMedia.BgmMaxVolume, Mode=OneTime}"
-                    PlaceholderText="{x:Bind MusicInfo.BgmVolume, Mode=OneTime}"
                     SmallChange="10" 
-                    Width="200"
-                    SpinButtonPlacementMode="Inline"
-                    HorizontalAlignment="Left"
-                    ValidationMode="InvalidInputOverwritten"
-                    ValueChanged="MusicInfoBgmVolumeNumberBox_ValueChanged"
-                />
-
-                <TextBox x:Name="_MusicInfoMemoTextBox"
-                    x:Uid="MusicInfoMemoTextBox"
-                    Text="{x:Bind MusicInfo.Info, Mode=TwoWay}" 
-                    AcceptsReturn="True"
-                    Height="200"
-                    HorizontalAlignment="Stretch"
-                />
-
-                <local:UserControlEqualizer />
-
+                    LargeChange="20" 
+                    ValueChanged="MusicInfoBgmVolumeNumberBox_ValueChanged" />
+                
             </StackPanel>
-        </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left">
+            <TextBox x:Name="_MusicInfoMemoTextBox" x:Uid="InputMusicInfoMemo" Style="{StaticResource TextBoxStyle}"
+                Text="{x:Bind MusicInfo.Info, Mode=TwoWay}" 
+                MinWidth="460"
+                AcceptsReturn="True"
+            />
+        </Grid>
+
+        <local:UserControlEqualizer Grid.Row="2" Grid.ColumnSpan="2"/>
+
     </Grid>
 </Page>

@@ -23,10 +23,10 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
 using Microsoft.UI.Windowing;
-using DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
+using DrumMidiEditorApp.pView.pPlayer.pSurface;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
-namespace DrumMidiEditorApp.pView.pPlayer.nPlay.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 public sealed partial class UserControlPlayerPanel : UserControl
 {
@@ -84,16 +84,16 @@ public sealed partial class UserControlPlayerPanel : UserControl
         switch ( DrawSet.PlayerSurfaceModeSelect )
         {
 			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-				_PlayerSurface = new pPlay.pSurface.pSequence.PlayerSurface();
+				_PlayerSurface = new pSurface.pSequence.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-				_PlayerSurface = new pPlay.pSurface.pSequenceVertical.PlayerSurface();
+				_PlayerSurface = new pSurface.pSequenceVertical.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Score:
-				_PlayerSurface = new pPlay.pSurface.pScore.PlayerSurface();
+				_PlayerSurface = new pSurface.pScore.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-				_PlayerSurface = new pPlay.pSurface.pSimuration.PlayerSurface();
+				_PlayerSurface = new pSurface.pSimuration.PlayerSurface();
 				break;
         }
 

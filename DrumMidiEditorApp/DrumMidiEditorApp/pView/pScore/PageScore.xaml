@@ -11,52 +11,52 @@
 
     <Page.Resources>
         <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch" BasedOn="{StaticResource BasicToggleSwitchStyle}">
+            <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
         <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+            <Setter Property="Width" Value="100" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
     </Page.Resources>
 
     <Grid>
-        <RelativePanel>
-            <Frame x:Name="_LeftMenuBar"
-                Width="200"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignBottomWithPanel="True">
-                
-                <StackPanel Orientation="Vertical">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-                    <ToggleSwitch x:Name="_VolumeSizeToggleSwitch" x:Uid="InputVolumeSize" Style="{StaticResource ToggleSwitchStyle}"
-                        IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
-                        Toggled="ToggleSwitch_Toggled" />
+        <Grid>
+            <StackPanel Orientation="Vertical">
 
-                    <ToggleSwitch x:Name="_VolumeZeroToggleSwitch" x:Uid="InputVolumeZero" Style="{StaticResource ToggleSwitchStyle}"
-                        IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
-                        Toggled="ToggleSwitch_Toggled" />
+                <ToggleSwitch x:Name="_VolumeSizeToggleSwitch" x:Uid="InputVolumeSize" Style="{StaticResource ToggleSwitchStyle}"
+                    IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
 
-                    <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight" Style="{StaticResource NumberBoxStyle}"
-                            Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                            Minimum="0.1"
-                            Maximum="100"
-                            SmallChange="0.1" 
-                            ValueChanged="NumberBox_ValueChanged" />
+                <ToggleSwitch x:Name="_VolumeZeroToggleSwitch" x:Uid="InputVolumeZero" Style="{StaticResource ToggleSwitchStyle}"
+                    IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
 
-                    <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth" Style="{StaticResource NumberBoxStyle}"
-                            Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                            Minimum="0.1"
-                            Maximum="100"
-                            SmallChange="0.1" 
-                            ValueChanged="NumberBox_ValueChanged" />
+                <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight" Style="{StaticResource NumberBoxStyle}"
+                        Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
+                        Minimum="0.1"
+                        Maximum="100"
+                        SmallChange="0.1" 
+                        LargeChange="1.0"
+                        ValueChanged="NumberBox_ValueChanged" />
 
-                </StackPanel>
-            </Frame>
+                <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth" Style="{StaticResource NumberBoxStyle}"
+                        Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
+                        Minimum="0.1"
+                        Maximum="100"
+                        SmallChange="0.1" 
+                        LargeChange="1.0"
+                        ValueChanged="NumberBox_ValueChanged" />
+
+            </StackPanel>
+        </Grid>
             
-            <local:UserControlScore x:Name="_ScorePanel"
-                RelativePanel.RightOf="_LeftMenuBar"
-                RelativePanel.AlignRightWithPanel="True"
-                RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignBottomWithPanel="True" />
+        <local:UserControlScore x:Name="_ScorePanel"
+            Grid.Column="1" />
             
-        </RelativePanel>
     </Grid>
 </Page>

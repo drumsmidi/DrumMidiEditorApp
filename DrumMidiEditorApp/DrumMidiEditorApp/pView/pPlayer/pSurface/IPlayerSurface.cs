@@ -1,7 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 /// <summary>
 /// プレイヤーサーフェイスインタフェース

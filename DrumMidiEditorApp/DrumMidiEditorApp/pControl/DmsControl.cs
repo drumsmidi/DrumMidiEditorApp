@@ -626,7 +626,7 @@ public static class DmsControl
 			// TODO: BGM再生終了後の再生ができない。NAudioの使い方に問題がある？
 
 			// ＢＧＭ再読み込み
-			//if ( Config.Media.UpdateDmsControlBgm )
+			if ( Config.Media.UpdateDmsControlBgm )
 			{
 				Config.Media.UpdateDmsControlBgm = false;
 

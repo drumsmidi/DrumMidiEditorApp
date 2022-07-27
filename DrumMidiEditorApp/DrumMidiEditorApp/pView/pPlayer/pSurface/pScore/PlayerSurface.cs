@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
 using System.Collections.Generic;
+using Windows.Foundation;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pDirectX;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Windows.Foundation;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface.pScore;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScore;
 
 /// <summary>
 /// プレイヤーサーフェイス

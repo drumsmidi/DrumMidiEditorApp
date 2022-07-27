@@ -6,7 +6,7 @@ using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface.pSimuration;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 
 /// <summary>
 /// プレイヤー描画アイテム：MidiMapヘッダ

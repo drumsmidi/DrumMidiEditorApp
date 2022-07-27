@@ -5,7 +5,7 @@ using Windows.Foundation;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pPlay.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 /// <summary>
 /// プレイヤー描画アイテム：ラベル

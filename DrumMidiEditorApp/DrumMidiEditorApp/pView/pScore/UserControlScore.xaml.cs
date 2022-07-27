@@ -281,7 +281,7 @@ public sealed partial class UserControlScore : UserControl
     {
         try
         {
-            // Win2D アンロード
+            // Win2D アンロード（ページキャッシュしている場合は処理しない）
             //_ScoreCanvas.RemoveFromVisualTree();
             //_ScoreCanvas = null;
         }

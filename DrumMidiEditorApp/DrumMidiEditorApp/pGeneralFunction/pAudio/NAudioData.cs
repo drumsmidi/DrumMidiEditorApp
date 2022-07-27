@@ -129,6 +129,8 @@ public class NAudioData : DisposeBaseClass
             _IsMixerAdd = true;
 
             _Wave.Init( _Mixer );
+
+            CalcFFT();
         }
     }
 
@@ -280,11 +282,8 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            if ( _Wave != null && _Wave.PlaybackState != PlaybackState.Playing )
-            { 
-                // 再生開始
-                _Wave?.Play();
-            }
+            // 再生開始
+            _Wave?.Play();
         }
     }
 
@@ -295,11 +294,8 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            if ( _Wave != null && _Wave.PlaybackState == PlaybackState.Playing )
-            { 
-                // 再生停止
-                _Wave?.Pause();
-            }
+            // 再生停止
+            _Wave?.Pause();
         }
     }
 
@@ -310,16 +306,8 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            if ( _Wave != null && _Wave.PlaybackState != PlaybackState.Stopped )
-            { 
-                // 再生停止
-                _Wave.Stop();
-
-                while ( _Wave.PlaybackState == PlaybackState.Playing )
-                {
-                    Thread.Sleep( 1 );
-                }
-            }
+            // 再生停止
+            _Wave?.Stop();
 
             if ( _Reader != null )
             {

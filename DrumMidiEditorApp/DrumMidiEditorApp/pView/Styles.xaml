@@ -14,6 +14,11 @@
         <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
     </Style>
 
+    <Style x:Key="BasicTextBoxStyle" TargetType="TextBox">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+
     <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
     </Style>    
     

@@ -93,11 +93,11 @@ public static class XamlHelper
     /// </summary>
     /// <param name="aOwnerWindow">親ウィンドウ</param>
     /// <param name="aFileTypeFilters">フィルター設定</param>
-    /// <param name="aOpenFilePath">選択したファイルパス名（戻り値）</param>
     /// <param name="aInitialLocation">初期ロケーション</param>
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
+    /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void OpenShowDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier )
+    public async static void OpenShowDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -140,6 +140,8 @@ public static class XamlHelper
             if ( file != null )
             {
                 aOpenFilePath.AbsoulteFilePath = file.Path;
+
+                aAction();
             }
         }
         catch ( Exception e )
@@ -205,7 +207,7 @@ public static class XamlHelper
                 NumberRounder   = new IncrementNumberRounder
                 {
                     Increment           = aIncrement,
-                    RoundingAlgorithm   = RoundingAlgorithm.RoundUp,
+                    RoundingAlgorithm   = RoundingAlgorithm.RoundTowardsZero,
                 },
                 IsGrouped       = true,
                 IsZeroSigned    = true,

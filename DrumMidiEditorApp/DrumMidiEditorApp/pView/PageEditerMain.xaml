@@ -5,7 +5,7 @@
     xmlns:local="using:DrumMidiEditorApp.pView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:psurface="using:DrumMidiEditorApp.pView.pPlayer.nPlay.pSurface"
+    xmlns:psurface="using:DrumMidiEditorApp.pView.pPlayer.pSurface"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 

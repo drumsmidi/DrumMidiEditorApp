@@ -46,22 +46,24 @@
                         <AppBarToggleButton x:Name="_EqualizerWaveFormAppBarToggleButton"
                             x:Uid="ButtonEqualizerWaveForm"
                             IsChecked="{x:Bind DrawSet.WaveFormOn, Mode=TwoWay}"
-                            IsEnabled="False"
+                            IsEnabled="True"
                             Checked="EqualizerWaveFormAppBarToggleButton_CheckChanged"
                             Unchecked="EqualizerWaveFormAppBarToggleButton_CheckChanged" />
 
                     </CommandBar>
 
                     <canvas:CanvasControl x:Name = "_EqualizerCanvas"
-                        Width="500"
-                        Height="500"
                         ClearColor="{x:Bind DrawSet.BackGround.Color}" 
                         Draw="EqualizerCanvas_Draw" 
                         PointerPressed="EqualizerCanvas_PointerPressed"
                         PointerMoved="EqualizerCanvas_PointerMoved"
                         PointerReleased="EqualizerCanvas_PointerReleased" />
-                    
+
+                    <TextBlock x:Name="_EqualizerInfoTextBlock"
+                        TextAlignment="Right" />
+
                 </StackPanel>
+                
             </userctl:HGroupUserControl.CustomContent>
         </userctl:HGroupUserControl>
     </Grid>

@@ -15,7 +15,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
-    <None Remove="pView\pPlayer\UserControlPlayerPanel.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,13 +101,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pPlayer\pConfig\PageConfig.xaml">
+    <Page Update="pView\pPlayer\PagePlayer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\pPlayer\pPlay\PagePlayer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="pView\pPlayer\pPlay\UserControlPlayerPanel.xaml">
+    <Page Update="pView\pPlayer\UserControlPlayerPanel.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
