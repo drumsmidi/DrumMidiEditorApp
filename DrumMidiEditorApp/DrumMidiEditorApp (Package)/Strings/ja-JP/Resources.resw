@@ -210,6 +210,9 @@
   <data name="InputBpm.Header" xml:space="preserve">
     <value>BPM</value>
   </data>
+  <data name="InputBpmZoom.Header" xml:space="preserve">
+    <value>bpm 取込倍率</value>
+  </data>
   <data name="InputChannelNo.Header" xml:space="preserve">
     <value>Ch.</value>
   </data>
@@ -260,6 +263,9 @@
   </data>
   <data name="LabelBpm" xml:space="preserve">
     <value>Bpm</value>
+  </data>
+  <data name="LabelImportMidi" xml:space="preserve">
+    <value>Midi取込</value>
   </data>
   <data name="LabelMeasureNo" xml:space="preserve">
     <value>Measure no</value>

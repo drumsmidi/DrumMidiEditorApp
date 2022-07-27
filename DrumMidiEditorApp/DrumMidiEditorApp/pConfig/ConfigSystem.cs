@@ -264,6 +264,12 @@ public class ConfigSystem
     public string FolderMidiMapSet = "DrumMidiEditorMidiMapSet";
 
     /// <summary>
+    /// Midiフォルダ（Midiデータ格納）
+    /// </summary>
+    [JsonIgnore]
+    public string FolderMidi = "DrumMidiEditorMidi";
+
+    /// <summary>
     /// Exportフォルダ
     /// </summary>
     [JsonIgnore]
@@ -324,6 +330,18 @@ public class ConfigSystem
     /// </summary>
     [JsonIgnore]
     public string ExtentionDms { get; private set; } = ".dms";
+
+    /// <summary>
+    /// 拡張子：MIDI
+    /// </summary>
+    [JsonIgnore]
+    public string ExtentionMidi { get; private set; } = ".mid";
+
+    /// <summary>
+    /// 拡張子：VIDEO
+    /// </summary>
+    [JsonIgnore]
+    public string ExtentionVideo { get; private set; } = ".mp4";
 
     /// <summary>
     /// Bgm開くフィルタ

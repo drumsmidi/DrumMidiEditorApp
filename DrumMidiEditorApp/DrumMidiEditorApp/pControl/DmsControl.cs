@@ -623,8 +623,6 @@ public static class DmsControl
 	{
 		try
 		{
-			// TODO: BGM再生終了後の再生ができない。NAudioの使い方に問題がある？
-
 			// ＢＧＭ再読み込み
 			if ( Config.Media.UpdateDmsControlBgm )
 			{

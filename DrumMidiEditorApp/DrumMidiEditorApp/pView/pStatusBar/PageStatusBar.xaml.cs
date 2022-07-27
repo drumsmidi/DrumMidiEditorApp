@@ -5,7 +5,7 @@ using System;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 
-namespace DrumMidiEditorApp.pView;
+namespace DrumMidiEditorApp.pView.pStatusBar;
 
 public sealed partial class PageStatusBar : Page
 {
@@ -38,9 +38,9 @@ public sealed partial class PageStatusBar : Page
 		{
 			switch ( aLevel )
 			{
-				case 0: SetStatusText( "", aText, InfoBarSeverity.Informational ); break;
-				case 1: SetStatusText( "", aText, InfoBarSeverity.Warning		); break;
-   				case 2: SetStatusText( "", aText, InfoBarSeverity.Error			); break;
+				case 0: SetStatusText( "Message", aText, InfoBarSeverity.Informational	); break;
+				case 1: SetStatusText( "Message", aText, InfoBarSeverity.Warning		); break;
+   				case 2: SetStatusText( "Message", aText, InfoBarSeverity.Error			); break;
 			}
 		}
 		catch ( Exception e )

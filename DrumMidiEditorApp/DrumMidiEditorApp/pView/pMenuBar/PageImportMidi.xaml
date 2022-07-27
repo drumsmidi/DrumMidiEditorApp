@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pMenuBar.PageImportMidi"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <NumberBox x:Name="_BpmZoomNumberBox" x:Uid="InputBpmZoom" Style="{StaticResource NumberBoxStyle}"
+            Value="{x:Bind BpmZoom, Mode=TwoWay}" 
+            Minimum="0.0125"
+            Maximum="4"
+            SmallChange="0.0125" 
+            LargeChange="0.5"                       
+            ValueChanged="BpmZoomNumberBox_ValueChanged" />
+    </Grid>
+</Page>

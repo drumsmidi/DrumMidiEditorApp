@@ -114,13 +114,5 @@ internal static class ScoreIO
 	public static void SaveMidiFile( GeneralPath aGeneralPath, Score aScore )
 		=> new pScore.pMidi.ScoreStream().Write( aGeneralPath, aScore );
 
-	/// <summary>
-	/// Techファイル保存
-	/// </summary>
-	/// <param name="aGeneralPath">出力ファイルパス</param>
-	/// <param name="aScore">保存スコア</param>
-	public static void SaveTechManiaFile( GeneralPath aGeneralPath, Score aScore )
-		=> new pScore.pTechMania.ScoreStream().Write( aGeneralPath, aScore );
-
 	#endregion
 }

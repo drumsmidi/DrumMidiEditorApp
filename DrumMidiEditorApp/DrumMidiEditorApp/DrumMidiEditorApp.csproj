@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
+    <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +40,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\PageMenuBar.xaml">
+    <Page Update="pView\pMenuBar\PageImportMidi.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="pView\pMenuBar\PageMenuBar.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -48,7 +52,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="pView\PageStatusBar.xaml">
+    <Page Update="pView\pStatusBar\PageStatusBar.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

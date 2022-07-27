@@ -1,8 +1,7 @@
 ﻿<Page
-    x:Class="DrumMidiEditorApp.pView.PageMenuBar"
+    x:Class="DrumMidiEditorApp.pView.pMenuBar.PageMenuBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pView.pEditer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -75,40 +74,35 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <StackPanel Orientation="Horizontal">
 
-                <MenuBar>
-                    <MenuBarItem x:Uid="MenuItemFile">
-                        <MenuFlyoutItem x:Name="_MenuItemNew"       x:Uid="MenuItemNew"     Click="MenuItemNew_Click" />
-                        <MenuFlyoutItem x:Name="_MenuItemOpen"      x:Uid="MenuItemOpen"    Click="MenuItemOpen_Click" />
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem x:Name="_MenuItemSave"      x:Uid="MenuItemSave"    Click="MenuItemSave_Click" />
-                        <MenuFlyoutItem x:Name="_MenuItemSaveAs"    x:Uid="MenuItemSaveAs"  Click="MenuItemSaveAs_Click" />
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutSubItem x:Uid="MenuItemExport">
-                            <MenuFlyoutItem x:Name="_MenuItemExportMidi"        x:Uid="MenuItemExportMidi"      Click="MenuItemExportMidi_Click" />
-                            <MenuFlyoutItem x:Name="_MenuItemExportVideo"       x:Uid="MenuItemExportVideo"     Click="MenuItemExportVideo_Click" />
-                            <MenuFlyoutItem x:Name="_MenuItemExportTechMidi"    x:Uid="MenuItemExportTechMidi"  Click="MenuItemExportTechMidi_Click" IsEnabled="False" />
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutSubItem x:Uid="MenuItemImport">
-                            <MenuFlyoutItem x:Name="_MenuItemImportMidi" x:Uid="MenuItemImportMidi" Click="MenuItemImportMidi_Click" IsEnabled="False" />
-                        </MenuFlyoutSubItem>
-                    </MenuBarItem>
-                </MenuBar>
+            <MenuBar>
+                <MenuBarItem x:Uid="MenuItemFile">
+                    <MenuFlyoutItem x:Name="_MenuItemNew"       x:Uid="MenuItemNew"     Click="MenuItemNew_Click" />
+                    <MenuFlyoutItem x:Name="_MenuItemOpen"      x:Uid="MenuItemOpen"    Click="MenuItemOpen_Click" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="_MenuItemSave"      x:Uid="MenuItemSave"    Click="MenuItemSave_Click" />
+                    <MenuFlyoutItem x:Name="_MenuItemSaveAs"    x:Uid="MenuItemSaveAs"  Click="MenuItemSaveAs_Click" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutSubItem x:Uid="MenuItemExport">
+                        <MenuFlyoutItem x:Name="_MenuItemExportMidi"        x:Uid="MenuItemExportMidi"      Click="MenuItemExportMidi_Click" />
+                        <MenuFlyoutItem x:Name="_MenuItemExportVideo"       x:Uid="MenuItemExportVideo"     Click="MenuItemExportVideo_Click" />
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutSubItem x:Uid="MenuItemImport">
+                        <MenuFlyoutItem x:Name="_MenuItemImportMidi" x:Uid="MenuItemImportMidi" Click="MenuItemImportMidi_Click" IsEnabled="False" />
+                    </MenuFlyoutSubItem>
+                </MenuBarItem>
+            </MenuBar>
 
-            </StackPanel>
         </Grid>
 
         <Grid Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-
-                <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo" Style="{StaticResource ComboBoxStyle}"
-                    ItemsSource="{x:Bind ConfigMedia.ChannelNoList, Mode=OneTime}"
-                    SelectedValue="{x:Bind ConfigMedia.ChannelDrum, Mode=OneTime}"
-                    SelectionChanged="ChannelNoComboBox_SelectionChanged" />
+            
+            <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo" Style="{StaticResource ComboBoxStyle}"
+                ItemsSource="{x:Bind ConfigMedia.ChannelNoList, Mode=OneTime}"
+                SelectedValue="{x:Bind ConfigMedia.ChannelDrum, Mode=OneTime}"
+                SelectionChanged="ChannelNoComboBox_SelectionChanged" />
                 
-            </StackPanel>
         </Grid>
 
         <Grid Grid.Column="2">
@@ -146,6 +140,7 @@
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
                         SmallChange="1" 
+                        LargeChange="5"
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
 
                 <NumberBox x:Name="_LoopPlayMeasureEndNumberBox" x:Uid="InputLoopPlayMeasureEnd" Style="{StaticResource NumberBoxStyle}"
@@ -153,6 +148,7 @@
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
                         SmallChange="1" 
+                        LargeChange="5"
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
 
                 <ToggleSwitch x:Name="_LoopPlayMeasureConnectToggleSwitch" x:Uid="InputLoopPlayMeasureConnectSwitch" Style="{StaticResource ToggleSwitchStyle}"
@@ -164,6 +160,7 @@
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
                         SmallChange="1" 
+                        LargeChange="5"
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
                     
             </StackPanel>

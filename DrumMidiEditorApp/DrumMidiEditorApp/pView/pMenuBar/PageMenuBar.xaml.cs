@@ -1,41 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Windows.Storage.Pickers;
+
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pIO;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pDMS;
-using Windows.ApplicationModel.Resources;
-using DrumMidiEditorApp.pIO;
-using Windows.Storage.Pickers;
-using System.Collections.ObjectModel;
 
-namespace DrumMidiEditorApp.pView;
+namespace DrumMidiEditorApp.pView.pMenuBar;
 
 public sealed partial class PageMenuBar : Page
 {
+	/// <summary>
+	/// メディア設定
+	/// </summary>
 	private ConfigMedia ConfigMedia => Config.Media;
 
+	/// <summary>
+	/// システム設定
+	/// </summary>
 	private ConfigSystem ConfigSystem => Config.System;
 
+	/// <summary>
+	/// プレイヤー設定
+	/// </summary>
 	private ConfigPlayer ConfigPlayer => Config.Player;
 
+	/// <summary>
+	/// スコア
+	/// </summary>
 	private Score Score => DMS.SCORE;
 
-	private ObservableCollection<string> _PlayerDisplayList = new();
+	/// <summary>
+	/// プレイヤー表示設定リスト
+	/// </summary>
+	private readonly ObservableCollection<string> _PlayerDisplayList = new();
 
 	/// <summary>
 	/// コンストラクタ
@@ -87,10 +92,14 @@ public sealed partial class PageMenuBar : Page
         {
 			Config.EventReloadScore();
 
+		
+			DMS.SCORE.EditChannelNo = _ChannelNoComboBox.SelectedValue != null 
+				? Convert.ToByte( _ChannelNoComboBox.SelectedValue.ToString() )
+				: ConfigMedia.ChannelDrum;
+
+
 			//if ( DMS.EditerForm != null )
 			//{
-			//	DMS.SCORE.EditChannelNo = (byte)ChannelComboBox.SelectedIndex;
-
 			//	//DMS.EditerForm.MusicCtl.ApplyScore();
 			//	//DMS.EditerForm.MusicCtl.ApplyEqulizer();
 			//	DMS.EditerForm.MidiMapSetCtl.LoadMidiMapSet( DMS.SCORE.EditMidiMapSet );
@@ -105,7 +114,6 @@ public sealed partial class PageMenuBar : Page
 		}
 	}
 
-
 	#region Menu
 
 	/// <summary>
@@ -114,13 +122,6 @@ public sealed partial class PageMenuBar : Page
 	private static void PlayerStop()
     {
 		DmsControl.StopPreSequence();
-	}
-
-	/// <summary>
-	/// プレイヤーフォーム再表示
-	/// </summary>
-	private static void PlayerPlay()
-	{
 	}
 
 	/// <summary>
@@ -147,8 +148,6 @@ public sealed partial class PageMenuBar : Page
 						DMS.OpenFilePath	= new();
 
 						ApplyScore();
-
-						PlayerPlay();
 					})
 				);
 		}
@@ -171,43 +170,31 @@ public sealed partial class PageMenuBar : Page
 
 			var filepath = new GeneralPath();
 
-			XamlHelper.OpenShowDialogAsync
-				( 
-					App.MainWindow,
+			XamlHelper.OpenDialogAsync
+				(
+					ControlAccess.MainWindow,
 					ConfigSystem.SupportDmsOpen,
 					filepath,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderDms,
 					() =>
                     {
+				        if ( !FileIO.LoadScore( filepath, out var score ) )
+						{
+							return;
+						}
 
-                    }
+						DMS.SCORE			= score;
+						DMS.OpenFilePath	= filepath;
+
+						ApplyScore();
+					}
 				);
-
-					//new( () =>
-                    //{
-
-						//         if ( !FileIO.LoadScore( filepath, out var score ) )
-						//         {
-						//	return;
-						//         }
-
-						//DMS.SCORE = score;
-
-						//         Config.System.OpenFilePath = filepath;
-
-					//	ApplyScore();
-					//})
 		}
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-		finally
-        {
-            PlayerPlay();
-		}
-
     }
 
 	/// <summary>
@@ -221,47 +208,42 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
-                    {
-						//var filepath = Config.System.OpenFilePath;
+			var filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
 
-						//if ( !filepath.IsExistFile )
-						//{ 
-						//	if ( !FormUtil.SaveShowDialog( Config.System.FolderDms, Config.System.OpenFilePath, Config.System.SupportDmsSave, out filepath ) )
-						//	{
-						//		return;
-						//	}
-						//}
+			if ( !filepath.IsExistFile )
+			{ 
+				XamlHelper.SaveDialogAsync
+					(
+						ControlAccess.MainWindow,
+						ConfigSystem.SupportDmsSave,
+						filepath,
+						PickerLocationId.DocumentsLibrary,
+						ConfigSystem.FolderDms,
+						() =>
+						{
+							filepath.Extension = ConfigSystem.ExtentionDms;
 
-						//filepath.Extension = Config.System.ExtentionDms;
+							if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
+                            {
+                                return;
+                            }
 
-						//         if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-						//         {
-						//             return;
-						//         }
-
-						//         Config.System.OpenFilePath = filepath;
-
-						//ApplyScore();
-					})
-				);
-		}
+                            DMS.OpenFilePath = filepath;
+                        }
+                    );
+			}
+			else
+            {
+                if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
+                {
+                    return;
+                }
+            }
+        }
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-		finally
-        {
-            PlayerPlay();
-		}
-
     }
 
 	/// <summary>
@@ -275,42 +257,32 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
+			var filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
+
+			XamlHelper.SaveDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportDmsSave,
+					filepath,
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderDms,
+					() =>
                     {
-						//if ( !FormUtil.SaveShowDialog( Config.System.FolderDms, Config.System.OpenFilePath, Config.System.SupportDmsSave, out var filepath ) )
-						//{
-						//	return;
-						//}
+						filepath.Extension = ConfigSystem.ExtentionDms;
 
-						//filepath.Extension = Config.System.ExtentionDms;
+						if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
+						{
+							return;
+						}
 
-						//if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-						//         {
-						//             return;
-						//         }
-
-						//         Config.System.OpenFilePath = filepath;
-
-						//ApplyScore();
-					})
+						DMS.OpenFilePath = filepath;
+					}
 				);
 		}
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-		finally
-        {
-            PlayerPlay();
-		}
-
     }
 
 	/// <summary>
@@ -324,36 +296,28 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
-                    {
-						//if ( !FormUtil.SaveShowDialog( Config.System.FolderMidi, Config.System.OpenFilePath, Config.System.SupportMidi, out var filepath ) )
-						//{
-						//	return;
-						//}
+            var filepath = new GeneralPath( DMS.OpenFilePath.FileNameWithoutExtension );
 
-						//if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-						//{
-						//	return;
-						//}
-					})
+			XamlHelper.SaveDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportMidi,
+					filepath,
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderExport,
+					() =>
+                    {
+						if ( !FileIO.SaveMidi( filepath, DMS.SCORE ) )
+						{
+							return;
+						}
+					}
 				);
 		}
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-		finally
-        {
-            PlayerPlay();
-		}
-
     }
 
 	/// <summary>
@@ -365,81 +329,32 @@ public sealed partial class PageMenuBar : Page
     {
         try
         {
-            PlayerStop(); 
+            PlayerStop();
 
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
+            var filepath = new GeneralPath( DMS.OpenFilePath.FileNameWithoutExtension );
+
+            XamlHelper.SaveDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportVideo,
+					filepath,
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderExport,
+					() =>
                     {
-						//if ( !FormUtil.SaveShowDialog( Config.System.FolderVideo, Config.System.OpenFilePath, Config.System.SupportVideo, out var filepath ) )
-						//{
-						//	return;
-						//}
+						filepath.Extension = ConfigSystem.ExtentionVideo;
 
-						//if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-						//{
-						//	return;
-						//}
-					})
+						if ( !FileIO.SaveVideo( filepath, DMS.SCORE ) )
+						{
+							return;
+						}
+					}
 				);
 		}
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-		finally
-        {
-            PlayerPlay();
-		}
-
-    }
-
-	/// <summary>
-	/// メニュー：Export - TechMania
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void MenuItemExportTechMidi_Click( object sender, RoutedEventArgs args )
-    {
-        try
-        {
-            PlayerStop(); 
-
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
-                    {
-						//if ( !FormUtil.SaveShowDialog( Config.System.FolderTechMania, Config.System.OpenFilePath, Config.System.SupportTechMania, out var filepath ) )
-						//{
-						//	return;
-						//}
-
-						//if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-						//{
-						//	return;
-						//}
-					})
-				);
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-		finally
-        {
-            PlayerPlay();
-		}
-
     }
 
 	/// <summary>
@@ -451,49 +366,51 @@ public sealed partial class PageMenuBar : Page
     {
         try
         {
-            PlayerStop(); 
+            PlayerStop();
 
-			XamlHelper.MessageDialogYesNoAsync
-				( 
-					Content.XamlRoot,
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Confirmation" ),
-					ResourcesHelper.GetString( "MenuItemNewMsgBox/Content" ),
-					ResourcesHelper.GetString( "MessageDialog/Yes" ),
-					ResourcesHelper.GetString( "MessageDialog/No" ),
-					new( () =>
+			var filepath = new GeneralPath();
+
+			XamlHelper.OpenDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportMidi,
+					filepath,
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderMidi,
+					() =>
                     {
-                        //if (!FormUtil.OpenShowDialog(Config.System.FolderMidi, Config.System.SupportMidi, out var filepath))
-                        //{
-                        //    return;
-                        //}
+						var page = new PageImportMidi
+						{
+							BpmZoom = ConfigMedia.MidiImportZoom
+						};
 
-                        //using var fm = new ImportMidiForm();
+						XamlHelper.InputDialogOkCancelAsync
+							(
+								Content.XamlRoot,
+								ResourcesHelper.GetString( "LabelImportMidi" ),
+								page,
+								() =>
+								{
+									ConfigMedia.MidiImportZoom = page.BpmZoom;
 
-                        //if (fm.ShowDialog(Config.Media.MidiImportZoom) != DialogResult.OK)
-                        //{
-                        //    return;
-                        //}
+									//var score = DMS.SCORE;
 
-                        //var score = DMS.SCORE;
+									//if ( !FileIO.ImportScore( filepath, ref score ) )
+									//{
+									//	return;
+									//}
 
-                        //if (!FileIO.ImportScore(filepath, ref score))
-                        //{
-                        //    return;
-                        //}
+									//DMS.SCORE = score;
 
-                        //DMS.SCORE = score;
-
-                        //ApplyScore();
-					} )
+									//ApplyScore();
+								}
+							);
+					}
 				);
 		}
 		catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-		finally
-        {
-            PlayerPlay();
 		}
     }
 
@@ -513,13 +430,6 @@ public sealed partial class PageMenuBar : Page
 			Score.EditChannelNo = (byte)Convert.ToInt32( _ChannelNoComboBox.SelectedItem.ToString() ?? $"{ConfigMedia.ChannelDrum}" );
 
 			Config.EventChangeChannel();
-
-			// TODO: DataGrid が使えるようになったら実装検討
-			//if ( DMS.EditerForm != null )
-			//{ 
-			//	DMS.EditerForm.MidiMapSetCtl.LoadMidiMapSet( DMS.SCORE.EditMidiMapSet );
-			//	DMS.EditerForm.Refresh();
-			//}
 		}
 		catch ( Exception e )
 		{

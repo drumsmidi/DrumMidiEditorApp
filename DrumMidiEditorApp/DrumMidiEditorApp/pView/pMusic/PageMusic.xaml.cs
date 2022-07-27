@@ -59,9 +59,9 @@ public sealed partial class PageMusic : Page
 	{
 		try
 		{
-			XamlHelper.OpenShowDialogAsync
+			XamlHelper.OpenDialogAsync
 				(
-					App.MainWindow,
+					ControlAccess.MainWindow,
 					ConfigSystem.SupportBgm,
 					MusicInfo.BgmFilePath,
 					PickerLocationId.MusicLibrary,

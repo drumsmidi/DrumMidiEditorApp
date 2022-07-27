@@ -281,112 +281,141 @@ public static class FileIO
 
         try
         {
-            var ext = aFilePath.Extension.ToLower();
+            ScoreIO.SaveFile( aFilePath, aScore );
 
-            if ( ext.ToLower().Equals( ".dms" ) )
-            {
-                ScoreIO.SaveFile( aFilePath, aScore );
-            }
-            else if ( ext.ToLower().Equals( ".mid" ) )
-            {
-                ScoreIO.SaveMidiFile( aFilePath, aScore );
-            }
-            else if ( ext.ToLower().Equals( ".tech" ) )
-            {
-                ScoreIO.SaveTechManiaFile( aFilePath, aScore );
-            }
-            else if ( ext.ToLower().Equals( ".mp4" ) )
-            {
-                // TODO: MP4の出力処理改善が必要
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
 
-               // using var size = DMS.PlayerForm?.GetFrame( 0 );
+    /// <summary>
+    /// スコア - Midi保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static bool SaveMidi( GeneralPath aFilePath, Score aScore )
+    {
+		using var _ = new LogBlock( Log.GetThisMethodName );
 
-               // if ( size == null )
-               // {
-               //     Log.Error( $"frame read failure.", true );
-               //     return false;
-               // }
+        try
+        {
+            ScoreIO.SaveMidiFile( aFilePath, aScore );
 
-               // var mp4_codec = Config.Media.OutputVideoCodec;
-               // var fps       = Config.Media.OutputVideoFps;
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
 
-               // try
-               // {
-               //     using var mp4 = new Mp4IO();
+    /// <summary>
+    /// スコア - Video保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static bool SaveVideo( GeneralPath aFilePath, Score aScore )
+    {
+		using var _ = new LogBlock( Log.GetThisMethodName );
 
-               //     var bmp = mp4.Open( aFilePath, mp4_codec, fps, size.Width, size.Height );
+        try
+        {
+            // TODO: MP4の出力処理改善が必要
 
-               //     if ( bmp == null )
-               //     {
-               //         Log.Error( $"open video file failure.", true );
-               //         return false;
-               //     }
+            // using var size = DMS.PlayerForm?.GetFrame( 0 );
 
-               //     DmsControl.RecordPreSequence();
-               //     //DMS.PlayerForm.Visible = true;
+            // if ( size == null )
+            // {
+            //     Log.Error( $"frame read failure.", true );
+            //     return false;
+            // }
 
-               //     var frameTime = 1D / fps;
+            // var mp4_codec = Config.Media.OutputVideoCodec;
+            // var fps       = Config.Media.OutputVideoFps;
 
-               //     DmsControl.WaitRecorder();
+            // try
+            // {
+            //     using var mp4 = new Mp4IO();
 
-               //     int log_cnt = 0;
+            //     var bmp = mp4.Open( aFilePath, mp4_codec, fps, size.Width, size.Height );
 
-               //     for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
-               //     {
-               //         if ( log_cnt++ % fps == 0 )
-               //         { 
-               //             Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time*100/DmsControl.EndPlayTime, 2 )}%)", true );
-               //         }
+            //     if ( bmp == null )
+            //     {
+            //         Log.Error( $"open video file failure.", true );
+            //         return false;
+            //     }
 
-               //         using var frame = DMS.PlayerForm?.GetFrame( time );
+            //     DmsControl.RecordPreSequence();
+            //     //DMS.PlayerForm.Visible = true;
 
-               //         if ( frame == null )
-               //         {
-               //             Log.Error( $"frame read error.[{time}]" );
-               //             continue;
-               //         }
+            //     var frameTime = 1D / fps;
 
-               //         var frameData = frame.LockBits
-				           //     (
-					          //      new( 0, 0, frame.Width, frame.Height ),
-					          //      ImageLockMode.ReadOnly,
-               //                     frame.PixelFormat
-				           //     );
+            //     DmsControl.WaitRecorder();
 
-               //         var bmpData = bmp.LockBits
-				           //     (
-					          //      new( 0, 0, bmp.Width, bmp.Height ),
-					          //      ImageLockMode.WriteOnly,
-					          //      bmp.PixelFormat
-				           //     );
+            //     int log_cnt = 0;
 
-               //         var buffer = new byte[ frameData.Stride * frameData.Height ];
+            //     for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
+            //     {
+            //         if ( log_cnt++ % fps == 0 )
+            //         { 
+            //             Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time*100/DmsControl.EndPlayTime, 2 )}%)", true );
+            //         }
 
-               //         Marshal.Copy( frameData.Scan0, buffer, 0, buffer.Length );
-               //         Marshal.Copy( buffer, 0, bmpData.Scan0, buffer.Length );
+            //         using var frame = DMS.PlayerForm?.GetFrame( time );
 
-               //         frame.UnlockBits( frameData );
-			            //bmp.UnlockBits( bmpData );
+            //         if ( frame == null )
+            //         {
+            //             Log.Error( $"frame read error.[{time}]" );
+            //             continue;
+            //         }
 
-               //         mp4.AddFrame();
-               //     }
-               // }
-               // catch ( Exception e )
-               // {
-               //     Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-               //     return false;
-               // }
-               // finally
-               // {
-               //     DmsControl.StopPreSequence();
+            //         var frameData = frame.LockBits
+				        //     (
+					        //      new( 0, 0, frame.Width, frame.Height ),
+					        //      ImageLockMode.ReadOnly,
+            //                     frame.PixelFormat
+				        //     );
 
-               //     //DMS.PlayerForm.Visible = false;
-               // }
-            }
-            else
-            {
-                throw new NotSupportedException( $"Extension {ext} is not supported" );
-            }
+            //         var bmpData = bmp.LockBits
+				        //     (
+					        //      new( 0, 0, bmp.Width, bmp.Height ),
+					        //      ImageLockMode.WriteOnly,
+					        //      bmp.PixelFormat
+				        //     );
+
+            //         var buffer = new byte[ frameData.Stride * frameData.Height ];
+
+            //         Marshal.Copy( frameData.Scan0, buffer, 0, buffer.Length );
+            //         Marshal.Copy( buffer, 0, bmpData.Scan0, buffer.Length );
+
+            //         frame.UnlockBits( frameData );
+			        //bmp.UnlockBits( bmpData );
+
+            //         mp4.AddFrame();
+            //     }
+            // }
+            // catch ( Exception e )
+            // {
+            //     Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            //     return false;
+            // }
+            // finally
+            // {
+            //     DmsControl.StopPreSequence();
+
+            //     //DMS.PlayerForm.Visible = false;
+            // }
 
             Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
         }

@@ -93,11 +93,12 @@ public static class XamlHelper
     /// </summary>
     /// <param name="aOwnerWindow">親ウィンドウ</param>
     /// <param name="aFileTypeFilters">フィルター設定</param>
+    /// <param name="aOpenFilePath">開くファイルの保存先フルパスが設定されます</param>
     /// <param name="aInitialLocation">初期ロケーション</param>
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void OpenShowDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
+    public async static void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -140,6 +141,67 @@ public static class XamlHelper
             if ( file != null )
             {
                 aOpenFilePath.AbsoulteFilePath = file.Path;
+
+                aAction();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ファイル保存ダイアログ共通処理
+    /// </summary>
+    /// <param name="aOwnerWindow">親ウィンドウ</param>
+    /// <param name="aFileTypeChoices">フィルター設定</param>
+    /// <param name="aSaveFilePath">保存ファイル名（初期値）を設定、保存先決定後は保存先フルパスが設定されます</param>
+    /// <param name="aInitialLocation">初期ロケーション</param>
+    /// <param name="aSettingsIdentifier">ピッカー設定名</param>
+    /// <param name="aAction">ファイル選択時の後続処理</param>
+    /// <returns>True:選択、False:未選択</returns>
+    public async static void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, GeneralPath aSaveFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
+    {
+        if ( aOwnerWindow == null )
+        {
+            return;
+        }
+
+        try
+        {
+            // 参考URL：ピッカーでファイルやフォルダーを開く
+            // https://docs.microsoft.com/ja-jp/windows/uwp/files/quickstart-using-file-and-folder-pickers
+
+            var picker = new FileSavePicker
+            {
+                // 初期ディレクトリ（初回のみ）
+                SuggestedStartLocation = aInitialLocation,
+                // ピッカー識別子（前回開いたフォルダ情報などを共有する際に使用）
+                // https://docs.microsoft.com/ja-JP/uwp/api/windows.storage.pickers.fileopenpicker.settingsidentifier?view=winrt-22621#windows-storage-pickers-fileopenpicker-settingsidentifier
+                SettingsIdentifier = aSettingsIdentifier,
+                // 保存ファイル名
+                SuggestedFileName = aSaveFilePath.FileName,
+            };
+
+            // ファイルタイプのフィルタ設定
+            if ( aFileTypeChoices.Count > 0 )
+            { 
+                picker.FileTypeChoices.Add( "", aFileTypeChoices );
+            }
+            else
+            {
+                picker.FileTypeChoices.Add( "", new List<string>(){ "*" } );
+            }
+
+            InitializeWithWindow.Initialize( picker, WindowNative.GetWindowHandle( aOwnerWindow ) );
+
+            // ファイル選択
+            var file = await picker.PickSaveFileAsync();
+            
+            if ( file != null )
+            {
+                aSaveFilePath.AbsoulteFilePath = file.Path;
 
                 aAction();
             }

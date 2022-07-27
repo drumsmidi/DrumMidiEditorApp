@@ -1,8 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using System.Diagnostics;
-using Windows.ApplicationModel;
 
-using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pView;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -15,9 +12,7 @@ namespace DrumMidiEditorApp;
 /// </summary>
 public partial class App : Application
 {
-    private static Window _MainWindow;
-
-    public static WindowEditer? MainWindow => _MainWindow as WindowEditer;
+    private Window _MainWindow;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -25,24 +20,6 @@ public partial class App : Application
     /// </summary>
     public App()
     {
-        // TODO: 多重起動の制御とか終了処理の仕方がいまいちわからない
-        // https://docs.microsoft.com/ja-jp/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/applifecycle
-
-        #region アプリ多重起動防止
-        {
-            var app = AppInstance.FindOrRegisterInstanceForKey( Config.System.AppName );
-
-			if ( !app.IsCurrentInstance )
-			{
-				Trace.WriteLine( $"Preventing multiple launches of apps" );
-
-				app.RedirectActivationTo();
-				Exit();
-				return;
-			}
-		}
-		#endregion
-
         InitializeComponent();
     }
 

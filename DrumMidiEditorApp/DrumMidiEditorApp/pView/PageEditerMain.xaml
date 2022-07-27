@@ -5,7 +5,9 @@
     xmlns:local="using:DrumMidiEditorApp.pView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:psurface="using:DrumMidiEditorApp.pView.pPlayer.pSurface"
+    xmlns:psurface="using:DrumMidiEditorApp.pView.pPlayer.pSurface" 
+    xmlns:local1="using:DrumMidiEditorApp.pView.pMenuBar" 
+    xmlns:local2="using:DrumMidiEditorApp.pView.pStatusBar"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -24,7 +26,7 @@
             <RowDefinition Height="0" />
         </Grid.RowDefinitions>
 
-        <local:PageMenuBar x:Name="_PageMenuBar" 
+        <local1:PageMenuBar x:Name="_PageMenuBar" 
             Grid.Row="0" 
             Grid.Column="0" 
             Grid.ColumnSpan="2" />
@@ -41,7 +43,7 @@
             Grid.Column="0"
             Grid.ColumnSpan="2" />
 
-        <local:PageStatusBar x:Name="_PageStatusBar" 
+        <local2:PageStatusBar x:Name="_PageStatusBar" 
             Grid.Row="3" 
             Grid.Column="0" 
             Grid.ColumnSpan="2" />

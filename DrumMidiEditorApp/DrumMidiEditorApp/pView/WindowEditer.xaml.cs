@@ -56,6 +56,8 @@ public sealed partial class WindowEditer : Window
 
 		// 通常ウィンドウのプレゼンター設定
 		//AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
+
+		ControlAccess.MainWindow = this;
 	}
 
     private void Window_Activated( object sender, WindowActivatedEventArgs args )

@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="DrumMidiEditorApp.pView.PageStatusBar"
+    x:Class="DrumMidiEditorApp.pView.pStatusBar.PageStatusBar"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,13 +8,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel Orientation="Vertical">
+            
+            <InfoBar x:Name="_InfoBar"
+                IsOpen="False"
+                IsClosable="True" />
 
-        <InfoBar x:Name="_InfoBar"
-            IsOpen="False"
-            IsClosable="True" />
-
-        <ProgressBar x:Name="_ProgressBar"
-            Value="{x:Bind ConfigSystem.ProgressBarValue, Mode=OneWay}" />
-
+            <ProgressBar x:Name="_ProgressBar"
+                Value="{x:Bind ConfigSystem.ProgressBarValue, Mode=OneWay}" />
+            
+        </StackPanel>
     </Grid>
 </Page>

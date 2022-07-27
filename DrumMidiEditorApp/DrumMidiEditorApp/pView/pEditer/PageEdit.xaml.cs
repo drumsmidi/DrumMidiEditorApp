@@ -50,7 +50,7 @@ public sealed partial class PageEdit : Page
     /// </summary>
     private Score Score => DMS.SCORE;
 
-	private ObservableCollection<CollectionItem> _MeasureNoList = new();
+	private readonly ObservableCollection<CollectionItem> _MeasureNoList = new();
 
 	public PageEdit()
     {

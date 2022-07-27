@@ -944,7 +944,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     Content.XamlRoot,
                     ResourcesHelper.GetString( "LabelBpm" ),
                     page,
-                    new(() =>
+                    () =>
                     {
                         info_new.Bpm = page.Bpm;
 
@@ -955,7 +955,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         UpdateBpmMeasure( measure_no );
 
                         Refresh();
-                    })
+                    }
                 );
 
             return;
