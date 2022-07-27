@@ -16,6 +16,7 @@
   <ItemGroup>
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
+    <None Remove="pView\pMidiMap\UserControlMidiMapPanel.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +52,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pMidiMap\UserControlMidiMapPanel.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pStatusBar\PageStatusBar.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

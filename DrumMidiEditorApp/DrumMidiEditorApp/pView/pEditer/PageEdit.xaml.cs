@@ -33,7 +33,7 @@ public sealed partial class PageEdit : Page
     /// <summary>
     /// System設定
     /// </summary>
-    private ConfigSystem ConfSystem => Config.System;
+    private ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Scale設定
@@ -50,17 +50,22 @@ public sealed partial class PageEdit : Page
     /// </summary>
     private Score Score => DMS.SCORE;
 
-	private readonly ObservableCollection<CollectionItem> _MeasureNoList = new();
+	private readonly ObservableCollection<string> _MeasureNoList = new();
+
+
+	//SelectRangeList
+
 
 	public PageEdit()
     {
         InitializeComponent();
 
-		int keta = ConfSystem.MeasureMaxNumber.ToString().Length;
+		// 小節番号リスト作成
+		int keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
 
-		for ( int measure_no = 0; measure_no <= ConfSystem.MeasureMaxNumber; measure_no++ )
+		for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
 		{
-			_MeasureNoList.Add( new( measure_no.ToString().PadLeft( keta, '0' ) ) );
+			_MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
 		}
 
 		// NumberBox の入力書式設定
@@ -70,22 +75,74 @@ public sealed partial class PageEdit : Page
 			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
     }
 
-    private void MeasureNoGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    #region Move sheet
+
+	/// <summary>
+	/// 小節番号移動
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void MeasureNoGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
+		try
+		{
+            var value = args.AddedItems[ 0 ].ToString();
+
+			if ( !string.IsNullOrEmpty( value ) )
+            {
+				JumpMeasure( Convert.ToInt32( value ) );
+            }
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 
     }
 
-    private void MeasureNoGridView_ItemClick(object sender, ItemClickEventArgs e)
-    {
+	/// <summary>
+	/// 小節番号移動
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void MeasureNoGridView_ItemClick( object sender, ItemClickEventArgs args )
+	{
+		try
+		{
+            var value = args.ClickedItem.ToString();
 
+			if ( !string.IsNullOrEmpty( value ) )
+            {
+				JumpMeasure( Convert.ToInt32( value ) );
+            }
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	/// <summary>
+	/// シート位置　指定の小節番号へ移動
+	/// </summary>
+	/// <param name="aMeasureNo">小節番号</param>
+	private void JumpMeasure( int aMeasureNo )
+    {
+		DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
+
+		Config.EventUpdateEditerSheetPos();
+
+		Refresh();
     }
+
+	#endregion
 
 	/// <summary>
 	/// 共通：数値変更
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+	private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
 		try
 		{
@@ -101,14 +158,73 @@ public sealed partial class PageEdit : Page
         }
     }
 
-    #region Resume
 
-    /// <summary>
-    /// Undo実行
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UndoButton_Click( object sender, RoutedEventArgs args )
+
+	#region Edit
+
+	///// <summary>
+	///// 分割入力単位変更
+	///// </summary>
+	///// <param name="sender"></param>
+	///// <param name="ev"></param>
+	//   private void DivisionLineListBox_SelectedIndexChanged( object sender, EventArgs ev )
+	//   {
+	//	try
+	//	{
+	//		DrawSet.SheetDivisionLine = Convert.ToInt32( DivisionLineListBox.SelectedItem.ToString() );
+
+	//		RefreshScreen();
+	//	}
+	//       catch ( Exception e )
+	//       {
+	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+	//       }
+	//   }
+
+	///// <summary>
+	///// 音量編集タイプ変更
+	///// </summary>
+	///// <param name="sender"></param>
+	///// <param name="ev"></param>
+	//private void EditVolumeListBox_SelectedIndexChanged( object sender, EventArgs ev )
+	//{
+	//	try
+	//	{
+	//		DrawSet.VolumeEditSelect = (ConfigEditer.VolumeEditType)EditVolumeListBox.SelectedIndex;
+	//	}
+	//       catch ( Exception e )
+	//       {
+	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+	//       }
+	//}
+
+	///// <summary>
+	///// 範囲選択タイプ変更
+	///// </summary>
+	///// <param name="sender"></param>
+	///// <param name="ev"></param>
+	//   private void SelectRangeListBox_SelectedIndexChanged( object sender, EventArgs ev )
+	//   {
+	//try
+	//{
+	//	DrawSet.RangeSelect = (ConfigEditer.RangeSelectType)SelectRangeListBox.SelectedIndex;
+	//}
+	//       catch ( Exception e )
+	//       {
+	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+	//       }
+	//   }
+
+	#endregion
+
+	#region Resume
+
+	/// <summary>
+	/// Undo実行
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void UndoButton_Click( object sender, RoutedEventArgs args )
     {
 		try
 		{
@@ -176,34 +292,6 @@ public EditerControl()
 
 	InitUpdate();
 
-#region ToolTip
-
-	ToolTip.SetToolTip( MeasureNoListBox		, "Move measure position" );
-	ToolTip.SetToolTip( NoteHeightNumericUpDown	, "Note height" );
-	ToolTip.SetToolTip( NoteWidthNumericUpDown	, "Note width" );
-        ToolTip.SetToolTip( VolumeGroupBox			, "Input volume" );
-        ToolTip.SetToolTip( EditVolumeListBox		, "Volume edit line" );
-
-        ToolTip.SetToolTip( WaveFormGroupBox		, "Under consideration" );
-        ToolTip.SetToolTip( VolumeLowNumericUpDown	, "Low db" );
-        ToolTip.SetToolTip( VolumeMidNumericUpDown	, "Mid db" );
-        ToolTip.SetToolTip( VolumeHighNumericUpDown	, "High db" );
-        ToolTip.SetToolTip( VolumeTopNumericUpDown	, "Top db" );
-        ToolTip.SetToolTip( ScaleSensitivityTrackBar, "Sensitivity" );
-
-	ToolTip.SetToolTip( MoveSheetPictureBox		, "Move sheet position" );
-
-	ToolTip.SetToolTip( NoteOnCheckBox			, "Input note on/off" );
-	ToolTip.SetToolTip( DivisionLineListBox		, "Input note. Number of divisions within a measure." );
-	ToolTip.SetToolTip( SelectRangeListBox		, "Selection type" );
-	ToolTip.SetToolTip( ClearRangeCheckBox		, "Cancel selection" );
-	ToolTip.SetToolTip( BpmCheckBox				, "Include BPM in selection" );
-
-	ToolTip.SetToolTip( RedoButton				, "Redo" );
-	ToolTip.SetToolTip( UndoButton				, "Undu" );
-
-#endregion
-
 	_MoveTimer.Tick		+= new EventHandler( ProcMoveSheet );
 	_MoveTimer.Interval	 = 100;
 	_MoveTimer.Enabled	 = false;
@@ -258,185 +346,7 @@ public EditerControl()
     }
 
 
-#region SheetMove
 
-/// <summary>
-/// シート縦スクロール
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void EditVScrollBar_Scroll( object sender, ScrollEventArgs ev )
-{
-        try
-        {
-		MoveSheetDiff( 0, ev.NewValue - ev.OldValue );
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// シート横スクロール
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void EditHScrollBar_Scroll( object sender, ScrollEventArgs ev )
-{
-        try
-        {
-		MoveSheetDiff( ev.NewValue - ev.OldValue,	0 );
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// 選択した小節番号へシート位置移動
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void MeasureNoListBox_SelectedIndexChanged( object sender, EventArgs ev )
-{
-	try
-	{
-		if ( MeasureNoListBox.SelectedIndex == -1 )
-		{
-			return;
-		}
-
-		JumpMeasure( MeasureNoListBox.SelectedIndex );
-	}
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// シートマウス移動開始
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void MoveSheetPictureBox_MouseDown( object sender, MouseEventArgs ev )
-{
-        try
-        {
-		if ( !_MoveTimer.Enabled )
-		{
-			_MoveSheetPos		= Cursor.Position;
-			_MoveTimer.Enabled	= true;
-		}
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// シートマウス移動終了
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void MoveSheetPictureBox_MouseUp( object sender, MouseEventArgs ev )
-{
-        try
-        {
-        _MoveTimer.Enabled = false;
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// シートマウス移動
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void ProcMoveSheet( object? sender, EventArgs ev )
-    {
-        try
-        {
-		SuspendLayout();
-
-		if ( _MoveTimer.Enabled )
-		{
-    //            MoveSheetDiff
-    //                (
-    //                    ( Cursor.Position.X - _MoveSheetPos.X ) / DrawSet.NoteWidthSize
-    //                ,   ( Cursor.Position.Y - _MoveSheetPos.Y ) / DrawSet.NoteHeightSize
-    //                );
-
-			//EditHScrollBar.Value = DrawSet.NotePosition.X;
-			//EditVScrollBar.Value = DrawSet.NotePosition.Y;
-		}
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-	finally
-        {
-		ResumeLayout( false );
-	}
-}
-
-/// <summary>
-/// シート移動処理
-/// </summary>
-/// <param name="aDiffX">移動ノート数X座標</param>
-/// <param name="aDiffY">移動ノート数Y座標</param>
-private void MoveSheetDiff( int aDiffX, int aDiffY )
-    {
-	if ( aDiffX == 0 && aDiffY == 0 )
-	{
-		return;
-	}
-
-	EditVScrollBar.Maximum = DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount - 1 >= 0 
-		? DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount - 1 : 0;
-
-	//DrawSet.NotePosition = FormUtil.CheckRangeIn
-	//	( 
-	//		new
-	//		(
-	//			DrawSet.NotePosition.X + aDiffX,
-	//			DrawSet.NotePosition.Y + aDiffY
-	//		),
-	//		new
-	//		(
-	//			EditHScrollBar.Minimum,
-	//			EditVScrollBar.Minimum,
-	//			EditHScrollBar.Maximum,
-	//			EditVScrollBar.Maximum
-	//		)
-	//	);
-
-	Config.EventUpdateEditerSheetPos();
-
-	RefreshScreen();
-}
-
-/// <summary>
-/// シート位置　指定の小節番号へ移動
-/// </summary>
-/// <param name="aMeasureNo">小節番号</param>
-private void JumpMeasure( int aMeasureNo )
-    {
-	//DrawSet.NotePosition = new Point( aMeasureNo * Config.System.MeasureNoteNumber, DrawSet.NotePosition.Y );
-
-	Config.EventUpdateEditerSheetPos();
-
-	RefreshScreen();
-    }
-
-#endregion
 
 #region Note
 
@@ -556,134 +466,7 @@ private void VolumeRadioButton_CheckedChanged( object sender, EventArgs ev )
 
 #endregion
 
-#region Edit
 
-/// <summary>
-/// 分割入力単位変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-    private void DivisionLineListBox_SelectedIndexChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		DrawSet.SheetDivisionLine = Convert.ToInt32( DivisionLineListBox.SelectedItem.ToString() );
-
-		RefreshScreen();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// 音量編集タイプ変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void EditVolumeListBox_SelectedIndexChanged( object sender, EventArgs ev )
-{
-	try
-	{
-		DrawSet.VolumeEditSelect = (ConfigEditer.VolumeEditType)EditVolumeListBox.SelectedIndex;
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-}
-
-/// <summary>
-/// 範囲選択タイプ変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-    private void SelectRangeListBox_SelectedIndexChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		DrawSet.RangeSelect = (ConfigEditer.RangeSelectType)SelectRangeListBox.SelectedIndex;
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// 範囲選択チェック状態変更
-/// </summary>
-/// <param name="aCheck">True:チェックON、False:チェックOFF</param>
-public void DoClearRangeCheckBox( bool aCheck )
-{
-	try
-	{
-		ClearRangeCheckBox.Checked = aCheck;
-	}
-	catch ( Exception e )
-	{
-		Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// 範囲選択クリア
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void ClearRangeCheckBox_CheckedChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		if ( !ClearRangeCheckBox.Checked )
-		{ 
-			Config.EventClearEditerRange();
-
-			RefreshScreen();
-		}
-	}
-	catch ( Exception e )
-	{
-		Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// 範囲選択にBPMを含めるフラグ変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void BpmCheckBox_CheckedChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		DrawSet.IncludeBpm = BpmCheckBox.Checked;
-	}
-	catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// NoteOn/Off入力切替
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-    private void NoteOnCheckBox_CheckedChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		DrawSet.NoteOn = NoteOnCheckBox.Checked;
-	}
-	catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-#endregion
 
 #region WaveForm
 

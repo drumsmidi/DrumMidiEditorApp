@@ -161,6 +161,18 @@
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="ColumnMidiMapDisplay.Text" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="ColumnMidiMapKey.Text" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="ColumnMidiMapName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ColumnMidiMapVolume.Text" xml:space="preserve">
+    <value>Volume(±)</value>
+  </data>
   <data name="Dialog.Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -215,6 +227,9 @@
   </data>
   <data name="InputChannelNo.Header" xml:space="preserve">
     <value>Ch.</value>
+  </data>
+  <data name="InputJumpMeasure.Text" xml:space="preserve">
+    <value>小節移動</value>
   </data>
   <data name="InputLoopPlayMeasureConnect.Header" xml:space="preserve">
     <value>小節接続数</value>

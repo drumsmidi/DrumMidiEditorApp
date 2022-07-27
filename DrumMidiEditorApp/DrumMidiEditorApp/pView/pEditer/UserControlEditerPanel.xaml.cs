@@ -264,6 +264,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         SelectNoteRange,
         MoveNoteRange,
         RemoveNoteRange,
+        MoveSheet,
     }
 
     /// <summary>
@@ -363,7 +364,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 			}
             else if ( p.Properties.IsRightButtonPressed )					
 			{
-                if (CheckVolumeBodyArea( p.Position ) )
+                if ( CheckVolumeBodyArea( p.Position ) )
                 {
                     ClearVolumeRange();
                 }
@@ -414,6 +415,12 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
                 }
 			}
+            else if ( p.Properties.IsMiddleButtonPressed )
+            {
+                _MouseDownPosition = p.Position;
+
+                _ActionState = EActionState.MoveSheet;
+            }
 
             Refresh();
         }
@@ -505,6 +512,11 @@ public sealed partial class UserControlEditerPanel : UserControl
                         MoveNoteRangeAsync( p.Position );
                     }
                     break;
+                case EActionState.MoveSheet:
+                    {
+                        MoveSheetAsync( p.Position );
+                    }
+                    break;
     		}
 
             Refresh();
@@ -579,6 +591,11 @@ public sealed partial class UserControlEditerPanel : UserControl
                         EditMoveNoteRange( p.Position );
                     }
                     break;
+                case EActionState.MoveSheet:
+                    {
+                        StopTimer();
+                    }
+                    break;
                 case EActionState.RemoveBpm:
                     {
                         EditBpm( p.Position, false );
@@ -606,6 +623,15 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             _ActionState = EActionState.None;
         }
+    }
+
+    /// <summary>
+    /// タイマー停止
+    /// </summary>
+    private void StopTimer()
+    {
+        _Timer?.Dispose();
+        _Timer = null;
     }
 
     /// <summary>
@@ -672,12 +698,54 @@ public sealed partial class UserControlEditerPanel : UserControl
     }
 
     /// <summary>
-    /// タイマー停止
+    /// シート移動処理
     /// </summary>
-    private void StopTimer()
+    /// <param name="aMousePoint"></param>
+    private async void MoveSheetAsync( Point aMousePoint )
     {
-        _Timer?.Dispose();
-        _Timer = null;
+        if ( _Timer != null )
+        {
+            _MoveMousePoint= aMousePoint;
+            return;
+        }
+
+        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
+
+        while ( await _Timer.WaitForNextTickAsync() )
+        {
+            var move = new Point
+                ( 
+                    ( _MoveMousePoint.X - _MouseDownPosition.X ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond,
+                    ( _MoveMousePoint.Y - _MouseDownPosition.Y ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond
+                );
+
+            if ( move.X == 0 && move.Y == 0 )
+	        {
+		        return;
+	        }
+
+            var note_pos = XamlHelper.AdjustRangeIn
+                (
+                    new
+                    (
+                        DrawSet.NotePosition.X + move.X,
+                        DrawSet.NotePosition.Y + move.Y
+                    ),
+                    new
+                    (
+                        0,
+                        0,
+                        ConfigSystem.NoteCount,
+                        Score.EditChannel.MidiMapSet.DisplayMidiMapAllCount
+                    )
+                );
+
+            DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
+
+            Config.EventUpdateEditerSheetPos();
+
+	        Refresh();
+        }
     }
 
     #endregion

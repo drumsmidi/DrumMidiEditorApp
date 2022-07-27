@@ -17,6 +17,8 @@
             <Setter Property="Width" Value="140" />
             <Setter Property="Height" Value="60" />
         </Style>
+        <Style x:Key="ToggleButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource BasicToggleButtonStyle}">
+        </Style>
     </Page.Resources>
     
     <Grid>
@@ -32,37 +34,46 @@
         <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
 
             <StackPanel Orientation="Vertical">
+
+                <TextBlock x:Uid="InputJumpMeasure" />
                 
-                <GridView 
-                    Background="#AAA"
-                    Height="400"
-                    VerticalAlignment="Top"
-                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                    ItemsSource="{x:Bind _MeasureNoList}">
+                <GridView x:Name="_MeasureNoGridView"
+                    ItemsSource="{x:Bind _MeasureNoList}"
+                    Background="#000"
+                    SelectionMode="Single"
+                    ItemClick="MeasureNoGridView_ItemClick"
+                    SelectionChanged="MeasureNoGridView_SelectionChanged"
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="util:CollectionItem">
-                            <StackPanel 
-                                Width="30" 
-                                Height="20"
-                                Margin="0"
-                                Padding="0" 
-                                Orientation="Vertical" >
-                                <TextBlock 
-                                    TextAlignment="Center"
-                                    Margin="0" 
-                                    Width="30" 
-                                    Text="{x:Bind Value}"/>
-                            </StackPanel>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock 
+                                TextAlignment="Left"
+                                VerticalAlignment="Top"
+                                Margin="-6 -14 0 0"
+                                Padding="0"
+                                FontSize="14"
+                                Text="{x:Bind}"/>
                         </DataTemplate>
                     </GridView.ItemTemplate>
+                    
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid 
-                                MaximumRowsOrColumns="8" 
-                                Orientation="Vertical" 
-                                HorizontalAlignment="Center" />
+                                MaximumRowsOrColumns="10" 
+                                Orientation="Vertical"
+                                Margin="0"
+                                ItemWidth="40"
+                                ItemHeight="30"
+                                Background="#333"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left" />
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
+                    
                 </GridView>
 
                 <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight" Style="{StaticResource NumberBoxStyle}"
@@ -178,9 +189,10 @@
 
             <StackPanel Orientation="Horizontal">
 
+                <ToggleButton x:Name="_NoteOnOffToggleButton" x:Uid="InputNoteOnOff" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind DrawSet.NoteOn, Mode=TwoWay}" />
+                
                 <!--
-                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
-                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
         
                 <GridView 
                     Background="#AAA"
@@ -224,14 +236,11 @@
                     Loaded="ListBox2_Loaded" />
                 -->
 
-                <!--
-                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
-                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
+                <ToggleButton x:Name="_SelectRangeToggleButton" x:Uid="InputSelectRange" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind DrawSet.IsRangeSelect, Mode=TwoWay}" />
 
-                <ToggleButton x:Name="_PlayerDisplayToggleButton" x:Uid="PlayerDisplayToggleButton" Style="{StaticResource ToggleButtonStyle}"
-                    IsChecked="{x:Bind _ConfigPlayer.DisplayPlayer, Mode=TwoWay}" />
-                
-                -->
+                <ToggleButton x:Name="_IncludeBpmToggleButton" x:Uid="InputIncludeBpm" Style="{StaticResource ToggleButtonStyle}"
+                    IsChecked="{x:Bind DrawSet.IncludeBpm, Mode=TwoWay}" />
 
                 <Button x:Name="_UndoButton" x:Uid="ButtonUndo" Style="{StaticResource ButtonStyle}"
                     Click="UndoButton_Click" />

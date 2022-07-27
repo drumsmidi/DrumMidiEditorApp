@@ -29,5 +29,5 @@
     </Style>
     <Style x:Key="BasicToggleSwitchStyle" TargetType="ToggleSwitch">
     </Style>
-    
+
 </ResourceDictionary>

@@ -353,7 +353,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect HeaderSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 160,  80,  40,  40 ),
+        BackColor   = Color.FromArgb( 255,  80,  40,  40 ),
         LineColor   = _BassLineColor,
         LineSize    = _BassLineSize,
         TextColor   = _BassTextColor,
@@ -535,6 +535,12 @@ public class ConfigEditer
     public Size SheetMovePaddingSize { get; set; } = new( 80, 60 );
 
     /// <summary>
+    /// シート移動速度
+    /// </summary>
+    [JsonInclude]
+    public float SheetMoveSpeed { get; set; } = 0.5F;
+
+    /// <summary>
     /// シート背景色
     /// </summary>
     [JsonInclude]
@@ -708,6 +714,12 @@ public class ConfigEditer
     /// </summary>
     [JsonInclude]
     public RangeSelectType RangeSelect { get; set; } = RangeSelectType.Normal;
+
+    /// <summary>
+    /// 範囲選択状態
+    /// </summary>
+    [JsonIgnore]
+    public bool IsRangeSelect { get; set; } = false;
 
     #endregion
 
