@@ -96,10 +96,10 @@ public class DmsItemVolumeRange : DisposeBaseClass
 
             switch ( EditType )
             {
-                case ConfigEditer.VolumeEditType.VolumeUpDown:
-                case ConfigEditer.VolumeEditType.VolumeIntonationHL:
-                case ConfigEditer.VolumeEditType.VolumeIntonationH:
-                case ConfigEditer.VolumeEditType.VolumeIntonationL:
+                case ConfigEditer.VolumeEditType.UpDown:
+                case ConfigEditer.VolumeEditType.IntonationHL:
+                case ConfigEditer.VolumeEditType.IntonationH:
+                case ConfigEditer.VolumeEditType.IntonationL:
                     {
                         if ( _Direct )
                         {
@@ -242,10 +242,10 @@ public class DmsItemVolumeRange : DisposeBaseClass
                 }
             }
         }
-        else if (   EditType == ConfigEditer.VolumeEditType.VolumeUpDown
-                ||  EditType == ConfigEditer.VolumeEditType.VolumeIntonationHL
-                ||  EditType == ConfigEditer.VolumeEditType.VolumeIntonationH
-                ||  EditType == ConfigEditer.VolumeEditType.VolumeIntonationL )
+        else if (   EditType == ConfigEditer.VolumeEditType.UpDown
+                ||  EditType == ConfigEditer.VolumeEditType.IntonationHL
+                ||  EditType == ConfigEditer.VolumeEditType.IntonationH
+                ||  EditType == ConfigEditer.VolumeEditType.IntonationL )
         {
             _VolumeList.Clear();
 
@@ -359,10 +359,10 @@ public class DmsItemVolumeRange : DisposeBaseClass
 
             switch ( EditType )
             {
-                case ConfigEditer.VolumeEditType.VolumeUpDown:
-                case ConfigEditer.VolumeEditType.VolumeIntonationHL:
-                case ConfigEditer.VolumeEditType.VolumeIntonationH:
-                case ConfigEditer.VolumeEditType.VolumeIntonationL:
+                case ConfigEditer.VolumeEditType.UpDown:
+                case ConfigEditer.VolumeEditType.IntonationHL:
+                case ConfigEditer.VolumeEditType.IntonationH:
+                case ConfigEditer.VolumeEditType.IntonationL:
                     {
                         // 開始／終了間の差分表示の場合
                         p1.Y -= _EndVolume - _StartVolume;

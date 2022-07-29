@@ -7,13 +7,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
-        </Style>
-    </Page.Resources>
-
     <Grid>
-        <NumberBox x:Name="_BpmZoomNumberBox" x:Uid="InputBpmZoom" Style="{StaticResource NumberBoxStyle}"
+        <NumberBox x:Name="_BpmZoomNumberBox" x:Uid="InputBpmZoom"
             Value="{x:Bind BpmZoom, Mode=TwoWay}" 
             Minimum="0.0125"
             Maximum="4"

@@ -17,6 +17,8 @@ namespace DrumMidiEditorApp.pView.pMenuBar;
 
 public sealed partial class PageMenuBar : Page
 {
+	#region Member
+
 	/// <summary>
 	/// メディア設定
 	/// </summary>
@@ -42,14 +44,17 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	private readonly ObservableCollection<string> _PlayerDisplayList = new();
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageMenuBar()
+    #endregion
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageMenuBar()
     {
         InitializeComponent();
 
-		// プレイヤー表示タイプリスト
+		#region プレイヤー表示タイプリスト
+
 		foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerLayoutMode>() )
 		{
 			if ( name != null )
@@ -58,8 +63,11 @@ public sealed partial class PageMenuBar : Page
 			}
 		}
 
-		// NumberBox の入力書式設定
-		_LoopPlayMeasureStartNumberBox.NumberFormatter 
+        #endregion
+
+        #region NumberBox の入力書式設定
+
+        _LoopPlayMeasureStartNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
 		_LoopPlayMeasureEndNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
@@ -70,8 +78,10 @@ public sealed partial class PageMenuBar : Page
 		_LoopPlayMeasureEndNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
 
+        #endregion
+
 #if DEBUG
-		var filepath = new GeneralPath("D:/CreateGame/DrumMidiEditor/build/net6.0-windows10.0.19041.0/Dms/test.dms");
+        var filepath = new GeneralPath( "D:/CreateGame/DrumMidiEditor/build/net6.0-windows10.0.19041.0/Dms/test.dms" );
 
 		FileIO.LoadScore( filepath, out var score );
 		//FileIO.SaveScore( filepath, score );
@@ -90,23 +100,13 @@ public sealed partial class PageMenuBar : Page
     {
         try
         {
-			Config.EventReloadScore();
-
-		
 			DMS.SCORE.EditChannelNo = _ChannelNoComboBox.SelectedValue != null 
 				? Convert.ToByte( _ChannelNoComboBox.SelectedValue.ToString() )
 				: ConfigMedia.ChannelDrum;
 
+			SetSubTitle();
 
-			//if ( DMS.EditerForm != null )
-			//{
-			//	//DMS.EditerForm.MusicCtl.ApplyScore();
-			//	//DMS.EditerForm.MusicCtl.ApplyEqulizer();
-			//	DMS.EditerForm.MidiMapSetCtl.LoadMidiMapSet( DMS.SCORE.EditMidiMapSet );
-			//	DMS.EditerForm.Refresh();
-
-			//	DMS.EditerForm.Text = $"{Config.System.AppName} [{Config.System.OpenFilePath.AbsoulteFilePath}]";
-			//}
+			Config.EventReloadScore();
 		}
 		catch ( Exception e )
 		{
@@ -120,9 +120,13 @@ public sealed partial class PageMenuBar : Page
 	/// 再生停止＆プレイヤーフォーム一時非表示
 	/// </summary>
 	private static void PlayerStop()
-    {
-		DmsControl.StopPreSequence();
-	}
+		=> DmsControl.StopPreSequence();
+
+	/// <summary>
+	/// タイトルバーに編集中のファイル名を設定
+	/// </summary>
+	private void SetSubTitle()
+		=> ControlAccess.MainWindow?.SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
 
 	/// <summary>
 	/// メニュー：DMS新規作成
@@ -168,16 +172,13 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			var filepath = new GeneralPath();
-
 			XamlHelper.OpenDialogAsync
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportDmsOpen,
-					filepath,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderDms,
-					() =>
+					( filepath ) =>
                     {
 				        if ( !FileIO.LoadScore( filepath, out var score ) )
 						{
@@ -208,18 +209,18 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			var filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
+			var edit_filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
 
-			if ( !filepath.IsExistFile )
+			if ( !edit_filepath.IsExistFile )
 			{ 
 				XamlHelper.SaveDialogAsync
 					(
 						ControlAccess.MainWindow,
 						ConfigSystem.SupportDmsSave,
-						filepath,
+						edit_filepath.FileNameWithoutExtension,
 						PickerLocationId.DocumentsLibrary,
 						ConfigSystem.FolderDms,
-						() =>
+						( filepath ) =>
 						{
 							filepath.Extension = ConfigSystem.ExtentionDms;
 
@@ -229,12 +230,14 @@ public sealed partial class PageMenuBar : Page
                             }
 
                             DMS.OpenFilePath = filepath;
-                        }
+
+							SetSubTitle();
+						}
                     );
 			}
 			else
             {
-                if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
+                if ( !FileIO.SaveScore( edit_filepath, DMS.SCORE ) )
                 {
                     return;
                 }
@@ -257,16 +260,14 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-			var filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
-
 			XamlHelper.SaveDialogAsync
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportDmsSave,
-					filepath,
+					DMS.OpenFilePath.FileNameWithoutExtension,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderDms,
-					() =>
+					( filepath ) =>
                     {
 						filepath.Extension = ConfigSystem.ExtentionDms;
 
@@ -276,6 +277,8 @@ public sealed partial class PageMenuBar : Page
 						}
 
 						DMS.OpenFilePath = filepath;
+
+						SetSubTitle();
 					}
 				);
 		}
@@ -296,16 +299,14 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop(); 
 
-            var filepath = new GeneralPath( DMS.OpenFilePath.FileNameWithoutExtension );
-
 			XamlHelper.SaveDialogAsync
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportMidi,
-					filepath,
+					DMS.OpenFilePath.FileNameWithoutExtension,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderExport,
-					() =>
+					( filepath ) =>
                     {
 						if ( !FileIO.SaveMidi( filepath, DMS.SCORE ) )
 						{
@@ -331,16 +332,14 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop();
 
-            var filepath = new GeneralPath( DMS.OpenFilePath.FileNameWithoutExtension );
-
             XamlHelper.SaveDialogAsync
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportVideo,
-					filepath,
+					DMS.OpenFilePath.FileNameWithoutExtension,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderExport,
-					() =>
+					( filepath ) =>
                     {
 						filepath.Extension = ConfigSystem.ExtentionVideo;
 
@@ -368,16 +367,13 @@ public sealed partial class PageMenuBar : Page
         {
             PlayerStop();
 
-			var filepath = new GeneralPath();
-
 			XamlHelper.OpenDialogAsync
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportMidi,
-					filepath,
 					PickerLocationId.DocumentsLibrary,
 					ConfigSystem.FolderMidi,
-					() =>
+					( filepath ) =>
                     {
 						var page = new PageImportMidi
 						{
@@ -427,7 +423,7 @@ public sealed partial class PageMenuBar : Page
     {
 		try
 		{
-			Score.EditChannelNo = (byte)Convert.ToInt32( _ChannelNoComboBox.SelectedItem.ToString() ?? $"{ConfigMedia.ChannelDrum}" );
+			Score.EditChannelNo = (byte)_ChannelNoComboBox.SelectedItem;
 
 			Config.EventChangeChannel();
 		}
@@ -538,15 +534,6 @@ public sealed partial class PageMenuBar : Page
         {
 			return;
         }
-
-#if DEBUG
-		Log.Info( $"-------------------------------------------------------------------" );
-		Log.Info( $"1.{ConfigMedia.PlayLoopStart}={_LoopPlayMeasureStartNumberBox.Value}" );
-		Log.Info( $"2.{ConfigMedia.PlayLoopEnd}={_LoopPlayMeasureEndNumberBox.Value}" );
-		Log.Info( $"3.{ConfigMedia.PlayLoopConnect}={_LoopPlayMeasureConnectNumberBox.Value}" );
-		Log.Info( $"4.{ConfigMedia.PlayLoopConnectOn}={_LoopPlayMeasureConnectToggleSwitch.IsOn}" );
-		Log.Info( $"-------------------------------------------------------------------" );
-#endif
 
 		var start	= (int)_LoopPlayMeasureStartNumberBox.Value;
 		var end		= (int)_LoopPlayMeasureEndNumberBox.Value;

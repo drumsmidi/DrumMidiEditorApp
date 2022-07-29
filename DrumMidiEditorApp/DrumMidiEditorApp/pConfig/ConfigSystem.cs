@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Windows.ApplicationModel;
-using Windows.Storage;
 using Windows.UI;
 
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using System.IO;
 
 namespace DrumMidiEditorApp.pConfig;
 

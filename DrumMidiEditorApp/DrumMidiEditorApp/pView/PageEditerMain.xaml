@@ -2,13 +2,14 @@
     x:Class="DrumMidiEditorApp.pView.PageEditerMain"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DrumMidiEditorApp.pView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:psurface="using:DrumMidiEditorApp.pView.pPlayer.pSurface" 
     xmlns:local1="using:DrumMidiEditorApp.pView.pMenuBar" 
-    xmlns:local2="using:DrumMidiEditorApp.pView.pStatusBar"
+    xmlns:local2="using:DrumMidiEditorApp.pView.pStatusBar" 
+    xmlns:local3="using:DrumMidiEditorApp.pView.pNavi"
+    xmlns:local4="using:DrumMidiEditorApp.pView.pPlayer.pSurface" 
     mc:Ignorable="d"
+    SizeChanged="Page_SizeChanged"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
@@ -31,13 +32,13 @@
             Grid.Column="0" 
             Grid.ColumnSpan="2" />
 
-        <local:PageNavigation x:Name="_PageNavigation" 
+        <local3:PageNavigation x:Name="_PageNavigation" 
             Grid.Row="1" 
             Grid.RowSpan="1"
             Grid.Column="0"
             Grid.ColumnSpan="2" />
-        
-        <psurface:PagePlayer x:Name="_PagePlayer" 
+
+        <local4:PagePlayer x:Name="_PagePlayer" 
             Grid.Row="2" 
             Grid.RowSpan="1"
             Grid.Column="0"
@@ -48,7 +49,8 @@
             Grid.Column="0" 
             Grid.ColumnSpan="2" />
 
-        <Grid 
+        <Grid
+            Visibility="Collapsed"
             Grid.Row="4" 
             Grid.Column="0" 
             Grid.ColumnSpan="2" />

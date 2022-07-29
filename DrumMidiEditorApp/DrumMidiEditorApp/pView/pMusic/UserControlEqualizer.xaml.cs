@@ -16,6 +16,8 @@ namespace DrumMidiEditorApp.pView.pMusic;
 
 public sealed partial class UserControlEqualizer : UserControl
 {
+    #region Member
+
     /// <summary>
     /// イコライザ設定
     /// </summary>
@@ -40,6 +42,8 @@ public sealed partial class UserControlEqualizer : UserControl
     /// 波形描画用のタイマー
     /// </summary>
     private PeriodicTimer? _Timer = null;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ

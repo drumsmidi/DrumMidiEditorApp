@@ -1828,18 +1828,18 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     switch ( _VolumeRange.EditType )
                     {
-                        case ConfigEditer.VolumeEditType.VolumeUpDown:
+                        case ConfigEditer.VolumeEditType.UpDown:
                             info_new.Volume += _VolumeRange.VolumeList[ x - sn ];
                             break;
-                        case ConfigEditer.VolumeEditType.VolumeIntonationHL:
+                        case ConfigEditer.VolumeEditType.IntonationHL:
                             info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
                                 * ( info_new.Volume < _VolumeRange.StartVolume ? -1 : 1 );
                             break;
-                        case ConfigEditer.VolumeEditType.VolumeIntonationH:
+                        case ConfigEditer.VolumeEditType.IntonationH:
                             info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
                                 * ( info_new.Volume >= _VolumeRange.StartVolume ? 1 : 0 );
                             break;
-                        case ConfigEditer.VolumeEditType.VolumeIntonationL:
+                        case ConfigEditer.VolumeEditType.IntonationL:
                             info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
                                 * ( info_new.Volume <= _VolumeRange.StartVolume ? 1 : 0 );
                             break;

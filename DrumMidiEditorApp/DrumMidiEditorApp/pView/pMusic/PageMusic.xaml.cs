@@ -1,6 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
@@ -10,12 +12,14 @@ using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 
-public sealed partial class PageMusic : Page
+public sealed partial class PageMusic : Page, INotifyPropertyChanged
 {
-	/// <summary>
-	/// スコア情報
-	/// </summary>
-	private Score MusicInfo => DMS.SCORE;
+    #region Member
+
+    /// <summary>
+    /// スコア情報
+    /// </summary>
+    private Score MusicInfo => DMS.SCORE;
 
 	/// <summary>
 	/// 設定
@@ -27,23 +31,47 @@ public sealed partial class PageMusic : Page
 	/// </summary>
 	private ConfigSystem ConfigSystem => Config.System;
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageMusic()
+    #endregion
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageMusic()
     {
         InitializeComponent();
 
-		// NumberBox の入力書式設定
+		#region NumberBox の入力書式設定
+
 		_MusicInfoBpmNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 2, 1 );
 		_MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
 		_MusicInfoBgmVolumeNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 10 );
+
+        #endregion
+
+        ControlAccess.PageMusic = this;
 	}
 
-    #region MusicInfo
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadMusicInfo()
+    {
+		OnPropertyChanged( "MusicInfo" );
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+	#endregion
+
+	#region MusicInfo
 
 	/// <summary>
 	/// BGM再読込
@@ -55,7 +83,7 @@ public sealed partial class PageMusic : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void _MusicInfoBgmFilePathButton_Click( object sender, RoutedEventArgs args )
+	private void MusicInfoBgmFilePathButton_Click( object sender, RoutedEventArgs args )
 	{
 		try
 		{
@@ -63,12 +91,13 @@ public sealed partial class PageMusic : Page
 				(
 					ControlAccess.MainWindow,
 					ConfigSystem.SupportBgm,
-					MusicInfo.BgmFilePath,
 					PickerLocationId.MusicLibrary,
 					ConfigSystem.FolderBgm,
-					() =>
+					( filepath ) =>
                     {
-						_MusicInfoBgmFilePathTextBox.Text = MusicInfo.BgmFilePath.AbsoulteFilePath;
+						MusicInfo.BgmFilePath.AbsoulteFilePath = filepath.AbsoulteFilePath;
+
+						ReloadMusicInfo();
 					}
 				);
 		}

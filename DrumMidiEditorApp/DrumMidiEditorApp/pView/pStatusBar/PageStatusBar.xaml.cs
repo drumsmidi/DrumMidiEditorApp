@@ -4,10 +4,12 @@ using System;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
 
-public sealed partial class PageStatusBar : Page
+public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 {
 	/// <summary>
 	/// システム設定
@@ -25,6 +27,23 @@ public sealed partial class PageStatusBar : Page
 		Log.LogOutputCallback.Enqueue( SetStatusText );
 	}
 
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadProgressBar()
+	{
+		OnPropertyChanged( "ConfigSystem.ProgressBarValue" );
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+	#endregion
+
 	#region InfoBar
 
 	/// <summary>
@@ -38,9 +57,9 @@ public sealed partial class PageStatusBar : Page
 		{
 			switch ( aLevel )
 			{
-				case 0: SetStatusText( "Message", aText, InfoBarSeverity.Informational	); break;
-				case 1: SetStatusText( "Message", aText, InfoBarSeverity.Warning		); break;
-   				case 2: SetStatusText( "Message", aText, InfoBarSeverity.Error			); break;
+				case 0: SetStatusText( "Informational"	, aText, InfoBarSeverity.Informational	); break;
+				case 1: SetStatusText( "Warning"		, aText, InfoBarSeverity.Warning		); break;
+   				case 2: SetStatusText( "Error"			, aText, InfoBarSeverity.Error			); break;
 			}
 		}
 		catch ( Exception e )

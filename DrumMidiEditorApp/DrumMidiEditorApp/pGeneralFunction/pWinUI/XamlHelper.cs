@@ -93,12 +93,11 @@ public static class XamlHelper
     /// </summary>
     /// <param name="aOwnerWindow">親ウィンドウ</param>
     /// <param name="aFileTypeFilters">フィルター設定</param>
-    /// <param name="aOpenFilePath">開くファイルの保存先フルパスが設定されます</param>
     /// <param name="aInitialLocation">初期ロケーション</param>
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, GeneralPath aOpenFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
+    public async static void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -140,9 +139,7 @@ public static class XamlHelper
             
             if ( file != null )
             {
-                aOpenFilePath.AbsoulteFilePath = file.Path;
-
-                aAction();
+                aAction( new( file.Path ) );
             }
         }
         catch ( Exception e )
@@ -156,12 +153,12 @@ public static class XamlHelper
     /// </summary>
     /// <param name="aOwnerWindow">親ウィンドウ</param>
     /// <param name="aFileTypeChoices">フィルター設定</param>
-    /// <param name="aSaveFilePath">保存ファイル名（初期値）を設定、保存先決定後は保存先フルパスが設定されます</param>
+    /// <param name="aSaveFileName">保存ファイル名（初期値）</param>
     /// <param name="aInitialLocation">初期ロケーション</param>
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, GeneralPath aSaveFilePath, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action aAction )
+    public async static void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, string aSaveFileName, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -181,7 +178,7 @@ public static class XamlHelper
                 // https://docs.microsoft.com/ja-JP/uwp/api/windows.storage.pickers.fileopenpicker.settingsidentifier?view=winrt-22621#windows-storage-pickers-fileopenpicker-settingsidentifier
                 SettingsIdentifier = aSettingsIdentifier,
                 // 保存ファイル名
-                SuggestedFileName = aSaveFilePath.FileName,
+                SuggestedFileName = aSaveFileName,
             };
 
             // ファイルタイプのフィルタ設定
@@ -201,9 +198,7 @@ public static class XamlHelper
             
             if ( file != null )
             {
-                aSaveFilePath.AbsoulteFilePath = file.Path;
-
-                aAction();
+                aAction( new( file.Path ) );
             }
         }
         catch ( Exception e )

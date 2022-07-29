@@ -16,12 +16,11 @@
         </Grid.RowDefinitions>
         
         <Grid x:Name="_AppTitleBar">
-            <TextBlock
-                x:Name="_AppTitleTextBlock"
+            <TextBlock x:Name="_AppTitleTextBlock" 
+                Style="{ThemeResource CaptionTextBlockStyle}"
                 Margin="0"
-                Padding="10"
+                Padding="10 4"
                 VerticalAlignment="Center"
-                Style="{StaticResource CaptionTextBlockStyle}"
                 TextWrapping="NoWrap" />
         </Grid>
 

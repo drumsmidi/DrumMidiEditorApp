@@ -506,10 +506,10 @@ public class ConfigEditer
         Curve2,
         Curve3,
         Curve4,
-        VolumeUpDown,
-        VolumeIntonationHL,
-        VolumeIntonationH,
-        VolumeIntonationL,
+        UpDown,
+        IntonationHL,
+        IntonationH,
+        IntonationL,
     }
 
     /// <summary>

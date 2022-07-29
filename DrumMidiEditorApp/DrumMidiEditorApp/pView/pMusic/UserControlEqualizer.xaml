@@ -9,42 +9,30 @@
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <Style TargetType="Grid">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-    </UserControl.Resources>
-
     <Grid>
         <userctl:HGroupUserControl x:Uid="HGroupEqualizerSetting">
             <userctl:HGroupUserControl.CustomContent>
 
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Spacing="6">
                     <CommandBar
                         HorizontalAlignment="Left" 
                         IsSticky="True"
                         IsOpen="False"
                         OverflowButtonVisibility="Collapsed">
 
-                        <AppBarButton x:Name="_EqualizerResetAppBarButton"
-                            x:Uid="ButtonEqualizerReset"
+                        <AppBarButton x:Name="_EqualizerResetAppBarButton" x:Uid="ButtonEqualizerReset"
                             Click="EqualizerResetAppBarButton_Click" />
 
                         <AppBarSeparator />
 
-                        <AppBarToggleButton x:Name="_EqualizerAppBarToggleButton"
-                            x:Uid="ButtonEqualizer"
+                        <AppBarToggleButton x:Name="_EqualizerAppBarToggleButton" x:Uid="ButtonEqualizer"
                             IsChecked="{x:Bind DrawSet.EqualizerOn, Mode=TwoWay}"
                             Checked="EqualizerAppBarToggleButton_CheckChanged"
                             Unchecked="EqualizerAppBarToggleButton_CheckChanged" />
 
                         <AppBarSeparator />
 
-                        <AppBarToggleButton x:Name="_EqualizerWaveFormAppBarToggleButton"
-                            x:Uid="ButtonEqualizerWaveForm"
+                        <AppBarToggleButton x:Name="_EqualizerWaveFormAppBarToggleButton" x:Uid="ButtonEqualizerWaveForm"
                             IsChecked="{x:Bind DrawSet.WaveFormOn, Mode=TwoWay}"
                             IsEnabled="True"
                             Checked="EqualizerWaveFormAppBarToggleButton_CheckChanged"
@@ -53,7 +41,7 @@
                     </CommandBar>
 
                     <canvas:CanvasControl x:Name = "_EqualizerCanvas"
-                        ClearColor="{x:Bind DrawSet.BackGround.Color}" 
+                        ClearColor="{x:Bind DrawSet.BackGround.Color, Mode=OneTime}" 
                         Draw="EqualizerCanvas_Draw" 
                         PointerPressed="EqualizerCanvas_PointerPressed"
                         PointerMoved="EqualizerCanvas_PointerMoved"

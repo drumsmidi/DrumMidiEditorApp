@@ -12,7 +12,7 @@ using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
 using DrumMidiEditorApp.pView.pScore;
 
-namespace DrumMidiEditorApp.pView;
+namespace DrumMidiEditorApp.pView.pNavi;
 
 public sealed partial class PageNavigation : Page
 {
@@ -43,12 +43,12 @@ public sealed partial class PageNavigation : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="ev"></param>
-    private void PageNaviControl_Loaded( object sender, RoutedEventArgs args )
+    private void NaviControl_Loaded( object sender, RoutedEventArgs args )
     {
         try
         {
 			// 初期ページへ移動
-            NavigationView_Navigate( "PageMusic" );
+            NavigationView_Navigate( "PageEdit" );
         }
         catch ( Exception e )
         {
@@ -61,7 +61,7 @@ public sealed partial class PageNavigation : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void PageNaviControl_SelectionChanged( NavigationView sender, NavigationViewSelectionChangedEventArgs args )
+    private void NaviControl_SelectionChanged( NavigationView sender, NavigationViewSelectionChangedEventArgs args )
     {
         try
         {
@@ -69,6 +69,7 @@ public sealed partial class PageNavigation : Page
 
             if ( args.IsSettingsSelected )
             {
+                // 未使用
                 navItemTag = "settings";
             }
             else if ( args.SelectedItemContainer != null )
@@ -96,24 +97,24 @@ public sealed partial class PageNavigation : Page
 
         if ( page_after != null && !Type.Equals( page_after, page_now ) )
         {
-            var item = _PageNaviControl.MenuItems
+            var item = _NaviControl.MenuItems
                 .FirstOrDefault( item =>
                     item.GetType() == typeof( NavigationViewItem ) &&
                         ( (NavigationViewItem)item ).Tag.ToString() == aNaviTagName );
 
             // 対象NaviItemが選択されていない場合、SelectionChangedイベントを発生させる
             // （プログラム上から変更する場合、NaviItemが選択状態にならない）
-            if ( !Object.Equals( _PageNaviControl.SelectedItem, item ) )
+            if ( !Object.Equals( _NaviControl.SelectedItem, item ) )
             { 
-                _PageNaviControl.SelectedItem = item;
+                _NaviControl.SelectedItem = item;
             }
             // ページ切替実施
             else
             {
-                // https://docs.microsoft.com/ja-jp/windows/apps/design/motion/page-transitions
                 // ページ切替効果の無効化
                 //      SuppressNavigationTransitionInfo を
                 //      他の NavigationTransitionInfo サブタイプの代わりに使用します。
+                // https://docs.microsoft.com/ja-jp/windows/apps/design/motion/page-transitions
 
                 _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
             }

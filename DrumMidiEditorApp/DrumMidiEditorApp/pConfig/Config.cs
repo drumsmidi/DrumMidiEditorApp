@@ -1,4 +1,5 @@
 ﻿using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -69,6 +70,8 @@ public static class Config
 		Editer.UpdateScoreFlag              = true;
 		Player.UpdateScoreFlag			    = true;
 		Score.UpdateScoreFlag			    = true;
+
+        ControlAccess.PageMusic?.ReloadMusicInfo();
     }
 
     /// <summary>

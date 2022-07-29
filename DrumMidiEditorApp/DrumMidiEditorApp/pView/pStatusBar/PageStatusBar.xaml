@@ -9,12 +9,12 @@
 
     <Grid>
         <StackPanel Orientation="Vertical">
-            
+
             <InfoBar x:Name="_InfoBar"
                 IsOpen="False"
                 IsClosable="True" />
 
-            <ProgressBar x:Name="_ProgressBar"
+            <ProgressBar x:Name="_ProgressBar" 
                 Value="{x:Bind ConfigSystem.ProgressBarValue, Mode=OneWay}" />
             
         </StackPanel>

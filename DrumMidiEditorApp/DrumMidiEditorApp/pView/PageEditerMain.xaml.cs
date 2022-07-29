@@ -1,13 +1,17 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using System;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pConfig;
-using System;
+using Microsoft.UI.Xaml;
 
 namespace DrumMidiEditorApp.pView;
 
 public sealed partial class PageEditerMain : Page
 {
+    /// <summary>
+    /// プレイヤー設定
+    /// </summary>
     private ConfigPlayer ConfigPlayer => Config.Player;
 
     /// <summary>
@@ -17,9 +21,9 @@ public sealed partial class PageEditerMain : Page
     {
         InitializeComponent();
 
-        ControlAccess.PageEditerMain = this;
-
         UpdateGridLayout();
+
+        ControlAccess.PageEditerMain = this;
     }
 
     /// <summary>
@@ -71,5 +75,22 @@ public sealed partial class PageEditerMain : Page
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
+    }
+
+    /// <summary>
+    /// リサイズイベント
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void Page_SizeChanged( object sender, SizeChangedEventArgs args )
+    {
+        try
+        {
+            Config.EventEditerPanelResize();
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
     }
 }

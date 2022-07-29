@@ -123,6 +123,10 @@
   <data name="ButtonCancel.Content" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ButtonClearRange.Content" xml:space="preserve">
+    <value>範囲選択
+解除</value>
+  </data>
   <data name="ButtonEqualizer.Content" xml:space="preserve">
     <value>イコライザ</value>
   </data>
@@ -132,8 +136,12 @@
   <data name="ButtonEqualizerWaveForm.Content" xml:space="preserve">
     <value>波形</value>
   </data>
-  <data name="ButtonFileReference.Content" xml:space="preserve">
-    <value>参照</value>
+  <data name="ButtonFileSelect.Content" xml:space="preserve">
+    <value>選択</value>
+  </data>
+  <data name="ButtonIncludeBpm.Content" xml:space="preserve">
+    <value>範囲選択に
+BPMノートを含める</value>
   </data>
   <data name="ButtonLoopPlay.Content" xml:space="preserve">
     <value>ループ
@@ -228,6 +236,9 @@
   <data name="InputChannelNo.Header" xml:space="preserve">
     <value>Ch.</value>
   </data>
+  <data name="InputDivisionLine.Text" xml:space="preserve">
+    <value>小節分割数</value>
+  </data>
   <data name="InputJumpMeasure.Text" xml:space="preserve">
     <value>小節移動</value>
   </data>
@@ -258,17 +269,35 @@
   <data name="InputNoteHeight.Header" xml:space="preserve">
     <value>ノート高さ</value>
   </data>
+  <data name="InputNoteOnOff.Header" xml:space="preserve">
+    <value>Input note</value>
+  </data>
+  <data name="InputNoteOnOff.OffContent" xml:space="preserve">
+    <value>Note Off</value>
+  </data>
+  <data name="InputNoteOnOff.OnContent" xml:space="preserve">
+    <value>Note On</value>
+  </data>
   <data name="InputNoteWidth.Header" xml:space="preserve">
     <value>ノート横幅</value>
   </data>
   <data name="InputPlayerDisplay.Header" xml:space="preserve">
     <value>プレイヤー表示</value>
   </data>
+  <data name="InputRangeSelect.Text" xml:space="preserve">
+    <value>範囲選択モード</value>
+  </data>
   <data name="InputVideoCodec.Header" xml:space="preserve">
     <value>ビデオエンコード</value>
   </data>
   <data name="InputVideoFps.Header" xml:space="preserve">
     <value>ビデオFPS</value>
+  </data>
+  <data name="InputVolume.Text" xml:space="preserve">
+    <value>入力音量</value>
+  </data>
+  <data name="InputVolumeEditMode.Text" xml:space="preserve">
+    <value>音量編集モード</value>
   </data>
   <data name="InputVolumeSize.Header" xml:space="preserve">
     <value>音量によるノートサイズ変更</value>
@@ -320,5 +349,35 @@
   </data>
   <data name="MenuItemSaveAs.Text" xml:space="preserve">
     <value>SaveAs</value>
+  </data>
+  <data name="NaviEdit.Content" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="NaviEdit.Icon" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="NaviMidiMap.Content" xml:space="preserve">
+    <value>MidiMap</value>
+  </data>
+  <data name="NaviMidiMap.Icon" xml:space="preserve">
+    <value>Keyboard</value>
+  </data>
+  <data name="NaviMusicInfo.Content" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="NaviMusicInfo.Icon" xml:space="preserve">
+    <value>MusicInfo</value>
+  </data>
+  <data name="NaviScore.Content" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="NaviScore.Icon" xml:space="preserve">
+    <value>ViewAll</value>
+  </data>
+  <data name="NaviSetting.Content" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="NaviSetting.Icon" xml:space="preserve">
+    <value>Setting</value>
   </data>
 </root>

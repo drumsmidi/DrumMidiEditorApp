@@ -8,15 +8,16 @@ using DrumMidiEditorApp.pView;
 namespace DrumMidiEditorApp;
 
 /// <summary>
-/// Provides application-specific behavior to supplement the default Application class.
+/// デフォルトのApplicationクラスを補足するアプリケーション固有の動作を提供します。
 /// </summary>
 public partial class App : Application
 {
     private Window _MainWindow;
 
     /// <summary>
-    /// Initializes the singleton application object.  This is the first line of authored code
-    /// executed, and as such is the logical equivalent of main() or WinMain().
+    /// シングルトンアプリケーションオブジェクトを初期化します。 
+    /// これは、実行される作成済みコードの最初の行であり、
+    /// main（）またはWinMain（）と論理的に同等です。
     /// </summary>
     public App()
     {
@@ -24,10 +25,10 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Invoked when the application is launched normally by the end user.  Other entry points
-    /// will be used such as when the application is launched to open a specific file.
+    /// アプリケーションがエンドユーザーによって正常に起動されたときに呼び出されます。 
+    /// アプリケーションを起動して特定のファイルを開くときなど、他のエントリポイントが使用されます。
     /// </summary>
-    /// <param name="args">Details about the launch request and process.</param>
+    /// <param name="args">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs args )
     {
         _MainWindow = new WindowEditer();

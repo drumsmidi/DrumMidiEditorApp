@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using System.Collections.ObjectModel;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
-public sealed partial class PageEdit : Page
+public sealed partial class PageEdit : Page, INotifyPropertyChanged
 {
+    #region Member
+
     /// <summary>
     /// Editerタブ設定
     /// </summary>
@@ -50,17 +41,42 @@ public sealed partial class PageEdit : Page
     /// </summary>
     private Score Score => DMS.SCORE;
 
+	/// <summary>
+	/// 小節番号リスト
+	/// </summary>
 	private readonly ObservableCollection<string> _MeasureNoList = new();
 
+	/// <summary>
+	/// 音量リスト
+	/// </summary>
+	private readonly ObservableCollection<int> _VolumeList = new();
 
-	//SelectRangeList
+	/// <summary>
+	/// 音量入力タイプリスト
+	/// </summary>
+	private readonly ObservableCollection<string> _VolumeEditTypeList = new();
 
+	/// <summary>
+	/// シート分割線リスト
+	/// </summary>
+	private readonly ObservableCollection<int> _SheetDivisionList = new();
 
-	public PageEdit()
+	/// <summary>
+	/// 範囲選択タイプリスト
+	/// </summary>
+	private readonly ObservableCollection<string> _RangeSelectTypeList = new();
+
+    #endregion
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+    public PageEdit()
     {
         InitializeComponent();
 
-		// 小節番号リスト作成
+		#region 小節番号リスト作成
+
 		int keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
 
 		for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
@@ -68,20 +84,80 @@ public sealed partial class PageEdit : Page
 			_MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
 		}
 
-		// NumberBox の入力書式設定
-		_NoteHeightNumberBox.NumberFormatter
+		#endregion
+
+		#region 音量リスト作成
+
+		for ( var volume = ConfigMedia.MidiMinVolume; volume < ConfigMedia.MidiMaxVolume; volume += 5 )
+		{
+			_VolumeList.Add( volume );
+		}
+		_VolumeList.Add( ConfigMedia.MidiMaxVolume );
+
+		#endregion
+
+		#region 音量入力モードリスト作成
+
+		foreach( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
+		{ 
+			_VolumeEditTypeList.Add( name );
+		}
+
+		#endregion
+
+		#region シート分割線リスト作成
+
+		for ( var division = ConfigSystem.MeasureNoteNumber; division >= 1; division /= 2 )
+		{
+			_SheetDivisionList.Add( division );
+		}
+
+		#endregion
+
+		#region 範囲選択モードリスト作成
+
+		foreach ( var name in Enum.GetNames<ConfigEditer.RangeSelectType>() )
+		{
+			_RangeSelectTypeList.Add( name );
+		}
+
+        #endregion
+
+        #region NumberBox の入力書式設定
+
+        _NoteHeightNumberBox.NumberFormatter
 			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 		_NoteWidthNumberBox.NumberFormatter
 			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
+
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadMusicInfo()
+    {
+		OnPropertyChanged( "MusicInfo" );
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+	#endregion
+
 
     #region Move sheet
 
-	/// <summary>
-	/// 小節番号移動
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// 小節番号移動
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void MeasureNoGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
 		try
@@ -215,6 +291,23 @@ public sealed partial class PageEdit : Page
 	//       }
 	//   }
 
+	/// <summary>
+	/// 範囲選択解除
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void SelectRangeToggleButton_Unchecked( object sender, RoutedEventArgs args )
+	{
+		try
+		{
+			Refresh();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+	}
+
 	#endregion
 
 	#region Resume
@@ -225,7 +318,7 @@ public sealed partial class PageEdit : Page
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
 	private void UndoButton_Click( object sender, RoutedEventArgs args )
-    {
+	{
 		try
 		{
 			Config.EventEditerUndo();
@@ -236,7 +329,7 @@ public sealed partial class PageEdit : Page
 		{
 			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-    }
+	}
 
 	/// <summary>
 	/// Redo実行
@@ -264,8 +357,42 @@ public sealed partial class PageEdit : Page
     /// </summary>
     public void Refresh() => _EditerPanel.Refresh();
 
-}
+    private void _VolumeGridView_ItemClick(object sender, ItemClickEventArgs e)
+    {
 
+    }
+
+    private void _VolumeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void _VolumeEditModeListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void _VolumeLevelTopNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+
+    }
+
+    private void _VolumeLevelHighNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+
+    }
+
+    private void _VolumeLevelMidNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+
+    }
+
+    private void _VolumeLevelLowNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+
+    }
+
+}
 
 #if false
 /// <summary>

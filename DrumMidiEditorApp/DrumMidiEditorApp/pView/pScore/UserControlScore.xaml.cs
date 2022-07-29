@@ -14,6 +14,8 @@ namespace DrumMidiEditorApp.pView.pScore;
 
 public sealed partial class UserControlScore : UserControl
 {
+    #region Member
+
     /// <summary>
     /// スコア設定
     /// </summary>
@@ -38,6 +40,8 @@ public sealed partial class UserControlScore : UserControl
     /// スコアBitmap
     /// </summary>
     private CanvasBitmap? _ScoreBitmap = null;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -289,23 +293,6 @@ public sealed partial class UserControlScore : UserControl
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-    }
-
-    /// <summary>
-    /// リサイズイベント
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_SizeChanged( object sender, SizeChangedEventArgs args )
-    {
-        try
-        {
-            Config.EventEditerPanelResize();
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
     }
 
     #endregion

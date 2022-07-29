@@ -8,12 +8,12 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox">
         </Style>
     </Page.Resources>
 
     <Grid>
-        <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm" Style="{StaticResource NumberBoxStyle}"
+        <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm"
             Value="{x:Bind Bpm, Mode=TwoWay}" 
             Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
             Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"

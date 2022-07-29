@@ -9,133 +9,115 @@
 >
     <Page.Resources>
         <Style TargetType="Grid">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Height" Value="60" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="ButtonStyle" TargetType="Button" BasedOn="{StaticResource BasicButtonStyle}">
-            <Setter Property="Width" Value="60" />
-            <Setter Property="Height" Value="60" />
-        </Style>
-        <Style x:Key="ComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BasicComboBoxStyle}">
-            <Setter Property="Width" Value="80" />
-            <Setter Property="Height" Value="60" />
-        </Style>
-        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        <Style TargetType="ToggleSwitch">
             <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="60" />
-        </Style>
-        <Style x:Key="ToggleButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource BasicToggleButtonStyle}">
-            <Setter Property="Width" Value="80" />
-            <Setter Property="Height" Value="100" />
-        </Style>
-        <Style x:Key="ToggleSwitchStyle" TargetType="ToggleSwitch" BasedOn="{StaticResource BasicToggleSwitchStyle}">
-            <Setter Property="Width" Value="100" />
+            <Setter Property="Margin" Value="0 0 -40 0" />
             <Setter Property="OnContent" Value="" />
             <Setter Property="OffContent" Value="" />
-            <Setter Property="Margin" Value="10 0 -20 0" />
         </Style>
-
         <Style TargetType="MenuBar">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="Height" Value="100" />
-            <Setter Property="Width" Value="80" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Width" Value="Auto" />
+            <Setter Property="Height" Value="Auto" />
         </Style>
         <Style TargetType="MenuBarItem">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="Padding" Value="0" />
-            <Setter Property="Height" Value="100" />
-            <Setter Property="Width" Value="80" />
+            <Setter Property="Width" Value="50" />
+            <Setter Property="Height" Value="70" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AppBarBorderThemeBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
         </Style>
-        <Style TargetType="MenuFlyoutItem">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-       
     </Page.Resources>
 
-    <Grid>
+    <Grid
+        ColumnSpacing="10"
+        VerticalAlignment="Top"
+        BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+        BorderThickness="0 0 0 4" >
+        
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="180" />
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="400" />
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0">
-
-            <MenuBar>
-                <MenuBarItem x:Uid="MenuItemFile">
-                    <MenuFlyoutItem x:Name="_MenuItemNew"       x:Uid="MenuItemNew"     Click="MenuItemNew_Click" />
-                    <MenuFlyoutItem x:Name="_MenuItemOpen"      x:Uid="MenuItemOpen"    Click="MenuItemOpen_Click" />
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutItem x:Name="_MenuItemSave"      x:Uid="MenuItemSave"    Click="MenuItemSave_Click" />
-                    <MenuFlyoutItem x:Name="_MenuItemSaveAs"    x:Uid="MenuItemSaveAs"  Click="MenuItemSaveAs_Click" />
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutSubItem x:Uid="MenuItemExport">
-                        <MenuFlyoutItem x:Name="_MenuItemExportMidi"        x:Uid="MenuItemExportMidi"      Click="MenuItemExportMidi_Click" />
-                        <MenuFlyoutItem x:Name="_MenuItemExportVideo"       x:Uid="MenuItemExportVideo"     Click="MenuItemExportVideo_Click" />
-                    </MenuFlyoutSubItem>
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutSubItem x:Uid="MenuItemImport">
-                        <MenuFlyoutItem x:Name="_MenuItemImportMidi" x:Uid="MenuItemImportMidi" Click="MenuItemImportMidi_Click" IsEnabled="False" />
-                    </MenuFlyoutSubItem>
-                </MenuBarItem>
-            </MenuBar>
-
-        </Grid>
-
-        <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <MenuBar
+            Grid.Row="0" 
+            Grid.Column="0" >
             
-            <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo" Style="{StaticResource ComboBoxStyle}"
+            <MenuBarItem            x:Uid="MenuItemFile" >
+                <MenuFlyoutItem     x:Uid="MenuItemNew"         Click="MenuItemNew_Click" />
+                <MenuFlyoutItem     x:Uid="MenuItemOpen"        Click="MenuItemOpen_Click" />
+                <MenuFlyoutItem     x:Uid="MenuItemSave"        Click="MenuItemSave_Click" />
+                <MenuFlyoutItem     x:Uid="MenuItemSaveAs"      Click="MenuItemSaveAs_Click" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutSubItem  x:Uid="MenuItemExport" >
+                    <MenuFlyoutItem x:Uid="MenuItemExportMidi"  Click="MenuItemExportMidi_Click" />
+                    <MenuFlyoutItem x:Uid="MenuItemExportVideo" Click="MenuItemExportVideo_Click" />
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSeparator />
+                <MenuFlyoutSubItem  x:Uid="MenuItemImport" >
+                    <MenuFlyoutItem x:Uid="MenuItemImportMidi"  Click="MenuItemImportMidi_Click" IsEnabled="False" />
+                </MenuFlyoutSubItem>
+            </MenuBarItem>
+        </MenuBar>
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            
+            <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo"
                 ItemsSource="{x:Bind ConfigMedia.ChannelNoList, Mode=OneTime}"
                 SelectedValue="{x:Bind ConfigMedia.ChannelDrum, Mode=OneTime}"
                 SelectionChanged="ChannelNoComboBox_SelectionChanged" />
                 
         </Grid>
 
-        <Grid Grid.Column="2">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Row="0" Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Spacing="6">
 
-                <ToggleSwitch x:Name="_BgmToggleSwitch" x:Uid="InputBgmSwitch" Style="{StaticResource ToggleSwitchStyle}" 
+                <ToggleSwitch x:Name="_BgmToggleSwitch" x:Uid="InputBgmSwitch"
                     IsOn="{x:Bind ConfigMedia.BgmPlayOn, Mode=TwoWay}" />
 
-                <ToggleSwitch x:Name="_MidiOutToggleSwitch" x:Uid="InputMidiOutSwitch" Style="{StaticResource ToggleSwitchStyle}"
+                <ToggleSwitch x:Name="_MidiOutToggleSwitch" x:Uid="InputMidiOutSwitch"
                     IsOn="{x:Bind ConfigMedia.NotePlayOn, Mode=TwoWay}" />
                     
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Column="3">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Row="0" Grid.Column="3">
+            <StackPanel Orientation="Horizontal" Spacing="6">
                     
-                <Button x:Name="_PlayButton" x:Uid="ButtonPlay" Style="{StaticResource ButtonStyle}"
+                <Button x:Name="_PlayButton" x:Uid="ButtonPlay" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Height="50"
                     Click="PlayButton_Click" />
 
-                <Button x:Name="_StopButton" x:Uid="ButtonStop" Style="{StaticResource ButtonStyle}"
+                <Button x:Name="_StopButton" x:Uid="ButtonStop" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Height="50"
                     Click="StopButton_Click" />
 
-                <Button x:Name="_LoopPlayButton" x:Uid="ButtonLoopPlay" Style="{StaticResource ButtonStyle}"
+                <Button x:Name="_LoopPlayButton" x:Uid="ButtonLoopPlay" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Height="50"
                     Click="LoopPlayButton_Click" />
 
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Column="4">
-            <StackPanel Orientation="Horizontal">
+        <Grid Grid.Row="0" Grid.Column="4">
+            <StackPanel Orientation="Horizontal" Spacing="6">
                 
-                <NumberBox x:Name="_LoopPlayMeasureStartNumberBox" x:Uid="InputLoopPlayMeasureStart" Style="{StaticResource NumberBoxStyle}"
+                <NumberBox x:Name="_LoopPlayMeasureStartNumberBox" x:Uid="InputLoopPlayMeasureStart"
                         Value="{x:Bind ConfigMedia.PlayLoopStart, Mode=TwoWay}" 
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
@@ -143,7 +125,7 @@
                         LargeChange="5"
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
 
-                <NumberBox x:Name="_LoopPlayMeasureEndNumberBox" x:Uid="InputLoopPlayMeasureEnd" Style="{StaticResource NumberBoxStyle}"
+                <NumberBox x:Name="_LoopPlayMeasureEndNumberBox" x:Uid="InputLoopPlayMeasureEnd"
                         Value="{x:Bind ConfigMedia.PlayLoopEnd, Mode=TwoWay}" 
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
@@ -151,11 +133,11 @@
                         LargeChange="5"
                         ValueChanged="LoopPlayMeasureNumberBox_ValueChanged" />
 
-                <ToggleSwitch x:Name="_LoopPlayMeasureConnectToggleSwitch" x:Uid="InputLoopPlayMeasureConnectSwitch" Style="{StaticResource ToggleSwitchStyle}"
+                <ToggleSwitch x:Name="_LoopPlayMeasureConnectToggleSwitch" x:Uid="InputLoopPlayMeasureConnectSwitch"
                         IsOn="{x:Bind ConfigMedia.PlayLoopConnectOn, Mode=TwoWay}"
                         Toggled="LoopPlayMeasureConnectToggleSwitch_Toggled" />
 
-                <NumberBox x:Name="_LoopPlayMeasureConnectNumberBox" x:Uid="InputLoopPlayMeasureConnect" Style="{StaticResource NumberBoxStyle}"
+                <NumberBox x:Name="_LoopPlayMeasureConnectNumberBox" x:Uid="InputLoopPlayMeasureConnect"
                         Value="{x:Bind ConfigMedia.PlayLoopConnect, Mode=TwoWay}" 
                         Minimum="0"
                         Maximum="{x:Bind ConfigSystem.MeasureMaxNumber, Mode=OneTime}"
@@ -166,11 +148,11 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Column="5">
+        <Grid Grid.Row="0" Grid.Column="5">
 
-            <ComboBox x:Name="_PlayerDisplayComboBox" x:Uid="InputPlayerDisplay" Style="{StaticResource ComboBoxStyle}"
+            <ComboBox x:Name="_PlayerDisplayComboBox" x:Uid="InputPlayerDisplay"
                 ItemsSource="{x:Bind _PlayerDisplayList, Mode=OneTime}"
-                SelectedValue="{x:Bind ConfigPlayer.PlayerLayoutModeSelectText}"
+                SelectedValue="{x:Bind ConfigPlayer.PlayerLayoutModeSelectText, Mode=OneTime}"
                 SelectionChanged="PlayerDisplayComboBox_SelectionChanged">
 
                 <ComboBox.ItemTemplate>

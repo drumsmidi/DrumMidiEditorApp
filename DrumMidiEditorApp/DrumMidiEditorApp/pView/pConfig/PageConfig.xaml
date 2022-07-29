@@ -16,11 +16,11 @@
             <Setter Property="Margin" Value="0" />
             <Setter Property="Padding" Value="0" />
         </Style>
-        <Style x:Key="ListViewStyle" TargetType="ListView" BasedOn="{StaticResource BasicListViewStyle}">
+        <Style x:Key="ListViewStyle" TargetType="ListView">
         </Style>
-        <Style x:Key="ComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource BasicComboBoxStyle}">
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
         </Style>
-        <Style x:Key="NumberBoxStyle" TargetType="NumberBox" BasedOn="{StaticResource BasicNumberBoxStyle}">
+        <Style x:Key="NumberBoxStyle" TargetType="NumberBox">
         </Style>
     </Page.Resources>
 
