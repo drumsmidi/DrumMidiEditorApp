@@ -1236,8 +1236,8 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aResume">履歴</param>
 	private void ClearSelectNoteRange( ref ResumeMultiple aResume )
     {
-        // TODO: Editer
-        //DMS.EditerForm?.EditerCtl.DoClearRangeCheckBox( false );
+        DrawSet.IsRangeSelect = false;
+        ControlAccess.PageEdit?.ReloadRangeSelectButton();
 
         if ( !_NoteRange.Selected )
         {
@@ -1437,6 +1437,9 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             _EditResumeMng.ExcuteAndResume( rs );
         }
+
+        DrawSet.IsRangeSelect = true;
+        ControlAccess.PageEdit?.ReloadRangeSelectButton();
     }
 
     /// <summary>

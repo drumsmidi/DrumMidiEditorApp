@@ -305,6 +305,9 @@ BPMノートを含める</value>
   <data name="InputVolumeZero.Header" xml:space="preserve">
     <value>音量０のノート表示</value>
   </data>
+  <data name="InputWaveFormLevel.Text" xml:space="preserve">
+    <value>WaveForm</value>
+  </data>
   <data name="LabelBpm" xml:space="preserve">
     <value>Bpm</value>
   </data>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
@@ -430,10 +431,31 @@ public class ConfigEditer
     #region Volume
 
     /// <summary>
+    /// 音量ヘッダ背景色
+    /// </summary>
+    [JsonInclude]
+    public List<int> NoteSelectVolumeList { get; set; } = new()
+    {
+        0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+        55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
+        105, 110, 115, 120, 125, 127,
+    };
+
+    /// <summary>
     /// ノート入力音量
     /// </summary>
     [JsonIgnore]
     public int NoteSelectVolume { get; set; } = 100;
+
+    /// <summary>
+    /// ノート入力音量（インデックス）
+    /// </summary>
+    [JsonIgnore]
+    public int NoteSelectVolumeIndex
+    {
+        get => NoteSelectVolumeList.IndexOf( NoteSelectVolume );
+        set => NoteSelectVolume = NoteSelectVolumeList[ value ];
+    }
 
     /// <summary>
     /// 音量行の高さ
@@ -517,6 +539,16 @@ public class ConfigEditer
     /// </summary>
     [JsonInclude]
     public VolumeEditType VolumeEditSelect { get; set; } = VolumeEditType.FreeHand;
+
+    /// <summary>
+    /// 音量入力タイプ
+    /// </summary>
+    [JsonIgnore]
+    public int VolumeEditSelectIndex 
+    { 
+        get => (int)VolumeEditSelect;
+        set => VolumeEditSelect = (VolumeEditType)value;
+    }
 
     #endregion
 
@@ -658,12 +690,33 @@ public class ConfigEditer
         LineSize    = _BassLineSize,
     };
 
+
+    /// <summary>
+    /// １小節辺りのノート区切り数リスト
+    /// </summary>
+    [JsonInclude]
+    public List<int> SheetDivisionLineList { get; set; } = new()
+    {
+        128, 64, 32, 16, 8, 4, 2, 1,
+    };
+
     /// <summary>
     /// １小節辺りのノート区切り数
     /// （全音入力、４分音符入力 的な）
     /// </summary>
     [JsonIgnore]
     public int SheetDivisionLine { get; set; } = 128;
+
+    /// <summary>
+    /// １小節辺りのノート区切り数（インデックス）
+    /// </summary>
+    [JsonIgnore]
+    public int SheetDivisionLineIndex
+    {
+        get => SheetDivisionLineList.IndexOf( SheetDivisionLine );
+        set => SheetDivisionLine = SheetDivisionLineList[ value ];
+    }
+
 
     #endregion
 
@@ -714,6 +767,16 @@ public class ConfigEditer
     /// </summary>
     [JsonInclude]
     public RangeSelectType RangeSelect { get; set; } = RangeSelectType.Normal;
+
+    /// <summary>
+    /// 範囲選択タイプ
+    /// </summary>
+    [JsonIgnore]
+    public int RangeSelectIndex
+    {
+        get => (int)RangeSelect;
+        set => RangeSelect = (RangeSelectType)value;
+    }
 
     /// <summary>
     /// 範囲選択状態

@@ -72,10 +72,9 @@
                     <TextBlock x:Uid="InputDivisionLine" />
 
                     <GridView x:Name="_DivisionGridView"
-                        ItemsSource="{x:Bind _SheetDivisionList}"
+                        ItemsSource="{x:Bind DrawSet.SheetDivisionLineList, Mode=OneTime}"
+                        SelectedIndex="{x:Bind DrawSet.SheetDivisionLineIndex, Mode=TwoWay}"
                         SelectionMode="Single"
-                        ItemClick="_VolumeGridView_ItemClick"
-                        SelectionChanged="_VolumeGridView_SelectionChanged"
                         ScrollViewer.HorizontalScrollMode="Disabled"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollMode="Disabled"
@@ -116,11 +115,9 @@
                     <TextBlock x:Uid="InputVolume" />
 
                     <GridView x:Name="_VolumeGridView"
-                        ItemsSource="{x:Bind _VolumeList, Mode=OneTime}"
-                        SelectedValue="{x:Bind DrawSet.NoteSelectVolume, Mode=TwoWay}"
+                        ItemsSource="{x:Bind DrawSet.NoteSelectVolumeList, Mode=OneTime}"
+                        SelectedIndex="{x:Bind DrawSet.NoteSelectVolumeIndex, Mode=TwoWay}"
                         SelectionMode="Single"
-                        ItemClick="_VolumeGridView_ItemClick"
-                        SelectionChanged="_VolumeGridView_SelectionChanged"
                         ScrollViewer.HorizontalScrollMode="Disabled"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollMode="Disabled"
@@ -162,9 +159,8 @@
 
                     <GridView x:Name="_VolumeEditModeGridView"
                         ItemsSource="{x:Bind _VolumeEditTypeList, Mode=OneTime}"
+                        SelectedIndex="{x:Bind DrawSet.VolumeEditSelectIndex, Mode=TwoWay}"
                         SelectionMode="Single"
-                        ItemClick="_VolumeGridView_ItemClick"
-                        SelectionChanged="_VolumeGridView_SelectionChanged"
                         ScrollViewer.HorizontalScrollMode="Disabled"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollMode="Disabled"
@@ -173,11 +169,11 @@
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <TextBlock 
-                                    TextAlignment="Left"
+                                    TextAlignment="Center"
                                     VerticalAlignment="Top"
-                                    Margin="0 -20 0 0"
+                                    Margin="0 -18 0 0"
                                     Padding="0"
-                                    FontSize="13"
+                                    FontSize="12"
                                     Text="{x:Bind}"/>
                             </DataTemplate>
                         </GridView.ItemTemplate>
@@ -203,55 +199,70 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                    <Grid Grid.Column="0">
+                    <TextBlock x:Uid="InputWaveFormLevel" 
+                        Grid.Row="0" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="2" />
+
+                    <Grid Grid.Row="1" Grid.Column="0">
                         <StackPanel Orientation="Vertical" Spacing="6">
 
-                            <NumberBox x:Name="_VolumeLevelTopNumberBox" x:Uid="NumberBoxBpm"
+                            <NumberBox x:Name="_VolumeLevelTopNumberBox"
                                 Value="{x:Bind ConfigScale.VolumeLevelTop, Mode=TwoWay}" 
                                 Minimum="0"
                                 Maximum="1"
                                 SmallChange="0.010" 
                                 LargeChange="0.050" 
                                 Height="30"
-                                ValueChanged="_VolumeLevelTopNumberBox_ValueChanged" />
+                                ValueChanged="VolumeLevelTopNumberBox_ValueChanged" />
 
-                            <NumberBox x:Name="_VolumeLevelHighNumberBox" x:Uid="NumberBoxBpm"
+                            <NumberBox x:Name="_VolumeLevelHighNumberBox"
                                 Value="{x:Bind ConfigScale.VolumeLevelHigh, Mode=TwoWay}" 
                                 Minimum="0"
                                 Maximum="1"
                                 SmallChange="0.010" 
                                 LargeChange="0.050" 
                                 Height="30"
-                                ValueChanged="_VolumeLevelHighNumberBox_ValueChanged" />
+                                ValueChanged="VolumeLevelHighNumberBox_ValueChanged" />
 
-                            <NumberBox x:Name="_VolumeLevelMidNumberBox" x:Uid="NumberBoxBpm"
+                            <NumberBox x:Name="_VolumeLevelMidNumberBox"
                                 Value="{x:Bind ConfigScale.VolumeLevelMid, Mode=TwoWay}" 
                                 Minimum="0"
                                 Maximum="1"
                                 SmallChange="0.010" 
                                 LargeChange="0.050" 
                                 Height="30"
-                                ValueChanged="_VolumeLevelMidNumberBox_ValueChanged" />
+                                ValueChanged="VolumeLevelMidNumberBox_ValueChanged" />
 
-                            <NumberBox x:Name="_VolumeLevelLowNumberBox" x:Uid="NumberBoxBpm"
+                            <NumberBox x:Name="_VolumeLevelLowNumberBox"
                                 Value="{x:Bind ConfigScale.VolumeLevelLow, Mode=TwoWay}" 
                                 Minimum="0"
                                 Maximum="1"
                                 SmallChange="0.010" 
                                 LargeChange="0.050" 
                                 Height="30"
-                                ValueChanged="_VolumeLevelLowNumberBox_ValueChanged" />
+                                ValueChanged="VolumeLevelLowNumberBox_ValueChanged" />
 
                         </StackPanel>
                     </Grid>
 
-                    <Slider 
+                    <Slider x:Name="_WaveFormSensitivityLevelSlider"
+                        Value="{x:Bind ConfigScale.SensitivityLevel, Mode=TwoWay}"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Orientation="Vertical"
-                        AutomationProperties.Name="Slider with ticks" 
+                        Minimum="0"
+                        Maximum="100"
+                        SmallChange="1"
+                        LargeChange="10"
                         TickFrequency="10" 
-                        TickPlacement="Outside" />
+                        TickPlacement="Outside"
+                        ValueChanged="WaveFormSensitivityLevelSlider_ValueChanged" />
 
                 </Grid>
             </StackPanel>
@@ -272,9 +283,8 @@
 
                     <GridView x:Name="_RangeSelectModeGridView"
                         ItemsSource="{x:Bind _RangeSelectTypeList}"
+                        SelectedIndex="{x:Bind DrawSet.RangeSelectIndex, Mode=TwoWay}"
                         SelectionMode="Single"
-                        ItemClick="_VolumeGridView_ItemClick"
-                        SelectionChanged="_VolumeGridView_SelectionChanged"
                         ScrollViewer.HorizontalScrollMode="Disabled"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollMode="Disabled"
@@ -342,7 +352,7 @@
                         SmallChange="0.1" 
                         LargeChange="1.0"
                         Grid.Column="0"
-                        ValueChanged="NumberBox_ValueChanged" />
+                        ValueChanged="NoteSizeNumberBox_ValueChanged" />
 
                     <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
                         Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
@@ -351,7 +361,7 @@
                         SmallChange="0.1" 
                         LargeChange="1.0"
                         Grid.Column="1"
-                        ValueChanged="NumberBox_ValueChanged" />
+                        ValueChanged="NoteSizeNumberBox_ValueChanged" />
                 </Grid>
 
             </StackPanel>

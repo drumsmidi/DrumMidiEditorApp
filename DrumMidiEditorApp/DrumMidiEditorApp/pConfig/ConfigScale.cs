@@ -41,10 +41,10 @@ public class ConfigScale
     public float VolumeLevelLow { get; set; } = 0.55F;
 
     /// <summary>
-    /// 感度レベル
+    /// 感度レベル（０～１００）
     /// </summary>
     [JsonInclude]
-    public float SensitivityLevel { get; set; } = 0.55F;
+    public float SensitivityLevel { get; set; } = 55F;
 
     #endregion
 

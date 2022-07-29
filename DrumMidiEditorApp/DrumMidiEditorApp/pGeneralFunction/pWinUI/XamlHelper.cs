@@ -264,7 +264,7 @@ public static class XamlHelper
                 NumberRounder   = new IncrementNumberRounder
                 {
                     Increment           = aIncrement,
-                    RoundingAlgorithm   = RoundingAlgorithm.RoundTowardsZero,
+                    RoundingAlgorithm   = RoundingAlgorithm.RoundHalfAwayFromZero,
                 },
                 IsGrouped       = true,
                 IsZeroSigned    = true,

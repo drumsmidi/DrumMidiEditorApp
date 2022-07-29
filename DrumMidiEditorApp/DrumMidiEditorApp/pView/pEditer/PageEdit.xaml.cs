@@ -9,6 +9,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -47,19 +48,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	private readonly ObservableCollection<string> _MeasureNoList = new();
 
 	/// <summary>
-	/// 音量リスト
-	/// </summary>
-	private readonly ObservableCollection<int> _VolumeList = new();
-
-	/// <summary>
 	/// 音量入力タイプリスト
 	/// </summary>
 	private readonly ObservableCollection<string> _VolumeEditTypeList = new();
-
-	/// <summary>
-	/// シート分割線リスト
-	/// </summary>
-	private readonly ObservableCollection<int> _SheetDivisionList = new();
 
 	/// <summary>
 	/// 範囲選択タイプリスト
@@ -86,30 +77,11 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
 		#endregion
 
-		#region 音量リスト作成
-
-		for ( var volume = ConfigMedia.MidiMinVolume; volume < ConfigMedia.MidiMaxVolume; volume += 5 )
-		{
-			_VolumeList.Add( volume );
-		}
-		_VolumeList.Add( ConfigMedia.MidiMaxVolume );
-
-		#endregion
-
 		#region 音量入力モードリスト作成
 
-		foreach( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
+		foreach ( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
 		{ 
 			_VolumeEditTypeList.Add( name );
-		}
-
-		#endregion
-
-		#region シート分割線リスト作成
-
-		for ( var division = ConfigSystem.MeasureNoteNumber; division >= 1; division /= 2 )
-		{
-			_SheetDivisionList.Add( division );
 		}
 
 		#endregion
@@ -130,17 +102,28 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		_NoteWidthNumberBox.NumberFormatter
 			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 
-        #endregion
-    }
+		_VolumeLevelTopNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+		_VolumeLevelHighNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+		_VolumeLevelMidNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+		_VolumeLevelLowNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+
+		#endregion
+
+		ControlAccess.PageEdit = this;
+	}
 
 	#region INotifyPropertyChanged
 
 	/// <summary>
 	/// x:Bind OneWay/TwoWay 再読み込み
 	/// </summary>
-	public void ReloadMusicInfo()
+	public void ReloadRangeSelectButton()
     {
-		OnPropertyChanged( "MusicInfo" );
+		OnPropertyChanged( "DrawSet" );
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -211,95 +194,21 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		Refresh();
     }
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// 共通：数値変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-    {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
-            {
-				return;
-            }
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
+    #region Edit
 
-
-
-	#region Edit
-
-	///// <summary>
-	///// 分割入力単位変更
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//   private void DivisionLineListBox_SelectedIndexChanged( object sender, EventArgs ev )
-	//   {
-	//	try
-	//	{
-	//		DrawSet.SheetDivisionLine = Convert.ToInt32( DivisionLineListBox.SelectedItem.ToString() );
-
-	//		RefreshScreen();
-	//	}
-	//       catch ( Exception e )
-	//       {
-	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//       }
-	//   }
-
-	///// <summary>
-	///// 音量編集タイプ変更
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void EditVolumeListBox_SelectedIndexChanged( object sender, EventArgs ev )
-	//{
-	//	try
-	//	{
-	//		DrawSet.VolumeEditSelect = (ConfigEditer.VolumeEditType)EditVolumeListBox.SelectedIndex;
-	//	}
-	//       catch ( Exception e )
-	//       {
-	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//       }
-	//}
-
-	///// <summary>
-	///// 範囲選択タイプ変更
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//   private void SelectRangeListBox_SelectedIndexChanged( object sender, EventArgs ev )
-	//   {
-	//try
-	//{
-	//	DrawSet.RangeSelect = (ConfigEditer.RangeSelectType)SelectRangeListBox.SelectedIndex;
-	//}
-	//       catch ( Exception e )
-	//       {
-	//           Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//       }
-	//   }
-
-	/// <summary>
-	/// 範囲選択解除
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void SelectRangeToggleButton_Unchecked( object sender, RoutedEventArgs args )
+    /// <summary>
+    /// 範囲選択解除
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void SelectRangeToggleButton_Unchecked( object sender, RoutedEventArgs args )
 	{
 		try
 		{
+			Config.EventClearEditerRange();
+
 			Refresh();
 		}
 		catch ( Exception e )
@@ -309,6 +218,35 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	}
 
 	#endregion
+
+    #region Note
+
+    /// <summary>
+    /// ノートサイズ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void NoteSizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+			Config.EventUpdateEditerSize();
+
+			Refresh();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
 
 	#region Resume
 
@@ -352,452 +290,185 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
     #endregion
 
-    /// <summary>
-    /// EditerPanel描画更新
-    /// </summary>
-    public void Refresh() => _EditerPanel.Refresh();
+	#region WaveForm
 
-    private void _VolumeGridView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-
-    }
-
-    private void _VolumeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
-    }
-
-    private void _VolumeEditModeListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
-    }
-
-    private void _VolumeLevelTopNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-    {
-
-    }
-
-    private void _VolumeLevelHighNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-    {
-
-    }
-
-    private void _VolumeLevelMidNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-    {
-
-    }
-
-    private void _VolumeLevelLowNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-    {
-
-    }
-
-}
-
-#if false
-/// <summary>
-/// シート移動タイマー
-/// </summary>
-private readonly Timer _MoveTimer = new();
-
-/// <summary>
-/// シート移動 マウス開始位置
-/// </summary>
-    private Point _MoveSheetPos = new();
-
-/// <summary>
-/// Editerタブ設定
-/// </summary>
-private static ConfigEditer DrawSet => Config.Editer;
-
-/// <summary>
-/// コンストラクタ
-/// </summary>
-public EditerControl()
-{
-	InitializeComponent();
-
-	InitUpdate();
-
-	_MoveTimer.Tick		+= new EventHandler( ProcMoveSheet );
-	_MoveTimer.Interval	 = 100;
-	_MoveTimer.Enabled	 = false;
-}
-
-/// <summary>
-/// 初期設定
-/// </summary>
-    private void InitUpdate()
-    {
-	SuspendLayout();
-        {
-			
-            var ss = DrawSet;
-
-            // Note
-            //NoteWidthNumericUpDown.Value	= ss.NoteWidthSize;                
-            //NoteHeightNumericUpDown.Value	= ss.NoteHeightSize;
-
-		// Volume
-		Volume100RadioButton.Checked = true;
-
-		// Edit
-		FormUtil.SelectListBoxValue( DivisionLineListBox, ss.SheetDivisionLine.ToString() );
-
-		EditVolumeListBox.SelectedIndex		= (int)DrawSet.VolumeEditSelect;
-		SelectRangeListBox.SelectedIndex	= (int)DrawSet.RangeSelect;
-		NoteOnCheckBox.Checked				= DrawSet.NoteOn;
-
-		// Vertical scroll bar
-		EditVScrollBar.Value	= 0;
-		EditVScrollBar.Minimum	= 0;
-
-		// Horizontal scroll bar
-		EditHScrollBar.Value	= 0;
-		EditHScrollBar.Minimum	= 0;
-
-		UpdateScrollBar();
-
-		SetVolumeLevel
-			(
-				Config.Scale.VolumeLevelTop,
-				Config.Scale.VolumeLevelHigh,
-				Config.Scale.VolumeLevelMid,
-				Config.Scale.VolumeLevelLow
-			);
-
-		ScaleSensitivityTrackBar.Value = (int)( Config.Scale.SensitivityLevel * ScaleSensitivityTrackBar.Maximum );
-
-	}
-	ResumeLayout( false );
-    }
-
-
-
-
-#region Note
-
-/// <summary>
-/// ノート間隔：横　変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void NoteWidthNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-	try
+	/// <summary>
+	/// 音量TOP変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void VolumeLevelTopNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
 	{
-		DrawSet.NoteWidthSize = (int)NoteWidthNumericUpDown.Value;
-
-		Config.EventUpdateEditerSize();
-
-		RefreshScreen();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-/// <summary>
-/// ノート間隔：縦　変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void NoteHeightNumericUpDown_ValueChanged( object sender, EventArgs ev )
-{
-	try
-	{
-		DrawSet.NoteHeightSize = (int)NoteHeightNumericUpDown.Value;
-
-		Config.EventUpdateEditerSize();
-
-		RefreshScreen();
-	}
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-}
-
-#endregion
-
-#region Volume
-
-/// <summary>
-/// 音量入力変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void VolumeNumericUpDown_ValueChanged( object sender, EventArgs ev )
-{
-	try
-	{
-		if ( VolumeRadioButton.Checked )
-		{ 
-			DrawSet.NoteSelectVolume = (int)VolumeNumericUpDown.Value;
-		}
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-/// <summary>
-/// 音量入力変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void VolumeRadioButton_CheckedChanged( object sender, EventArgs ev )
-{
-	try
-	{
-		int volume = 0;
-
-		if		( Volume127RadioButton.Checked	)	{ volume = 127; }
-		else if ( Volume125RadioButton.Checked	)	{ volume = 125; }
-		else if ( Volume120RadioButton.Checked	)	{ volume = 120; }
-		else if ( Volume115RadioButton.Checked	)	{ volume = 115; }
-		else if ( Volume110RadioButton.Checked	)	{ volume = 110; }
-		else if ( Volume105RadioButton.Checked	)	{ volume = 105; }
-		else if ( Volume100RadioButton.Checked	)	{ volume = 100; }
-		else if ( Volume95RadioButton.Checked	)	{ volume =  95; }
-		else if ( Volume90RadioButton.Checked	)	{ volume =  90; }
-		else if ( Volume85RadioButton.Checked	)	{ volume =  85; }
-		else if ( Volume80RadioButton.Checked	)	{ volume =  80; }
-		else if ( Volume75RadioButton.Checked	)	{ volume =  75; }
-		else if ( Volume70RadioButton.Checked	)	{ volume =  70; }
-		else if ( Volume65RadioButton.Checked	)	{ volume =  65; }
-		else if ( Volume60RadioButton.Checked	)	{ volume =  60; }
-		else if ( Volume55RadioButton.Checked	)	{ volume =  55; }
-		else if ( Volume50RadioButton.Checked	)	{ volume =  50; }
-		else if ( Volume45RadioButton.Checked	)	{ volume =  45; }
-		else if ( Volume40RadioButton.Checked	)	{ volume =  40; }
-		else if ( Volume35RadioButton.Checked	)	{ volume =  35; }
-		else if ( Volume30RadioButton.Checked	)	{ volume =  30; }
-		else if ( Volume25RadioButton.Checked	)	{ volume =  25; }
-		else if ( Volume20RadioButton.Checked	)	{ volume =  20; }
-		else if ( Volume15RadioButton.Checked	)	{ volume =  15; }
-		else if ( Volume10RadioButton.Checked	)	{ volume =  10; }
-		else if ( Volume5RadioButton.Checked	)	{ volume =   5; }
-		else if ( Volume0RadioButton.Checked	)	{ volume =   0; }
-		else if ( VolumeRadioButton.Checked		)   { volume = (int)VolumeNumericUpDown.Value; }
-
-		DrawSet.NoteSelectVolume = volume;
-        }
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-}
-
-#endregion
-
-
-
-#region WaveForm
-
-    /// <summary>
-    /// 音量TOP変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="ev"></param>
-    private void VolumeTopNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		var t = (float)VolumeTopNumericUpDown.Value;
-		var h = (float)VolumeHighNumericUpDown.Value;
-		var m = (float)VolumeMidNumericUpDown.Value;
-		var l = (float)VolumeLowNumericUpDown.Value;
-
-		if ( t < h )
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-			h = t;
-
-			if ( h < m )
-                {
-				m = h;
-
-				if ( m < l )
-                    {
-					l = m;
-                    }
-                }
+				return;
             }
 
-		SetVolumeLevel( t, h, m, l );
-	}
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-    }
+			var t = (float)_VolumeLevelTopNumberBox.Value;
+			var h = (float)_VolumeLevelHighNumberBox.Value;
 
-/// <summary>
-/// 音量HIGT変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void VolumeHighNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		var t = (float)VolumeTopNumericUpDown.Value;
-		var h = (float)VolumeHighNumericUpDown.Value;
-		var m = (float)VolumeMidNumericUpDown.Value;
-		var l = (float)VolumeLowNumericUpDown.Value;
-
-		if ( h < Config.Scale.VolumeLevelHigh )
-		{ 
-			if ( h < m )
+			if ( t < h )
 			{
-				m = h;
-
-				if ( m < l )
-				{
-					l = m;
-				}
+				_VolumeLevelHighNumberBox.Value = t;
 			}
+
+			UpdateVolumeLevel();
 		}
-		else
-		{ 
-			if ( h > t )
-			{
-				t = h;
-			}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-
-		SetVolumeLevel( t, h, m, l );
 	}
-	catch ( Exception e )
+
+	/// <summary>
+	/// 音量HIGT変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void VolumeLevelHighNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
 	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-    }
-
-/// <summary>
-/// 音量MID変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void VolumeMidNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		var t = (float)VolumeTopNumericUpDown.Value;
-		var h = (float)VolumeHighNumericUpDown.Value;
-		var m = (float)VolumeMidNumericUpDown.Value;
-		var l = (float)VolumeLowNumericUpDown.Value;
-
-		if ( m < Config.Scale.VolumeLevelMid )
-		{ 
-			if ( m < l )
-			{
-				l = m;
-			}
-		}
-		else
-		{ 
-			if ( m > h )
-			{
-				h = m;
-
-				if ( h > t )
-				{
-					t = h;
-				}
-			}
-		}
-
-		SetVolumeLevel( t, h, m, l );
-	}
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-    }
-
-/// <summary>
-/// 音量LOW変更
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ev"></param>
-private void VolumeLowNumericUpDown_ValueChanged( object sender, EventArgs ev )
-    {
-	try
-	{
-		var t = (float)VolumeTopNumericUpDown.Value;
-		var h = (float)VolumeHighNumericUpDown.Value;
-		var m = (float)VolumeMidNumericUpDown.Value;
-		var l = (float)VolumeLowNumericUpDown.Value;
-
-		if ( l > m )
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-			m = l;
-
-			if ( m > h )
-                {
-				h = m;
-
-				if ( h > t )
-                    {
-					t = h;
-                    }
-                }
+				return;
             }
 
-		SetVolumeLevel( t, h, m, l );
+			var t = (float)_VolumeLevelTopNumberBox.Value;
+			var h = (float)_VolumeLevelHighNumberBox.Value;
+			var m = (float)_VolumeLevelMidNumberBox.Value;
+
+			if ( h < ConfigScale.VolumeLevelHigh )
+			{
+				if ( h < m )
+				{
+					_VolumeLevelMidNumberBox.Value = h;
+				}
+			}
+			else
+			{
+				if ( h > t )
+				{
+					_VolumeLevelTopNumberBox.Value = h;
+				}
+			}
+
+			UpdateVolumeLevel();
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 	}
-	catch ( Exception e )
+
+	/// <summary>
+	/// 音量MID変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void VolumeLevelMidNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
 	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+			var h = (float)_VolumeLevelHighNumberBox.Value;
+			var m = (float)_VolumeLevelMidNumberBox.Value;
+			var l = (float)_VolumeLevelLowNumberBox.Value;
+
+			if ( m < ConfigScale.VolumeLevelMid )
+			{
+				if ( m < l )
+				{
+					_VolumeLevelLowNumberBox.Value = m;
+				}
+			}
+			else
+			{
+				if ( m > h )
+				{
+					_VolumeLevelHighNumberBox.Value = m;
+				}
+			}
+
+			UpdateVolumeLevel();
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 	}
-    }
 
-/// <summary>
-/// 音量レベル設定
-/// </summary>
-/// <param name="aTop">音量TOP</param>
-/// <param name="aHigh">音量HIGH</param>
-/// <param name="aMid">音量MID</param>
-/// <param name="aLow">音量LOW</param>
-private void SetVolumeLevel( float aTop, float aHigh, float aMid, float aLow )
-    {
-	VolumeTopNumericUpDown.Value	= (decimal)aTop;
-	VolumeHighNumericUpDown.Value	= (decimal)aHigh;
-	VolumeMidNumericUpDown.Value	= (decimal)aMid;
-	VolumeLowNumericUpDown.Value	= (decimal)aLow;
+	/// <summary>
+	/// 音量LOW変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void VolumeLevelLowNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+	{
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
 
-	Config.Scale.VolumeLevelTop		= aTop;
-	Config.Scale.VolumeLevelHigh	= aHigh;
-	Config.Scale.VolumeLevelMid		= aMid;
-	Config.Scale.VolumeLevelLow		= aLow;
+			var m = (float)_VolumeLevelMidNumberBox.Value;
+			var l = (float)_VolumeLevelLowNumberBox.Value;
 
-	Config.EventUpdateEditerWaveForm();
+			if ( l > m )
+			{
+				_VolumeLevelMidNumberBox.Value = l;
+			}
 
-	RefreshScreen();
+			UpdateVolumeLevel();
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	/// <summary>
+	/// 音量レベル設定
+	/// </summary>
+	private void UpdateVolumeLevel()
+	{
+		Config.EventUpdateEditerWaveForm();
+
+		Refresh();
+	}
+
+	/// <summary>
+	/// 感度設定
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void WaveFormSensitivityLevelSlider_ValueChanged( object sender, RangeBaseValueChangedEventArgs args )
+	{
+		try
+		{
+			Refresh();
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	#endregion
+
+	/// <summary>
+	/// EditerPanel描画更新
+	/// </summary>
+	public void Refresh() => _EditerPanel.Refresh();
 }
-
-/// <summary>
-/// 感度設定
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="ex"></param>
-private void ScaleSensitivityTrackBar_Scroll( object sender, EventArgs ex )
-    {
-	try
-	{
-		Config.Scale.SensitivityLevel = (float)ScaleSensitivityTrackBar.Value / ScaleSensitivityTrackBar.Maximum;
-
-		RefreshScreen();
-	}
-	catch ( Exception e )
-	{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	}
-    }
-
-#endregion
-
-#endif
