@@ -143,6 +143,9 @@
     <value>範囲選択に
 BPMノートを含める</value>
   </data>
+  <data name="ButtonKeyChange.Content" xml:space="preserve">
+    <value>キー変更</value>
+  </data>
   <data name="ButtonLoopPlay.Content" xml:space="preserve">
     <value>ループ
 再生</value>
@@ -195,6 +198,14 @@ BPMノートを含める</value>
   </data>
   <data name="Dialog.Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="DialogChangeKey.Content" xml:space="preserve">
+    <value>下記内容で変更します。よろしいですか？
+　変更前：{0}
+　変更後：{1}</value>
+  </data>
+  <data name="DialogChangeKey.Title" xml:space="preserve">
+    <value>キー変更</value>
   </data>
   <data name="DialogMenuItemNew.Content" xml:space="preserve">
     <value>編集中の内容は保存されません。
@@ -313,6 +324,9 @@ BPMノートを含める</value>
   </data>
   <data name="LabelImportMidi" xml:space="preserve">
     <value>Midi取込</value>
+  </data>
+  <data name="LabelKeyChange" xml:space="preserve">
+    <value>キー変更</value>
   </data>
   <data name="LabelMeasureNo" xml:space="preserve">
     <value>Measure no</value>

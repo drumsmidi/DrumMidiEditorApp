@@ -72,6 +72,7 @@ public static class Config
 		Score.UpdateScoreFlag			    = true;
 
         ControlAccess.PageMusic?.ReloadMusicInfo();
+        ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
     }
 
     /// <summary>
@@ -115,6 +116,8 @@ public static class Config
         Editer.UpdateScoreFlag		        = true;
 		Player.UpdateScoreFlag			    = true;
 		Score.UpdateScoreFlag			    = true;
+
+        ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
     }
 
     /// <summary>

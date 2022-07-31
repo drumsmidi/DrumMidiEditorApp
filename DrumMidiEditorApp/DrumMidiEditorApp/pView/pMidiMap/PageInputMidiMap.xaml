@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pMidiMap.PageInputMidiMap"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <TextBlock x:Name="_MidiMapBeforeTextBlock"
+            Grid.Row="0"
+            Padding="12 10" />
+
+        <ListBox x:Name="_MidiMapListBox"
+            Grid.Row="1"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ScrollViewer.VerticalScrollMode="Enabled"      
+            SelectionMode="Single"
+            SelectionChanged="MidiMapListBox_SelectionChanged" />
+
+    </Grid>
+</Page>

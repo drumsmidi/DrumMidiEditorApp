@@ -11,11 +11,13 @@
             <Setter Property="Padding" Value="10" />
             <Setter Property="Background" Value="#333" />
         </Style>
+        <Style x:Key="TableCell" TargetType="Grid">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Background" Value="#000" />
+        </Style>
     </UserControl.Resources>
     
     <Grid>
-        <TextBlock Text="DataGridの対応を待つより、キャンバスで実装した方がいいか" />
-        <!--
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -26,7 +28,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource TableHeader}">
             <TextBlock x:Uid="ColumnMidiMapDisplay" />
         </Grid>
@@ -40,18 +42,60 @@
             <TextBlock x:Uid="ColumnMidiMapVolume" />
         </Grid>
 
-        <Grid Grid.Row="1" Grid.Column="0" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapDisplay" />
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="1" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapKey" />
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="2" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapName" />
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="3" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapVolume" />
-        </Grid>
+        <!--
+        <StackPanel Orientation="Vertical">
+
+            <TextBlock x:Uid="InputDivisionLine" />
+
+            <GridView x:Name="_DivisionGridView"
+                        ItemsSource="{x:Bind DrawSet.SheetDivisionLineList, Mode=OneTime}"
+                        SelectedIndex="{x:Bind DrawSet.SheetDivisionLineIndex, Mode=TwoWay}"
+                        SelectionMode="Single"
+                        ScrollViewer.HorizontalScrollMode="Disabled"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                        ScrollViewer.VerticalScrollMode="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="x:Int32">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0" Style="{StaticResource TableCell}">
+                                <CheckBox />
+                            </Grid>
+                            <Grid Grid.Column="1" Style="{StaticResource TableCell}">
+                                <TextBlock />
+                            </Grid>
+                            <Grid Grid.Column="2" Style="{StaticResource TableCell}">
+                                <TextBox />
+                            </Grid>
+                            <Grid Grid.Column="3" Style="{StaticResource TableCell}">
+                                <Button />
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid 
+                            MaximumRowsOrColumns="4" 
+                            Orientation="Horizontal"
+                            Margin="0"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Left" />
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+            </GridView>
+        </StackPanel>
         -->
+        
     </Grid>
 </UserControl>

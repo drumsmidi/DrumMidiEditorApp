@@ -48,7 +48,7 @@ public sealed partial class PageNavigation : Page
         try
         {
 			// 初期ページへ移動
-            NavigationView_Navigate( "PageEdit" );
+            NavigationView_Navigate( "PageMidiMap" );
         }
         catch ( Exception e )
         {

@@ -10,6 +10,14 @@
     <Style TargetType="ComboBox">
         <Setter Property="Height" Value="60" />
     </Style>
+    <Style TargetType="ListBox">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" />
+    </Style>
+    <Style TargetType="ListView">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" />
+    </Style>
 
     <Style x:Key="BasicTextBoxStyle" TargetType="TextBox">
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />

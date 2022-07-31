@@ -1,4 +1,5 @@
 ﻿using DrumMidiEditorApp.pView.pEditer;
+using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
 
 namespace DrumMidiEditorApp.pView;
@@ -15,6 +16,7 @@ public static class ControlAccess
 
     public static UserControlEqualizer? UCEqualizer { get; set; } = null;
 
+    public static UserControlKeyChangePanel? UCKeyChangePanel { get; set; } = null;
 
 
 

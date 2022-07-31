@@ -10,7 +10,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <local:UserControlMidiMapPanel />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <local:UserControlMidiMapPanel Grid.Column="0" />
+
+        <local:UserControlKeyChangePanel Grid.Column="1" />
     </Grid>
     
 </Page>
