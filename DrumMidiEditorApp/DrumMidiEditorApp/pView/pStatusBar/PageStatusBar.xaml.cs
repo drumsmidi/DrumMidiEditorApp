@@ -23,6 +23,8 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
     {
         InitializeComponent();
 
+		ControlAccess.PageStatusBar = this;
+
 		// ログ出力の通知を受け取る
 		Log.LogOutputCallback.Enqueue( SetStatusText );
 	}
@@ -34,7 +36,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 	/// </summary>
 	public void ReloadProgressBar()
 	{
-		OnPropertyChanged( "ConfigSystem.ProgressBarValue" );
+		OnPropertyChanged( "ConfigSystem" );
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged = delegate { };

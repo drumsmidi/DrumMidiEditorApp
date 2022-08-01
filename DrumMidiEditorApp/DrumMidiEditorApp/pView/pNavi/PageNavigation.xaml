@@ -18,7 +18,7 @@
             PaneDisplayMode="LeftCompact" 
             IsBackEnabled="False"
             IsBackButtonVisible="Collapsed"
-            IsSettingsVisible="false"
+            IsSettingsVisible="False"
             IsPaneToggleButtonVisible="False"
             Loaded="NaviControl_Loaded"
             SelectionChanged="NaviControl_SelectionChanged" >

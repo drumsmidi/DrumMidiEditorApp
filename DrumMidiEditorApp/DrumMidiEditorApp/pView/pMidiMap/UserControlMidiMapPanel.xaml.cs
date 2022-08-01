@@ -1,34 +1,21 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.System;
-using Windows.UI;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Pickers;
 
-using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pResume;
-using Microsoft.UI.Windowing;
-using DrumMidiEditorApp.pView.pPlayer.pSurface;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using DrumMidiEditorApp.pIO;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
-public sealed partial class UserControlMidiMapPanel : UserControl
+public sealed partial class UserControlMidiMapPanel : UserControl, INotifyPropertyChanged
 {
     #region Member
 
@@ -63,1047 +50,618 @@ public sealed partial class UserControlMidiMapPanel : UserControl
 	private MidiMapSet _TmpMidiMapSet = new();
 
 	/// <summary>
-	/// 入力前回値
-	/// </summary>
-	private string _MidiMapSetPreValue = String.Empty;
-
-	/// <summary>
 	/// 選択中のMidiMapGroupインデックス
 	/// </summary>
-	private int _MidiMapGroupSelectIndex = Config.System.MidiMapGroupKeyNotSelect;
+	private int _MidiMapGroupSelectIndex = -1;
 
-	/// <summary>
-	/// MidiMapGroup削除後のセル変更イベント制御フラグ
-	/// </summary>
-	private bool _MidiMapGroupSelectForce = false;
+    /// <summary>
+    /// GridView 移動前のインデックス位置
+    /// </summary>
+    private int _BeforeMoveIndex = -1;
 
+    /// <summary>
+    /// 編集中のMidiMapGroupリスト
+    /// </summary>
+    private readonly ObservableCollection<MidiMapGroup> _TmpMidiMapGroupList = new();
 
+    /// <summary>
+    /// 編集中のMidiMapリスト
+    /// </summary>
+	private readonly ObservableCollection<MidiMap> _TmpMidiMapList = new();
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public UserControlMidiMapPanel()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlMidiMapPanel()
     {
         InitializeComponent();
+
+		ControlAccess.UCMidiMapPanel = this;
+	}
+
+	#region INotifyPropertyChanged
+
+	/// <summary>
+    /// MidiMapSetの再読み込み
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadMidiMapSet()
+    {
+        try
+		{
+            // 正本のMidiMapSetの情報を一時データとしてコピー
+			_TmpMidiMapSet.Dispose();
+			_TmpMidiMapSet = Score.EditMidiMapSet.Clone();
+
+            // 先頭のMidiMapGroupを選択
+            _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count > 0 ? 0 : -1 ;
+
+            ReloadMidiMapGroup();
+        }
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+    /// <summary>
+    /// MidiMapGroupの再読み込み
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadMidiMapGroup()
+    {
+        try
+		{
+            // GridViewのItemSources データ作成
+            _TmpMidiMapGroupList.Clear();
+
+            _TmpMidiMapSet.MidiMapGroups
+                .ForEach( midiMap => _TmpMidiMapGroupList.Add( midiMap ) );
+
+            OnPropertyChanged( "_TmpMidiMapGroupList" );
+            OnPropertyChanged( "_MidiMapGroupSelectIndex" );
+        }
+        catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+    /// <summary>
+    /// MidiMapの再読み込み
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadMidiMap()
+    {
+        try
+		{
+            _TmpMidiMapList.Clear();
+
+            if (   _MidiMapGroupSelectIndex != -1
+    		    && _MidiMapGroupSelectIndex < _TmpMidiMapSet.MidiMapGroups.Count )
+    	    {
+                _TmpMidiMapSet.MidiMapGroups[ _MidiMapGroupSelectIndex ].MidiMaps
+                    .ForEach( midiMap => _TmpMidiMapList.Add( midiMap ) );
+    	    }
+
+            OnPropertyChanged( "_TmpMidiMapList" );
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+    #endregion
+
+    #region Command
+
+    /// <summary>
+    /// 編集中のMidiMapSetを主データに反映
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ApplyButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            Score.EditMidiMapSet = CreateMidiMapSet();
+            Score.EditMidiMapSet.ClearSelect();
+            Score.EditMidiMapSet.UpdateInfo();
+
+            Config.EventReloadMidiMapSet();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
-	//#region MidiMapSet
-
-	///// <summary>
-	///// MidiMapセットの情報をGridViewへ反映
-	///// </summary>
-	///// <param name="aMidiMapSet">入力MidiMapセット</param>
-	//public void LoadMidiMapSet( MidiMapSet aMidiMapSet )
- //   {
- //       try
- //       {
-	//		_TmpMidiMapSet.Dispose();
-	//		_TmpMidiMapSet = aMidiMapSet.Clone();
-
-	//		_MidiMapGroupSelectIndex = Config.System.MidiMapGroupKeyNotSelect;
-	//		_MidiMapGroupSelectForce = false;
-
-	//		MidiMapGroupDataGridView.Rows.Clear();
-	//		MidiMapDataGridView.Rows.Clear();
-
-	//		foreach ( var group in _TmpMidiMapSet.MidiMapGroups )
-	//		{
-	//			var row = new DataGridViewRow();
-	//			row.CreateCells( MidiMapGroupDataGridView );
-	//			row.Cells[ MidiMapGroupDisplayColumn.Index   ].Value = group.Display;
-	//			row.Cells[ MidiMapGroupKeyColumn.Index       ].Value = group.GroupKey;
-	//			row.Cells[ MidiMapGroupNameColumn.Index      ].Value = group.GroupName;
-	//			row.Cells[ MidiMapGroupVolumeColumn.Index    ].Value = group.VolumeAdd.ToString();
-
-	//			MidiMapGroupDataGridView.Rows.Add( row );
-	//		}
-
-	//		UpdateButton.Visible = false;
-
-	//		LoadSource();
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapGroup/MidiMapの編集内容を元にMidiMapSetを作成
-	///// </summary>
-	///// <returns>MidiMapSet</returns>
-	//private MidiMapSet CreateMidiMapSet()
- //   {
-	//	UpdateSelectMidiMapGroup( MidiMapGroupDataGridView.SelectedCells[ 0 ].RowIndex );
-		
-	//	var midiMapSet = _TmpMidiMapSet.Clone();
-	//	DMS.SCORE.EditMidiMapSet.CopyToMidiMapGroupPosition( ref midiMapSet );
-
-	//	return midiMapSet;
- //   }
-
-	///// <summary>
-	///// 指定のMidiMapグループとその配下のMidiMap入力情報を一時保存
-	///// </summary>
-	///// <param name="aGroupIndex">MidiMapGroupインデックス番号</param>
-	//private void UpdateSelectMidiMapGroup( int aGroupIndex )
-	//{
-	//	if ( aGroupIndex == Config.System.MidiMapGroupKeyNotSelect )
-	//	{
-	//		return;
-	//	}
-
-	//	#region Save the MidiMap settings
-	//	{
-	//		_TmpMidiMapSet.RemoveMidiMaps( aGroupIndex );
-
-	//		foreach ( DataGridViewRow row in MidiMapDataGridView.Rows )
-	//		{
-	//				var midiMap = new MidiMap
-	//				{
-	//					Display		= Convert.ToBoolean		( row.Cells[ MidiMapDisplayColumn.Index	].Value.ToString() ),
-	//					MidiMapKey	= Convert.ToInt32		( row.Cells[ MidiMapKeyColumn.Index		].Value.ToString() ),
-	//					MidiMapName	= (string)				  row.Cells[ MidiMapNameColumn.Index	].Value ?? String.Empty,
-	//					VolumeAdd	= Convert.ToInt32		( row.Cells[ MidiMapVolumeColumn.Index	].Value.ToString() ),
-	//					//Color		=						  row.Cells[ MidiMapColorColumn.Index	].Style.BackColor,
-	//					Midi		= (byte)Convert.ToInt32	( row.Cells[ MidiMapMidiColumn.Index	].Value.ToString() ),
-	//					Scale		= (string)				  row.Cells[ MidiMapScaleColumn.Index	].Value ?? String.Empty,
-	//			};
-
-	//				_TmpMidiMapSet.AddMidiMap( aGroupIndex, midiMap );
-	//		}
-	//	}
-	//	#endregion
-
-	//	#region Save MidiMap group settings
-	//	{
-	//		var row = MidiMapGroupDataGridView.Rows[ aGroupIndex ];
-
-	//		var group		= _TmpMidiMapSet.MidiMapGroups[ aGroupIndex ];
-	//		group.Display	= Convert.ToBoolean	( row.Cells[ MidiMapGroupDisplayColumn.Index	].Value.ToString()	);
-	//		group.GroupKey	= Convert.ToInt32	( row.Cells[ MidiMapGroupKeyColumn.Index		].Value.ToString()	);
-	//		group.GroupName	= (string)			  row.Cells[ MidiMapGroupNameColumn.Index		].Value ?? String.Empty;
-	//		group.VolumeAdd	= Convert.ToInt32	( row.Cells[ MidiMapGroupVolumeColumn.Index		].Value.ToString()	);
-
-	//		_TmpMidiMapSet.MidiMapGroups[ aGroupIndex ] = group;
-	//	}
-	//	#endregion
-
-	//	_TmpMidiMapSet.UpdateInfo();
-	//}
-
-	///// <summary>
-	///// GridViewへ指定のMidiMapグループ配下のMidiMap情報を設定
-	///// </summary>
-	///// <param name="aGroupIndex">MidiMapGroupインデックス番号</param>
-	//private void UpdateDisplayMidiMapGroup( int aGroupIndex )
-	//{
-	//	if ( aGroupIndex == Config.System.MidiMapGroupKeyNotSelect )
-	//	{
-	//		return;
-	//	}
-
-	//	if (   aGroupIndex == Config.System.MidiMapGroupKeyNotSelect
-	//		|| aGroupIndex >= _TmpMidiMapSet.MidiMapGroups.Count )
-	//	{
-	//		return;
-	//	}
-
-	//	SuspendLayout();
-	//	{ 
-	//		MidiMapDataGridView.Rows.Clear();
-
-	//		var group = _TmpMidiMapSet.MidiMapGroups[ aGroupIndex ];
-
-	//		foreach ( var midiMap in group.MidiMaps )
-	//		{
-	//			var row = new DataGridViewRow();
-	//			row.CreateCells( MidiMapDataGridView );
-	//			row.Cells[ MidiMapDisplayColumn.Index	].Value				= midiMap.Display;
-	//			row.Cells[ MidiMapKeyColumn.Index		].Value				= midiMap.MidiMapKey.ToString();
-	//			row.Cells[ MidiMapNameColumn.Index		].Value				= midiMap.MidiMapName;
-	//			row.Cells[ MidiMapVolumeColumn.Index	].Value				= midiMap.VolumeAdd.ToString();
-	//			//row.Cells[ MidiMapColorColumn.Index		].Style.BackColor	= midiMap.Color;
-	//			row.Cells[ MidiMapMidiColumn.Index		].Value				= midiMap.Midi.ToString();
-	//			row.Cells[ MidiMapScaleColumn.Index		].Value				= midiMap.Scale;
-
-	//			MidiMapDataGridView.Rows.Add( row );
-	//		}
-	//	}
-	//	ResumeLayout( false );
-	//}
-
-	///// <summary>
-	///// MidiMapSetを正本に反映
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void UpdateButton_Click( object sender, EventArgs ev )
-	//{
-	//	try
-	//	{
-	//		DMS.SCORE.EditMidiMapSet = CreateMidiMapSet();
-	//		DMS.SCORE.EditMidiMapSet.ClearSelect();
-	//		DMS.SCORE.EditMidiMapSet.UpdateInfo();
-
-	//		Config.EventReloadMidiMapSet();
-
-	//		UpdateButton.Visible = false;
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//		Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapSetテンプレートの保存
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void ExportButton_Click( object sender, EventArgs ev )
-	//{
-	//	try
-	//	{
-	//		//DMS.PlayerForm?.TemporaryHide();
-
-	//		//if ( !FormUtil.SaveShowDialog( Config.System.FolderMidiMapSet, new(), Config.System.SupportMidiMapSet, out var filepath ) )
-	//   //         {
-	//		//	return;
-	//   //         }
-
-	//		//var midiMapSet = CreateMidiMapSet();
-
-	//		//FileIO.SaveMidiMapSet( filepath, midiMapSet );
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	finally
-	//		{
-	//		//DMS.PlayerForm?.TemporaryShow();
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapSetテンプレートのインポート。
-	///// インポート実施後、MidiMapSetを正本に反映。
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void ImportButton_Click( object sender, EventArgs ev )
-	//{
- //       try
- //       {
-	//	//DMS.PlayerForm?.TemporaryHide();
-
-	//	//if ( !FormUtil.OpenShowDialog( Config.System.FolderMidiMapSet, Config.System.SupportMidiMapSet, out var filepath ) )
- //  //         {
-	//	//	return;
- //  //         }
-
-	//	//if ( !FileIO.LoadMidiMapSet( filepath, out var midiMapSet ) )
- //  //         {
-	//	//	return;
- //  //         }
-
- //  //         using var fm = new ImportMidiMapSetForm
- //  //         {
- //  //             Owner = ParentForm
- //  //         };
-
- //  //         if ( fm.Display( midiMapSet ) )
- //  //         {
-	//	//	DMS.SCORE.EditMidiMapSet = midiMapSet;
-	//	//	DMS.SCORE.EditMidiMapSet.UpdateInfo();
-
-	//	//	LoadMidiMapSet( midiMapSet );
- //  //             LoadSource();
-
-	//	//	Config.EventReloadMidiMapSet();
-
-	//	//	UpdateButton.Visible = false;
-	//	//}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	finally
-	//		{
-	//		//DMS.PlayerForm?.TemporaryShow();
-	//	}
-	//}
-
-	//#endregion
-
-	//#region MidiMapGroup
-
-	///// <summary>
-	///// 最後尾に新規MidiMapGroup追加
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupAddButton_Click( object sender, EventArgs ev )
-	//{
-	//		try
-	//		{
-	//		int new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
-
-	//		if ( new_key == Config.System.MidiMapGroupKeyNotSelect )
-	//		{
-	//			return;
-	//		}
-
-	//			var group = new MidiMapGroup
-	//			{
-	//				GroupKey = new_key
-	//			};
-	//		_TmpMidiMapSet.AddMidiMapGroup( group );
-	//		_TmpMidiMapSet.UpdateInfo();
-
-	//		SuspendLayout();
-	//		{ 
-	//			var row = new DataGridViewRow();
-	//			row.CreateCells( MidiMapGroupDataGridView );
-	//			row.Cells[ MidiMapGroupDisplayColumn.Index	].Value	= group.Display;
-	//			row.Cells[ MidiMapGroupKeyColumn.Index		].Value	= group.GroupKey.ToString();
-	//			row.Cells[ MidiMapGroupNameColumn.Index		].Value	= group.GroupName;
-	//			row.Cells[ MidiMapGroupVolumeColumn.Index	].Value	= group.VolumeAdd.ToString();
-
-	//			MidiMapGroupDataGridView.Rows.Add( row );
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// 選択したMidiMapGroup削除
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupRemoveButton_Click( object sender, EventArgs ev )
-	//{
-	//		try
-	//		{
-	//			if ( MidiMapGroupDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int col_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].ColumnIndex;
-	//			int row_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].RowIndex;
-	//		int key       = Convert.ToInt32( MidiMapGroupDataGridView.Rows[ row_index ].Cells[ MidiMapGroupKeyColumn.Index ].Value.ToString() );
-
-	//		_TmpMidiMapSet.RemoveMidiMapGroup( row_index );
-	//		_TmpMidiMapSet.UpdateInfo();
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapDataGridView.Rows.Clear();
-	//			MidiMapGroupDataGridView.Rows.RemoveAt( row_index );
-
-	//			int cnt = MidiMapGroupDataGridView.Rows.Count;
-
-	//			_MidiMapGroupSelectIndex = ( row_index >= cnt ) ? cnt - 1 : row_index ;
-	//			_MidiMapGroupSelectForce = true;
-
-	//			UpdateDisplayMidiMapGroup( _MidiMapGroupSelectIndex );
-
-	//			if ( _MidiMapGroupSelectIndex != -1 )
-	//			{
-	//				MidiMapGroupDataGridView.Rows[ _MidiMapGroupSelectIndex ].Cells[ col_index ].Selected = true;
-	//			}
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// 選択したMidiMapGroupの位置を一つ上げる
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupUpButton_Click( object sender, EventArgs ev )
-	//{
-	//		try
-	//		{
-	//			if ( MidiMapGroupDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int col_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].ColumnIndex;
-	//			int row_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].RowIndex;
-
-	//			if ( row_index <= 0 )
-	//			{
-	//				return;
-	//			}
-
-	//		_MidiMapGroupSelectIndex = MidiMapGroupMoveRow( row_index, -1 );
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapGroupDataGridView.Rows[ _MidiMapGroupSelectIndex ].Cells[ col_index ].Selected = true;
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// 選択したMidiMapGroupの位置を１つ下げる
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDownButton_Click( object sender, EventArgs ev )
-	//{
-	//	try
-	//		{
-	//			if ( MidiMapGroupDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int col_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].ColumnIndex;
-	//			int row_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].RowIndex;
-
-	//			if ( row_index >= MidiMapGroupDataGridView.Rows.Count - 1 )
-	//			{
-	//				return;
-	//			}
-
-	//			_MidiMapGroupSelectIndex = MidiMapGroupMoveRow( row_index, 1 );
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapGroupDataGridView.Rows[ _MidiMapGroupSelectIndex ].Cells[ col_index ].Selected = true;
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapGroup位置の移動処理
-	///// </summary>
-	///// <param name="aBeforeIndex">移動前のインデックス番号</param>
-	///// <param name="aMove">移動量</param>
-	///// <returns>移動後のMidiMapGroupインデックス番号</returns>
-	//private int MidiMapGroupMoveRow( int aBeforeIndex, int aMove )
-	//	{
-	//		int bef = aBeforeIndex;
-	//		int aft	= aBeforeIndex + aMove;
-	//	int cnt = MidiMapGroupDataGridView.Rows.Count;
-
-	//	if ( aft < 0 )
-	//	{
-	//		aft = 0;
-	//	}
-	//	if ( aft > cnt - 1 )
-	//	{
-	//		aft = cnt - 1;
-	//	}
-
-	//	if ( aft != bef )
-	//	{
-	//		SuspendLayout();
-	//		{ 
-	//			var row = MidiMapGroupDataGridView.Rows[ bef ];
-
-	//				// Removeイベント後のSelectionChangedイベントでエラーが発生する為、回避
-	//#pragma warning disable CS8622
-	//				MidiMapGroupDataGridView.SelectionChanged -= new EventHandler( MidiMapGroupDataGridView_SelectionChanged );
-	//				MidiMapGroupDataGridView.Rows.Remove( row );
-	//			MidiMapGroupDataGridView.SelectionChanged += new EventHandler( MidiMapGroupDataGridView_SelectionChanged );
-	//#pragma warning restore CS8622
-
-	//			MidiMapGroupDataGridView.Rows.Insert( aft, row );
-
-	//			_TmpMidiMapSet.MoveMidiMapGroup( aBeforeIndex, aMove );
-	//			_TmpMidiMapSet.UpdateInfo();
-	//		}
-	//		ResumeLayout( false );
-	//	}
-
-	//	return aft;
-	//	}
-
-	///// <summary>
-	///// MidiMapGroupのセル選択時に、MidiMapの一覧表示を更新
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDataGridView_SelectionChanged( object sender, EventArgs ev )
-	//{
-	//	try
-	//	{
-	//		if ( MidiMapGroupDataGridView.SelectedCells.Count == 0 )
-	//		{
-	//			MidiMapDataGridView.Rows.Clear();
-	//			return;
-	//		}
-
-	//		int row_index = MidiMapGroupDataGridView.SelectedCells[ 0 ].RowIndex;
-
-	//		if ( row_index == _MidiMapGroupSelectIndex && !_MidiMapGroupSelectForce )
-	//		{
-	//			return;
-	//		}
-	//		_MidiMapGroupSelectForce = false;
-
-	//		// Save the value before change
-	//		UpdateSelectMidiMapGroup( _MidiMapGroupSelectIndex );
-
-	//		// Set the changed value
-	//		_MidiMapGroupSelectIndex = row_index;
-
-	//		UpdateDisplayMidiMapGroup( row_index );
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapGroupセル選択
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDataGridView_CellEnter( object sender, DataGridViewCellEventArgs ev )
-	//{
-	//	try
-	//	{
-	//		if  ( MidiMapGroupDataGridView[ ev.ColumnIndex, ev.RowIndex ].GetType().Equals( typeof( DataGridViewComboBoxCell ) ) )
-	//		{
-	//			MidiMapGroupDataGridView.BeginEdit( false );
-
-	//			( (DataGridViewComboBoxEditingControl)MidiMapGroupDataGridView.EditingControl ).DroppedDown = true;
-	//		}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapGroupセル内のコンテンツクリック
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs ev )
-	//{
-	//	try
-	//	{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if  ( ev.ColumnIndex == MidiMapGroupDisplayColumn.Index )
-	//		{
-	//			UpdateButton.Visible = true;
-	//		}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// テキスト入力前の値を保持
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDataGridView_CellValidating( object sender, DataGridViewCellValidatingEventArgs ev )
-	//{
-	//		try
-	//		{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if	(	ev.ColumnIndex == MidiMapGroupNameColumn.Index
-	//			||	ev.ColumnIndex == MidiMapGroupVolumeColumn.Index
-	//			)
-	//		{
-	//			_MidiMapSetPreValue = (string)MidiMapGroupDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value ?? String.Empty ;
-	//		}
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// テキスト入力後の検証
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapGroupDataGridView_CellValidated( object sender, DataGridViewCellEventArgs ev )
-	//{
-	//	bool rollback = false;
-
-	//		try
-	//		{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if	(	ev.ColumnIndex == MidiMapGroupNameColumn.Index
-	//			||	ev.ColumnIndex == MidiMapGroupVolumeColumn.Index
-	//			)
-	//		{
-	//			var value = (string)MidiMapGroupDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value ?? String.Empty ;
-
-	//			if ( _MidiMapSetPreValue.Equals( value ) )
-	//			{
-	//				return;
-	//			}
-
-	//			#region Check
-
-	//			if ( ev.ColumnIndex == MidiMapGroupVolumeColumn.Index )
-	//			{		                
-	//				if ( !int.TryParse( value, out var volume ) )
-	//				{
-	//					rollback = true;
-	//				}
-	//				else if ( volume < Config.Media.MidiAddMinVolume || Config.Media.MidiAddMaxVolume < volume )
-	//				{
-	//					rollback = true;
-	//				}
-	//			}
-
-	//			#endregion
-
-	//			SuspendLayout();
-	//			{ 
-	//				if ( rollback )
-	//				{
-	//					MidiMapGroupDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value = _MidiMapSetPreValue;
-	//				}
-	//				else
-	//				{
-	//					UpdateButton.Visible = true;
-	//				}
-	//			}
-	//			ResumeLayout(false);
-	//		}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	//#endregion
-
-	//#region MidiMap
-
-	///// <summary>
-	///// 最後尾に新規MidiMap追加
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapAddButton_Click( object sender, EventArgs ev )
-	//	{
-	//	try
-	//		{
-	//		if ( _MidiMapGroupSelectIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		int new_key = _TmpMidiMapSet.GetMidiMapNewKey();
-
-	//		if ( new_key == Config.System.MidiMapKeyNotSelect )
-	//		{
-	//			return;
-	//		}
-
-	//			var MidiMap = new MidiMap
-	//			{
-	//				MidiMapKey = new_key
-	//			};
-	//		_TmpMidiMapSet.AddMidiMap( _MidiMapGroupSelectIndex, MidiMap );
-	//		_TmpMidiMapSet.UpdateInfo();
-
-	//			SuspendLayout();
-	//		{ 
-	//			var row = new DataGridViewRow();
-	//			row.CreateCells( MidiMapDataGridView );
-	//			row.Cells[ MidiMapDisplayColumn.Index	].Value						= MidiMap.Display;
-	//			row.Cells[ MidiMapKeyColumn.Index		].Value						= MidiMap.MidiMapKey.ToString();
-	//			row.Cells[ MidiMapNameColumn.Index		].Value						= MidiMap.MidiMapName;
-	//			row.Cells[ MidiMapVolumeColumn.Index	].Value						= MidiMap.VolumeAdd.ToString();
-	//			//row.Cells[ MidiMapColorColumn.Index		].Style.BackColor			= MidiMap.Color;
-	//			//row.Cells[ MidiMapColorColumn.Index		].Style.SelectionBackColor	= MidiMap.Color;
-	//			row.Cells[ MidiMapMidiColumn.Index		].Value						= MidiMap.Midi.ToString();
-	//			row.Cells[ MidiMapScaleColumn.Index		].Value						= MidiMap.Scale;
-
-	//			MidiMapDataGridView.Rows.Add( row );
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	}
-
-	///// <summary>
-	///// 選択したMidiMap削除
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapRemoveButton_Click( object sender, EventArgs ev )
-	//	{
-	//		try
-	//		{
-	//			if ( MidiMapDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int MidiMap_index	= MidiMapDataGridView.SelectedCells[ 0 ].RowIndex;
-	//		int MidiMap_key		= Convert.ToInt32( MidiMapDataGridView.Rows[ MidiMap_index ].Cells[ MidiMapKeyColumn.Index ].Value.ToString() );
-
-	//		_TmpMidiMapSet.RemoveMidiMap( _MidiMapGroupSelectIndex, MidiMap_index );
-	//		_TmpMidiMapSet.UpdateInfo();
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapDataGridView.Rows.RemoveAt( MidiMap_index );
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	}
-
-	///// <summary>
-	///// 選択したMidiMapの位置を一つ上げる
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapUpButton_Click( object sender, EventArgs ev )
-	//	{
-	//		try
-	//		{
-	//			if ( MidiMapDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int col_index = MidiMapDataGridView.SelectedCells[ 0 ].ColumnIndex;
-	//			int row_index = MidiMapDataGridView.SelectedCells[ 0 ].RowIndex;
-
-	//			if ( row_index <= 0 )
-	//			{
-	//				return;
-	//			}
-
-	//		int aft_index = MidiMapMoveRow( row_index, -1 );
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapDataGridView.Rows[ aft_index ].Cells[ col_index ].Selected = true;
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	}
-
-	///// <summary>
-	///// 選択したMidiMapの位置を１つ下げる
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapDownButton_Click( object sender, EventArgs ev )
-	//	{
-	//	try
-	//		{
-	//			if ( MidiMapDataGridView.SelectedCells.Count == 0 )
-	//			{
-	//				return;
-	//			}
-
-	//			int col_index = MidiMapDataGridView.SelectedCells[ 0 ].ColumnIndex;
-	//			int row_index = MidiMapDataGridView.SelectedCells[ 0 ].RowIndex;
-
-	//			if ( row_index >= MidiMapDataGridView.Rows.Count - 1 )
-	//			{
-	//				return;
-	//			}
-
-	//		int aft_index = MidiMapMoveRow( row_index, 1 );
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapDataGridView.Rows[ aft_index ].Cells[ col_index ].Selected = true;
-
-	//			UpdateButton.Visible = true;
-	//		}
-	//		ResumeLayout( false );
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	}
-
-	///// <summary>
-	///// MidiMap位置の移動処理
-	///// </summary>
-	///// <param name="aBeforeIndex">移動前のインデックス番号</param>
-	///// <param name="aMove">移動量</param>
-	///// <returns>移動後のドラムインデックス番号</returns>
-	//private int MidiMapMoveRow( int aBeforeIndex, int aMove )
-	//	{
-	//		var bef = aBeforeIndex;
-	//		var aft	= aBeforeIndex + aMove;
-	//	var cnt = MidiMapDataGridView.Rows.Count;
-
-	//	if ( aft < 0 )
-	//	{
-	//		aft = 0;
-	//	}
-	//	if ( aft > cnt - 1 )
-	//	{
-	//		aft = cnt - 1;
-	//	}
-
-	//	if ( aft != bef )
-	//	{
-	//		var row = MidiMapDataGridView.Rows[ bef ];
-
-	//		SuspendLayout();
-	//		{ 
-	//			MidiMapDataGridView.Rows.Remove( row );
-	//			MidiMapDataGridView.Rows.Insert( aft, row );
-
-	//			_TmpMidiMapSet.MoveMidiMap( _MidiMapGroupSelectIndex, aBeforeIndex, aMove );
-	//			_TmpMidiMapSet.UpdateInfo();
-	//		}
-	//		ResumeLayout( false );
-	//	}
-
-	//	return aft;
-	//	}
-
-	///// <summary>
-	///// MidiMapセル選択
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapDataGridView_CellEnter( object sender, DataGridViewCellEventArgs ev )
-	//{
-	//	try
-	//	{
-	//		if  ( MidiMapDataGridView[ ev.ColumnIndex, ev.RowIndex ].GetType().Equals( typeof( DataGridViewComboBoxCell ) ) )
-	//		{
-	//			MidiMapDataGridView.BeginEdit( false );
-	//			( (DataGridViewComboBoxEditingControl)MidiMapDataGridView.EditingControl ).DroppedDown = true;
-	//		}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// MidiMapセル内のコンテンツクリック
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//private void MidiMapDataGridView_CellContentClick( object sender, DataGridViewCellEventArgs ev )
-	//	{
-	//		try
-	//		{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if ( ev.ColumnIndex == MidiMapDisplayColumn.Index )
-	//			{
-	//			UpdateButton.Visible = true;
-	//		}
-	//		else if ( ev.ColumnIndex == MidiMapColorColumn.Index )
-	//		{
-	//			var cell = MidiMapDataGridView.Rows[ ev.RowIndex ].Cells[ MidiMapColorColumn.Index ];
-
-	//			try
-	//			{ 
-	//				//DMS.PlayerForm?.TemporaryHide();
-
-	//				if ( FormUtil.SelectColor( cell.Style.SelectionBackColor, out var c ) )
-	//				{
-	//					cell.Style.BackColor			= c;
-	//					cell.Style.SelectionBackColor	= c;
-
-	//					UpdateButton.Visible = true;
-	//				}
-	//			}
-	//			finally
-	//				{
-	//				//DMS.PlayerForm?.TemporaryShow();
-	//			}
-	//		}
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//}
-
-	///// <summary>
-	///// テキスト入力前の値を保持
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//	private void MidiMapDataGridView_CellValidating( object sender, DataGridViewCellValidatingEventArgs ev )
-	//	{
-	//		try
-	//		{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if  (	ev.ColumnIndex == MidiMapNameColumn.Index
-	//			||	ev.ColumnIndex == MidiMapVolumeColumn.Index
-	//			||	ev.ColumnIndex == MidiMapMidiColumn.Index
-	//			)
-	//		{
-	//			_MidiMapSetPreValue = (string)MidiMapDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value ?? String.Empty ;
-	//		}
-	//		}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
-	//	}
-
-	///// <summary>
-	///// テキスト入力後の検証
-	///// </summary>
-	///// <param name="sender"></param>
-	///// <param name="ev"></param>
-	//	private void MidiMapDataGridView_CellValidated( object sender, DataGridViewCellEventArgs ev )
-	//	{
-	//	bool rollback = false;
-
-	//		try
-	//		{
-	//		if ( ev.RowIndex == -1 )
-	//		{
-	//			return;
-	//		}
-
-	//		if  (	ev.ColumnIndex == MidiMapNameColumn.Index
-	//			||	ev.ColumnIndex == MidiMapVolumeColumn.Index
-	//			||	ev.ColumnIndex == MidiMapMidiColumn.Index
-	//			)
-	//		{
-	//			var value = (string)MidiMapDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value ?? String.Empty ;
-
-	//			if ( _MidiMapSetPreValue.Equals( value ) )
-	//			{
-	//				return;
-	//			}
-
-	//			#region Check
-
-	//			if ( ev.ColumnIndex == MidiMapVolumeColumn.Index )
-	//			{
-	//				if ( !int.TryParse( value, out var volume ) )
-	//				{
-	//					rollback = true;
-	//				}
-	//				else if ( volume < Config.Media.MidiAddMinVolume || Config.Media.MidiAddMaxVolume < volume )
-	//				{
-	//					rollback = true;
-	//				}
-	//			}
-	//			else if ( ev.ColumnIndex == MidiMapMidiColumn.Index )
-	//			{	                
-	//				if ( !int.TryParse( value, out var midi ) )
-	//				{
-	//					rollback = true;
-	//				}
-	//				else if ( midi < Config.Media.MidiNoteMin || midi > Config.Media.MidiNoteMax )
-	//				{
-	//					rollback = true;
-	//				}
-	//			}
-
-	//			#endregion
-
-	//			SuspendLayout();
-	//			{
-	//				if ( rollback )
-	//				{
-	//					MidiMapDataGridView[ ev.ColumnIndex, ev.RowIndex ].Value = _MidiMapSetPreValue;
-	//				}
-	//				else
-	//				{
-	//					UpdateButton.Visible = true;
-	//				}
-	//			}
-	//			ResumeLayout( false );
-	//		}
-	//	}
-	//	catch ( Exception e )
-	//	{
-	//			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-	//	}
- //   }
-
- //   #endregion
+    /// <summary>
+    /// インポート
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ImportButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+			XamlHelper.OpenDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportMidiMapSet,
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderMidiMapSet,
+					( filepath ) =>
+                    {
+                        if ( !FileIO.LoadMidiMapSet( filepath, out var midiMapSet ) )
+                        {
+            	            return;
+                        }
+
+                        var page = new PageImportMidiMap();
+                        page.LoadMidiMap( midiMapSet );
+
+                        XamlHelper.InputDialogOkCancelAsync
+                            (
+                                Content.XamlRoot,
+                                ResourcesHelper.GetString( "LabelImportMidiMap" ),
+                                page,
+                                () =>
+                                {
+                                    Score.EditMidiMapSet = midiMapSet;
+                                    Score.EditMidiMapSet.UpdateInfo();
+
+                                    Config.EventReloadMidiMapSet();
+                                }
+                            );
+					}
+				);
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// エクスポート
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ExportButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+			XamlHelper.SaveDialogAsync
+				(
+					ControlAccess.MainWindow,
+					ConfigSystem.SupportMidiMapSet,
+					"",
+					PickerLocationId.DocumentsLibrary,
+					ConfigSystem.FolderMidiMapSet,
+					( filepath ) =>
+                    {
+						filepath.Extension = ConfigSystem.ExtentionDms;
+
+                        var midiMapSet = CreateMidiMapSet();
+
+						if ( !FileIO.SaveMidiMapSet( filepath, midiMapSet ) )
+						{
+							return;
+						}
+					}
+				);
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    #region MidiMapSet
+
+    /// <summary>
+    /// MidiMapGroup/MidiMapの編集内容を元にMidiMapSetを作成
+    /// </summary>
+    /// <returns>MidiMapSet</returns>
+    private MidiMapSet CreateMidiMapSet()
+    {
+        var midiMapSet = _TmpMidiMapSet.Clone();
+
+        Score.EditMidiMapSet.CopyToMidiMapGroupPosition( ref midiMapSet );
+
+        return midiMapSet;
+    }
+
+    #endregion
+
+    #region MidiMapGroup
+
+    /// <summary>
+    /// MidiMapGroupのアイテム変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGroupGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+        try
+        {
+            ReloadMidiMap();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMapGroup追加
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGroupAddButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+    		int new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
+
+    		if ( new_key == ConfigSystem.MidiMapGroupKeyNotSelect )
+    		{
+    			return;
+    		}
+
+    		var group = new MidiMapGroup
+    		{
+    			GroupKey = new_key
+    		};
+    		_TmpMidiMapSet.AddMidiMapGroup( group );
+    		_TmpMidiMapSet.UpdateInfo();
+
+            // 新規追加したアイテムを選択
+            _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count - 1;
+
+            ReloadMidiMapGroup();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMapGroup削除
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGroupRemoveButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+    		if ( _MidiMapGroupSelectIndex == -1 )
+    		{
+    			return;
+    		}
+
+    		_TmpMidiMapSet.RemoveMidiMapGroup( _MidiMapGroupSelectIndex );
+    		_TmpMidiMapSet.UpdateInfo();
+
+            // 同じ行にあるアイテムを選択
+            if ( _TmpMidiMapSet.MidiMapGroups.Count == 0 )
+            {
+                _MidiMapGroupSelectIndex = -1;
+            }
+            else if ( _TmpMidiMapSet.MidiMapGroups.Count <= _MidiMapGroupSelectIndex )
+            {
+                _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count - 1;
+            }
+
+            ReloadMidiMapGroup();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMapGroup のドラッグ開始
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGroupGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    {
+		try
+		{
+            if ( args.Items.Count != 1 )
+            {
+                return;
+            }
+
+            if ( args.Items[ 0 ] is not MidiMapGroup group )
+            {
+                return;
+            }
+
+            _BeforeMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
+
+            args.Data.RequestedOperation = DataPackageOperation.Move;
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMapGroup のドラッグ終了
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGroupGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
+    {
+		try
+		{
+            switch ( args.DropResult )
+            {
+                case DataPackageOperation.Move:
+                    {
+                        if ( args.Items.Count != 1 )
+                        {
+                            return;
+                        }
+
+                        if ( args.Items[ 0 ] is not MidiMapGroup group )
+                        {
+                            return;
+                        }
+
+                        var afterMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
+
+                        if ( afterMoveIndex == -1 )
+                        { 
+                            return;
+                        }
+
+                        _TmpMidiMapSet.MoveMidiMapGroup( _BeforeMoveIndex, afterMoveIndex - _BeforeMoveIndex );
+                        _TmpMidiMapSet.UpdateInfo();
+                    }
+                    break;
+            }
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    #region MidiMap
+
+    /// <summary>
+    /// MidiMap追加
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapAddButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+    		if ( _MidiMapGroupSelectIndex == -1 )
+    		{
+    			return;
+    		}
+
+    		int new_key = _TmpMidiMapSet.GetMidiMapNewKey();
+
+    		if ( new_key == ConfigSystem.MidiMapKeyNotSelect )
+    		{
+    			return;
+    		}
+
+    		var midiMap = new MidiMap
+    		{
+    			MidiMapKey = new_key
+    		};
+    		_TmpMidiMapSet.AddMidiMap( _MidiMapGroupSelectIndex, midiMap );
+            _TmpMidiMapSet.UpdateInfo();
+
+            ReloadMidiMap();
+
+            // 新規追加したアイテムを選択
+            _MidiMapGridView.SelectedIndex = _MidiMapGridView.Items.Count - 1;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMap削除
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapRemoveButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+    		if ( _MidiMapGroupSelectIndex == -1 || _MidiMapGridView.SelectedIndex == -1 )
+    		{
+    			return;
+    		}
+
+            var index = _MidiMapGridView.SelectedIndex;
+
+            _TmpMidiMapSet.RemoveMidiMap( _MidiMapGroupSelectIndex, index );
+            _TmpMidiMapSet.UpdateInfo();
+
+            ReloadMidiMap();
+
+            // 同じ行にあるアイテムを選択
+            if ( _MidiMapGridView.Items.Count == 0 )
+            { 
+                return;
+            }
+            else if ( _MidiMapGridView.Items.Count <= index )
+            { 
+                index = _MidiMapGridView.Items.Count - 1;
+            }
+
+            _MidiMapGridView.SelectedIndex = index;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMap ドラッグ開始
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    {
+		try
+		{
+            if ( args.Items.Count != 1 )
+            {
+                return;
+            }
+
+            if ( args.Items[ 0 ] is not MidiMap midiMap )
+            {
+                return;
+            }
+
+            _BeforeMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
+
+            args.Data.RequestedOperation = DataPackageOperation.Move;
+        }
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MidiMap ドラッグ終了
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiMapGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
+    {
+		try
+		{
+            switch ( args.DropResult )
+            {
+                case DataPackageOperation.Move:
+                    {
+                        if ( args.Items.Count != 1 )
+                        {
+                            return;
+                        }
+
+                        if ( args.Items[ 0 ] is not MidiMap midiMap )
+                        {
+                            return;
+                        }
+
+                        var afterMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
+
+                        if ( afterMoveIndex == -1 )
+                        { 
+                            return;
+                        }
+
+                        _TmpMidiMapSet.MoveMidiMap( _MidiMapGroupSelectIndex, _BeforeMoveIndex, afterMoveIndex - _BeforeMoveIndex );
+                        _TmpMidiMapSet.UpdateInfo();
+                    }
+                    break;
+            }
+        }
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    #region GridItem イベント
+
+    /// <summary>
+    /// ボリューム増減入力チェック
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void VolumeAddNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+            sender.Value = ConfigMedia.CheckMidiAddVolume( (int)sender.Value );
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// MIDI入力チェック
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MidiNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+            sender.Value = ConfigMedia.CheckMidiNote( (int)sender.Value );
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// 色選択
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
 }

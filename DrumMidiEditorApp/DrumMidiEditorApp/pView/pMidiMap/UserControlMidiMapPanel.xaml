@@ -3,99 +3,348 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:x1="using:DrumMidiEditorApp.pDMS"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <Style x:Key="TableHeader" TargetType="Grid">
             <Setter Property="Padding" Value="10" />
             <Setter Property="Background" Value="#333" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
+            <Setter Property="BorderThickness" Value="0 0 1 1" />
         </Style>
         <Style x:Key="TableCell" TargetType="Grid">
-            <Setter Property="Padding" Value="10" />
+            <Setter Property="Padding" Value="0" />
             <Setter Property="Background" Value="#000" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
+            <Setter Property="BorderThickness" Value="0 0 1 1" />
         </Style>
+        
+<!-- x:Bind 使うとエラーになる
+        <Style x:Key="VolumeStyle" TargetType="NumberBox">
+            <Setter Property="Minimum" Value="{x:Bind ConfigMedia.MidiAddMinVolume}" />
+            <Setter Property="Maximum" Value="{x:Bind ConfigMedia.MidiAddMaxVolume}" />
+        </Style>
+        <Style x:Key="MidiStyle" TargetType="NumberBox">
+            <Setter Property="Minimum" Value="{x:Bind ConfigMedia.MidiNoteMin}" />
+            <Setter Property="Maximum" Value="{x:Bind ConfigMedia.MidiNoteMax}" />
+        </Style>
+-->
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapDisplay" />
+        <Grid 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="3"
+            Padding="6"
+            BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+            BorderThickness="0 0 0 4" >
+            
+            <StackPanel Orientation="Horizontal" Spacing="20">
+
+                <Button x:Name="_ApplyButton" x:Uid="ButtonApply"
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Click="ApplyButton_Click" />
+
+                <Button x:Uid="ButtonImport"
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Click="ImportButton_Click" />
+
+                <Button x:Uid="ButtonExport" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    Click="ExportButton_Click" />
+
+            </StackPanel>
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="1" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapKey" />
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid 
+                Grid.Row="0" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="4"
+                Padding="6"
+                BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+                BorderThickness="0 0 0 4" >
+
+                <StackPanel Orientation="Horizontal" Spacing="6">
+
+                    <Button x:Uid="ButtonAdd"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="MidiMapGroupAddButton_Click" />
+
+                    <Button x:Uid="ButtonRemove" 
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="MidiMapGroupRemoveButton_Click" />
+
+                </StackPanel>
+
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapDisplay" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapKey" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="2" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapName" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="3" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapVolume" />
+            </Grid>
+
+            <ScrollViewer
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="4" >
+
+                <GridView x:Name="_MidiMapGroupGridView"
+                    ItemsSource="{x:Bind _TmpMidiMapGroupList, Mode=OneWay}"
+                    SelectedIndex="{x:Bind _MidiMapGroupSelectIndex, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    CanReorderItems="True"
+                    CanDragItems="True"
+                    AllowDrop="True"
+                    DragItemsStarting="MidiMapGroupGridView_DragItemsStarting"
+                    DragItemsCompleted="MidiMapGroupGridView_DragItemsCompleted"
+                    SelectionChanged="MidiMapGroupGridView_SelectionChanged"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x1:MidiMapGroup">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="90" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Style="{StaticResource TableCell}">
+                                    <CheckBox
+                                        IsChecked="{x:Bind Display, Mode=TwoWay}"
+                                        Margin="24 0 24 0"
+                                        HorizontalAlignment="Left" />
+                                </Grid>
+                                <Grid Grid.Column="1" Style="{StaticResource TableCell}">
+                                    <TextBlock 
+                                        Text="{x:Bind GroupKey, Mode=TwoWay}"
+                                        Height="20"
+                                        TextAlignment="Center" />
+                                </Grid>
+                                <Grid Grid.Column="2" Style="{StaticResource TableCell}">
+                                    <TextBox
+                                        Text="{x:Bind GroupName, Mode=TwoWay}"
+                                        Height="30" />
+                                </Grid>
+                                <Grid Grid.Column="3" Style="{StaticResource TableCell}">
+                                    <NumberBox
+                                        Value="{x:Bind VolumeAdd, Mode=TwoWay}"
+                                        Height="30"
+                                        ValueChanged="VolumeAddNumberBox_ValueChanged" />
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="0" 
+                                Orientation="Vertical"
+                                Margin="0"
+                                ItemHeight="48"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                </GridView>
+
+            </ScrollViewer>
+
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="2" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapName" />
+        
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="140" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid 
+                Grid.Row="0" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="7"
+                Padding="6"
+                BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+                BorderThickness="0 0 0 4" >
+
+                <StackPanel Orientation="Horizontal" Spacing="6">
+
+                    <Button x:Uid="ButtonAdd"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="MidiMapAddButton_Click" />
+
+                    <Button x:Uid="ButtonRemove" 
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Click="MidiMapRemoveButton_Click" />
+
+                </StackPanel>
+
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="0" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapDisplay" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="1" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapKey" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="2" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapName" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="3" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapVolume" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="4" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapColor" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="5" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapMidi" />
+            </Grid>
+            <Grid Grid.Row="1" Grid.Column="6" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapScale" />
+            </Grid>
+
+            <ScrollViewer
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="7" >
+
+                <GridView x:Name="_MidiMapGridView"
+                    ItemsSource="{x:Bind _TmpMidiMapList, Mode=OneWay}"
+                    SelectionMode="Single"
+                    CanReorderItems="True"
+                    CanDragItems="True"
+                    AllowDrop="True"
+                    DragItemsStarting="MidiMapGridView_DragItemsStarting"
+                    DragItemsCompleted="MidiMapGridView_DragItemsCompleted"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x1:MidiMap">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="90" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Style="{StaticResource TableCell}">
+                                    <CheckBox
+                                        IsChecked="{x:Bind Display, Mode=TwoWay}"
+                                        Margin="24 0 24 0"
+                                        HorizontalAlignment="Left" />
+                                </Grid>
+                                <Grid Grid.Column="1" Style="{StaticResource TableCell}">
+                                    <TextBlock 
+                                        Text="{x:Bind MidiMapKey, Mode=TwoWay}"
+                                        Height="20"
+                                        TextAlignment="Center" />
+                                </Grid>
+                                <Grid Grid.Column="2" Style="{StaticResource TableCell}">
+                                    <TextBox
+                                        Text="{x:Bind MidiMapName, Mode=TwoWay}"
+                                        Height="30" />
+                                </Grid>
+                                <Grid Grid.Column="3" Style="{StaticResource TableCell}">
+                                    <NumberBox
+                                        Value="{x:Bind VolumeAdd, Mode=TwoWay}"
+                                        Height="30"
+                                        ValueChanged="VolumeAddNumberBox_ValueChanged" />
+                                </Grid>
+                                <Grid Grid.Column="4" Style="{StaticResource TableCell}">
+                                    <Button
+                                        Background="{x:Bind ColorText, Mode=OneWay}"
+                                        Height="30"
+                                        Width="60"
+                                        Click="ColorButton_Click" />
+                                </Grid>
+                                <Grid Grid.Column="5" Style="{StaticResource TableCell}">
+                                    <NumberBox
+                                        Value="{x:Bind Midi, Mode=TwoWay}"
+                                        Height="30"
+                                        ValueChanged="MidiNumberBox_ValueChanged" />
+                                </Grid>
+                                <Grid Grid.Column="6" Style="{StaticResource TableCell}">
+                                    <TextBox
+                                        Text="{x:Bind Scale, Mode=TwoWay}"
+                                        Height="30" />
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="0" 
+                                Orientation="Vertical"
+                                Margin="0"
+                                ItemHeight="48"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Left" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                </GridView>
+
+            </ScrollViewer>
+
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="3" Style="{StaticResource TableHeader}">
-            <TextBlock x:Uid="ColumnMidiMapVolume" />
-        </Grid>
-
-        <!--
-        <StackPanel Orientation="Vertical">
-
-            <TextBlock x:Uid="InputDivisionLine" />
-
-            <GridView x:Name="_DivisionGridView"
-                        ItemsSource="{x:Bind DrawSet.SheetDivisionLineList, Mode=OneTime}"
-                        SelectedIndex="{x:Bind DrawSet.SheetDivisionLineIndex, Mode=TwoWay}"
-                        SelectionMode="Single"
-                        ScrollViewer.HorizontalScrollMode="Disabled"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
-
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="x:Int32">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0" Style="{StaticResource TableCell}">
-                                <CheckBox />
-                            </Grid>
-                            <Grid Grid.Column="1" Style="{StaticResource TableCell}">
-                                <TextBlock />
-                            </Grid>
-                            <Grid Grid.Column="2" Style="{StaticResource TableCell}">
-                                <TextBox />
-                            </Grid>
-                            <Grid Grid.Column="3" Style="{StaticResource TableCell}">
-                                <Button />
-                            </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid 
-                            MaximumRowsOrColumns="4" 
-                            Orientation="Horizontal"
-                            Margin="0"
-                            VerticalAlignment="Bottom"
-                            HorizontalAlignment="Left" />
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-
-            </GridView>
-        </StackPanel>
-        -->
         
     </Grid>
 </UserControl>

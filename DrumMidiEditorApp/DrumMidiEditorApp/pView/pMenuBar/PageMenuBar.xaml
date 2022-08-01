@@ -84,10 +84,10 @@
         <Grid Grid.Row="0" Grid.Column="2">
             <StackPanel Orientation="Horizontal" Spacing="6">
 
-                <ToggleSwitch x:Name="_BgmToggleSwitch" x:Uid="InputBgmSwitch"
+                <ToggleSwitch x:Uid="InputBgmSwitch"
                     IsOn="{x:Bind ConfigMedia.BgmPlayOn, Mode=TwoWay}" />
 
-                <ToggleSwitch x:Name="_MidiOutToggleSwitch" x:Uid="InputMidiOutSwitch"
+                <ToggleSwitch x:Uid="InputMidiOutSwitch"
                     IsOn="{x:Bind ConfigMedia.NotePlayOn, Mode=TwoWay}" />
                     
             </StackPanel>
@@ -96,17 +96,17 @@
         <Grid Grid.Row="0" Grid.Column="3">
             <StackPanel Orientation="Horizontal" Spacing="6">
                     
-                <Button x:Name="_PlayButton" x:Uid="ButtonPlay" 
+                <Button x:Uid="ButtonPlay" 
                     Style="{ThemeResource AccentButtonStyle}"
                     Height="50"
                     Click="PlayButton_Click" />
 
-                <Button x:Name="_StopButton" x:Uid="ButtonStop" 
+                <Button x:Uid="ButtonStop" 
                     Style="{ThemeResource AccentButtonStyle}"
                     Height="50"
                     Click="StopButton_Click" />
 
-                <Button x:Name="_LoopPlayButton" x:Uid="ButtonLoopPlay" 
+                <Button x:Uid="ButtonLoopPlay" 
                     Style="{ThemeResource AccentButtonStyle}"
                     Height="50"
                     Click="LoopPlayButton_Click" />
@@ -150,7 +150,7 @@
 
         <Grid Grid.Row="0" Grid.Column="5">
 
-            <ComboBox x:Name="_PlayerDisplayComboBox" x:Uid="InputPlayerDisplay"
+            <ComboBox x:Uid="InputPlayerDisplay"
                 ItemsSource="{x:Bind _PlayerDisplayList, Mode=OneTime}"
                 SelectedValue="{x:Bind ConfigPlayer.PlayerLayoutModeSelectText, Mode=OneTime}"
                 SelectionChanged="PlayerDisplayComboBox_SelectionChanged">

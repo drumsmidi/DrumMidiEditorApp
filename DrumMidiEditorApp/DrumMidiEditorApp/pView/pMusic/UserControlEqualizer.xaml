@@ -20,19 +20,19 @@
                         IsOpen="False"
                         OverflowButtonVisibility="Collapsed">
 
-                        <AppBarButton x:Name="_EqualizerResetAppBarButton" x:Uid="ButtonEqualizerReset"
+                        <AppBarButton x:Uid="ButtonEqualizerReset"
                             Click="EqualizerResetAppBarButton_Click" />
 
                         <AppBarSeparator />
 
-                        <AppBarToggleButton x:Name="_EqualizerAppBarToggleButton" x:Uid="ButtonEqualizer"
+                        <AppBarToggleButton x:Uid="ButtonEqualizer"
                             IsChecked="{x:Bind DrawSet.EqualizerOn, Mode=TwoWay}"
                             Checked="EqualizerAppBarToggleButton_CheckChanged"
                             Unchecked="EqualizerAppBarToggleButton_CheckChanged" />
 
                         <AppBarSeparator />
 
-                        <AppBarToggleButton x:Name="_EqualizerWaveFormAppBarToggleButton" x:Uid="ButtonEqualizerWaveForm"
+                        <AppBarToggleButton x:Uid="ButtonEqualizerWaveForm"
                             IsChecked="{x:Bind DrawSet.WaveFormOn, Mode=TwoWay}"
                             IsEnabled="True"
                             Checked="EqualizerWaveFormAppBarToggleButton_CheckChanged"

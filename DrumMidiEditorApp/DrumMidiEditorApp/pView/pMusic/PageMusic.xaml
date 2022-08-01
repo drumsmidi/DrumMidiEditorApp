@@ -27,12 +27,12 @@
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" Spacing="6">
 
-                <TextBox x:Name="_MusicInfoBgmFilePathTextBox" x:Uid="InputBgmFilePath" 
+                <TextBox x:Uid="InputBgmFilePath" 
                     Text="{x:Bind MusicInfo.BgmFilePath.AbsoulteFilePath, Mode=OneWay}" 
                     VerticalAlignment="Bottom"
                     TextChanged="MusicInfoBgmFilePathTextBox_TextChanged" />
             
-                <Button x:Name="_MusicInfoBgmFilePathButton" x:Uid="ButtonFileSelect"
+                <Button x:Uid="ButtonFileSelect"
                     VerticalAlignment="Bottom"
                     Click="MusicInfoBgmFilePathButton_Click" />
 
@@ -70,11 +70,10 @@
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left">
-            <TextBox x:Name="_MusicInfoMemoTextBox" x:Uid="InputMusicInfoMemo"
+            <TextBox x:Uid="InputMusicInfoMemo"
                 Text="{x:Bind MusicInfo.Info, Mode=TwoWay}" 
                 MinWidth="500"
-                AcceptsReturn="True"
-            />
+                AcceptsReturn="True" />
         </Grid>
 
         <local:UserControlEqualizer Grid.Row="2" Grid.ColumnSpan="2"/>

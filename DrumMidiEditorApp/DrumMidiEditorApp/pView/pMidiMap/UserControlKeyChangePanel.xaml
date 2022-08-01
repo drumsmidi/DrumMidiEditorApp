@@ -39,9 +39,11 @@
             BorderThickness="1" >
             
             <StackPanel Orientation="Horizontal" Spacing="6">
-                <Button x:Name="_KeyChangeButton" x:Uid="ButtonKeyChange"
+                
+                <Button x:Uid="ButtonKeyChange"
                     Style="{ThemeResource AccentButtonStyle}"                        
                     Click="KeyChangeButton_Click" />
+                
             </StackPanel>
             
         </Grid>
@@ -52,6 +54,7 @@
 
             <ListBox x:Name="_MidiMapNoteListBox"
                 ItemsSource="{x:Bind _MidiMapNoteList, Mode=OneWay}"
+                FontFamily="ＭＳ　ゴシック"
                 SelectionMode="Single" />
 
         </Grid>

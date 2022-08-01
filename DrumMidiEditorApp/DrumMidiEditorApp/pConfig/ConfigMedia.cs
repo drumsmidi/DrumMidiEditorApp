@@ -304,7 +304,7 @@ public class ConfigMedia
     /// </summary>
     /// <param name="aMidi">MIDIノート番号</param>
     /// <returns>範囲内のMIDIノート番号(0-127)</returns>
-    public byte CheckMidiNote( byte aMidi )
+    public byte CheckMidiNote( int aMidi )
     {
         if ( aMidi < MidiNoteMin )
         {
@@ -314,7 +314,7 @@ public class ConfigMedia
         {
             return MidiNoteMax;
         }
-        return aMidi;
+        return (byte)aMidi;
     }
 
     /// <summary>
@@ -331,6 +331,24 @@ public class ConfigMedia
         else if ( aVolume > MidiMaxVolume)
         {
             return MidiMaxVolume;
+        }
+        return aVolume;
+    }
+
+    /// <summary>
+    /// MIDI音量増減チェック
+    /// </summary>
+    /// <param name="aVolume">音量</param>
+    /// <returns>範囲内の音量(0-127)</returns>
+    public int CheckMidiAddVolume( int aVolume )
+    {
+        if ( aVolume < MidiAddMinVolume )
+        {
+            return MidiAddMinVolume;
+        }
+        else if ( aVolume > MidiAddMaxVolume)
+        {
+            return MidiAddMaxVolume;
         }
         return aVolume;
     }

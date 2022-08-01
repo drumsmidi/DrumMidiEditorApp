@@ -120,6 +120,12 @@
   <data name="AAA" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="ButtonAdd.Content" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="ButtonApply.Content" xml:space="preserve">
+    <value>適用</value>
+  </data>
   <data name="ButtonCancel.Content" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -136,8 +142,14 @@
   <data name="ButtonEqualizerWaveForm.Content" xml:space="preserve">
     <value>波形</value>
   </data>
+  <data name="ButtonExport.Content" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
   <data name="ButtonFileSelect.Content" xml:space="preserve">
     <value>選択</value>
+  </data>
+  <data name="ButtonImport.Content" xml:space="preserve">
+    <value>インポート</value>
   </data>
   <data name="ButtonIncludeBpm.Content" xml:space="preserve">
     <value>範囲選択に
@@ -163,6 +175,9 @@ BPMノートを含める</value>
   <data name="ButtonRedo.Content" xml:space="preserve">
     <value>Redo</value>
   </data>
+  <data name="ButtonRemove.Content" xml:space="preserve">
+    <value>削除</value>
+  </data>
   <data name="ButtonStop.Content" xml:space="preserve">
     <value>停止</value>
   </data>
@@ -172,14 +187,23 @@ BPMノートを含める</value>
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="ColumnMidiMapColor.Text" xml:space="preserve">
+    <value>Color</value>
+  </data>
   <data name="ColumnMidiMapDisplay.Text" xml:space="preserve">
     <value>Display</value>
   </data>
   <data name="ColumnMidiMapKey.Text" xml:space="preserve">
     <value>Key</value>
   </data>
+  <data name="ColumnMidiMapMidi.Text" xml:space="preserve">
+    <value>Midi</value>
+  </data>
   <data name="ColumnMidiMapName.Text" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="ColumnMidiMapScale.Text" xml:space="preserve">
+    <value>Scale</value>
   </data>
   <data name="ColumnMidiMapVolume.Text" xml:space="preserve">
     <value>Volume(±)</value>
@@ -324,6 +348,9 @@ BPMノートを含める</value>
   </data>
   <data name="LabelImportMidi" xml:space="preserve">
     <value>Midi取込</value>
+  </data>
+  <data name="LabelImportMidiMap" xml:space="preserve">
+    <value>MidiMapSet テンプレート取込</value>
   </data>
   <data name="LabelKeyChange" xml:space="preserve">
     <value>キー変更</value>

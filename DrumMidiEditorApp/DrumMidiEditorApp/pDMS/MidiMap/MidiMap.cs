@@ -2,6 +2,7 @@
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pDMS;
 
@@ -44,6 +45,15 @@ public class MidiMap : DisposeBaseClass
     /// ノートの色
     /// </summary>
     public Color Color { get; set; } = Config.System.DefaultMidiMapColor;
+
+    /// <summary>
+    /// ノートの色
+    /// </summary>
+    public string ColorText 
+    { 
+        get => ColorHelper.GetColor( Color );
+        set => Color = ColorHelper.GetColor( value );
+    }
 
     /// <summary>
     /// 選択状態

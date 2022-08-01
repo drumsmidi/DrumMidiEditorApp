@@ -72,6 +72,7 @@ public static class Config
 		Score.UpdateScoreFlag			    = true;
 
         ControlAccess.PageMusic?.ReloadMusicInfo();
+        ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
     }
 

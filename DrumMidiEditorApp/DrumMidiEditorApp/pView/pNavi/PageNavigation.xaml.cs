@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pView.pConfig;
@@ -38,11 +38,11 @@ public sealed partial class PageNavigation : Page
             ( "PageConfig"   , typeof( PageConfig )  ),
         };
 
-	/// <summary>
-	/// ナビゲーション ロード
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
+    /// <summary>
+    /// ナビゲーション ロード
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void NaviControl_Loaded( object sender, RoutedEventArgs args )
     {
         try

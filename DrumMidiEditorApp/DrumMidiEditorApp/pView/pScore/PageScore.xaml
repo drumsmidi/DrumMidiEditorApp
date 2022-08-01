@@ -23,29 +23,29 @@
             
             <StackPanel Orientation="Vertical" Spacing="6">
 
-                <ToggleSwitch x:Name="_VolumeSizeToggleSwitch" x:Uid="InputVolumeSize"
+                <ToggleSwitch x:Uid="InputVolumeSize"
                     IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
                     Toggled="ToggleSwitch_Toggled" />
 
-                <ToggleSwitch x:Name="_VolumeZeroToggleSwitch" x:Uid="InputVolumeZero"
+                <ToggleSwitch x:Uid="InputVolumeZero"
                     IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
                     Toggled="ToggleSwitch_Toggled" />
 
                 <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
-                        Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                        Minimum="0.1"
-                        Maximum="100"
-                        SmallChange="0.1" 
-                        LargeChange="1.0"
-                        ValueChanged="NumberBox_ValueChanged" />
+                    Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
+                    Minimum="0.1"
+                    Maximum="100"
+                    SmallChange="0.1" 
+                    LargeChange="1.0"
+                    ValueChanged="NumberBox_ValueChanged" />
 
                 <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
-                        Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                        Minimum="0.1"
-                        Maximum="100"
-                        SmallChange="0.1" 
-                        LargeChange="1.0"
-                        ValueChanged="NumberBox_ValueChanged" />
+                    Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
+                    Minimum="0.1"
+                    Maximum="100"
+                    SmallChange="0.1" 
+                    LargeChange="1.0"
+                    ValueChanged="NumberBox_ValueChanged" />
 
             </StackPanel>
         </Grid>

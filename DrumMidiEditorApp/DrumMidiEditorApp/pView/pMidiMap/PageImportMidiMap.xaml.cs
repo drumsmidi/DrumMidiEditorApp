@@ -1,31 +1,96 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+﻿using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using DrumMidiEditorApp.pAudio;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
-/// <summary>
-/// An empty window that can be used on its own or navigated to within a Frame.
-/// </summary>
-public sealed partial class WindowImportMidiMapSet : Window
+public sealed partial class PageImportMidiMap : Page
 {
-    public WindowImportMidiMapSet()
+    #region Member
+
+    /// <summary>
+    /// System設定
+    /// </summary>
+    private ConfigSystem ConfigSystem => Config.System;
+
+	/// <summary>
+	/// Media設定
+	/// </summary>
+	private ConfigMedia ConfigMedia => Config.Media;
+
+	/// <summary>
+	/// Score情報
+	/// </summary>
+	private Score Score => DMS.SCORE;
+
+	/// <summary>
+	/// 選択したMidiMapキー
+	/// </summary>
+	public int SelectMidiMapKey { get; set; } = Config.System.MidiMapKeyNotSelect;
+
+    #endregion
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageImportMidiMap()
     {
-        this.InitializeComponent();
+		InitializeComponent();
+	}
+
+	/// <summary>
+	/// MidiMapリスト作成
+	/// </summary>
+	public void LoadMidiMap( MidiMapSet aMidiMapSet )
+    {
+		foreach ( var group in Score.EditMidiMapSet.MidiMapGroups )
+		{
+			foreach ( var midiMap in group.MidiMaps )
+			{
+				var name = $"{midiMap.MidiMapKey,-3} {Score.EditMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey )}";
+
+				_MidiMapListBox.Items.Add( name );
+
+				if ( midiMap.MidiMapKey == SelectMidiMapKey )
+                {
+					_MidiMapListBox.SelectedIndex	= _MidiMapListBox.Items.Count - 1;
+					_MidiMapBeforeTextBlock.Text	= name;
+				}
+			}
+		}
+    }
+
+	/// <summary>
+	/// 選択変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+    private void MidiMapListBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+        try
+        {
+			var index = _MidiMapListBox.SelectedIndex;
+
+			if ( index == -1 )
+			{
+				SelectMidiMapKey = ConfigSystem.MidiMapKeyNotSelect;
+				return;
+			}
+
+			var midiMap = Score.EditMidiMapSet.MidiMaps[ index ];
+
+			SelectMidiMapKey = midiMap.MidiMapKey;
+
+			AudioFactory.SinglePlay( Score.EditChannelNo, midiMap.Midi, ConfigMedia.MidiMaxVolume );
+        }
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
     }
 
 #if false
@@ -41,12 +106,12 @@ public sealed partial class WindowImportMidiMapSet : Window
     {
         InitializeComponent();
 
-        #region ToolTip
+	#region ToolTip
 
 		ToolTip.SetToolTip( ImportButton	, "Update MidiMapSet for this channel" );
 		ToolTip.SetToolTip( CxlButton		, "Cancel" );
 
-		#endregion
+	#endregion
     }
 
 	/// <summary>
@@ -62,7 +127,7 @@ public sealed partial class WindowImportMidiMapSet : Window
 
 		try
 		{
-			#region 変換後のMidiMapSetから選択
+	#region 変換後のMidiMapSetから選択
 			{
 				ImportMidiMapSetGridView.Rows.Clear();
 
@@ -76,9 +141,9 @@ public sealed partial class WindowImportMidiMapSet : Window
 					}
 				}
 			}
-			#endregion
+	#endregion
 
-			#region 変換後のMidiMapSetから選択
+	#region 変換後のMidiMapSetから選択
 			{
 				MidiMapAssignColumn.Items.Clear();
 				MidiMapAssignColumn.Items.Add( String.Empty );
@@ -93,9 +158,9 @@ public sealed partial class WindowImportMidiMapSet : Window
 					}
 				}
 			}
-			#endregion
+	#endregion
 
-			#region 変換前のMidiMapSetから使用されているMidiMapのみ抽出
+	#region 変換前のMidiMapSetから使用されているMidiMapのみ抽出
 			{
 				ConvertDataGridView.Rows.Clear();
 
@@ -129,7 +194,7 @@ public sealed partial class WindowImportMidiMapSet : Window
 
 				items.Clear();
 			}
-			#endregion
+	#endregion
 
 			Location = Cursor.Position;
 			ShowDialog();
@@ -224,4 +289,6 @@ public sealed partial class WindowImportMidiMapSet : Window
 		}
     }
 #endif
+
+
 }
