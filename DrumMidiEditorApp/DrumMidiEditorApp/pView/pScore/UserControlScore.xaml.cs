@@ -49,6 +49,8 @@ public sealed partial class UserControlScore : UserControl
     public UserControlScore()
     {
         InitializeComponent();
+
+        ControlAccess.UCScore = this;
     }
 
     #region Move

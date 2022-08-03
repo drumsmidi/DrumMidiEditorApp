@@ -106,6 +106,9 @@ public static class Config
 		Editer.UpdateScoreFlag              = true;
 		Player.UpdateScoreFlag			    = true;
 		Score.UpdateScoreFlag			    = true;
+
+        ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
+        ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
     }
 
     /// <summary>
@@ -268,12 +271,14 @@ public static class Config
     public static void EventUpdateScoreTab()
     {
         Score.UpdateScoreFlag = true;
+
+        ControlAccess.UCScore?.Refresh();
     }
 
     /// <summary>
-    /// フラグ更新：EditerPanelリサイズ
+    /// フラグ更新：Windowリサイズ
     /// </summary>
-    public static void EventEditerPanelResize()
+    public static void EventWindowResize()
     {
         Editer.UpdateScoreLayoutFlag    = true;
         Editer.UpdateScoreLineFlag      = true;

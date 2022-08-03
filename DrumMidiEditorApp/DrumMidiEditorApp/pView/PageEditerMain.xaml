@@ -13,47 +13,31 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition x:Name="_PlayerRightColumn" 
-                Width="{x:Bind ConfigPlayer.PlayerLayoutSize, Mode=TwoWay}" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition x:Name="_PlayerBottomRow" 
-                Height="{x:Bind ConfigPlayer.PlayerLayoutSize, Mode=TwoWay}" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="0" />
-        </Grid.RowDefinitions>
+        <RelativePanel>
+    
+            <local1:PageMenuBar x:Name="_PageMenuBar" 
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"                                
+                RelativePanel.AlignRightWithPanel="True" />
 
-        <local1:PageMenuBar x:Name="_PageMenuBar" 
-            Grid.Row="0" 
-            Grid.Column="0" 
-            Grid.ColumnSpan="2" />
+            <local3:PageNavigation x:Name="_PageNavigation" 
+                RelativePanel.Below="_PageMenuBar"
+                RelativePanel.Above="_PageStatusBar"
+                RelativePanel.AlignLeftWithPanel="True"                                
+                RelativePanel.AlignRightWithPanel="True" />
 
-        <local3:PageNavigation x:Name="_PageNavigation" 
-            Grid.Row="1" 
-            Grid.RowSpan="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="2" />
+            <local2:PageStatusBar x:Name="_PageStatusBar" 
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"                                
+                RelativePanel.AlignRightWithPanel="True" />
 
-        <local4:PagePlayer x:Name="_PagePlayer" 
-            Grid.Row="2" 
-            Grid.RowSpan="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="2" />
+            <local4:PagePlayer x:Name="_PagePlayer"
+                RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignBottomWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"                                
+                RelativePanel.AlignRightWithPanel="True"                               
+                Visibility="{x:Bind ConfigPlayer.DisplayPlayerVisibility, Mode=OneWay}" />
 
-        <local2:PageStatusBar x:Name="_PageStatusBar" 
-            Grid.Row="3" 
-            Grid.Column="0" 
-            Grid.ColumnSpan="2" />
-
-        <Grid
-            Visibility="Collapsed"
-            Grid.Row="4" 
-            Grid.Column="0" 
-            Grid.ColumnSpan="2" />
-
+        </RelativePanel>
     </Grid>
 </Page>

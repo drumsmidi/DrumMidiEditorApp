@@ -1,8 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
@@ -39,11 +37,6 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	private Score Score => DMS.SCORE;
 
-	/// <summary>
-	/// プレイヤー表示設定リスト
-	/// </summary>
-	private readonly ObservableCollection<string> _PlayerDisplayList = new();
-
     #endregion
 
     /// <summary>
@@ -52,18 +45,6 @@ public sealed partial class PageMenuBar : Page
     public PageMenuBar()
     {
         InitializeComponent();
-
-		#region プレイヤー表示タイプリスト
-
-		foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerLayoutMode>() )
-		{
-			if ( name != null )
-			{ 
-				_PlayerDisplayList.Add( name );
-			}
-		}
-
-        #endregion
 
         #region NumberBox の入力書式設定
 
@@ -574,18 +555,13 @@ public sealed partial class PageMenuBar : Page
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void PlayerDisplayComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+	private void PlayerDisplayToggleSwitch_Toggled( object sender, RoutedEventArgs args )
 	{
         try
         {
-			var tag = args.AddedItems[ 0 ].ToString();
+			ConfigPlayer.DisplayPlayer = ( sender as ToggleSwitch )?.IsOn ?? false ;
 
-			var value = Enum.GetValues<ConfigPlayer.PlayerLayoutMode>()
-							.FirstOrDefault( e => Enum.GetName<ConfigPlayer.PlayerLayoutMode>( e ) == tag );
-
-			ConfigPlayer.PlayerLayoutModeSelect = value;
-
-			ControlAccess.PageEditerMain?.UpdateGridLayout();
+			ControlAccess.PageEditerMain?.ReloadPlayer();
 		}
 		catch ( Exception e )
 		{

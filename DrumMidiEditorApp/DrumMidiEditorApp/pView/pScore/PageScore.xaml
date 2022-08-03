@@ -19,7 +19,7 @@
             Grid.Column="0" 
             Padding="10"
             BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
-            BorderThickness="0 0 1 0" >
+            BorderThickness="0 0 2 0" >
             
             <StackPanel Orientation="Vertical" Spacing="6">
 
@@ -50,7 +50,7 @@
             </StackPanel>
         </Grid>
             
-        <local:UserControlScore x:Name="_ScorePanel" Grid.Column="1" />
+        <local:UserControlScore Grid.Column="1" />
             
     </Grid>
 </Page>

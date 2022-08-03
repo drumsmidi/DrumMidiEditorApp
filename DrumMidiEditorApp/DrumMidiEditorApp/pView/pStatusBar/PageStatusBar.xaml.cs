@@ -1,11 +1,11 @@
 ﻿using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
 

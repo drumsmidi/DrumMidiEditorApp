@@ -10,7 +10,6 @@
 
     <Grid>
         <canvas:CanvasControl x:Name = "_ScoreCanvas"
-            ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
             Draw="ScoreCanvas_Draw" />
     </Grid>
 </UserControl>

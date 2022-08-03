@@ -39,36 +39,6 @@ public class ConfigPlayer
     [JsonInclude]
     public PlayerSurfaceMode PlayerSurfaceModeSelect = PlayerSurfaceMode.Sequence;
 
-
-    /// <summary>
-    /// プレイヤーレイアウトモード
-    /// </summary>
-    public enum PlayerLayoutMode : int
-    {
-        None = 0,
-        Right,
-        Bottom,
-    }
-
-    /// <summary>
-    /// レイヤー描画レイアウトモード
-    /// </summary>
-    [JsonInclude]
-    public PlayerLayoutMode PlayerLayoutModeSelect { get; set; } = PlayerLayoutMode.None;
-
-    /// <summary>
-    /// レイヤー描画レイアウトモード（テキスト取得）
-    /// </summary>
-    [JsonIgnore]
-    public string PlayerLayoutModeSelectText
-        => Enum.GetName<PlayerLayoutMode>( PlayerLayoutModeSelect ) ?? "None" ;
-
-    /// <summary>
-    /// プレイヤー描画レイアウト：横幅
-    /// </summary>
-    [JsonIgnore]
-    public GridLength PlayerLayoutSize { get; set; } = new( 300 );
-
     #endregion
 
     #region 解像度/FPS
@@ -118,10 +88,20 @@ public class ConfigPlayer
     #region フラグ
 
     /// <summary>
-    /// PlayerConfig表示フラグ
+    /// Player表示フラグ
     /// </summary>
     [JsonIgnore]
-    public bool DisplayPlayerConfig { get; set; } = false;
+    public bool DisplayPlayer { get; set; } = false;
+
+    /// <summary>
+    /// Player表示フラグ
+    /// </summary>
+    [JsonIgnore]
+    public Visibility DisplayPlayerVisibility 
+    { 
+        get => DisplayPlayer ? Visibility.Visible : Visibility.Collapsed ;
+        set => DisplayPlayer = ( value == Visibility.Visible );
+    }
 
     /// <summary>
     /// スコア更新フラグ

@@ -3456,22 +3456,5 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
     }
 
-    /// <summary>
-    /// リサイズイベント
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_SizeChanged( object sender, SizeChangedEventArgs args )
-    {
-        try
-        {
-            Config.EventEditerPanelResize();
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-    }
-
     #endregion
 }

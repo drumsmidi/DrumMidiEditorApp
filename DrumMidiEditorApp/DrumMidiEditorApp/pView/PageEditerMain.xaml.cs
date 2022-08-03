@@ -1,13 +1,15 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pConfig;
-using Microsoft.UI.Xaml;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DrumMidiEditorApp.pView;
 
-public sealed partial class PageEditerMain : Page
+public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
 {
     /// <summary>
     /// プレイヤー設定
@@ -21,61 +23,25 @@ public sealed partial class PageEditerMain : Page
     {
         InitializeComponent();
 
-        UpdateGridLayout();
-
         ControlAccess.PageEditerMain = this;
     }
 
-    /// <summary>
-    /// Gridレイアウト更新
-    /// </summary>
-    public void UpdateGridLayout()
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadPlayer()
     {
-        try
-        {
-            int row;
-            int rowspan;
-            int col;
-            int colspan;
+		OnPropertyChanged( "ConfigPlayer" );
+	}
 
-            switch ( ConfigPlayer.PlayerLayoutModeSelect )
-            {
-                case ConfigPlayer.PlayerLayoutMode.None:
-                    row     = 4;
-                    rowspan = 2;
-                    col     = 0;
-                    colspan = 2;
-                    break;
-                case ConfigPlayer.PlayerLayoutMode.Right:
-                    row     = 1;
-                    rowspan = 2;
-                    col     = 1;
-                    colspan = 1;
-                    break;
-                case ConfigPlayer.PlayerLayoutMode.Bottom:
-                    row     = 2;
-                    rowspan = 1;
-                    col     = 0;
-                    colspan = 2;
-                    break;
-                default:
-                    return;
-            }
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-            // x:Bind経由では更新できなかったので直接設定
-            Grid.SetRowSpan     ( _PageNavigation, rowspan );
-            Grid.SetColumnSpan  ( _PageNavigation, colspan );
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
-            Grid.SetRow         ( _PagePlayer, row );
-            Grid.SetRowSpan     ( _PagePlayer, rowspan );
-            Grid.SetColumn      ( _PagePlayer, col );
-            Grid.SetColumnSpan  ( _PagePlayer, colspan );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
+	#endregion
 
     /// <summary>
     /// リサイズイベント
@@ -86,7 +52,7 @@ public sealed partial class PageEditerMain : Page
     {
         try
         {
-            Config.EventEditerPanelResize();
+            Config.EventWindowResize();
 		}
 		catch ( Exception e )
 		{

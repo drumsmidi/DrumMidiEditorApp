@@ -70,10 +70,12 @@
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left">
+            
             <TextBox x:Uid="InputMusicInfoMemo"
                 Text="{x:Bind MusicInfo.Info, Mode=TwoWay}" 
                 MinWidth="500"
                 AcceptsReturn="True" />
+            
         </Grid>
 
         <local:UserControlEqualizer Grid.Row="2" Grid.ColumnSpan="2"/>

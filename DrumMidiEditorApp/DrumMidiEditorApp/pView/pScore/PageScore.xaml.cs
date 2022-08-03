@@ -35,8 +35,6 @@ public sealed partial class PageScore : Page
 	private void UpdateScore()
 	{
 		Config.EventUpdateScoreTab();
-
-		_ScorePanel.Refresh();
 	}
 
 	/// <summary>

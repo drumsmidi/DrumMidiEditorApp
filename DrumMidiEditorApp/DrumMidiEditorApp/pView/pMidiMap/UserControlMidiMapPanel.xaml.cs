@@ -12,6 +12,7 @@ using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pIO;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -216,6 +217,18 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                 page,
                                 () =>
                                 {
+                                    var keyChangeDic = page.GetChangeKeys();
+
+			                        foreach ( var item in keyChangeDic )
+                                    {
+				                        Score.EditChannel.KeyChange( item.Key, -item.Value );
+			                        }
+
+			                        foreach ( var item in keyChangeDic )
+			                        {
+                                        Score.EditChannel.KeyChange( -item.Value, item.Value );
+			                        }
+
                                     Score.EditMidiMapSet = midiMapSet;
                                     Score.EditMidiMapSet.UpdateInfo();
 
@@ -656,7 +669,23 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
 		try
 		{
-		}
+            var item = sender as Button;
+
+            if ( item == null )
+            {
+                return;
+            }
+
+            XamlHelper.ColorDialogAsync
+                (
+                    Content.XamlRoot,
+                    ( item.Background as SolidColorBrush )?.Color ?? ConfigSystem.DefaultMidiMapColor,
+                    ( color ) =>
+                    {
+                        item.Background = new SolidColorBrush( color );
+                    }
+                );
+        }
 		catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );

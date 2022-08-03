@@ -20,6 +20,7 @@
     <None Remove="pView\pMidiMap\PageInputMidiMap.xaml" />
     <None Remove="pView\pMidiMap\UserControlKeyChangePanel.xaml" />
     <None Remove="pView\pMidiMap\UserControlMidiMapPanel.xaml" />
+    <None Remove="pView\pUtil\ColorPicker.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -144,5 +145,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="pView\pUtil\" />
   </ItemGroup>
 </Project>

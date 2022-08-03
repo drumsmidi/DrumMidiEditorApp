@@ -6,9 +6,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    PointerPressed="Page_PointerPressed"
+    PointerMoved="Page_PointerMoved"
+    PointerReleased="Page_PointerReleased"
+    PointerCaptureLost="Page_PointerReleased"
+    PointerCanceled="Page_PointerReleased"
+    Width="{x:Bind ConfigPlayer.ResolutionScreenWidth, Mode=OneWay}"
+    Height="{x:Bind ConfigPlayer.ResolutionScreenHeight, Mode=OneWay}"
+    HorizontalAlignment="Left"
+    VerticalAlignment="Top"
+    Background="#00000000">
 
-    <Grid>
+    <Grid BorderBrush="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" BorderThickness="4">
         <local:UserControlPlayerPanel />
     </Grid>
 </Page>

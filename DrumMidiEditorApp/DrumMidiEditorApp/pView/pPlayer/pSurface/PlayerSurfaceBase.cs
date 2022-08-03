@@ -291,6 +291,15 @@ public class PlayerSurfaceBase : IPlayerSurface
 
     public virtual bool OnDraw( CanvasControl sender, CanvasDrawEventArgs args )
     {
+        args.DrawingSession.FillRectangle
+            (
+                0,
+                0,
+                _ScreenSize._width,
+                _ScreenSize._height,
+                DrawSetCom.SheetColor.Color
+            );
+
         if ( _DmsPlayState != PlayState.Playing 
           && _DmsPlayState != PlayState.Recording )
         {

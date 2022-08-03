@@ -150,18 +150,9 @@
 
         <Grid Grid.Row="0" Grid.Column="5">
 
-            <ComboBox x:Uid="InputPlayerDisplay"
-                ItemsSource="{x:Bind _PlayerDisplayList, Mode=OneTime}"
-                SelectedValue="{x:Bind ConfigPlayer.PlayerLayoutModeSelectText, Mode=OneTime}"
-                SelectionChanged="PlayerDisplayComboBox_SelectionChanged">
-
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
-                        <TextBlock Text="{x:Bind}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                
-            </ComboBox>
+            <ToggleSwitch x:Uid="InputPlayerDisplay"
+                IsOn="{x:Bind ConfigPlayer.DisplayPlayer, Mode=OneWay}"
+                Toggled="PlayerDisplayToggleSwitch_Toggled" />
 
         </Grid>
             

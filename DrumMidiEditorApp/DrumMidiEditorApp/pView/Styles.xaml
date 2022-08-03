@@ -19,6 +19,23 @@
         <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" />
     </Style>
 
+    <Style x:Key="TableHeader" TargetType="Grid">
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Background" Value="#333" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0 0 1 1" />
+    </Style>
+    <Style x:Key="TableCell" TargetType="Grid">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="#000" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0 0 1 1" />
+    </Style>
+
+
+
+
+
     <Style x:Key="BasicTextBoxStyle" TargetType="TextBox">
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />

@@ -12,6 +12,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.UI.Windowing;
 using DrumMidiEditorApp.pView.pEditer;
 using WinRT.Interop;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -86,6 +87,49 @@ public static class XamlHelper
             aAction();
         }
     }
+
+    /// <summary>
+    /// 色選択ダイアログ
+    /// （Spectrum が表示されない不具合あり）
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aColor"></param>
+    /// <param name="aAction"></param>
+    public async static void ColorDialogAsync( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
+    {
+        var content = new ColorPicker
+        {
+            Color                           = aColor,
+            ColorSpectrumComponents         = ColorSpectrumComponents.ValueSaturation,
+            ColorSpectrumShape              = ColorSpectrumShape.Box,
+            IsColorSpectrumVisible          = true,
+            IsColorPreviewVisible           = true,
+            IsMoreButtonVisible             = false,
+            IsColorSliderVisible            = true,
+            IsColorChannelTextInputVisible  = false,
+            IsHexInputVisible               = true,
+            IsAlphaEnabled                  = true,
+            IsAlphaSliderVisible            = true,
+            IsAlphaTextInputVisible         = false,
+        };
+
+        var cd = new ContentDialog
+        {
+            Title               = ResourcesHelper.GetString( "Dialog/Input" ),
+            Content             = content,
+            PrimaryButtonText   = ResourcesHelper.GetString( "Dialog/Ok" ),
+            CloseButtonText     = ResourcesHelper.GetString( "Dialog/Cancel" ),
+            XamlRoot            = aContentXamlRoot,
+        };
+
+        var result = await cd.ShowAsync();
+            
+        if ( result == ContentDialogResult.Primary )
+        {
+            aAction( content.Color );
+        }
+    }
+
 
 
     /// <summary>

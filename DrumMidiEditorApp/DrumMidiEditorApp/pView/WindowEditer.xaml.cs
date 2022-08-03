@@ -50,7 +50,7 @@ public sealed partial class WindowEditer : Window
 		// 独自のタイトルバー設定
 		ExtendsContentIntoTitleBar = true;
 		SetTitleBar( _AppTitleBar );
-		SetSubTitle( "" );
+		SetSubTitle( "[]" );
 
 		// ウィンドウ初期サイズ変更
 		if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )

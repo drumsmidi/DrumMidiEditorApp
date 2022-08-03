@@ -6,12 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     Unloaded="UserControl_Unloaded"
+    BorderBrush="#0F0" BorderThickness="10"
+   
     mc:Ignorable="d">
 
     <Grid>
         <canvas:CanvasControl x:Name = "_PlayerCanvas"
-            ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
-                             
             Draw="PlayerCanvas_Draw" 
             PointerPressed="PlayerCanvas_PointerPressed"
             PointerMoved="PlayerCanvas_PointerMoved"

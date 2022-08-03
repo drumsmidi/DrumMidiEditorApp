@@ -187,6 +187,9 @@ BPMノートを含める</value>
   <data name="ClickButton.Content" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="ColumnImportMidiMap.Text" xml:space="preserve">
+    <value>インポートMidiMapSet</value>
+  </data>
   <data name="ColumnMidiMapColor.Text" xml:space="preserve">
     <value>Color</value>
   </data>
@@ -195,6 +198,9 @@ BPMノートを含める</value>
   </data>
   <data name="ColumnMidiMapKey.Text" xml:space="preserve">
     <value>Key</value>
+  </data>
+  <data name="ColumnMidiMapKeyChange.Text" xml:space="preserve">
+    <value>既存⇒インポート先へのMidiMap置換</value>
   </data>
   <data name="ColumnMidiMapMidi.Text" xml:space="preserve">
     <value>Midi</value>
