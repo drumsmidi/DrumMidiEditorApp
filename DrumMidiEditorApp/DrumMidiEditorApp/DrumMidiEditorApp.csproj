@@ -14,13 +14,15 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="pView\pConfig\PageConfigDevice.xaml" />
+    <None Remove="pView\pConfig\PageConfigPlayer.xaml" />
+    <None Remove="pView\pConfig\PageConfigVideo.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
     <None Remove="pView\pMidiMap\PageImportMidiMap.xaml" />
     <None Remove="pView\pMidiMap\PageInputMidiMap.xaml" />
     <None Remove="pView\pMidiMap\UserControlKeyChangePanel.xaml" />
     <None Remove="pView\pMidiMap\UserControlMidiMapPanel.xaml" />
-    <None Remove="pView\pUtil\ColorPicker.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +46,18 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="pView\pConfig\PageConfigPlayer.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pConfig\PageConfigVideo.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pConfig\PageConfigDevice.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pMenuBar\PageImportMidi.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -145,9 +159,5 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="pView\pUtil\" />
   </ItemGroup>
 </Project>

@@ -400,6 +400,27 @@ BPMノートを含める</value>
   <data name="MenuItemSaveAs.Text" xml:space="preserve">
     <value>SaveAs</value>
   </data>
+  <data name="NaviConfigDevice.Text" xml:space="preserve">
+    <value>デバイス設定</value>
+  </data>
+  <data name="NaviConfigPlayer.Text" xml:space="preserve">
+    <value>プレイヤー共通設定</value>
+  </data>
+  <data name="NaviConfigPlayerA.Text" xml:space="preserve">
+    <value>プレイヤー個別設定：</value>
+  </data>
+  <data name="NaviConfigPlayerB.Text" xml:space="preserve">
+    <value>プレイヤー個別設定：</value>
+  </data>
+  <data name="NaviConfigPlayerC.Text" xml:space="preserve">
+    <value>プレイヤー個別設定：</value>
+  </data>
+  <data name="NaviConfigPlayerD.Text" xml:space="preserve">
+    <value>プレイヤー個別設定：</value>
+  </data>
+  <data name="NaviConfigVideo.Text" xml:space="preserve">
+    <value>ビデオ出力設定</value>
+  </data>
   <data name="NaviEdit.Content" xml:space="preserve">
     <value>Edit</value>
   </data>

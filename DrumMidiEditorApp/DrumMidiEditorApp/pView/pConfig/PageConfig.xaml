@@ -2,71 +2,40 @@
     x:Class="DrumMidiEditorApp.pView.pConfig.PageConfig"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:userctl="using:DrumMidiEditorApp.pGeneralFunction.pUserControl" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
     NavigationCacheMode="Required"
+    Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <Style TargetType="Grid">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Top" />
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-        <Style x:Key="ListViewStyle" TargetType="ListView">
-        </Style>
-        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
-        </Style>
-        <Style x:Key="NumberBoxStyle" TargetType="NumberBox">
-        </Style>
-    </Page.Resources>
-
     <Grid>
-        <StackPanel>
-            <userctl:HGroupUserControl x:Uid="HGroupMidiOutDeviceSetting">
-                <userctl:HGroupUserControl.CustomContent>
-                    <StackPanel>
-                        <ListView x:Name="_MidiOutDeviceListView" x:Uid="InputMidiOutDevice" Style="{StaticResource ListViewStyle}"
-                            ItemsSource="{x:Bind _MidiDeviceList, Mode=OneWay}"
-                            SelectedValue="{x:Bind ConfigMedia.MidiOutDeviceName, Mode=TwoWay}"
-                            SelectionMode="Single"
-                            SelectionChanged="MidiOutDeviceListView_SelectionChanged">
+        <SplitView x:Name="splitView" 
+           PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+           IsPaneOpen="True" 
+           OpenPaneLength="260" 
+           DisplayMode="Inline" >
+            
+            <SplitView.Pane>
+                <Grid>
+                    <ListView x:Name="_NaviLinkListView" 
+                        SelectionMode="Single" 
+                        SelectionChanged="NaviLinkListView_SelectionChanged">
 
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <TextBlock Text="{x:Bind}" />
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <TextBlock Tag="PageConfigDevice"   x:Uid="NaviConfigDevice" />
+                        <TextBlock Tag="PageConfigVideo"    x:Uid="NaviConfigVideo" />
+                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayer" />
+                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerA" />
+                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerB" />
+                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerC" />
+                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerD" />
+                    </ListView>
+                </Grid>
+            </SplitView.Pane>
 
-                        <NumberBox x:Name="_MidiOutLatencyNumberBox" x:Uid="InputMidiOutLatency" Style="{StaticResource NumberBoxStyle}"
-                            Value="{x:Bind ConfigMedia.MidiOutLatency,Mode=TwoWay}"
-                            Minimum="0"
-                            SmallChange="0.001" 
-                            ValueChanged="MidiOutLatencyNumberBox_ValueChanged" />
-                    </StackPanel>
-                </userctl:HGroupUserControl.CustomContent>
-            </userctl:HGroupUserControl>
-
-            <userctl:HGroupUserControl x:Uid="HGroupVideoSetting">
-                <userctl:HGroupUserControl.CustomContent>
-                    <StackPanel>
-                        <ComboBox x:Name="_VideoCodecComboBox" x:Uid="InputVideoCodec" Style="{StaticResource ComboBoxStyle}"
-                            ItemsSource="{x:Bind ConfigMedia.OutputVideoCodecList, Mode=OneTime}"
-                            SelectedValue="{x:Bind ConfigMedia.OutputVideoCodec, Mode=TwoWay}" />
-
-                        <NumberBox x:Name="_VideoFpsNumberBox" x:Uid="InputVideoFps" Style="{StaticResource NumberBoxStyle}"
-                            Value="{x:Bind ConfigMedia.OutputVideoFps,Mode=TwoWay}"
-                            Minimum="{x:Bind ConfigMedia.OutputVideoFpsMin}"
-                            Maximum="{x:Bind ConfigMedia.OutputVideoFpsMax}"
-                            SmallChange="1" 
-                            ValueChanged="VideoFpsNumberBox_ValueChanged" />
-                    </StackPanel>
-                </userctl:HGroupUserControl.CustomContent>
-            </userctl:HGroupUserControl>
-        </StackPanel>
+            <Grid>
+                <Frame x:Name="_ContentFrame" />
+            </Grid>
+        </SplitView>
     </Grid>
 </Page>

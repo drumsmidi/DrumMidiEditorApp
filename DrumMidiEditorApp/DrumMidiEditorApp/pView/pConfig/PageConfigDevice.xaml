@@ -1,0 +1,35 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pConfig.PageConfigDevice"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="6" >
+        
+        <StackPanel Orientation="Vertical" Spacing="6">
+            
+            <ListView x:Name="_MidiOutDeviceListView" x:Uid="InputMidiOutDevice" 
+                ItemsSource="{x:Bind _MidiDeviceList, Mode=OneWay}"
+                SelectedValue="{x:Bind ConfigMedia.MidiOutDeviceName, Mode=TwoWay}"
+                SelectionMode="Single"
+                SelectionChanged="MidiOutDeviceListView_SelectionChanged">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <TextBlock Text="{x:Bind}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <NumberBox x:Name="_MidiOutLatencyNumberBox" x:Uid="InputMidiOutLatency" 
+                Value="{x:Bind ConfigMedia.MidiOutLatency,Mode=TwoWay}"
+                Minimum="0"
+                SmallChange="0.001" 
+                ValueChanged="MidiOutLatencyNumberBox_ValueChanged" />
+
+        </StackPanel>
+    </Grid>
+</Page>

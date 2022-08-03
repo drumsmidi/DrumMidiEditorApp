@@ -63,7 +63,7 @@
                 <MenuFlyoutSeparator />
                 <MenuFlyoutSubItem  x:Uid="MenuItemExport" >
                     <MenuFlyoutItem x:Uid="MenuItemExportMidi"  Click="MenuItemExportMidi_Click" />
-                    <MenuFlyoutItem x:Uid="MenuItemExportVideo" Click="MenuItemExportVideo_Click" />
+                    <MenuFlyoutItem x:Uid="MenuItemExportVideo" Click="MenuItemExportVideo_Click" IsEnabled="False" />
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutSubItem  x:Uid="MenuItemImport" >

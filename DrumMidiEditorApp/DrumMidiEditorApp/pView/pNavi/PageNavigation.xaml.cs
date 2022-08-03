@@ -24,6 +24,24 @@ public sealed partial class PageNavigation : Page
         InitializeComponent();
     }
 
+    /// <summary>
+    /// ページロード完了
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void Page_Loaded( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+			// 初期ページへ移動
+            NavigationView_Navigate( "PageConfig" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
     #region ナビゲーションの制御
 
     /// <summary>
@@ -37,24 +55,6 @@ public sealed partial class PageNavigation : Page
             ( "PageScore"    , typeof( PageScore )   ),
             ( "PageConfig"   , typeof( PageConfig )  ),
         };
-
-    /// <summary>
-    /// ナビゲーション ロード
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void NaviControl_Loaded( object sender, RoutedEventArgs args )
-    {
-        try
-        {
-			// 初期ページへ移動
-            NavigationView_Navigate( "PageConfig" );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
 
 	/// <summary>
 	/// ナビゲーション 変更
