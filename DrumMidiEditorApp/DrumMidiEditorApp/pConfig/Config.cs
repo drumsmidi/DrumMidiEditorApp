@@ -131,7 +131,7 @@ public static class Config
     {
         Media.UpdateDmsControlBgm	    = true;
         Media.UpdateDmsControlScore	    = true;
-        //DmsControl.RefreshTimeTable();
+        DmsControl.RefreshTimeTable();
 
         Editer.UpdateScoreBgmFlag       = true;
         Editer.UpdateScoreBgmScaleFlag  = false;

@@ -45,7 +45,10 @@
                         Draw="EqualizerCanvas_Draw" 
                         PointerPressed="EqualizerCanvas_PointerPressed"
                         PointerMoved="EqualizerCanvas_PointerMoved"
-                        PointerReleased="EqualizerCanvas_PointerReleased" />
+                        PointerReleased="EqualizerCanvas_PointerReleased"
+                        PointerCanceled="EqualizerCanvas_PointerReleased"
+                                          PointerExited="EqualizerCanvas_PointerReleased"
+                        PointerCaptureLost="EqualizerCanvas_PointerReleased" />
 
                     <TextBlock x:Name="_EqualizerInfoTextBlock"
                         TextAlignment="Right" />

@@ -13,7 +13,7 @@
                 Margin="7 0 0 0" />
         
             <Border 
-                BorderBrush="Black" 
+                BorderBrush="{ThemeResource AccentControlElevationBorderBrush}" 
                 BorderThickness="0 1 0 0" 
                 Margin="3 0 3 3">
             

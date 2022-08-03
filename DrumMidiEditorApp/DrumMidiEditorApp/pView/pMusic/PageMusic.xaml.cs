@@ -40,6 +40,8 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     {
         InitializeComponent();
 
+		ControlAccess.PageMusic = this;
+
 		#region NumberBox の入力書式設定
 
 		_MusicInfoBpmNumberBox.NumberFormatter 
@@ -50,18 +52,25 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 			= XamlHelper.CreateNumberFormatter( 1, 0, 10 );
 
         #endregion
-
-        ControlAccess.PageMusic = this;
 	}
 
 	#region INotifyPropertyChanged
 
 	/// <summary>
+	/// MusicInfo再読み込み
+	/// 
 	/// x:Bind OneWay/TwoWay 再読み込み
 	/// </summary>
 	public void ReloadMusicInfo()
     {
-		OnPropertyChanged( "MusicInfo" );
+		try
+		{
+			OnPropertyChanged( "MusicInfo" );
+		}
+        catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -145,7 +154,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-
     }
 
 	/// <summary>

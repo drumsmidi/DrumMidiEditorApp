@@ -665,52 +665,55 @@ public sealed partial class UserControlEqualizer : UserControl
 
                 if ( bgm?.IsEnableFFT() ?? false )
                 {
-                    var fft = bgm.GetFFTPlaying();
+                    lock ( bgm )
+                    { 
+                        var fft = bgm.GetFFTPlaying();
 
-                    var hzPerOne = (float)bgm.GetSampleRate() / ( fft.Count * bgm.Channels );
+                        var hzPerOne = (float)bgm.GetSampleRate() / ( fft.Count * bgm.Channels );
 
-                    var pen = new FormatLine[ 2 ]
-                        {
-                            DrawSet.WaveLeftLine,
-                            DrawSet.WaveRightLine,
-                        };
-
-                    var r = new Rect( 0, 0, 2, 1 );
-
-                    for ( int k = 0; k < fft.Count; k++ )
-                    {
-                        var format = pen[ k % bgm.Channels ];
-
-                        r.X         = body.X - k % bgm.Channels * format.LineSize;
-                        r.Height    = fft[ k ] * body.Height;
-                        r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
-
-                        var hz_b    = 0d;
-                        var hz      = hzPerOne * ( k + 1 - k % bgm.Channels );
-
-                        foreach ( var item in DrawSet.HzList )
-                        {
-                            if ( hz > item.Hz )
+                        var pen = new FormatLine[ 2 ]
                             {
-                                r.X += item.Width;
-                                hz_b = item.Hz;
-                            }
-                            else
+                                DrawSet.WaveLeftLine,
+                                DrawSet.WaveRightLine,
+                            };
+
+                        var r = new Rect( 0, 0, 2, 1 );
+
+                        for ( int k = 0; k < fft.Count; k++ )
+                        {
+                            var format = pen[ k % bgm.Channels ];
+
+                            r.X         = body.X - k % bgm.Channels * format.LineSize;
+                            r.Height    = fft[ k ] * body.Height;
+                            r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
+
+                            var hz_b    = 0d;
+                            var hz      = hzPerOne * ( k + 1 - k % bgm.Channels );
+
+                            foreach ( var item in DrawSet.HzList )
                             {
-                                r.X += item.Width * ( hz - hz_b ) / ( item.Hz - hz_b );
-                                break;
+                                if ( hz > item.Hz )
+                                {
+                                    r.X += item.Width;
+                                    hz_b = item.Hz;
+                                }
+                                else
+                                {
+                                    r.X += item.Width * ( hz - hz_b ) / ( item.Hz - hz_b );
+                                    break;
+                                }
                             }
+
+                            args.DrawingSession.DrawLine
+                                (
+                                    r._x,
+                                    r._y,
+                                    r._x,
+                                    (float)r.Bottom,
+                                    format.LineColor,
+                                    format.LineSize
+                                );
                         }
-
-                        args.DrawingSession.DrawLine
-                            (
-                                r._x,
-                                r._y,
-                                r._x,
-                                (float)r.Bottom,
-                                format.LineColor,
-                                format.LineSize
-                            );
                     }
                 }
             }
