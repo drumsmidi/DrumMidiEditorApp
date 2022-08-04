@@ -41,7 +41,6 @@
                     </CommandBar>
 
                     <canvas:CanvasControl x:Name = "_EqualizerCanvas"
-                        ClearColor="{x:Bind DrawSet.BackGround.Color, Mode=OneTime}" 
                         Draw="EqualizerCanvas_Draw" 
                         PointerPressed="EqualizerCanvas_PointerPressed"
                         PointerMoved="EqualizerCanvas_PointerMoved"

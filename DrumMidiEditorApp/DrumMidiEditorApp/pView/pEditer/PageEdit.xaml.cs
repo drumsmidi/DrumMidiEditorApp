@@ -366,7 +366,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
     #endregion
 
-
     #region Edit
 
     /// <summary>

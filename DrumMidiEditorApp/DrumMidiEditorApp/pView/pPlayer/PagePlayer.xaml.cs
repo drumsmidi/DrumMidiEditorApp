@@ -27,7 +27,9 @@ public sealed partial class PagePlayer : Page
 	public PagePlayer()
     {
         InitializeComponent();
-    }
+
+		UpdatePageSize();
+	}
 
 	#region Mouse Event
 
@@ -192,4 +194,20 @@ public sealed partial class PagePlayer : Page
 
 		Margin = _PageMargin;
 	}
+
+	/// <summary>
+	/// ページサイズ更新
+	/// </summary>
+	public void UpdatePageSize()
+    {
+        try
+        {
+			Width	= DrawSet.ResolutionScreenWidth;
+			Height	= DrawSet.ResolutionScreenHeight;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
 }

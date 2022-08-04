@@ -9,7 +9,6 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI;
@@ -22,18 +21,12 @@ using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
-using Microsoft.UI.Windowing;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
 public sealed partial class UserControlEditerPanel : UserControl
 {
     #region Member
-
-    /// <summary>
-    /// リソース
-    /// </summary>
-    private readonly ResourceLoader _Resource = new();
 
     /// <summary>
     /// Editerタブ設定
@@ -2967,7 +2960,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         using var g = offscreen.CreateDrawingSession();
 
         // 背景色塗りつぶし
-        g.Clear(DrawSet.SheetColor.Color );
+        g.Clear( DrawSet.SheetColor.Color );
 
         #region 周波数
         {
@@ -3090,6 +3083,12 @@ public sealed partial class UserControlEditerPanel : UserControl
             var measure_size    = DrawSet.MeasureSize;
             int measure_start   = note_pos.X / ConfigSystem.MeasureNoteNumber;
             int measure_end     = (int)( ( note_pos.X + body._width / DrawSet.NoteWidthSize ) / ConfigSystem.MeasureNoteNumber + 1 );
+
+            #region 背景色
+            {
+                args.DrawingSession.Clear( DrawSet.SheetColor.Color );
+            }
+            #endregion
 
             #region WaveForm
             {
@@ -3295,7 +3294,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             args.DrawingSession,
                             _BpmHeadRange,
                             DrawSet.BpmHeadRect,
-                            $"{_Resource.GetString( "LabelBpm" )}"
+                            $"{ResourcesHelper.GetString( "LabelBpm" )}"
                         );
                 }
                 #endregion
@@ -3349,7 +3348,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             args.DrawingSession,
                             _VolumeHeadRange,
                             DrawSet.VolumeHeadRect,
-                            $"{_Resource.GetString( "LabelVolume" )}"
+                            $"{ResourcesHelper.GetString( "LabelVolume" )}"
                         );
                 }
                 #endregion
@@ -3408,7 +3407,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             args.DrawingSession,
                             _MeasureNoHeadRange,
                             DrawSet.MeasureNoHeadRect,
-                            $"{_Resource.GetString( "LabelMeasureNo" )}"
+                            $"{ResourcesHelper.GetString( "LabelMeasureNo" )}"
                         );
                 }
                 #endregion

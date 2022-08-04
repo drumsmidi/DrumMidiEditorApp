@@ -5,7 +5,6 @@ using System.Linq;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pDirectX;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using Microsoft.Graphics.Canvas.UI.Xaml;

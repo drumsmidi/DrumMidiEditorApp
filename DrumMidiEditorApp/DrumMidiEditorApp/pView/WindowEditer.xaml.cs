@@ -32,8 +32,8 @@ public sealed partial class WindowEditer : Window
     /// </summary>
     public WindowEditer()
     {
-		// TODO: Configファイル読込
-		//FileIO.LoadConfig();
+		// Configファイル読込
+		FileIO.LoadConfig();
 
 		// Midiデバイス初期化
 		MidiNet.InitDevice();

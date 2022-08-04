@@ -18,36 +18,29 @@ namespace DrumMidiEditorApp.pIO;
 /// </summary>
 public static class FileIO
 {
+    #region Create sub folder
+
     /// <summary>
     /// ドキュメントフォルダを構築
     /// </summary>
-    public static void DocumentFolderStructure()
+    private static void DocumentFolderStructure()
     {
         var folderList = new List<GeneralPath>()
         {
-            //Config.System.FolderDocBase,
-            //Config.System.FolderBgm,
-            //Config.System.FolderConfig,
-            //Config.System.FolderDms,
-            //Config.System.FolderMidiMapSet,
-            //Config.System.FolderModel,
-            //Config.System.FolderExport,
+            Config.System.FolderConfig,
+            Config.System.FolderModel,
         };
 
         var targetFolderList = new List<GeneralPath>();
 
         try
         {
-            var message = $"下記フォルダを作成しますよろしいですか？{Environment.NewLine}";
-
             // フォルダ存在チェック
             foreach ( var folder in folderList )
             {
                 if ( !folder.IsExistDirectory )
                 {
                     targetFolderList.Add( folder );
-
-                    message += folder.AbsoulteFolderPath + Environment.NewLine;
                 }
             }
 
@@ -89,19 +82,20 @@ public static class FileIO
         }
     }
 
+    #endregion
+
     #region Config I/O
 
     /// <summary>
     /// 設定ファイル読込
     /// </summary>
     /// <returns>Trueのみ</returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>")]
     public static bool LoadConfig()
     {
 		using var _ = new LogBlock( Log.GetThisMethodName );
 
-#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.System.FolderConfig );
-#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
@@ -158,17 +152,20 @@ public static class FileIO
         return config;
     }
 
+
     /// <summary>
     /// 設定ファイル保存
     /// </summary>
     /// <returns>Trueのみ</returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>")]
     public static bool SaveConfig()
     {
 		using var _ = new LogBlock( Log.GetThisMethodName );
 
-#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
+        // サブフォルダ作成
+        FileIO.DocumentFolderStructure();
+
         var path = new GeneralPath( Config.System.FolderConfig );
-#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
@@ -234,7 +231,7 @@ public static class FileIO
     {
 		using var _ = new LogBlock( Log.GetThisMethodName );
 
-        aScore = new Score();
+        aScore = new();
 
         try
         {

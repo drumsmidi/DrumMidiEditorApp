@@ -593,6 +593,12 @@ public sealed partial class UserControlEqualizer : UserControl
 
             var body = _EqulizerBodyRange;
 
+            #region 背景色
+            {
+                args.DrawingSession.Clear( DrawSet.BackGround.Color );
+            }
+            #endregion
+
             #region x-line (Hz)
             {
                 var pos_x = body.X;

@@ -11,8 +11,6 @@
     PointerReleased="Page_PointerReleased"
     PointerCaptureLost="Page_PointerReleased"
     PointerCanceled="Page_PointerReleased"
-    Width="{x:Bind DrawSet.ResolutionScreenWidth, Mode=OneWay}"
-    Height="{x:Bind DrawSet.ResolutionScreenHeight, Mode=OneWay}"
     HorizontalAlignment="Left"
     VerticalAlignment="Top"
     Background="#00000000">
