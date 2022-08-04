@@ -52,6 +52,7 @@ jobs:
       matrix:
         configuration: [Release]
         #configuration: [Debug, Release]
+        platform: [x64]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -99,11 +100,14 @@ jobs:
     - name: Create the app package
       run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Appx_Bundle: Always
+        Appx_Bundle: Never
+        #Appx_Bundle: Always
         Appx_Bundle_Platforms: x64
         #Appx_Bundle_Platforms: x86|x64
-        Appx_Package_Build_Mode: StoreUpload
+        Appx_Package_Build_Mode: SideloadOnly
+        #Appx_Package_Build_Mode: StoreUpload
         Configuration: ${{ matrix.configuration }}
+        Platform: ${{ matrix.platform }}
 
     # Remove the pfx
     - name: Remove the pfx
