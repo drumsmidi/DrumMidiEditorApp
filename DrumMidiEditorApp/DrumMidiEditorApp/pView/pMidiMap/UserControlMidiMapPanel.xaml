@@ -20,7 +20,7 @@
 -->
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Padding="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="20" />

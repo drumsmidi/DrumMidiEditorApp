@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,7 +13,6 @@ using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pIO;
-using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -80,15 +80,18 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         InitializeComponent();
 
 		ControlAccess.UCMidiMapPanel = this;
-	}
 
-	#region INotifyPropertyChanged
+        // 初回表示時に読み込んでおく
+        ReloadMidiMapSet();
+    }
 
-	/// <summary>
+    #region INotifyPropertyChanged
+
+    /// <summary>
     /// MidiMapSetの再読み込み
-	/// x:Bind OneWay/TwoWay 再読み込み
-	/// </summary>
-	public void ReloadMidiMapSet()
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadMidiMapSet()
     {
         try
 		{
@@ -115,13 +118,22 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
 		{
+            // 再読み込み前に先頭の行を選択していた場合、通知が無視されるので
+            // 未選択状態でリセットしておく
+            var tmp = _MidiMapGroupSelectIndex;
+
+            _MidiMapGroupSelectIndex = -1;
+            OnPropertyChanged( "_MidiMapGroupSelectIndex" );
+
             // GridViewのItemSources データ作成
             _TmpMidiMapGroupList.Clear();
 
             _TmpMidiMapSet.MidiMapGroups
-                .ForEach( midiMap => _TmpMidiMapGroupList.Add( midiMap ) );
+                .ForEach( midiMapGroup => _TmpMidiMapGroupList.Add( midiMapGroup ) );
 
             OnPropertyChanged( "_TmpMidiMapGroupList" );
+
+            _MidiMapGroupSelectIndex = tmp;
             OnPropertyChanged( "_MidiMapGroupSelectIndex" );
         }
         catch ( Exception e )
@@ -344,6 +356,11 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count - 1;
 
             ReloadMidiMapGroup();
+
+            if ( _TmpMidiMapList.Count == 0 )
+            {
+                MidiMapAddButton_Click( sender, args );
+            }
         }
         catch ( Exception e )
         {
@@ -447,6 +464,15 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 
                         _TmpMidiMapSet.MoveMidiMapGroup( _BeforeMoveIndex, afterMoveIndex - _BeforeMoveIndex );
                         _TmpMidiMapSet.UpdateInfo();
+
+                        // 選択中のアイテムをドラッグ＆ドロップすると
+                        // SelectionChanged が先に呼ばれる為
+                        // 移動前の情報が読み込まれてしまうので
+                        // ここでも再読み込みしておく
+                        if ( _MidiMapGroupSelectIndex == afterMoveIndex )
+                        { 
+                            ReloadMidiMap();
+                        }
                     }
                     break;
             }
@@ -523,7 +549,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 
             // 同じ行にあるアイテムを選択
             if ( _MidiMapGridView.Items.Count == 0 )
-            { 
+            {
+                MidiMapAddButton_Click( sender, args );
                 return;
             }
             else if ( _MidiMapGridView.Items.Count <= index )
@@ -629,7 +656,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 				return;
             }
 
-            sender.Value = ConfigMedia.CheckMidiAddVolume( (int)sender.Value );
+            sender.Value = ConfigMedia.CheckMidiAddVolume( (int)args.NewValue );
 		}
 		catch ( Exception e )
         {
@@ -652,7 +679,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 				return;
             }
 
-            sender.Value = ConfigMedia.CheckMidiNote( (int)sender.Value );
+            sender.Value = ConfigMedia.CheckMidiNote( (int)args.NewValue );
 		}
 		catch ( Exception e )
         {
@@ -669,9 +696,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
 		try
 		{
-            var item = sender as Button;
-
-            if ( item == null )
+            if ( sender is not Button item )
             {
                 return;
             }

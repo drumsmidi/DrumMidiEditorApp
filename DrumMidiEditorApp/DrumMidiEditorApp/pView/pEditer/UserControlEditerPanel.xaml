@@ -10,7 +10,7 @@
 
     <Grid>
         <canvas:CanvasControl x:Name = "_EditerCanvas"
-            ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneWay}" 
+            ClearColor="{x:Bind DrawSet.SheetColor.Color, Mode=OneTime}" 
             Draw="EditerCanvas_Draw" 
             PointerPressed="EditerCanvas_PointerPressed"
             PointerMoved="EditerCanvas_PointerMoved"

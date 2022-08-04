@@ -8,6 +8,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -15,14 +18,25 @@
         
         <TextBlock x:Name="_MidiMapBeforeTextBlock"
             Grid.Row="0"
-            Padding="12 10" />
+            Grid.Column="0"
+            FontFamily="MS Gothic"
+            Padding="14 10" />
 
         <ListBox x:Name="_MidiMapListBox"
             Grid.Row="1"
+            Grid.Column="0"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             ScrollViewer.VerticalScrollMode="Enabled"      
             SelectionMode="Single"
-            SelectionChanged="MidiMapListBox_SelectionChanged" />
+            SelectionChanged="MidiMapListBox_SelectionChanged">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="x:String">
+                    <TextBlock Text="{x:Bind}" FontFamily="MS Gothic" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
 
     </Grid>
 </Page>

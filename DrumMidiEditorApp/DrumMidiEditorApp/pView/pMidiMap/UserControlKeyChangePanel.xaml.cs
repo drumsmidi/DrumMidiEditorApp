@@ -33,19 +33,24 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
 
 	#endregion
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public UserControlKeyChangePanel()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlKeyChangePanel()
     {
         InitializeComponent();
 
-		ControlAccess.UCKeyChangePanel = this;
-	}
+        ControlAccess.UCKeyChangePanel = this;
+
+        // 初回表示時に読み込んでおく
+        ReloadMidiMapNoteList();
+    }
 
 	#region INotifyPropertyChanged
 
 	/// <summary>
+    /// MidiMap別ノートリスト再読み込み
+    /// 
 	/// x:Bind OneWay/TwoWay 再読み込み
 	/// </summary>
 	public void ReloadMidiMapNoteList()
@@ -65,7 +70,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
 
 				var MidiMapName = Score.EditMidiMapSet.GetGroupAndMidiMapName( key );
 
-				_MidiMapNoteList.Add( $"{key,-3} {MidiMapName,-30}[{cnt,4}]" );
+				_MidiMapNoteList.Add( $"{key,-3} {MidiMapName,-30} [{cnt,4}]" );
 			}
 
 			items.Clear();

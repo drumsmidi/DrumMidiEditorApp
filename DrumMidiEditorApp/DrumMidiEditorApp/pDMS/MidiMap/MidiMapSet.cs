@@ -530,9 +530,9 @@ public class MidiMapSet : DisposeBaseClass
 	/// MidiMapSet更新後、必ずUpdateInfo()を実行してください。
 	/// </summary>
 	/// <param name="aGroupIndex">MidiMapGroup全体の連番（0-）</param>
-	/// <param name="aMidiMapIndex">MidiMap全体の連番（0-）</param>
+	/// <param name="aMidiMapIndexOfGroup">Group内のMidiMap連番（0-）</param>
 	/// <param name="aMove">MidiMapの連番内移動量</param>
-	public void MoveMidiMap( int aGroupIndex, int aMidiMapIndex, int aMove )
+	public void MoveMidiMap( int aGroupIndex, int aMidiMapIndexOfGroup, int aMove )
 	{
 		var group = GetMidiMapGroup( aGroupIndex );
 
@@ -541,7 +541,7 @@ public class MidiMapSet : DisposeBaseClass
 			return;
         }
 
-		int index = aMidiMapIndex + aMove;
+		int index = aMidiMapIndexOfGroup + aMove;
 
 		if ( index < 0 )
 		{
@@ -552,11 +552,11 @@ public class MidiMapSet : DisposeBaseClass
 			index = group.MidiMaps.Count - 1;
 		}
 
-		var midiMap = GetMidiMap( aMidiMapIndex );
+		var midiMap = group.MidiMaps[ aMidiMapIndexOfGroup ];
 
 		if ( midiMap != null )
 		{ 
-			group.MidiMaps.RemoveAt( aMidiMapIndex );
+			group.MidiMaps.RemoveAt( aMidiMapIndexOfGroup );
 			group.MidiMaps.Insert( index, midiMap );
 		}
 	}

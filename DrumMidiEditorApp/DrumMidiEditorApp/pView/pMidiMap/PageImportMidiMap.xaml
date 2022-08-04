@@ -11,9 +11,10 @@
     <Grid ColumnSpacing="6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -21,7 +22,7 @@
         <Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource TableHeader}">
             <TextBlock x:Uid="ColumnMidiMapKeyChange" />
         </Grid>
-        <Grid Grid.Row="0" Grid.Column="1" Style="{StaticResource TableHeader}">
+        <Grid Grid.Row="2" Grid.Column="0" Style="{StaticResource TableHeader}">
             <TextBlock x:Uid="ColumnImportMidiMap" />
         </Grid>
         
@@ -31,6 +32,8 @@
 
             <GridView x:Name="_MidiMapGroupGridView"
                 ItemsSource="{x:Bind _ChangeKeyDataList, Mode=OneTime}"
+                Grid.Row="1"
+                Grid.Column="0"                      
                 SelectionMode="None"
                 ScrollViewer.HorizontalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -44,7 +47,7 @@
                             BorderThickness="0 0 0 3">
                             
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="250" />
+                                <ColumnDefinition Width="500" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -54,20 +57,23 @@
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Text="{x:Bind BeforeName, Mode=OneTime}"
-                                FontSize="12"
+                                FontSize="16"
+                                FontFamily="MS Gothic"
+                                Padding="6 0 0 0"
                                 Height="46" />
                             
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Text="{x:Bind AfterName, Mode=TwoWay}"
-                                FontSize="12"
+                                FontSize="16"
+                                FontFamily="MS Gothic"
                                 Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
                                 AllowDrop="True"
                                 Drop="TextBlock_Drop"
                                 DragEnter="TextBlock_DragEnter"
                                 DragLeave="TextBlock_DragLeave"                                
-                                Padding="0 20 0 0"
+                                Padding="6 20 0 0"
                                 Height="46" />
                             
                         </Grid>
@@ -79,8 +85,8 @@
                         <ItemsWrapGrid 
                             MaximumRowsOrColumns="0" 
                             Orientation="Vertical"
-                            Margin="10"
-                            ItemWidth="250"
+                            Margin="0"
+                            ItemWidth="500"
                             ItemHeight="46"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left" />
@@ -91,8 +97,8 @@
         </ScrollViewer>
         
         <ScrollViewer
-            Grid.Row="1"
-            Grid.Column="1" >
+            Grid.Row="3"
+            Grid.Column="0" >
 
             <GridView x:Name="_ImportMidiMapGridView"
                 ItemsSource="{x:Bind _ImportDataList, Mode=OneTime}"
@@ -109,10 +115,12 @@
                         <Grid>
                             <TextBlock
                                 Grid.Column="0"
-                                FontSize="11"
+                                FontSize="16"
+                                FontFamily="MS Gothic"
+                                TextWrapping="Wrap"
                                 Text="{x:Bind AfterName, Mode=TwoWay}"
                                 Padding="10 0 0 0"
-                                Width="200" />
+                                Width="500" />
                            
                         </Grid>
                     </DataTemplate>
@@ -123,8 +131,8 @@
                         <ItemsWrapGrid 
                             MaximumRowsOrColumns="0" 
                             Orientation="Vertical"
-                            Margin="10"
-                            ItemWidth="200"
+                            Margin="0"
+                            ItemWidth="500"
                             ItemHeight="48"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left" />

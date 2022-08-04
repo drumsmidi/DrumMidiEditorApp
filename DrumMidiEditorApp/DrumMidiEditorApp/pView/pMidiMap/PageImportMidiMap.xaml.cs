@@ -11,12 +11,6 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
-internal class ImportMidiMapData
-{
-	public string BeforeName { get; set; }
-	public string AfterName { get; set; }
-}
-
 public sealed partial class PageImportMidiMap : Page
 {
     #region Member
@@ -104,8 +98,8 @@ public sealed partial class PageImportMidiMap : Page
 						_ImportDataList.Add
 							( 
 								new()
-								{ 
-									AfterName = $"{midiMap.MidiMapKey,-3} {name,-30}",
+								{
+									AfterName  = $"{midiMap.MidiMapKey,-3} {name}",
 								}
 							);
 					}
@@ -233,4 +227,10 @@ public sealed partial class PageImportMidiMap : Page
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+}
+
+internal class ImportMidiMapData
+{
+	public string BeforeName { get; set; }
+	public string AfterName { get; set; }
 }
