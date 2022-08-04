@@ -109,6 +109,9 @@ public static class Config
 
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
+
+        // 履歴クリア
+        EventClearEditerRangeSelect();
     }
 
     /// <summary>
@@ -207,72 +210,11 @@ public static class Config
     }
 
     /// <summary>
-    /// フラグ更新：Editerタブ　シート移動
-    /// </summary>
-    public static void EventUpdateEditerSheetPos()
-    {
-        Editer.UpdateCameraFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Editerタブ　Undo
-    /// </summary>
-    public static void EventEditerUndo()
-    {
-        Editer.UpdateUndoFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Editerタブ　Redo
-    /// </summary>
-    public static void EventEditerRedo()
-    {
-        Editer.UpdateRedoFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Editerタブ　範囲選択クリア
-    /// </summary>
-    public static void EventClearEditerRange()
-    {
-        Editer.UpdateClearRangeFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Editerタブ　ヘッダ更新／ノート間隔更新
-    /// </summary>
-    public static void EventUpdateEditerSize()
-    {
-        Editer.UpdateScoreLayoutFlag    = true;
-        Editer.UpdateScoreLineFlag      = true;
-        Editer.UpdateScoreHeaderFlag    = true;
-        Editer.UpdateScoreFlag          = true;
-    }
-
-    /// <summary>
     /// フラグ更新：Editerタブ　ライン更新
     /// </summary>
     public static void EventUpdateEditerLine()
     {
         Editer.UpdateScoreLineFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Player　更新
-    /// </summary>
-    public static void EventUpdatePlayer()
-    {
-        Player.UpdateScoreFlag = true;
-    }
-
-    /// <summary>
-    /// フラグ更新：Scoreタブ　更新
-    /// </summary>
-    public static void EventUpdateScoreTab()
-    {
-        Score.UpdateScoreFlag = true;
-
-        ControlAccess.UCScore?.Refresh();
     }
 
     /// <summary>
@@ -285,13 +227,116 @@ public static class Config
         Score.UpdateScoreFlag           = true;
     }
 
+    #region Event.Edit
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　シート移動
+    /// </summary>
+    public static void EventUpdateEditerSheetPos()
+    {
+        Editer.UpdateCameraFlag = true;
+
+        ControlAccess.PageEdit?.Refresh();
+    }
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　ヘッダ更新／ノート間隔更新
+    /// </summary>
+    public static void EventUpdateEditerSize()
+    {
+        Editer.UpdateScoreLayoutFlag    = true;
+        Editer.UpdateScoreLineFlag      = true;
+        Editer.UpdateScoreHeaderFlag    = true;
+        Editer.UpdateScoreFlag          = true;
+
+        ControlAccess.PageEdit?.Refresh();
+    }
+
     /// <summary>
     /// フラグ更新：Editerタブ 波形表示画像更新
     /// </summary>
     public static void EventUpdateEditerWaveForm()
     {
         Editer.UpdateScoreBgmScaleFlag = true;
+
+        ControlAccess.PageEdit?.Refresh();
     }
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　範囲選択クリア
+    /// </summary>
+    public static void EventUpdateEditerRangeSelect()
+    {
+        ControlAccess.PageEdit?.ReloadConfigEditer();
+    }
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　範囲選択クリア
+    /// </summary>
+    public static void EventClearEditerRangeSelect()
+    {
+        Editer.UpdateClearRangeFlag = true;
+
+        ControlAccess.PageEdit?.ReloadConfigEditer();
+        ControlAccess.PageEdit?.Refresh();
+    }
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　Undo
+    /// </summary>
+    public static void EventEditerUndo()
+    {
+        Editer.UpdateUndoFlag = true;
+
+        ControlAccess.PageEdit?.Refresh();
+    }
+
+    /// <summary>
+    /// フラグ更新：Editerタブ　Redo
+    /// </summary>
+    public static void EventEditerRedo()
+    {
+        Editer.UpdateRedoFlag = true;
+
+        ControlAccess.PageEdit?.Refresh();
+    }
+
+    #endregion
+
+    #region Event.Score
+
+    /// <summary>
+    /// Scoreタブ更新
+    /// </summary>
+    public static void EventUpdateScoreTab()
+    {
+        Score.UpdateScoreFlag = true;
+
+        ControlAccess.UCScore?.Refresh();
+    }
+
+    #endregion
+
+    #region Event.Player
+
+    /// <summary>
+    /// フラグ更新：Player　更新
+    /// </summary>
+    public static void EventUpdatePlayer()
+    {
+        Player.UpdateScoreFlag = true;
+    }
+
+    /// <summary>
+    /// Player表示切替通知
+    /// </summary>
+    public static void EventDisplayPlayer()
+    {
+        ControlAccess.PageMenuBar?.ReloadConfigPlayer();
+        ControlAccess.PageEditerMain?.ReloadPlayer();
+    }
+
+    #endregion
 
     #endregion
 }

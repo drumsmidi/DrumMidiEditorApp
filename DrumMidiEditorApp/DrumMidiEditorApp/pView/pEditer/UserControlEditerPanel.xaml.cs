@@ -1237,7 +1237,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 	private void ClearSelectNoteRange( ref ResumeMultiple aResume )
     {
         DrawSet.IsRangeSelect = false;
-        ControlAccess.PageEdit?.ReloadRangeSelectButton();
+        Config.EventUpdateEditerRangeSelect();
 
         if ( !_NoteRange.Selected )
         {
@@ -1439,7 +1439,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
 
         DrawSet.IsRangeSelect = true;
-        ControlAccess.PageEdit?.ReloadRangeSelectButton();
+        Config.EventUpdateEditerRangeSelect();
     }
 
     /// <summary>

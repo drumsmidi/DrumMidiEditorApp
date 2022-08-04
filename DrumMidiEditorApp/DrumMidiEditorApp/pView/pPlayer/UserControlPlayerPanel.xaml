@@ -6,8 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     Unloaded="UserControl_Unloaded"
-    BorderBrush="#0F0" BorderThickness="10"
-   
     mc:Ignorable="d">
 
     <Grid>

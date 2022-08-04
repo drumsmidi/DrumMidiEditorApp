@@ -1,6 +1,8 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
@@ -13,7 +15,7 @@ using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 
-public sealed partial class PageMenuBar : Page
+public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 {
 	#region Member
 
@@ -46,9 +48,11 @@ public sealed partial class PageMenuBar : Page
     {
         InitializeComponent();
 
-        #region NumberBox の入力書式設定
+		ControlAccess.PageMenuBar = this;
 
-        _LoopPlayMeasureStartNumberBox.NumberFormatter 
+		#region NumberBox の入力書式設定
+
+		_LoopPlayMeasureStartNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
 		_LoopPlayMeasureEndNumberBox.NumberFormatter 
 			= XamlHelper.CreateNumberFormatter( 1, 0, 1 );
@@ -74,6 +78,32 @@ public sealed partial class PageMenuBar : Page
 #endif
 	}
 
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// ConfigPlayer設定再読み込み
+	/// 
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadConfigPlayer()
+    {
+		try
+		{
+			OnPropertyChanged( "ConfigPlayer" );
+		}
+        catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+	#endregion
+
 	/// <summary>
 	/// スコアをシステム全体に反映
 	/// </summary>
@@ -81,7 +111,7 @@ public sealed partial class PageMenuBar : Page
     {
         try
         {
-			DMS.SCORE.EditChannelNo = _ChannelNoComboBox.SelectedValue != null 
+			Score.EditChannelNo = _ChannelNoComboBox.SelectedValue != null 
 				? Convert.ToByte( _ChannelNoComboBox.SelectedValue.ToString() )
 				: ConfigMedia.ChannelDrum;
 
@@ -561,7 +591,7 @@ public sealed partial class PageMenuBar : Page
         {
 			ConfigPlayer.DisplayPlayer = ( sender as ToggleSwitch )?.IsOn ?? false ;
 
-			ControlAccess.PageEditerMain?.ReloadPlayer();
+			Config.EventDisplayPlayer();
 		}
 		catch ( Exception e )
 		{

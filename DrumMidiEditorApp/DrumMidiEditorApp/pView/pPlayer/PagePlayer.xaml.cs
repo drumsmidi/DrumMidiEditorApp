@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using System;
+using Windows.Foundation;
 
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pDirectX;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 public sealed partial class PagePlayer : Page
 {
-	private ConfigPlayer ConfigPlayer => Config.Player;
+	/// <summary>
+	/// 描画設定
+	/// </summary>
+	private ConfigPlayer DrawSet => Config.Player;
 
+	/// <summary>
+	/// プレイヤー表示位置調整用マージン
+	/// </summary>
 	private Thickness _PageMargin = new();
 
 	/// <summary>
@@ -66,9 +60,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( ConfigPlayer.EditModeOn )
+			if ( DrawSet.EditModeOn )
 			{ 
-				//_PlayerSurface?.MouseDown( sender, ev );
 				return;
 			}
 
@@ -90,7 +83,8 @@ public sealed partial class PagePlayer : Page
             else if ( p.Properties.IsRightButtonPressed )
 			{
 				// 非表示
-                //PlayerControl?.DoPlayerCheckBox();
+				DrawSet.DisplayPlayer = false;
+				Config.EventDisplayPlayer();
 
 				_ActionState = EActionState.None;
 			}
@@ -112,9 +106,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( ConfigPlayer.EditModeOn )
+			if ( DrawSet.EditModeOn )
 			{ 
-				//_PlayerSurface?.MouseMove( sender, ev );
 				return;
 			}
 
@@ -152,9 +145,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( ConfigPlayer.EditModeOn )
+			if ( DrawSet.EditModeOn )
 			{ 
-				//_PlayerSurface?.MouseUp( sender, ev );
 				return;
 			}
 
@@ -185,6 +177,12 @@ public sealed partial class PagePlayer : Page
 		}
     }
 
+	#endregion
+
+	/// <summary>
+	/// プレイヤー表示位置設定
+	/// </summary>
+	/// <param name="aMousePoint"></param>
 	private void SetPagePosition( Point aMousePoint )
     {
 		_PageMargin.Left	+= aMousePoint.X - _BeforePos.X;
@@ -194,6 +192,4 @@ public sealed partial class PagePlayer : Page
 
 		Margin = _PageMargin;
 	}
-
-    #endregion
 }

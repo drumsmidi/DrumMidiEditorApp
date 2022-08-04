@@ -1,4 +1,5 @@
 ﻿using DrumMidiEditorApp.pView.pEditer;
+using DrumMidiEditorApp.pView.pMenuBar;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
 using DrumMidiEditorApp.pView.pScore;
@@ -11,6 +12,8 @@ public static class ControlAccess
     public static WindowEditer? MainWindow { get; set; } = null;
 
     public static PageEditerMain? PageEditerMain { get; set; } = null;
+
+    public static PageMenuBar? PageMenuBar { get; set; } = null;
 
     public static PageMusic? PageMusic { get; set; } = null;
 

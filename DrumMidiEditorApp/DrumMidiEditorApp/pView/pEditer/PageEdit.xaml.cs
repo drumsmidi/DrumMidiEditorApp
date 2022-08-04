@@ -1,15 +1,18 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using Windows.Foundation;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -33,11 +36,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     private ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
-    /// Media設定
-    /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
-
-    /// <summary>
     /// Score情報
     /// </summary>
     private Score Score => DMS.SCORE;
@@ -57,18 +55,35 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	/// </summary>
 	private readonly ObservableCollection<string> _RangeSelectTypeList = new();
 
-    #endregion
+	/// <summary>
+	/// マウスダウン押下時のマウス位置
+	/// </summary>
+	private Point _MouseDownPosition = new();
+
+	/// <summary>
+	/// マウスダウン押下中のマウス位置
+	/// </summary>
+	private Point _MouseMovePosition = new();
+
+	/// <summary>
+	/// 等間隔処理実行用タイマー
+	/// </summary>
+	private PeriodicTimer? _Timer = null;
+
+	#endregion
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-    public PageEdit()
+	public PageEdit()
     {
         InitializeComponent();
 
-		#region 小節番号リスト作成
+        ControlAccess.PageEdit = this;
 
-		int keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
+        #region 小節番号リスト作成
+
+        int keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
 
 		for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
 		{
@@ -112,16 +127,16 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
 
 		#endregion
-
-		ControlAccess.PageEdit = this;
 	}
 
 	#region INotifyPropertyChanged
 
 	/// <summary>
+	/// 描画設定再読み込み
+	/// 
 	/// x:Bind OneWay/TwoWay 再読み込み
 	/// </summary>
-	public void ReloadRangeSelectButton()
+	public void ReloadConfigEditer()
     {
 		OnPropertyChanged( "DrawSet" );
 	}
@@ -132,7 +147,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
 	#endregion
-
 
     #region Move sheet
 
@@ -156,30 +170,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		{
 			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
-
     }
-
-	/// <summary>
-	/// 小節番号移動
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void MeasureNoGridView_ItemClick( object sender, ItemClickEventArgs args )
-	{
-		try
-		{
-            var value = args.ClickedItem.ToString();
-
-			if ( !string.IsNullOrEmpty( value ) )
-            {
-				JumpMeasure( Convert.ToInt32( value ) );
-            }
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
 
 	/// <summary>
 	/// シート位置　指定の小節番号へ移動
@@ -190,11 +181,191 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
 		Config.EventUpdateEditerSheetPos();
-
-		Refresh();
     }
 
     #endregion
+
+    #region Move sheet Mouse Event
+
+    /// <summary>
+    /// アクション状態一覧
+    /// </summary>
+    private enum EActionState
+    {
+        None = 0,
+        MoveSheet,
+    }
+
+    /// <summary>
+    /// アクション状態
+    /// </summary>
+    private EActionState _ActionState = EActionState.None;
+
+    /// <summary>
+    /// マウスダウン処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MoveSheetTextBlock_PointerPressed( object sender, PointerRoutedEventArgs args )
+    {
+        if ( _ActionState != EActionState.None )
+        {
+            return;
+        }
+
+        try
+        {
+            var p = args.GetCurrentPoint( sender as FrameworkElement );
+
+            if ( p.Properties.IsLeftButtonPressed )
+			{
+				_MouseDownPosition = p.Position;
+
+				_ActionState = EActionState.MoveSheet;
+			}
+
+            //Refresh();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            _ActionState = EActionState.None;
+        }
+    }
+
+    /// <summary>
+    /// マウス移動処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MoveSheetTextBlock_PointerMoved( object sender, PointerRoutedEventArgs args )
+    {
+        if ( _ActionState == EActionState.None )
+        {
+            return;
+        }
+
+        try
+        {
+            var p = args.GetCurrentPoint( sender as FrameworkElement );
+
+			switch ( _ActionState )
+			{
+                case EActionState.MoveSheet:
+                    {
+                        MoveSheetAsync( p.Position );
+                    }
+                    break;
+    		}
+
+            //Refresh();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            _ActionState = EActionState.None;
+        }
+    }
+
+    /// <summary>
+    /// マウスアップ処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MoveSheetTextBlock_PointerReleased( object sender, PointerRoutedEventArgs args )
+    {
+        if ( _ActionState == EActionState.None )
+        {
+            return;
+        }
+
+        try
+        {
+            var p = args.GetCurrentPoint( sender as FrameworkElement );
+
+            switch ( _ActionState )
+            {
+                case EActionState.MoveSheet:
+                    {
+                        StopTimer();
+                    }
+                    break;
+			}
+
+            //Refresh();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+        finally
+        {
+            _ActionState = EActionState.None;
+        }
+    }
+
+    /// <summary>
+    /// タイマー停止
+    /// </summary>
+    private void StopTimer()
+    {
+        _Timer?.Dispose();
+        _Timer = null;
+    }
+
+    /// <summary>
+    /// シート移動処理
+    /// </summary>
+    /// <param name="aMousePoint"></param>
+    private async void MoveSheetAsync( Point aMousePoint )
+    {
+        if ( _Timer != null )
+        {
+			_MouseMovePosition = aMousePoint;
+            return;
+        }
+
+        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
+
+        while ( await _Timer.WaitForNextTickAsync() )
+        {
+            var move = new Point
+                ( 
+                    ( _MouseMovePosition.X - _MouseDownPosition.X ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond,
+                    ( _MouseMovePosition.Y - _MouseDownPosition.Y ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond
+                );
+
+            if ( move.X == 0 && move.Y == 0 )
+	        {
+		        return;
+	        }
+
+            var note_pos = XamlHelper.AdjustRangeIn
+                (
+                    new
+                    (
+                        DrawSet.NotePosition.X + move.X,
+                        DrawSet.NotePosition.Y + move.Y
+                    ),
+                    new
+                    (
+                        0,
+                        0,
+                        ConfigSystem.NoteCount,
+                        Score.EditChannel.MidiMapSet.DisplayMidiMapAllCount
+                    )
+                );
+
+            DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
+
+            Config.EventUpdateEditerSheetPos();
+        }
+    }
+
+    #endregion
+
 
     #region Edit
 
@@ -207,9 +378,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	{
 		try
 		{
-			Config.EventClearEditerRange();
-
-			Refresh();
+			Config.EventClearEditerRangeSelect();
 		}
 		catch ( Exception e )
         {
@@ -237,8 +406,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
             }
 
 			Config.EventUpdateEditerSize();
-
-			Refresh();
 		}
 		catch ( Exception e )
         {
@@ -260,8 +427,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		try
 		{
 			Config.EventEditerUndo();
-
-			Refresh();
 		}
 		catch ( Exception e )
 		{
@@ -279,8 +444,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		try
 		{
 			Config.EventEditerRedo();
-
-			Refresh();
 		}
         catch ( Exception e )
         {
@@ -444,8 +607,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	private void UpdateVolumeLevel()
 	{
 		Config.EventUpdateEditerWaveForm();
-
-		Refresh();
 	}
 
 	/// <summary>

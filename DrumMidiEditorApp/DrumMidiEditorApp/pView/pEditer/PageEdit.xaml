@@ -11,7 +11,7 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="220" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -19,260 +19,262 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Padding="10">
+        <Grid 
+            Grid.Row="0" 
+            Grid.RowSpan="2" 
+            Grid.Column="0" 
+            Padding="10"
+            RowSpacing="6"
+            ColumnSpacing="6">
 
-            <StackPanel Orientation="Vertical" Spacing="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Vertical">
+            <StackPanel 
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Orientation="Vertical">
                     
-                    <TextBlock x:Uid="InputJumpMeasure" />
+                <TextBlock x:Uid="InputJumpMeasure" />
 
-                    <GridView x:Name="_MeasureNoGridView"
-                        ItemsSource="{x:Bind _MeasureNoList, Mode=OneTime}"
-                        SelectionMode="Single"
-                        ItemClick="MeasureNoGridView_ItemClick"
-                        SelectionChanged="MeasureNoGridView_SelectionChanged"
-                        ScrollViewer.HorizontalScrollMode="Enabled"
-                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <GridView
+                    ItemsSource="{x:Bind _MeasureNoList, Mode=OneTime}"
+                    SelectionMode="Single"
+                    SelectionChanged="MeasureNoGridView_SelectionChanged"
+                    ScrollViewer.HorizontalScrollMode="Enabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <TextBlock 
-                                    TextAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="0 -18 0 0"
-                                    Padding="0"
-                                    Width="33"
-                                    Height="24"
-                                    FontSize="14"
-                                    Text="{x:Bind}"/>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock 
+                                Margin="-10 -20 0 0"
+                                FontSize="14"
+                                Text="{x:Bind}"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid 
-                                    MaximumRowsOrColumns="5" 
-                                    Orientation="Vertical"
-                                    Margin="0"
-                                    ItemWidth="33"
-                                    ItemHeight="24"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Left" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="5" 
+                                Orientation="Vertical"
+                                ItemWidth="33"
+                                ItemHeight="24" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                    </GridView>
-                </StackPanel>
+                </GridView>
+            </StackPanel>
 
-                <StackPanel Orientation="Vertical">
+            <StackPanel 
+                Grid.Row="1"
+                Grid.Column="0"
+                Orientation="Vertical">
 
-                    <TextBlock x:Uid="InputDivisionLine" />
+                <TextBlock x:Uid="InputDivisionLine" />
 
-                    <GridView x:Name="_DivisionGridView"
-                        ItemsSource="{x:Bind DrawSet.SheetDivisionLineList, Mode=OneTime}"
-                        SelectedIndex="{x:Bind DrawSet.SheetDivisionLineIndex, Mode=TwoWay}"
-                        SelectionMode="Single"
-                        ScrollViewer.HorizontalScrollMode="Disabled"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <GridView
+                    ItemsSource="{x:Bind DrawSet.SheetDivisionLineList, Mode=OneTime}"
+                    SelectedIndex="{x:Bind DrawSet.SheetDivisionLineIndex, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:Int32">
-                                <TextBlock 
-                                    TextAlignment="Center"
-                                    VerticalAlignment="Top"
-                                    Margin="-10 -18 0 0"
-                                    Padding="0"
-                                    Width="38"
-                                    Height="24"
-                                    FontSize="14"
-                                    Text="{x:Bind}"/>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x:Int32">
+                            <TextBlock 
+                                Margin="0 -20 0 0"
+                                FontSize="16"
+                                Text="{x:Bind}"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid 
-                                    MaximumRowsOrColumns="4" 
-                                    Orientation="Horizontal"
-                                    Margin="0"
-                                    ItemWidth="38"
-                                    ItemHeight="24"
-                                    VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Left" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="0" 
+                                Orientation="Vertical"
+                                ItemWidth="70"
+                                ItemHeight="28" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                    </GridView>
-                </StackPanel>
+                </GridView>
+            </StackPanel>
 
-                <StackPanel Orientation="Vertical">
+            <StackPanel 
+                Grid.Row="1"
+                Grid.Column="1"
+                Orientation="Vertical">
 
-                    <TextBlock x:Uid="InputVolume" />
+                <TextBlock x:Uid="InputVolume" />
 
-                    <GridView x:Name="_VolumeGridView"
-                        ItemsSource="{x:Bind DrawSet.NoteSelectVolumeList, Mode=OneTime}"
-                        SelectedIndex="{x:Bind DrawSet.NoteSelectVolumeIndex, Mode=TwoWay}"
-                        SelectionMode="Single"
-                        ScrollViewer.HorizontalScrollMode="Disabled"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <GridView
+                    ItemsSource="{x:Bind DrawSet.NoteSelectVolumeList, Mode=OneTime}"
+                    SelectedIndex="{x:Bind DrawSet.NoteSelectVolumeIndex, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:Int32">
-                                <TextBlock 
-                                    TextAlignment="Center"
-                                    VerticalAlignment="Top"
-                                    Margin="-10 -18 0 0"
-                                    Padding="0"
-                                    Width="38"
-                                    Height="24"
-                                    FontSize="14"
-                                    Text="{x:Bind}"/>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x:Int32">
+                            <TextBlock 
+                                Margin="-10 -20 0 0"
+                                FontSize="16"
+                                Text="{x:Bind}"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid 
-                                    MaximumRowsOrColumns="7" 
-                                    Orientation="Vertical"
-                                    Margin="0"
-                                    ItemWidth="38"
-                                    ItemHeight="24"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Left" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="9" 
+                                Orientation="Vertical"
+                                ItemWidth="40"
+                                ItemHeight="25" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                    </GridView>
-                </StackPanel>
-                
-                <StackPanel Orientation="Vertical">
+                </GridView>
+            </StackPanel>
 
-                    <TextBlock x:Uid="InputVolumeEditMode" />
+            <StackPanel 
+                Grid.Row="2"
+                Grid.Column="1"
+                Orientation="Vertical">
 
-                    <GridView x:Name="_VolumeEditModeGridView"
-                        ItemsSource="{x:Bind _VolumeEditTypeList, Mode=OneTime}"
-                        SelectedIndex="{x:Bind DrawSet.VolumeEditSelectIndex, Mode=TwoWay}"
-                        SelectionMode="Single"
-                        ScrollViewer.HorizontalScrollMode="Disabled"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                        ScrollViewer.VerticalScrollMode="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <TextBlock x:Uid="InputVolumeEditMode" />
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="x:String">
-                                <TextBlock 
-                                    TextAlignment="Center"
-                                    VerticalAlignment="Top"
-                                    Margin="0 -18 0 0"
-                                    Padding="0"
-                                    FontSize="12"
-                                    Text="{x:Bind}"/>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                <GridView
+                    ItemsSource="{x:Bind _VolumeEditTypeList, Mode=OneTime}"
+                    SelectedIndex="{x:Bind DrawSet.VolumeEditSelectIndex, Mode=TwoWay}"
+                    SelectionMode="Single"
+                    ScrollViewer.HorizontalScrollMode="Disabled"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollMode="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid 
-                                    MaximumRowsOrColumns="5" 
-                                    Orientation="Vertical"
-                                    Margin="0"
-                                    ItemWidth="80"
-                                    ItemHeight="24"
-                                    VerticalAlignment="Top"
-                                    HorizontalAlignment="Left" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock 
+                                Margin="0 -20 0 0"
+                                FontSize="16"
+                                Text="{x:Bind}"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                    </GridView>
-                </StackPanel>
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid 
+                                MaximumRowsOrColumns="0" 
+                                Orientation="Vertical"
+                                ItemWidth="120"
+                                ItemHeight="24" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                    <TextBlock x:Uid="InputWaveFormLevel" 
-                        Grid.Row="0" 
-                        Grid.Column="0" 
-                        Grid.ColumnSpan="2" />
+                </GridView>
+            </StackPanel>
 
-                    <Grid Grid.Row="1" Grid.Column="0">
-                        <StackPanel Orientation="Vertical" Spacing="6">
+            <StackPanel 
+                Grid.Row="2"
+                Grid.Column="0"
+                Orientation="Vertical"
+                Spacing="6" >
 
-                            <NumberBox x:Name="_VolumeLevelTopNumberBox"
-                                Value="{x:Bind ConfigScale.VolumeLevelTop, Mode=TwoWay}" 
-                                Minimum="0"
-                                Maximum="1"
-                                SmallChange="0.010" 
-                                LargeChange="0.050" 
-                                Height="30"
-                                ValueChanged="VolumeLevelTopNumberBox_ValueChanged" />
+                <TextBlock x:Uid="InputWaveFormLevel" />
 
-                            <NumberBox x:Name="_VolumeLevelHighNumberBox"
-                                Value="{x:Bind ConfigScale.VolumeLevelHigh, Mode=TwoWay}" 
-                                Minimum="0"
-                                Maximum="1"
-                                SmallChange="0.010" 
-                                LargeChange="0.050" 
-                                Height="30"
-                                ValueChanged="VolumeLevelHighNumberBox_ValueChanged" />
+                <NumberBox x:Name="_VolumeLevelTopNumberBox"
+                    Value="{x:Bind ConfigScale.VolumeLevelTop, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="1"
+                    SmallChange="0.010" 
+                    LargeChange="0.050" 
+                    Height="30"
+                    ValueChanged="VolumeLevelTopNumberBox_ValueChanged" />
 
-                            <NumberBox x:Name="_VolumeLevelMidNumberBox"
-                                Value="{x:Bind ConfigScale.VolumeLevelMid, Mode=TwoWay}" 
-                                Minimum="0"
-                                Maximum="1"
-                                SmallChange="0.010" 
-                                LargeChange="0.050" 
-                                Height="30"
-                                ValueChanged="VolumeLevelMidNumberBox_ValueChanged" />
+                <NumberBox x:Name="_VolumeLevelHighNumberBox"
+                    Value="{x:Bind ConfigScale.VolumeLevelHigh, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="1"
+                    SmallChange="0.010" 
+                    LargeChange="0.050" 
+                    Height="30"
+                    ValueChanged="VolumeLevelHighNumberBox_ValueChanged" />
 
-                            <NumberBox x:Name="_VolumeLevelLowNumberBox"
-                                Value="{x:Bind ConfigScale.VolumeLevelLow, Mode=TwoWay}" 
-                                Minimum="0"
-                                Maximum="1"
-                                SmallChange="0.010" 
-                                LargeChange="0.050" 
-                                Height="30"
-                                ValueChanged="VolumeLevelLowNumberBox_ValueChanged" />
+                <NumberBox x:Name="_VolumeLevelMidNumberBox"
+                    Value="{x:Bind ConfigScale.VolumeLevelMid, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="1"
+                    SmallChange="0.010" 
+                    LargeChange="0.050" 
+                    Height="30"
+                    ValueChanged="VolumeLevelMidNumberBox_ValueChanged" />
 
-                        </StackPanel>
-                    </Grid>
+                <NumberBox x:Name="_VolumeLevelLowNumberBox"
+                    Value="{x:Bind ConfigScale.VolumeLevelLow, Mode=TwoWay}" 
+                    Minimum="0"
+                    Maximum="1"
+                    SmallChange="0.010" 
+                    LargeChange="0.050" 
+                    Height="30"
+                    ValueChanged="VolumeLevelLowNumberBox_ValueChanged" />
 
-                    <Slider x:Name="_WaveFormSensitivityLevelSlider"
-                        Value="{x:Bind ConfigScale.SensitivityLevel, Mode=TwoWay}"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Orientation="Vertical"
-                        Minimum="0"
-                        Maximum="100"
-                        SmallChange="1"
-                        LargeChange="10"
-                        TickFrequency="10" 
-                        TickPlacement="Outside"
-                        ValueChanged="WaveFormSensitivityLevelSlider_ValueChanged" />
+                <Slider x:Name="_WaveFormSensitivityLevelSlider"
+                    Value="{x:Bind ConfigScale.SensitivityLevel, Mode=TwoWay}"
+                    Orientation="Horizontal"
+                    Minimum="0"
+                    Maximum="100"
+                    SmallChange="1"
+                    LargeChange="10"
+                    TickFrequency="10" 
+                    TickPlacement="Outside"
+                    ValueChanged="WaveFormSensitivityLevelSlider_ValueChanged" />
 
-                </Grid>
             </StackPanel>
 
         </Grid>
 
-        <Grid Grid.Row="0" Grid.Column="1" Padding="10">
+        <Grid 
+            Grid.Row="0" 
+            Grid.Column="1" 
+            Padding="10" >
 
-            <StackPanel Orientation="Horizontal" Spacing="6">
+            <StackPanel 
+                Orientation="Horizontal" 
+                Spacing="6" >
 
+                <Border
+                    BorderBrush="{ThemeResource ApplicationPointerOverForegroundThemeBrush}"
+                    BorderThickness="1" >
+                    
+                    <TextBlock x:Uid="InputMoveSheet"
+                        Width="140"
+                        Padding="0 20 0 0"
+                        TextAlignment="Center"
+                        PointerPressed="MoveSheetTextBlock_PointerPressed"
+                        PointerMoved="MoveSheetTextBlock_PointerMoved"
+                        PointerReleased="MoveSheetTextBlock_PointerReleased"
+                        PointerCanceled="MoveSheetTextBlock_PointerReleased"
+                        PointerCaptureLost="MoveSheetTextBlock_PointerReleased"
+                        PointerExited="MoveSheetTextBlock_PointerReleased" />
+                    
+                </Border>
+                
                 <ToggleSwitch x:Name="_NoteOnOffToggleButton" x:Uid="InputNoteOnOff"
                     Margin="0 0 -40 0"
                     IsOn="{x:Bind DrawSet.NoteOn, Mode=TwoWay}" />
@@ -281,7 +283,7 @@
 
                     <TextBlock x:Uid="InputRangeSelect" />
 
-                    <GridView x:Name="_RangeSelectModeGridView"
+                    <GridView
                         ItemsSource="{x:Bind _RangeSelectTypeList}"
                         SelectedIndex="{x:Bind DrawSet.RangeSelectIndex, Mode=TwoWay}"
                         SelectionMode="Single"
@@ -293,11 +295,8 @@
                         <GridView.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
                                 <TextBlock 
-                                    TextAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Margin="0"
-                                    Padding="0"
-                                    FontSize="14"
+                                    Margin="0 -4 0 0"
+                                    FontSize="16"
                                     Text="{x:Bind}"/>
                             </DataTemplate>
                         </GridView.ItemTemplate>
@@ -307,11 +306,8 @@
                                 <ItemsWrapGrid 
                                     MaximumRowsOrColumns="3" 
                                     Orientation="Horizontal"
-                                    Margin="0"
                                     ItemWidth="70"
-                                    ItemHeight="40"
-                                    VerticalAlignment="Bottom"
-                                    HorizontalAlignment="Center" />
+                                    ItemHeight="40" />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
 
@@ -339,31 +335,26 @@
                     Height="100"
                     Click="RedoButton_Click" />
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
+                    Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
+                    Minimum="0.1"
+                    Maximum="100"
+                    SmallChange="0.1" 
+                    LargeChange="1.0"
+                    VerticalAlignment="Top"
+                    Height="60"
+                    ValueChanged="NoteSizeNumberBox_ValueChanged" />
 
-                    <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
-                        Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                        Minimum="0.1"
-                        Maximum="100"
-                        SmallChange="0.1" 
-                        LargeChange="1.0"
-                        Grid.Column="0"
-                        ValueChanged="NoteSizeNumberBox_ValueChanged" />
-
-                    <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
-                        Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                        Minimum="0.1"
-                        Maximum="100"
-                        SmallChange="0.1" 
-                        LargeChange="1.0"
-                        Grid.Column="1"
-                        ValueChanged="NoteSizeNumberBox_ValueChanged" />
-                </Grid>
-
+                <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
+                    Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
+                    Minimum="0.1"
+                    Maximum="100"
+                    SmallChange="0.1" 
+                    LargeChange="1.0"
+                    VerticalAlignment="Top"
+                    Height="60"
+                    ValueChanged="NoteSizeNumberBox_ValueChanged" />
+                
             </StackPanel>
         </Grid>
 

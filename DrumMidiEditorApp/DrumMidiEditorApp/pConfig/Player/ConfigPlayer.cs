@@ -47,7 +47,7 @@ public class ConfigPlayer
     /// FPS
     /// </summary>
     [JsonInclude]
-    public float Fps { get; set; } = 90F;
+    public float Fps { get; set; } = 60F;
 
     /// <summary>
     /// 解像度リスト

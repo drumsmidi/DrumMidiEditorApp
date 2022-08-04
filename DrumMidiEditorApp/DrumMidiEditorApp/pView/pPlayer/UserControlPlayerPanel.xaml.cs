@@ -1,29 +1,12 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using System.Threading;
-using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
-using Windows.Foundation;
-using Windows.System;
-using Windows.UI;
 
-using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pResume;
-using Microsoft.UI.Windowing;
-using DrumMidiEditorApp.pView.pPlayer.pSurface;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
@@ -38,30 +21,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
     private ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
-    /// System設定
-    /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
-
-    /// <summary>
-    /// Scale設定
-    /// </summary>
-    private ConfigScale ConfigScale => Config.Scale;
-
-    /// <summary>
-    /// Media設定
-    /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
-
-    /// <summary>
-    /// Score情報
-    /// </summary>
-    private Score Score => DMS.SCORE;
-
-    /// <summary>
     /// プレイヤーサーフェイス
     /// </summary>
     private IPlayerSurface? _PlayerSurface = null;
 
+    /// <summary>
+    /// 描画更新用タイマー
+    /// </summary>
     private PeriodicTimer? _Timer = null;
 
     #endregion
@@ -84,21 +50,22 @@ public sealed partial class UserControlPlayerPanel : UserControl
         switch ( DrawSet.PlayerSurfaceModeSelect )
         {
 			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-				_PlayerSurface = new pSurface.pSequence.PlayerSurface();
+				_PlayerSurface = new pSequence.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-				_PlayerSurface = new pSurface.pSequenceVertical.PlayerSurface();
+				_PlayerSurface = new pSequenceVertical.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Score:
-				_PlayerSurface = new pSurface.pScore.PlayerSurface();
+				_PlayerSurface = new pScore.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-				_PlayerSurface = new pSurface.pSimuration.PlayerSurface();
+				_PlayerSurface = new pSimuration.PlayerSurface();
 				break;
         }
 
 		Config.EventReloadScore();
 
+        // TODO: 微妙な作り
         try
         {
             var fps = new Fps();
@@ -108,7 +75,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
             _Timer?.Dispose();
 
-            _Timer = new PeriodicTimer( TimeSpan.FromSeconds( 0.001 ) );
+            _Timer = new( TimeSpan.FromSeconds( 0.001 ) );
 
             while ( await _Timer.WaitForNextTickAsync() )
             {
@@ -132,6 +99,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 
             _Timer?.Dispose();
+            _Timer = null;
         }
     }
 
@@ -173,11 +141,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
     /// <summary>
     /// マウスアップ処理
-    /// 
-    /// https://docs.microsoft.com/ja-jp/windows/apps/design/input/handle-pointer-input
-    /// PointerPressed イベントと PointerReleased イベントは、常にペアで発生するわけではありません。
-    /// アプリでは、ポインターの押下を終了させる可能性のあるすべてのイベント
-    /// (PointerExited、PointerCanceled、PointerCaptureLost など) をリッスンして処理する必要があります。
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
