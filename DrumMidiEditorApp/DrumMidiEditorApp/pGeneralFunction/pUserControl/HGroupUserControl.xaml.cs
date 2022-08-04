@@ -34,7 +34,7 @@ public sealed partial class HGroupUserControl : UserControl
 
         if ( args.NewValue != args.OldValue && obj != null )
         {
-            obj.HeaderTitle.Text = args.NewValue?.ToString() ?? String.Empty ;
+            obj._HeaderTitle.Text = args.NewValue?.ToString() ?? String.Empty ;
         }
     }
 
@@ -63,7 +63,7 @@ public sealed partial class HGroupUserControl : UserControl
 
         if ( args.NewValue != args.OldValue && obj != null )
         {
-            obj.Content.Content = args.NewValue;
+            obj._Content.Content = args.NewValue;
         }
     }
 

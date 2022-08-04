@@ -49,7 +49,7 @@ public sealed partial class GroupBoxUserControl : UserControl
 
         if ( ev.NewValue != ev.OldValue && obj != null )
         {
-            obj.HeaderTitle.Text = ev.NewValue?.ToString() ?? String.Empty ;
+            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? String.Empty ;
         }
     }
 
@@ -78,7 +78,7 @@ public sealed partial class GroupBoxUserControl : UserControl
 
         if ( ev.NewValue != ev.OldValue && obj != null )
         {
-            obj.Content.Content = ev.NewValue;
+            obj._Content.Content = ev.NewValue;
         }
     }
 
@@ -86,6 +86,6 @@ public sealed partial class GroupBoxUserControl : UserControl
 
     private void HeaderTitle_LayoutUpdated( object sender, object ev )
     {
-        border.Margin = new( HeaderTitle.ActualWidth + 10, 10, 3, 3 );
+        _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
     }
 }
