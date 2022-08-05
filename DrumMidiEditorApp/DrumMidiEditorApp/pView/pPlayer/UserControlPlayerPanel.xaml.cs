@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -8,6 +9,7 @@ using System.Threading;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using System.Threading.Tasks;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -25,11 +27,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     private IPlayerSurface? _PlayerSurface = null;
 
-    /// <summary>
-    /// 描画更新用タイマー
-    /// </summary>
-    private PeriodicTimer? _Timer = null;
-
     #endregion
 
     /// <summary>
@@ -39,68 +36,116 @@ public sealed partial class UserControlPlayerPanel : UserControl
     {
         InitializeComponent();
 
-        ChangeDrawModeAsync();
+        ControlAccess.UCPlayerPanel = this;
+
+        // スワップチェイン作成
+        _PlayerCanvas.SwapChain = new CanvasSwapChain
+            (
+                new CanvasDevice(),
+                DrawSet.ResolutionScreenWidth,
+                DrawSet.ResolutionScreenHeight,
+                96
+            );
+
+        PlayerIdleAsync();
     }
 
 	/// <summary>
-	/// 描画モード変更
+	/// 描画ループ
 	/// </summary>
-	public async void ChangeDrawModeAsync()
+	public async void PlayerIdleAsync()
     {
-        switch ( DrawSet.PlayerSurfaceModeSelect )
-        {
-			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-				_PlayerSurface = new pSequence.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-				_PlayerSurface = new pSequenceVertical.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Score:
-				_PlayerSurface = new pScore.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-				_PlayerSurface = new pSimuration.PlayerSurface();
-				break;
-        }
-
-		Config.EventReloadScore();
-
-        // TODO: 微妙な作り
         try
         {
-            var fps = new Fps();
-            fps.Set( 1, 0 );
-            fps.Set( 2, DrawSet.Fps );
-            fps.Start();
+            Config.EventUpdatePlayerMode();
 
-            _Timer?.Dispose();
+            // TODO: 描画処理を非同期実行。
+            // TODO: 非同期処理を考慮していなかったの落ちる可能性高いです。
+            // TODO: そのうち見直し予定
+            await Task.Run
+                (
+                    () => 
+                    { 
+                        var fps = new Fps();
+                        fps.Set( 1, 0 );
+                        fps.Set( 2, DrawSet.Fps );
+                        fps.Start();
 
-            _Timer = new( TimeSpan.FromSeconds( 0.001 ) );
+                        while ( true )
+                        {
+                            // プレイヤー描画モード変更
+                            if ( DrawSet.UpdateSurfaceModoFlag )
+                            {
+                                DrawSet.UpdateSurfaceModoFlag = false;
+                                UpdateSurfaceMode();
+                            }
 
-            while ( await _Timer.WaitForNextTickAsync() )
-            {
-                fps.Tick();
+                            // サイズ変更
+                            if ( DrawSet.UpdateSizeFlag )
+                            {
+                                DrawSet.UpdateSizeFlag = false;
+                                UpdatePanelSize();
+                            }
 
-			    if ( fps.TickFpsWeight( 1 ) )
-			    { 
-				    _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
-			    }
+                            // フレーム更新＆描画処理
+                            fps.Tick();
 
-			    if ( fps.TickFpsWeight( 2 ) )
-			    {
-                    Refresh();
+			                if ( fps.TickFpsWeight( 1 ) )
+			                { 
+				                _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
+			                }
 
-                    fps.TickFpsWeight( 2 );
-			    }
-            }
+			                if ( fps.TickFpsWeight( 2 ) )
+			                {
+                                PlayerCanvasSwapChain_Draw();
+
+                                fps.TickFpsWeight( 2 );
+			                }
+
+                            Task.Delay( 1 );
+                        }
+                    }
+                );
         }
         catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            _Timer?.Dispose();
-            _Timer = null;
         }
+    }
+
+    /// <summary>
+    /// プレイヤー描画モード変更
+    /// </summary>
+    private void UpdateSurfaceMode()
+    {
+        switch ( DrawSet.PlayerSurfaceModeSelect )
+        {
+			case ConfigPlayer.PlayerSurfaceMode.Sequence:
+   				_PlayerSurface = new pSequence.PlayerSurface();
+				break;
+			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
+   				_PlayerSurface = new pSequenceVertical.PlayerSurface();
+				break;
+			case ConfigPlayer.PlayerSurfaceMode.Score:
+   				_PlayerSurface = new pScore.PlayerSurface();
+				break;
+			case ConfigPlayer.PlayerSurfaceMode.Simuration:
+   				_PlayerSurface = new pSimuration.PlayerSurface();
+				break;
+        }
+    }
+
+    /// <summary>
+    /// 描画サイズ変更
+    /// </summary>
+    private void UpdatePanelSize()
+    {
+        _PlayerCanvas.SwapChain.ResizeBuffers
+            (
+                DrawSet.ResolutionScreenWidth,
+                DrawSet.ResolutionScreenHeight,
+                96
+            );
     }
 
     #region Mouse Event
@@ -161,11 +206,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
     #region Draw
 
     /// <summary>
-    /// キャンバス描画更新
-    /// </summary>
-    public void Refresh() => _PlayerCanvas.Invalidate();
-
-    /// <summary>
     /// Win2D アンロード処理
     /// </summary>
     /// <param name="sender"></param>
@@ -189,11 +229,18 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-    private void PlayerCanvas_Draw( CanvasControl sender, CanvasDrawEventArgs args )
+    private void PlayerCanvasSwapChain_Draw()
     {
         try
         {
-            _PlayerSurface?.OnDraw( sender, args );
+            using var drawSession = _PlayerCanvas.SwapChain
+                .CreateDrawingSession( DrawSet.SheetColor.Color );
+
+            var args = new CanvasDrawEventArgs( drawSession );
+
+            _PlayerSurface?.OnDraw( _PlayerCanvas, args );
+
+            _PlayerCanvas.SwapChain.Present();
         }
         catch ( Exception e )
         {

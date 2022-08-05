@@ -295,7 +295,7 @@
                                 </Grid>
                                 <Grid Grid.Column="4" Style="{StaticResource TableCell}">
                                     <Button
-                                        Background="{x:Bind ColorText, Mode=OneWay}"
+                                        Background="{x:Bind ColorBrush, Mode=TwoWay}"
                                         Height="30"
                                         Width="60"
                                         Click="ColorButton_Click" />

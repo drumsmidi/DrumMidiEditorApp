@@ -48,8 +48,6 @@ public static class Config
     /// </summary>
     public static ConfigScale Scale { get; set; } = new();
 
-    #region Event
-
     /// <summary>
     /// フラグ更新：スコア再読込
     /// </summary>
@@ -217,16 +215,6 @@ public static class Config
         Editer.UpdateScoreLineFlag = true;
     }
 
-    /// <summary>
-    /// フラグ更新：Windowリサイズ
-    /// </summary>
-    public static void EventWindowResize()
-    {
-        Editer.UpdateScoreLayoutFlag    = true;
-        Editer.UpdateScoreLineFlag      = true;
-        Score.UpdateScoreFlag           = true;
-    }
-
     #region Event.Edit
 
     /// <summary>
@@ -320,9 +308,28 @@ public static class Config
     #region Event.Player
 
     /// <summary>
-    /// フラグ更新：Player　更新
+    /// プレイヤー描画モード更新通知
     /// </summary>
-    public static void EventUpdatePlayer()
+    public static void EventUpdatePlayerMode()
+    {
+        Player.UpdateSurfaceModoFlag = true;
+
+        EventUpdatePlayerScore();
+    }
+
+    /// <summary>
+    /// プレイヤースクリーンサイズ更新通知
+    /// </summary>
+    public static void EventUpdatePlayerScreenSize()
+    {
+        ControlAccess.PagePlayer?.UpdatePageSize();
+        Player.UpdateSizeFlag = true;
+    }
+
+    /// <summary>
+    /// フラグ更新：Playerスコア更新
+    /// </summary>
+    public static void EventUpdatePlayerScore()
     {
         Player.UpdateScoreFlag = true;
     }
@@ -330,13 +337,26 @@ public static class Config
     /// <summary>
     /// Player表示切替通知
     /// </summary>
-    public static void EventDisplayPlayer()
+    public static void EventUpdatePlayerDisplay()
     {
         ControlAccess.PageMenuBar?.ReloadConfigPlayer();
         ControlAccess.PageEditerMain?.ReloadPlayer();
     }
 
     #endregion
+
+    #region Event.Common
+
+    /// <summary>
+    /// フラグ更新：Windowリサイズ
+    /// </summary>
+    public static void EventWindowResize()
+    {
+        Editer.UpdateScoreLayoutFlag    = true;
+        Editer.UpdateScoreLineFlag      = true;
+
+        EventUpdateScoreTab();
+    }
 
     #endregion
 }

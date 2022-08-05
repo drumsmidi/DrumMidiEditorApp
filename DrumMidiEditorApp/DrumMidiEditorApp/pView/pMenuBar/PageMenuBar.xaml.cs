@@ -591,7 +591,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
 			ConfigPlayer.DisplayPlayer = ( sender as ToggleSwitch )?.IsOn ?? false ;
 
-			Config.EventDisplayPlayer();
+			Config.EventUpdatePlayerDisplay();
 		}
 		catch ( Exception e )
 		{

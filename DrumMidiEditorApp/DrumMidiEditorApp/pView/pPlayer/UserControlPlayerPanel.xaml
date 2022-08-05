@@ -9,13 +9,13 @@
     mc:Ignorable="d">
 
     <Grid>
-        <canvas:CanvasControl x:Name = "_PlayerCanvas"
-            Draw="PlayerCanvas_Draw" 
+        <canvas:CanvasSwapChainPanel x:Name = "_PlayerCanvas"
             PointerPressed="PlayerCanvas_PointerPressed"
             PointerMoved="PlayerCanvas_PointerMoved"
             PointerExited="PlayerCanvas_PointerReleased"
             PointerCanceled="PlayerCanvas_PointerReleased"
             PointerCaptureLost="PlayerCanvas_PointerReleased"
             PointerReleased="PlayerCanvas_PointerReleased" />
+        
     </Grid>
 </UserControl>

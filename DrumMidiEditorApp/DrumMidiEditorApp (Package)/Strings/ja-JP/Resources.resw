@@ -256,6 +256,9 @@ BPMノートを含める</value>
   <data name="HGroupVideoSetting.Header" xml:space="preserve">
     <value>ビデオ設定</value>
   </data>
+  <data name="InputBackgroudColor.Content" xml:space="preserve">
+    <value>背景色</value>
+  </data>
   <data name="InputBgmFilePath.Header" xml:space="preserve">
     <value>BGMファイルパス</value>
   </data>
@@ -327,6 +330,12 @@ BPMノートを含める</value>
   </data>
   <data name="InputPlayerDisplay.Header" xml:space="preserve">
     <value>プレイヤー表示</value>
+  </data>
+  <data name="InputPlayerEditMode.Header" xml:space="preserve">
+    <value>プレイヤー編集モード</value>
+  </data>
+  <data name="InputPlayerSurfaceMode.Header" xml:space="preserve">
+    <value>プレイヤー描画モード</value>
   </data>
   <data name="InputRangeSelect.Text" xml:space="preserve">
     <value>範囲選択モード</value>

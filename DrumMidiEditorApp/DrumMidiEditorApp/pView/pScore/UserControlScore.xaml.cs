@@ -60,12 +60,19 @@ public sealed partial class UserControlScore : UserControl
     /// </summary>
     private void OnMove()
     {
-        // スコア更新
-        if ( DrawSet.UpdateScoreFlag )
+        try
         {
-            DrawSet.UpdateScoreFlag = false;
+            // スコア更新
+            if ( DrawSet.UpdateScoreFlag )
+            {
+                DrawSet.UpdateScoreFlag = false;
 
-            _ScoreBitmap = CreateScoreBitmap();
+                _ScoreBitmap = CreateScoreBitmap();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 

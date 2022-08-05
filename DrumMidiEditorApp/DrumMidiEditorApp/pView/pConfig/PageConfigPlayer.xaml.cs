@@ -6,15 +6,32 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigPlayer : Page
 {
 	/// <summary>
+	/// 描画設定
+	/// </summary>
+	private ConfigPlayer DrawSet => Config.Player;
+
+	/// <summary>
 	/// Media設定
 	/// </summary>
 	private ConfigMedia ConfigMedia => Config.Media;
+
+	/// <summary>
+	/// プレイヤー描画モードリスト
+	/// </summary>
+	private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
+
+	/// <summary>
+	/// スクリーンサイズリスト
+	/// </summary>
+	private readonly ObservableCollection<string> _PlayerScreenSizeList = new();
 
 	/// <summary>
 	/// コンストラクタ
@@ -23,7 +40,104 @@ public sealed partial class PageConfigPlayer : Page
     {
 		// 初期化
 		InitializeComponent();
-	}
+
+		#region プレイヤー描画モードリスト作成
+
+		foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceMode>() )
+		{
+			_PlayerSurfaceModeList.Add( name );
+		}
+
+        #endregion
+
+        #region スクリーンサイズ作成
+
+        foreach ( var size in DrawSet.ResolutionScreenList )
+		{
+			_PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
+		}
+
+        #endregion
+
+
+    }
+
+    /// <summary>
+    /// プレイヤー描画モード変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void PlayerSurfaceModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+		try
+		{
+			// 初回表示時は処理しない
+			if ( !IsLoaded )
+            {
+				return;
+            }
+
+			Config.EventUpdatePlayerMode();
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
+
+    /// <summary>
+    /// プレイヤースクリーンサイズ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void PlayerScreenSizeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+		try
+		{
+			// 初回表示時は処理しない
+			if ( !IsLoaded )
+            {
+				return;
+            }
+
+			Config.EventUpdatePlayerScreenSize();
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
+
+    /// <summary>
+    /// 色選択
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+            if ( sender is not Button item )
+            {
+                return;
+            }
+
+            XamlHelper.ColorDialogAsync
+                (
+                    Content.XamlRoot,
+                    ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
+                    ( color ) =>
+                    {
+                        item.Background = new SolidColorBrush( color );
+                    }
+                );
+        }
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
 
 #if false
 
@@ -66,20 +180,16 @@ public sealed partial class PageConfigPlayer : Page
         {
 			try
 			{
-                #region Screen
+    #region Screen
 
-                foreach ( var size in Config.Player.ResolutionScreenList )
-				{
-					ResolutionScreenComboBox.Items.Add( $"{size.Width} x {size.Height}" );
-				}
 				ResolutionScreenComboBox.SelectedIndex = DrawSet.ResolutionScreenIndex;
 				DrawModeComboBox.SelectedIndex			= (int)DrawSet.PlayerSurfaceModeSelect;
 				EditModeCheckBox.Checked				= DrawSet.EditModeOn;
 				SheetColorButton.ForeColor				= DrawSet.SheetColor;
 
-                #endregion
+    #endregion
 
-                #region Sequence
+    #region Sequence
 
                 // Header
                 HeaderFontButton.Font				= DrawSetSequence.HeaderGI.Font;
@@ -116,9 +226,9 @@ public sealed partial class PageConfigPlayer : Page
 				Line32NumericUpDown.Value		= (int)DrawSetSequence.SheetMeasure032Pen.Width;
 				Line16NumericUpDown.Value		= (int)DrawSetSequence.SheetMeasure016Pen.Width;
 
-                #endregion
+    #endregion
 
-                #region SequenceVertical
+    #region SequenceVertical
 
                 // Header
                 HeaderFontVerticalButton.Font					= DrawSetVertical.HeaderGI.Font;
@@ -155,9 +265,9 @@ public sealed partial class PageConfigPlayer : Page
 				Line32VerticalNumericUpDown.Value	= (int)DrawSetVertical.SheetMeasure032Pen.Width;
 				Line16VerticalNumericUpDown.Value	= (int)DrawSetVertical.SheetMeasure016Pen.Width;
 
-                #endregion
+    #endregion
 
-                #region Score
+    #region Score
 
                 // Header
                 //HeaderFontButton.Font				= DrawSetSequence.HeaderGI.Font;
@@ -192,7 +302,7 @@ public sealed partial class PageConfigPlayer : Page
 				//Line32NumericUpDown.Value		= (int)DrawSetSequence.SheetMeasure032Pen.Width;
 				//Line16NumericUpDown.Value		= (int)DrawSetSequence.SheetMeasure016Pen.Width;
 
-                #endregion
+    #endregion
 			}
 			catch ( Exception e )
 			{
@@ -202,24 +312,7 @@ public sealed partial class PageConfigPlayer : Page
 		ResumeLayout();
 	}
 
-	#region Screen
-
-	/// <summary>
-	/// Editモード変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void EditModeCheckBox_CheckedChanged( object sender, EventArgs ev )
-	{
-		try
-		{
-			Config.Player.EditModeOn = EditModeCheckBox.Checked;
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-	}
+    #region Screen
 
 	/// <summary>
 	/// 解像度変更
@@ -232,40 +325,6 @@ public sealed partial class PageConfigPlayer : Page
 		{
 			Config.Player.ResolutionScreenIndex = ResolutionScreenComboBox.SelectedIndex;
 			DMS.PlayerForm?.ResetGraphic();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-	}
-
-	/// <summary>
-	/// 描画モード変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="ev"></param>
-	private void DrawModeComboBox_SelectedIndexChanged( object sender, EventArgs ev )
-	{
-		try
-		{
-			Config.Player.PlayerSurfaceModeSelect = (ConfigPlayer.PlayerSurfaceMode)DrawModeComboBox.SelectedIndex;
-
-			switch ( Config.Player.PlayerSurfaceModeSelect )
-			{
-				case ConfigPlayer.PlayerSurfaceMode.Sequence:
-					TabControl.SelectedTab = SequenceTabPage;
-					break;
-				case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-					TabControl.SelectedTab = SequenceVerticalTabPage;
-					break;
-				case ConfigPlayer.PlayerSurfaceMode.Score:
-					TabControl.SelectedTab = ScoreTabPage;
-					break;
-				case ConfigPlayer.PlayerSurfaceMode.Simuration:
-					break;
-			}
-
-			DMS.PlayerForm?.ChangeDrawMode();
 		}
 		catch ( Exception e )
         {
@@ -466,9 +525,9 @@ public sealed partial class PageConfigPlayer : Page
         }
     }
 
-	#endregion
+    #endregion
 
-	#region Note
+    #region Note
 
 	/// <summary>
 	/// 音量サイズ変更フラグ　変更
@@ -584,9 +643,9 @@ public sealed partial class PageConfigPlayer : Page
         }
 	}
 
-	#endregion
+    #endregion
 
-	#region Sheet
+    #region Sheet
 
 	/// <summary>
 	/// １小節１２８分割線色変更
@@ -890,9 +949,9 @@ public sealed partial class PageConfigPlayer : Page
         }
     }
 
-	#endregion
+    #endregion
 
-	#region Note
+    #region Note
 
 	/// <summary>
 	/// 音量サイズ変更フラグ　変更
@@ -1008,9 +1067,9 @@ public sealed partial class PageConfigPlayer : Page
         }
 	}
 
-	#endregion
+    #endregion
 
-	#region Sheet
+    #region Sheet
 
 	/// <summary>
 	/// １小節１２８分割線色変更
@@ -1154,7 +1213,7 @@ public sealed partial class PageConfigPlayer : Page
 
     #region Score
 
-	#region Note
+    #region Note
 
 	/// <summary>
 	/// 音量サイズ変更フラグ　変更
@@ -1270,7 +1329,7 @@ public sealed partial class PageConfigPlayer : Page
         }
 	}
 
-	#endregion
+    #endregion
 
     #endregion
 

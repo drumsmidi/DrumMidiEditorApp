@@ -7,7 +7,27 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        
+    <Grid Padding="10">
+        <StackPanel Orientation="Vertical" Spacing="6">
+
+            <ComboBox x:Uid="InputPlayerSurfaceMode"
+                ItemsSource="{x:Bind _PlayerSurfaceModeList, Mode=OneTime}"
+                SelectedIndex="{x:Bind DrawSet.PlayerSurfaceModeSelectIndex, Mode=TwoWay}"
+                SelectionChanged="PlayerSurfaceModeComboBox_SelectionChanged" />
+
+            <ToggleSwitch x:Uid="InputPlayerEditMode"
+                IsOn="{x:Bind DrawSet.EditModeOn, Mode=TwoWay}" />
+
+            <ComboBox x:Uid="InputPlayerScreenSize"
+                ItemsSource="{x:Bind _PlayerScreenSizeList, Mode=OneTime}"
+                SelectedIndex="{x:Bind DrawSet.ResolutionScreenIndex, Mode=TwoWay}"
+                SelectionChanged="PlayerScreenSizeComboBox_SelectionChanged" />
+
+            <Button x:Uid="InputBackgroudColor"
+                Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
+                Click="ColorButton_Click" />
+
+
+        </StackPanel>
     </Grid>
 </Page>

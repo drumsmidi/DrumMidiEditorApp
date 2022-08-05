@@ -28,6 +28,8 @@ public sealed partial class PagePlayer : Page
     {
         InitializeComponent();
 
+		ControlAccess.PagePlayer = this;
+
 		UpdatePageSize();
 	}
 
@@ -86,7 +88,7 @@ public sealed partial class PagePlayer : Page
 			{
 				// 非表示
 				DrawSet.DisplayPlayer = false;
-				Config.EventDisplayPlayer();
+				Config.EventUpdatePlayerDisplay();
 
 				_ActionState = EActionState.None;
 			}
@@ -204,8 +206,8 @@ public sealed partial class PagePlayer : Page
         {
 			Width	= DrawSet.ResolutionScreenWidth;
 			Height	= DrawSet.ResolutionScreenHeight;
-        }
-        catch ( Exception e )
+		}
+		catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}

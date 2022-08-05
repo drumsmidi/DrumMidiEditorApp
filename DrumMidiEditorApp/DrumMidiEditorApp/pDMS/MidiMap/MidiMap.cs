@@ -3,6 +3,7 @@
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pDMS;
 
@@ -43,6 +44,7 @@ public class MidiMap : DisposeBaseClass
 
     /// <summary>
     /// ノートの色
+    /// TODO: FormatColor に置き換えようかな
     /// </summary>
     public Color Color { get; set; } = Config.System.DefaultMidiMapColor;
 
@@ -53,6 +55,15 @@ public class MidiMap : DisposeBaseClass
     { 
         get => ColorHelper.GetColor( Color );
         set => Color = ColorHelper.GetColor( value );
+    }
+
+    /// <summary>
+    /// ノートの色
+    /// </summary>
+    public Brush ColorBrush
+    {
+        get => new SolidColorBrush( Color );
+        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor ;
     }
 
     /// <summary>

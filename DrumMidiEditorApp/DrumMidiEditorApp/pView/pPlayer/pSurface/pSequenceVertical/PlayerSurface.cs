@@ -567,7 +567,7 @@ public class PlayerSurface : PlayerSurfaceBase
         #endregion
     }
 
-    public override bool OnDraw( CanvasControl sender, CanvasDrawEventArgs args )
+    public override bool OnDraw( CanvasSwapChainPanel sender, CanvasDrawEventArgs args )
     {
         if ( !base.OnDraw( sender, args ) )
         {

@@ -2,6 +2,7 @@
 using DrumMidiEditorApp.pView.pMenuBar;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
+using DrumMidiEditorApp.pView.pPlayer.pSurface;
 using DrumMidiEditorApp.pView.pScore;
 using DrumMidiEditorApp.pView.pStatusBar;
 
@@ -21,6 +22,8 @@ public static class ControlAccess
 
     public static PageStatusBar? PageStatusBar { get; set; } = null;
 
+    public static PagePlayer? PagePlayer { get; set; } = null;
+
     public static UserControlEqualizer? UCEqualizer { get; set; } = null;
 
     public static UserControlMidiMapPanel? UCMidiMapPanel { get; set; } = null;
@@ -28,4 +31,6 @@ public static class ControlAccess
     public static UserControlKeyChangePanel? UCKeyChangePanel { get; set; } = null;
 
     public static UserControlScore? UCScore { get; set; } = null;
+
+    public static UserControlPlayerPanel? UCPlayerPanel { get; set; } = null;
 }

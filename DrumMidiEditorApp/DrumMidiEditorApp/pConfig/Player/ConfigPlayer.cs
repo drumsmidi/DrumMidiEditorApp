@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.UI.Xaml;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using System;
-using Microsoft.UI.Xaml;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -14,7 +13,45 @@ namespace DrumMidiEditorApp.pConfig;
 /// </summary>
 public class ConfigPlayer
 {
+    #region 更新フラグ
+
+    /// <summary>
+    /// スコア更新フラグ
+    /// </summary>
+    [JsonIgnore]
+    public bool UpdateScoreFlag { get; set; } = false;
+
+    /// <summary>
+    /// プレイヤー描画モード更新フラグ
+    /// </summary>
+    [JsonIgnore]
+    public bool UpdateSurfaceModoFlag { get; set; } = false;
+
+    /// <summary>
+    /// サイズ更新フラグ
+    /// </summary>
+    [JsonIgnore]
+    public bool UpdateSizeFlag { get; set; } = false;
+
+    #endregion
+
     #region プレイヤー描画モード
+
+    /// <summary>
+    /// Player表示フラグ
+    /// </summary>
+    [JsonIgnore]
+    public bool DisplayPlayer { get; set; } = false;
+
+    /// <summary>
+    /// Player表示フラグ
+    /// </summary>
+    [JsonIgnore]
+    public Visibility DisplayPlayerVisibility 
+    { 
+        get => DisplayPlayer ? Visibility.Visible : Visibility.Collapsed ;
+        set => DisplayPlayer = ( value == Visibility.Visible );
+    }
 
     /// <summary>
     /// 編集モード
@@ -38,6 +75,16 @@ public class ConfigPlayer
     /// </summary>
     [JsonInclude]
     public PlayerSurfaceMode PlayerSurfaceModeSelect = PlayerSurfaceMode.Sequence;
+
+    /// <summary>
+    /// プレイヤー描画モード
+    /// </summary>
+    [JsonIgnore]
+    public int PlayerSurfaceModeSelectIndex
+    {
+        get => (int)PlayerSurfaceModeSelect;
+        set => PlayerSurfaceModeSelect = (PlayerSurfaceMode)value;
+    }
 
     #endregion
 
@@ -76,38 +123,14 @@ public class ConfigPlayer
     /// <summary>
     /// 解像度：横幅
     /// </summary>
-	public float ResolutionScreenWidth => ResolutionScreenList[ ResolutionScreenIndex ]._width;
+    [JsonIgnore]
+    public float ResolutionScreenWidth => ResolutionScreenList[ ResolutionScreenIndex ]._width;
 
     /// <summary>
     /// 解像度：高さ
     /// </summary>
-	public float ResolutionScreenHeight => ResolutionScreenList[ ResolutionScreenIndex ]._height;
-
-    #endregion
-
-    #region フラグ
-
-    /// <summary>
-    /// Player表示フラグ
-    /// </summary>
     [JsonIgnore]
-    public bool DisplayPlayer { get; set; } = false;
-
-    /// <summary>
-    /// Player表示フラグ
-    /// </summary>
-    [JsonIgnore]
-    public Visibility DisplayPlayerVisibility 
-    { 
-        get => DisplayPlayer ? Visibility.Visible : Visibility.Collapsed ;
-        set => DisplayPlayer = ( value == Visibility.Visible );
-    }
-
-    /// <summary>
-    /// スコア更新フラグ
-    /// </summary>
-    [JsonIgnore]
-    public bool UpdateScoreFlag { get; set; } = false;
+    public float ResolutionScreenHeight => ResolutionScreenList[ ResolutionScreenIndex ]._height;
 
     #endregion
 
@@ -146,6 +169,8 @@ public class ConfigPlayer
 
     #endregion
 
+    #region 個別設定
+
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
@@ -169,4 +194,6 @@ public class ConfigPlayer
     /// </summary>
     [JsonInclude]
     public ConfigPlayerSequenceVertical Vertical { get; set; } = new();
+
+    #endregion
 }
