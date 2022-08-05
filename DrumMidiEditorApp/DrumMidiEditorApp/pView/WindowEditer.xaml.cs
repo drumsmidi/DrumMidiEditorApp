@@ -69,25 +69,10 @@ public sealed partial class WindowEditer : Window
 		//AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
 
 		ControlAccess.MainWindow = this;
-	}
 
-	/// <summary>
-	/// ウィンドウ有効化
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void Window_Activated( object sender, WindowActivatedEventArgs args )
-    {
-		try
-		{
-			// 再生コントロール開始
-			DmsControl.Start();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
+		// 再生コントロール開始
+		DmsControl.Start();
+	}
 
 	/// <summary>
 	/// ウィンドウ終了処理

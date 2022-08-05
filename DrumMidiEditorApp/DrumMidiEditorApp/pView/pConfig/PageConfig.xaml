@@ -24,11 +24,12 @@
 
                         <TextBlock Tag="PageConfigDevice"   x:Uid="NaviConfigDevice" />
                         <TextBlock Tag="PageConfigVideo"    x:Uid="NaviConfigVideo" />
+                        <TextBlock Tag="PageConfigEditer"   x:Uid="NaviConfigEditer" />
                         <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayer" />
-                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerA" />
-                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerB" />
-                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerC" />
-                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayerD" />
+                        <TextBlock Tag="PageConfigPlayerA"  x:Uid="NaviConfigPlayerA" />
+                        <TextBlock Tag="PageConfigPlayerB"  x:Uid="NaviConfigPlayerB" />
+                        <TextBlock Tag="PageConfigPlayerC"  x:Uid="NaviConfigPlayerC" />
+                        <TextBlock Tag="PageConfigPlayerD"  x:Uid="NaviConfigPlayerD" />
                     </ListView>
                 </Grid>
             </SplitView.Pane>

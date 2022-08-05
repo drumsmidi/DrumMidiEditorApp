@@ -34,6 +34,4 @@ public class FormatColor
         get => new SolidColorBrush( Color );
         set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor ;
     }
-
-
 }

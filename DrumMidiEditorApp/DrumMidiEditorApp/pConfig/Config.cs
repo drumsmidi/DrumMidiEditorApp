@@ -67,11 +67,13 @@ public static class Config
         Editer.UpdateScoreBpmFlag		    = true;
 		Editer.UpdateScoreFlag              = true;
 		Player.UpdateScoreFlag			    = true;
-		Score.UpdateScoreFlag			    = true;
 
         ControlAccess.PageMusic?.ReloadMusicInfo();
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
     }
 
     /// <summary>
@@ -87,7 +89,9 @@ public static class Config
         Editer.UpdateScoreBgmScaleFlag      = true;
         Editer.UpdateScoreFlag              = true;
 		Player.UpdateScoreFlag			    = true;
-		Score.UpdateScoreFlag			    = true;
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
     }
 
     /// <summary>
@@ -103,10 +107,12 @@ public static class Config
         Editer.UpdateScoreHeaderFlag		= true;
 		Editer.UpdateScoreFlag              = true;
 		Player.UpdateScoreFlag			    = true;
-		Score.UpdateScoreFlag			    = true;
 
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
 
         // 履歴クリア
         EventClearEditerRangeSelect();
@@ -120,9 +126,11 @@ public static class Config
         Media.UpdateDmsControlScore		    = true;
         Editer.UpdateScoreFlag		        = true;
 		Player.UpdateScoreFlag			    = true;
-		Score.UpdateScoreFlag			    = true;
 
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
     }
 
     /// <summary>
@@ -155,12 +163,14 @@ public static class Config
         Media.UpdateDmsControlScore		  = true;
         Editer.UpdateScoreNoteVolumeFlag  = true;
         Player.UpdateScoreFlag            = true;
-        Score.UpdateScoreFlag             = true;
 
         if ( !Editer.UpdateScoreNoteVolumeMeasureNoList.Contains( aMeasureNo ) )
         {
             Editer.UpdateScoreNoteVolumeMeasureNoList.Add( aMeasureNo );
         }
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
     }
 
     /// <summary>
@@ -172,12 +182,14 @@ public static class Config
         Media.UpdateDmsControlScore		 = true;
         Editer.UpdateScoreNoteFlag       = true;
         Player.UpdateScoreFlag           = true;
-        Score.UpdateScoreFlag            = true;
 
         if ( !Editer.UpdateScoreNoteMeasureNoList.Contains( aMeasureNo ) )
         {
             Editer.UpdateScoreNoteMeasureNoList.Add( aMeasureNo );
         }
+
+        EventUpdateScoreTab();
+        EventUpdatePlayerScore();
     }
 
     /// <summary>
@@ -191,12 +203,13 @@ public static class Config
 
         Editer.UpdateScoreBpmFlag       = true;
         Player.UpdateScoreFlag          = true;
-        Score.UpdateScoreFlag           = true;
 
         if ( !Editer.UpdateScoreBpmMeasureNoList.Contains( aMeasureNo ) )
         {
             Editer.UpdateScoreBpmMeasureNoList.Add( aMeasureNo );
         }
+
+        EventUpdatePlayerScore();
     }
 
     /// <summary>

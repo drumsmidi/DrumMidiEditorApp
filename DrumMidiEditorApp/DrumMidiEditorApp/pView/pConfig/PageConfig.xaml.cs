@@ -1,13 +1,11 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-
-using DrumMidiEditorApp.pConfig;
-using System.Collections.Generic;
-using System;
-using Microsoft.UI.Xaml;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using System.Linq;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -49,7 +47,12 @@ public sealed partial class PageConfig : Page
         {
             ( "PageConfigDevice"    , typeof( PageConfigDevice )    ),
             ( "PageConfigVideo"     , typeof( PageConfigVideo )     ),
+            ( "PageConfigEditer"    , typeof( PageConfigEditer )    ),
             ( "PageConfigPlayer"    , typeof( PageConfigPlayer )    ),
+            ( "PageConfigPlayerA"   , typeof( PageConfigPlayerSequence )            ),
+            ( "PageConfigPlayerB"   , typeof( PageConfigPlayerSequenceVertical )    ),
+            ( "PageConfigPlayerC"   , typeof( PageConfigPlayerScore )               ),
+            ( "PageConfigPlayerD"   , typeof( PageConfigPlayerSimuration )          ),
         };
 
 	/// <summary>

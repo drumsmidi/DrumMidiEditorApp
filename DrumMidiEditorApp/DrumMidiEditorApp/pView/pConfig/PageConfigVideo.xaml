@@ -7,20 +7,25 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="6" >
+    <Grid Padding="10" >
+        
         <StackPanel Orientation="Vertical" Spacing="6">
             
-            <ComboBox x:Name="_VideoCodecComboBox" x:Uid="InputVideoCodec"
+            <ComboBox x:Uid="InputVideoCodec"
                 ItemsSource="{x:Bind ConfigMedia.OutputVideoCodecList, Mode=OneTime}"
-                SelectedValue="{x:Bind ConfigMedia.OutputVideoCodec, Mode=TwoWay}" />
+                SelectedValue="{x:Bind ConfigMedia.OutputVideoCodec, Mode=TwoWay}"
+                HorizontalAlignment="Left" />
 
             <NumberBox x:Name="_VideoFpsNumberBox" x:Uid="InputVideoFps"
                 Value="{x:Bind ConfigMedia.OutputVideoFps,Mode=TwoWay}"
                 Minimum="{x:Bind ConfigMedia.OutputVideoFpsMin}"
                 Maximum="{x:Bind ConfigMedia.OutputVideoFpsMax}"
                 SmallChange="1" 
+                LargeChange="10" 
+                HorizontalAlignment="Left"
                 ValueChanged="VideoFpsNumberBox_ValueChanged" />
 
         </StackPanel>
+        
     </Grid>
 </Page>

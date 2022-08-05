@@ -334,6 +334,9 @@ BPMノートを含める</value>
   <data name="InputPlayerEditMode.Header" xml:space="preserve">
     <value>プレイヤー編集モード</value>
   </data>
+  <data name="InputPlayerScreenSize.Header" xml:space="preserve">
+    <value>プレイヤーサイズ（横 x 縦）</value>
+  </data>
   <data name="InputPlayerSurfaceMode.Header" xml:space="preserve">
     <value>プレイヤー描画モード</value>
   </data>
@@ -415,20 +418,23 @@ BPMノートを含める</value>
   <data name="NaviConfigDevice.Text" xml:space="preserve">
     <value>デバイス設定</value>
   </data>
+  <data name="NaviConfigEditer.Text" xml:space="preserve">
+    <value>エディター設定</value>
+  </data>
   <data name="NaviConfigPlayer.Text" xml:space="preserve">
     <value>プレイヤー共通設定</value>
   </data>
   <data name="NaviConfigPlayerA.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：</value>
+    <value>プレイヤー個別設定：Sequence</value>
   </data>
   <data name="NaviConfigPlayerB.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：</value>
+    <value>プレイヤー個別設定：SequenceVertical</value>
   </data>
   <data name="NaviConfigPlayerC.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：</value>
+    <value>プレイヤー個別設定：Score</value>
   </data>
   <data name="NaviConfigPlayerD.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：</value>
+    <value>プレイヤー個別設定：Simuration</value>
   </data>
   <data name="NaviConfigVideo.Text" xml:space="preserve">
     <value>ビデオ出力設定</value>
