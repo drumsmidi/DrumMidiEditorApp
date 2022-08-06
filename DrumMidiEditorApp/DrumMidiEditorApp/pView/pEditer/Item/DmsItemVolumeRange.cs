@@ -353,7 +353,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
                     p1._y,
                     p2._x,
                     p2._y,
-                    format.LineColor,
+                    format.LineColor.Color,
                     format.LineSize
                 );
 
@@ -374,7 +374,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
                                 p1._y,
                                 p2._x,
                                 p2._y,
-                                format.LineColor,
+                                format.LineColor.Color,
                                 format.LineSize
                             );
                     }

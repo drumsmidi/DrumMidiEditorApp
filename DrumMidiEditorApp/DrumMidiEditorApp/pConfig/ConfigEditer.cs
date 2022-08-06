@@ -172,17 +172,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect InfoHeaderRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -201,17 +200,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect BpmHeadRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -220,17 +218,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect BpmBodyRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -239,17 +236,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect BpmNonSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0, 200,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = _BassLineSize,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0, 200,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  90,  90,  90 ), _BassLineSize ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -258,17 +254,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect BpmSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255, 200,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  90,  90,  90 ),
-        LineSize    = _BassLineSize,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255, 200,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  90,  90,  90 ), _BassLineSize ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -287,17 +282,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect MeasureNoHeadRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,  60,  60,  60 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -306,17 +300,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect MeasureNoBodyRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,  60,  60,  60 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -335,17 +328,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect HeaderNonSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,  20,  20,  20 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,  20,  20,  20 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -354,17 +346,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect HeaderSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,  80,  40,  40 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,  80,  40,  40 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -383,7 +374,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine NoteSelectLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 150, 20, 20 ),
+        LineColor   = new( Color.FromArgb( 255, 150, 20, 20 ) ),
         LineSize    = _BassLineSize * 2,
     };
 
@@ -393,7 +384,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine NoteNonSelectLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 0, 0, 0 ),
+        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -403,7 +394,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine NotePredictLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 200, 200, 200 ),
+        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -469,17 +460,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect VolumeHeadRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -488,17 +478,16 @@ public class ConfigEditer
     [JsonInclude]
     public FormatRect VolumeBodyRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255,   0,   0,   0 ),
-        LineColor   = _BassLineColor,
-        LineSize    = _BassLineSize,
-        TextColor   = _BassTextColor,
-        TextFormat  = new()
-        {
-            FontFamily          = _BassFontFamily,
-            FontSize            = _BassFontSize,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( _BassLineColor, _BassLineSize ),
+        Text        = new( _BassTextColor,
+                            new()
+                            {
+                                FontFamily          = _BassFontFamily,
+                                FontSize            = _BassFontSize,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -507,7 +496,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine VolumeInputLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
+        LineColor   = new( Color.FromArgb( 255, 255, 0, 0 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -587,7 +576,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetCursorVerticleLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -606,7 +595,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure128Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
+        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -616,7 +605,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure064Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 70, 70, 70 ),
+        LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -626,7 +615,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure032Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 60, 60, 60 ),
+        LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -636,7 +625,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure016Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 50, 50, 50 ),
+        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -646,7 +635,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure008Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 40, 40, 40 ),
+        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -656,7 +645,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure004Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = 0.0F,
     };
 
@@ -666,7 +655,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetMeasure001Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 20, 20, 20 ),
+        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
         LineSize    = 0.0F,
     };
 
@@ -676,7 +665,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetStaffGroupLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 120, 120, 120 ),
+        LineColor   = new( Color.FromArgb( 255, 120, 120, 120 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -686,7 +675,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetStaffMidiMapLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -728,7 +717,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine SheetSupportLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 80, 100, 255 ),
+        LineColor   = new( Color.FromArgb( 255, 80, 100, 255 ) ),
         LineSize    = _BassLineSize,
     };
 
@@ -742,7 +731,7 @@ public class ConfigEditer
     [JsonInclude]
     public FormatLine NoteRangeLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 255, 0, 0 ),
+        LineColor   = new( Color.FromArgb( 255, 255, 0, 0 ) ),
         LineSize    = _BassLineSize,
     };
 

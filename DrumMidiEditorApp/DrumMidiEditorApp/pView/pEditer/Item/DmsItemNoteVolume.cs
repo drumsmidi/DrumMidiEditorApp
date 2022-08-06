@@ -96,7 +96,7 @@ public class DmsItemNoteVolume : DisposeBaseClass
             );
 
         // 音量線描画
-        aGraphics.FillRectangle( rect, _FormatRect.BackColor );
+        aGraphics.FillRectangle( rect, _FormatRect.Background.Color );
 
         // 音量文字表示（手抜き）
         rect.X		 -=  10;
@@ -108,8 +108,8 @@ public class DmsItemNoteVolume : DisposeBaseClass
             (
                 $"{_NoteInfo.Volume}",
                 rect,
-                _FormatRect.TextColor,
-                _FormatRect.TextFormat
+                _FormatRect.Text.TextColor.Color,
+                _FormatRect.Text.TextFormat
             );
     }
 } 

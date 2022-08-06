@@ -612,8 +612,8 @@ public sealed partial class UserControlEqualizer : UserControl
                             item.LabelName,
                             (float)( pos_x ),
                             (float)( body.Bottom + DrawSet.XLineTitlePaddingBottom ),
-                            DrawSet.TextCenterRect.TextColor,
-                            DrawSet.TextCenterRect.TextFormat
+                            DrawSet.TextCenterRect.Text.TextColor.Color,
+                            DrawSet.TextCenterRect.Text.TextFormat
                         );
 
                     args.DrawingSession.DrawLine
@@ -622,7 +622,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             (float)( body.Top ),
                             (float)( pos_x ),
                             (float)( body.Bottom + DrawSet.XLineTitlePaddingBottom ),
-                            DrawSet.Line.LineColor,
+                            DrawSet.Line.LineColor.Color,
                             DrawSet.Line.LineSize
                         );
                 }
@@ -642,8 +642,8 @@ public sealed partial class UserControlEqualizer : UserControl
                             $"{db}db",
                             (float)( body.Left - DrawSet.YLineTitlePaddingRight ),
                             (float)( pos_y ),
-                            DrawSet.TextRightRect.TextColor,
-                            DrawSet.TextRightRect.TextFormat
+                            DrawSet.TextRightRect.Text.TextColor.Color,
+                            DrawSet.TextRightRect.Text.TextFormat
                         );
 
                     args.DrawingSession.DrawLine
@@ -652,7 +652,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             (float)( pos_y ),
                             (float)( body.Right ),
                             (float)( pos_y ),
-                            DrawSet.Line.LineColor,
+                            DrawSet.Line.LineColor.Color,
                             DrawSet.Line.LineSize
                         );
 
@@ -716,7 +716,7 @@ public sealed partial class UserControlEqualizer : UserControl
                                     r._y,
                                     r._x,
                                     (float)r.Bottom,
-                                    format.LineColor,
+                                    format.LineColor.Color,
                                     format.LineSize
                                 );
                         }
@@ -738,8 +738,8 @@ public sealed partial class UserControlEqualizer : UserControl
                             point._x,
                             point._y,
                             (float)( DrawSet.PointSize / 2d ),
-                            format.LineColor,
-                            format.LineSize
+                            format.Line.LineColor.Color,
+                            format.Line.LineSize
                         );
 
                     args.DrawingSession.FillCircle
@@ -747,7 +747,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             point._x,
                             point._y,
                             (float)( DrawSet.PointSize / 2d ),
-                            format.BackColor
+                            format.Background.Color
                         );
                 }
             }

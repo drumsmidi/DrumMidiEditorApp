@@ -81,7 +81,7 @@ internal class DmsItemLine : DisposeBaseClass
                 (float)rect.Top,
                 (float)rect.Right,
                 (float)rect.Bottom,
-                _FormatLine.LineColor,
+                _FormatLine.LineColor.Color,
                 _FormatLine.LineSize
             );
     }

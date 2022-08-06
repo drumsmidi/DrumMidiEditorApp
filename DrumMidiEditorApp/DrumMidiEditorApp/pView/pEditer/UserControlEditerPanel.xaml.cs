@@ -2403,14 +2403,15 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // TODO: 線の色とか情報追加が必要
                     var formatRect = new FormatRect
                     {
-                        BackColor = midiMap.Color
+                        Background  = new( midiMap.Color ),
+                        Line        = new( midiMap.Color, DrawSet.NoteSelectLine.LineSize ),
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
                 }
                 else
                 {
-                    _MidiMapNoteFormatList[ midiMap.MidiMapKey ].BackColor = midiMap.Color;
+                    _MidiMapNoteFormatList[ midiMap.MidiMapKey ].Background = new( midiMap.Color );
                 }
 
                 // ヘッダ情報追加
@@ -3363,7 +3364,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     args.DrawingSession.FillRectangle
                         (
                             _MeasureNoBodyRange,
-                            DrawSet.MeasureNoBodyRect.BackColor
+                            DrawSet.MeasureNoBodyRect.Background.Color
                         );
 
                     var rect = new Rect
@@ -3382,8 +3383,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                         args.DrawingSession.DrawRectangle
                             (
                                 rect,
-                                DrawSet.MeasureNoBodyRect.LineColor,
-                                DrawSet.MeasureNoBodyRect.LineSize
+                                DrawSet.MeasureNoBodyRect.Line.LineColor.Color,
+                                DrawSet.MeasureNoBodyRect.Line.LineSize
                             );
 
                         rect.X += 5;
@@ -3393,8 +3394,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                             (
                                 String.Format( "{0:000}", measure_no ),
                                 rect,
-                                DrawSet.MeasureNoBodyRect.TextColor,
-                                DrawSet.MeasureNoBodyRect.TextFormat
+                                DrawSet.MeasureNoBodyRect.Text.TextColor.Color,
+                                DrawSet.MeasureNoBodyRect.Text.TextFormat
                             );
                     }
                 }
@@ -3426,7 +3427,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             body._y,
                             x,
                             (float)body.Bottom,
-                            DrawSet.SheetCursorVerticleLine.LineColor,
+                            DrawSet.SheetCursorVerticleLine.LineColor.Color,
                             DrawSet.SheetCursorVerticleLine.LineSize
                         );
                 }

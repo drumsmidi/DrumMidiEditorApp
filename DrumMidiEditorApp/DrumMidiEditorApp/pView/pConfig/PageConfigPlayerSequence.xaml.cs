@@ -7,10 +7,12 @@ using System.Collections.ObjectModel;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
-public sealed partial class PageConfigPlayerSequence : Page
+public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChanged
 {
     #region Member
 
@@ -43,52 +45,100 @@ public sealed partial class PageConfigPlayerSequence : Page
     {
 		// 初期化
 		InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _NoteTermHeightNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_NoteTermWidthNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteHeightNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_NoteWidthNumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+
+		_Line128NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line064NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line032NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line016NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line008NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line004NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line001NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+
+		#endregion
     }
 
-    /// <summary>
-    /// プレイヤー描画モード変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerSurfaceModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+	#region INotifyPropertyChanged
+
+	/// <summary>
+	/// Config再読み込み
+	/// 
+	/// x:Bind OneWay/TwoWay 再読み込み
+	/// </summary>
+	public void ReloadConfig()
     {
 		try
 		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
+			OnPropertyChanged( "DrawSet" );
+		}
+        catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+	#endregion
+
+	/// <summary>
+	/// 共通：トグル切替
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+			Config.EventUpdatePlayerScore();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ノートサイズ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void SizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
 				return;
             }
 
-			Config.EventUpdatePlayerMode();
+			Config.EventUpdatePlayerScore();
 		}
 		catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-    }
-
-    /// <summary>
-    /// プレイヤースクリーンサイズ変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerScreenSizeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
-    {
-		try
-		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
-            {
-				return;
-            }
-
-			Config.EventUpdatePlayerScreenSize();
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 
     /// <summary>
@@ -120,6 +170,26 @@ public sealed partial class PageConfigPlayerSequence : Page
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+
+    private void HeaderGroupToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+            if ( sender is not ToggleSwitch item )
+            {
+                return;
+            }
+
+			DrawSet.HeaderGroupOn = item.IsOn;
+
+			ReloadConfig();
+			Config.EventUpdatePlayerScore();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+	}
 
 
 #if false
@@ -153,14 +223,6 @@ public sealed partial class PageConfigPlayerSequence : Page
 				HeaderGroupWidthNumericUpDown.Value	= (Decimal)DrawSetSequence.HeaderGroupWidthSize;
 				BpmNowCheckBox.Checked				= DrawSetSequence.BpmNowDisplay;
 				GroupCheckBox.Checked				= DrawSetSequence.HeaderGroupOn;
-
-				// Note
-				VolumeSizeCheckBox.Checked			= DrawSetSequence.NoteVolumeSizeOn;
-				VolumeZeroCheckBox.Checked			= DrawSetSequence.NoteVolumeZeroOn;
-				NoteHeightNumericUpDown.Value		= (Decimal)DrawSetSequence.NoteHeightSize;
-				NoteWidthNumericUpDown.Value		= (Decimal)DrawSetSequence.NoteWidthSize;
-				NoteTermWidthNumericUpDown.Value	= (Decimal)DrawSetSequence.NoteTermWidthSize;
-				NoteTermHeightNumericUpDown.Value	= (Decimal)DrawSetSequence.NoteTermHeightSize;
 
 				// Sheet
 				Line128Button.BackColor			= DrawSet.SheetColor;

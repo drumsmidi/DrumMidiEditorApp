@@ -43,52 +43,65 @@ public sealed partial class PageConfigEditer : Page
     {
 		// 初期化
 		InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+		_Line128NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line064NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line032NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line016NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line008NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line004NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+		_Line001NumberBox.NumberFormatter
+			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+
+		#endregion
     }
 
-    /// <summary>
-    /// プレイヤー描画モード変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerSurfaceModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+	/// <summary>
+	/// 共通：トグル切替
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
     {
 		try
 		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
+			Config.EventUpdatePlayerScore();
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ノートサイズ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void SizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
 				return;
             }
 
-			Config.EventUpdatePlayerMode();
+			Config.EventUpdatePlayerScore();
 		}
 		catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-    }
-
-    /// <summary>
-    /// プレイヤースクリーンサイズ変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerScreenSizeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
-    {
-		try
-		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
-            {
-				return;
-            }
-
-			Config.EventUpdatePlayerScreenSize();
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 
     /// <summary>

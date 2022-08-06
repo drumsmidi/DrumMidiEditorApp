@@ -11,6 +11,111 @@
         <StackPanel Orientation="Vertical" Spacing="6">
 
 
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                
+                <NumberBox x:Name="_Line128NumberBox" x:Uid="InputLine128Size"
+                    Value="{x:Bind DrawSet.SheetMeasure128Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure128Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+
+                <NumberBox x:Name="_Line064NumberBox" x:Uid="InputLine064Size"
+                    Value="{x:Bind DrawSet.SheetMeasure064Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure064Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+
+                <NumberBox x:Name="_Line032NumberBox" x:Uid="InputLine032Size"
+                    Value="{x:Bind DrawSet.SheetMeasure032Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure032Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+
+                <NumberBox x:Name="_Line016NumberBox" x:Uid="InputLine016Size"
+                    Value="{x:Bind DrawSet.SheetMeasure016Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure016Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                
+                <NumberBox x:Name="_Line008NumberBox" x:Uid="InputLine008Size"
+                    Value="{x:Bind DrawSet.SheetMeasure008Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure008Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+
+                <NumberBox x:Name="_Line004NumberBox" x:Uid="InputLine004Size"
+                    Value="{x:Bind DrawSet.SheetMeasure004Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure004Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                
+                <NumberBox x:Name="_Line001NumberBox" x:Uid="InputLine001Size"
+                    Value="{x:Bind DrawSet.SheetMeasure001Line.LineSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemLineSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <Button x:Uid="InputLineColor"
+                    Background="{x:Bind DrawSet.SheetMeasure001Line.LineColor.ColorBrush, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"
+                    Click="ColorButton_Click" />
+                
+            </StackPanel>
+            
         </StackPanel>
     </Grid>
 </Page>

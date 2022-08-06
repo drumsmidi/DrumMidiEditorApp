@@ -32,17 +32,16 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatRect BpmRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 14F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 14F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     /// <summary>
@@ -57,17 +56,16 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatRect BpmNowRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0.4F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -86,17 +84,16 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatRect MeasureNoRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0.4F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Left,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -121,7 +118,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine HeaderLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
+        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
         LineSize    = 1.0F,
     };
 
@@ -175,7 +172,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine CursolLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 255, 255, 255 ),
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
         LineSize    = 1.0F,
     };
 
@@ -185,7 +182,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure128Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 80, 80, 80 ),
+        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
         LineSize    = 1.0F,
     };
 
@@ -195,7 +192,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure064Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 70, 70, 70 ),
+        LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
         LineSize    = 0.5F,
     };
 
@@ -205,7 +202,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure032Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 60, 60, 60 ),
+        LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
         LineSize    = 0.3F,
     };
 
@@ -215,7 +212,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure016Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 50, 50, 50 ),
+        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
         LineSize    = 0.0F,
     };
 
@@ -225,7 +222,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure008Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 40, 40, 40 ),
+        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
         LineSize    = 0.0F,
     };
 
@@ -235,7 +232,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure004Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = 0.0F,
     };
 
@@ -245,7 +242,7 @@ public class ConfigPlayerScore
     [JsonInclude]
     public FormatLine SheetMeasure001Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 20, 20, 20 ),
+        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
         LineSize    = 0.0F,
     };
 

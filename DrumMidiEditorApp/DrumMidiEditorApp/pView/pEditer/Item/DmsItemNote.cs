@@ -107,20 +107,20 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 					(float)( rect.Y + rect.Height / 2 ),
 					rect._width  / 2,
 					rect._height / 2,
-					_FormatRect.BackColor
+					_FormatRect.Background.Color
 				);
 
 			// ノートON-OFF間の線を描画
-			if ( NoteLength > 0 && _FormatRect.LineSize > 0 )
+			if ( NoteLength > 0 && _FormatRect.Line.LineSize > 0 )
 			{
 				aGraphics.DrawLine
 					(
 						(float)( rect.Right ),
 						(float)( rect.Y + rect.Height / 2F ),
-						(float)( rect.Right + NoteLength ),
+						(float)( rect.Left + NoteLength ),
 						(float)( rect.Y + rect.Height / 2F ),
-						_FormatRect.LineColor,
-						_FormatRect.LineSize
+						_FormatRect.Line.LineColor.Color,
+						_FormatRect.Line.LineSize
 					);
 			}
 		}
@@ -139,8 +139,8 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 			aGraphics.DrawGeometry
 					(
 						CanvasGeometry.CreatePolygon( sender, ps ),
-						_FormatRect.LineColor,
-						_FormatRect.LineSize
+						_FormatRect.Line.LineColor.Color,
+						_FormatRect.Line.LineSize
 					);
 		}
 
@@ -153,8 +153,8 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 					(float)( rect.Y + rect.Height / 2 ),
                 	(float)( rect.X ), 
 					(float)( rect.Y + rect.Height / 2 ),
-					_FormatRect.LineColor,
-					_FormatRect.LineSize
+					_FormatRect.Line.LineColor.Color,
+					_FormatRect.Line.LineSize
 				);
         }
 
@@ -166,7 +166,7 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 			aGraphics.DrawRectangle
 				( 
 					rect,
-					format.LineColor,
+					format.LineColor.Color,
 					format.LineSize
 				);
 		}
@@ -201,7 +201,7 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 				rect._y,
 				rect._width,
 				rect._height,
-				format.LineColor,
+				format.LineColor.Color,
 				format.LineSize
 			);
     }

@@ -37,17 +37,16 @@ public class ConfigPlayerSimuration
     [JsonInclude]
     public FormatRect BpmNowRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 18F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Center,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 18F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -78,17 +77,16 @@ public class ConfigPlayerSimuration
     [JsonInclude]
     public FormatRect MeasureNoRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 160,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 18F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Center,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 18F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion
@@ -119,17 +117,16 @@ public class ConfigPlayerSimuration
     [JsonInclude]
     public FormatRect HeaderRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb(   0,   0,   0,   0 ),
-        LineColor   = Color.FromArgb( 255,  60,  60,  60 ),
-        LineSize    = 0.4F,
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 14F,
-            HorizontalAlignment = CanvasHorizontalAlignment.Center,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
     };
 
     #endregion

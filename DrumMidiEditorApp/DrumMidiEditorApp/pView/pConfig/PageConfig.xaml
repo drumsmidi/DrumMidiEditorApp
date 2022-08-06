@@ -35,7 +35,9 @@
             </SplitView.Pane>
 
             <Grid>
-                <Frame x:Name="_ContentFrame" />
+                <ScrollViewer>
+                    <Frame x:Name="_ContentFrame" />
+                </ScrollViewer>
             </Grid>
         </SplitView>
     </Grid>

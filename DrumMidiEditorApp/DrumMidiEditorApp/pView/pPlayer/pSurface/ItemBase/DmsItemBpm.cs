@@ -89,8 +89,8 @@ internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBp
 			(
 				_Info?.Bpm.ToString() ?? String.Empty,
 				rect,
-				_FormatRect.TextColor,
-				_FormatRect.TextFormat
+				_FormatRect.Text.TextColor.Color,
+				_FormatRect.Text.TextFormat
 			);
     }
 

@@ -337,22 +337,14 @@
 
                 <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
                     Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                    Minimum="0.1"
-                    Maximum="100"
-                    SmallChange="0.1" 
-                    LargeChange="1.0"
+                    Style="{StaticResource PanelItemSizeStyle}"
                     VerticalAlignment="Top"
-                    Height="60"
                     ValueChanged="NoteSizeNumberBox_ValueChanged" />
 
                 <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
                     Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                    Minimum="0.1"
-                    Maximum="100"
-                    SmallChange="0.1" 
-                    LargeChange="1.0"
+                    Style="{StaticResource PanelItemSizeStyle}"
                     VerticalAlignment="Top"
-                    Height="60"
                     ValueChanged="NoteSizeNumberBox_ValueChanged" />
                 
             </StackPanel>

@@ -41,7 +41,7 @@ public class ConfigScore
     [JsonInclude]
     public FormatLine MeasureLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 200, 200, 200 ),
+        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
         LineSize    = 1.0F,
     };
 

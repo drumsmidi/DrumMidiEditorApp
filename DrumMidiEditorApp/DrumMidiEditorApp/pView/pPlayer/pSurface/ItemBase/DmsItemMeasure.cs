@@ -81,8 +81,8 @@ internal class DmsItemMeasure : DisposeBaseClass
 			(
 				String.Format( "{0:000}", aMeasureNo ),
 				rect,
-				_FormatRect.TextColor,
-				_FormatRect.TextFormat
+				_FormatRect.Text.TextColor.Color,
+				_FormatRect.Text.TextFormat
 			);
     }
 }

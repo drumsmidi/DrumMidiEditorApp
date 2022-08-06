@@ -170,7 +170,7 @@ public sealed partial class UserControlScore : UserControl
                         body._y + measure_no / w_cnt * m_h,
                         m_w,
                         m_h,
-                        DrawSet.MeasureLine.LineColor,
+                        DrawSet.MeasureLine.LineColor.Color,
                         DrawSet.MeasureLine.LineSize
                     );
             }

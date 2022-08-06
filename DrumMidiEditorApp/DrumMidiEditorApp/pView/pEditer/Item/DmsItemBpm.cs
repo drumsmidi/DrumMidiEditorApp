@@ -81,7 +81,7 @@ public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
 		rect.Y  += aDiffY;
 
 		// 背景色
-	    aGraphics.FillRectangle( rect, format.BackColor );
+	    aGraphics.FillRectangle( rect, format.Background.Color );
 
 		rect.X		+= rect.Width + 1;
 		rect.Width	+= 100;
@@ -91,8 +91,8 @@ public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
             (
 				$"{_BpmInfo.Bpm}",
 				rect,
-				format.TextColor,
-				format.TextFormat
+				format.Text.TextColor.Color,
+				format.Text.TextFormat
 			);
     }
 

@@ -44,7 +44,6 @@ public class MidiMap : DisposeBaseClass
 
     /// <summary>
     /// ノートの色
-    /// TODO: FormatColor に置き換えようかな
     /// </summary>
     public Color Color { get; set; } = Config.System.DefaultMidiMapColor;
 

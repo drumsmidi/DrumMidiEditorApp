@@ -7,6 +7,32 @@
         <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
         <Setter Property="Height" Value="60" />
     </Style>
+    <Style TargetType="NumberBox" x:Key="PanelItemSizeStyle">
+        <Setter Property="SpinButtonPlacementMode" Value="Hidden" />
+        <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="90" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Minimum" Value="0.1" />
+        <Setter Property="Maximum" Value="100" />
+        <Setter Property="SmallChange" Value="0.1" />
+        <Setter Property="LargeChange" Value="1.0" />
+    </Style>
+    <Style TargetType="NumberBox" x:Key="PanelItemLineSizeStyle">
+        <Setter Property="SpinButtonPlacementMode" Value="Hidden" />
+        <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Width" Value="90" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="Minimum" Value="0" />
+        <Setter Property="Maximum" Value="10" />
+        <Setter Property="SmallChange" Value="0.1" />
+        <Setter Property="LargeChange" Value="1.0" />
+    </Style>
+
+
+    
+
     <Style TargetType="ComboBox">
         <Setter Property="Height" Value="60" />
     </Style>
@@ -19,13 +45,13 @@
         <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" />
     </Style>
 
-    <Style x:Key="TableHeader" TargetType="Grid">
+    <Style TargetType="Grid" x:Key="TableHeader">
         <Setter Property="Padding" Value="10" />
         <Setter Property="Background" Value="#333" />
         <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
     </Style>
-    <Style x:Key="TableCell" TargetType="Grid">
+    <Style TargetType="Grid" x:Key="TableCell">
         <Setter Property="Padding" Value="0" />
         <Setter Property="Background" Value="#000" />
         <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />

@@ -34,4 +34,18 @@ public class FormatColor
         get => new SolidColorBrush( Color );
         set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor ;
     }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public FormatColor() { }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="aColor"></param>
+    public FormatColor( Color aColor )
+    {
+        Color = aColor;
+    }
 }

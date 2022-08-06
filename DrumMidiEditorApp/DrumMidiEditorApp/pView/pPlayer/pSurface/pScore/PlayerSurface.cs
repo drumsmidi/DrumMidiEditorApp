@@ -270,14 +270,14 @@ public class PlayerSurface : PlayerSurfaceBase
                     // TODO: 線の色とか情報追加が必要
                     var formatRect = new FormatRect
                     {
-                        BackColor = midiMap.Color
+                        Background = new( midiMap.Color ),
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
                 }
                 else
                 {
-                    _MidiMapNoteFormatList[ midiMap.MidiMapKey ].BackColor = midiMap.Color;
+                    _MidiMapNoteFormatList[ midiMap.MidiMapKey ].Background = new( midiMap.Color );
                 }
 			}
         }

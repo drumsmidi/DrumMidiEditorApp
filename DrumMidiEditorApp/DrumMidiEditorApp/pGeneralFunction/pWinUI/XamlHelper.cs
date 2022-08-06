@@ -13,6 +13,7 @@ using Microsoft.UI.Windowing;
 using DrumMidiEditorApp.pView.pEditer;
 using WinRT.Interop;
 using Windows.UI;
+using System.Numerics;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -266,29 +267,33 @@ public static class XamlHelper
         aGraphics.FillRectangle
             (
                 aDrawRect,
-                aFormatRect.BackColor
+                aFormatRect.Background.Color
             );
 
         // テキスト
         if ( aLabelText.Length != 0 )
-        { 
+        {
+            //aGraphics.Transform = Matrix3x2.CreateRotation( (float)( Math.PI * 45 / 180.0 ) );
+
             aGraphics.DrawText
                 (
                     aLabelText,
                     aDrawRect,
-                    aFormatRect.TextColor,
-                    aFormatRect.TextFormat
+                    aFormatRect.Text.TextColor.Color,
+                    aFormatRect.Text.TextFormat
                 );
+
+            //aGraphics.Transform = Matrix3x2.CreateRotation( 0 );
         }
 
         // 外枠
-        if ( aFormatRect.LineSize > 0 )
+        if ( aFormatRect.Line.LineSize > 0 )
         { 
             aGraphics.DrawRectangle
                 (
                     aDrawRect,
-                    aFormatRect.LineColor,
-                    aFormatRect.LineSize
+                    aFormatRect.Line.LineColor.Color,
+                    aFormatRect.Line.LineSize
                 );
         }
     }

@@ -307,7 +307,7 @@ public class DmsItemNoteRange : DisposeBaseClass
 		aGraphics.DrawRectangle
             ( 
                 rect,
-                format.LineColor,
+                format.LineColor.Color,
                 format.LineSize
             );
     }

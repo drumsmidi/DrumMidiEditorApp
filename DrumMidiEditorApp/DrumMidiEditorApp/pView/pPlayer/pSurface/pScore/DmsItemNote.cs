@@ -82,7 +82,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 				rect._y,
 				rect._width,
 				rect._height,
-				_FormatRect.BackColor
+				_FormatRect.Background.Color
 			);
 	}
 

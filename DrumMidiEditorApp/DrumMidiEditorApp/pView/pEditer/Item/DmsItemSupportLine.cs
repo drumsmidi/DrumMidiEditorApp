@@ -112,7 +112,7 @@ public class DmsItemSupportLine : DisposeBaseClass
                     (float)_NoteColumnRect.Top,
                     x,
                     (float)_NoteColumnRect.Bottom + aDiffY,
-                    format.LineColor,
+                    format.LineColor.Color,
                     format.LineSize
                 );
         }
@@ -135,7 +135,7 @@ public class DmsItemSupportLine : DisposeBaseClass
                         (float)_NoteColumnRect.Top,
                         x,
                         (float)_NoteColumnRect.Bottom + aDiffY,
-                        format.LineColor,
+                        format.LineColor.Color,
                         format.LineSize
                     );
             }

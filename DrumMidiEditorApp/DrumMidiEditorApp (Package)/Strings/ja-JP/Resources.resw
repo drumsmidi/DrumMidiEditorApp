@@ -283,8 +283,35 @@ BPMノートを含める</value>
   <data name="InputDivisionLine.Text" xml:space="preserve">
     <value>小節分割数</value>
   </data>
+  <data name="InputHeaderGroup.Header" xml:space="preserve">
+    <value>グループ表示</value>
+  </data>
   <data name="InputJumpMeasure.Text" xml:space="preserve">
     <value>小節移動</value>
+  </data>
+  <data name="InputLine001Size.Header" xml:space="preserve">
+    <value>小節線1分</value>
+  </data>
+  <data name="InputLine004Size.Header" xml:space="preserve">
+    <value>小節線4分</value>
+  </data>
+  <data name="InputLine008Size.Header" xml:space="preserve">
+    <value>小節線8分</value>
+  </data>
+  <data name="InputLine016Size.Header" xml:space="preserve">
+    <value>小節線16分</value>
+  </data>
+  <data name="InputLine032Size.Header" xml:space="preserve">
+    <value>小節線32分</value>
+  </data>
+  <data name="InputLine064Size.Header" xml:space="preserve">
+    <value>小節線64分</value>
+  </data>
+  <data name="InputLine128Size.Header" xml:space="preserve">
+    <value>小節線128分</value>
+  </data>
+  <data name="InputLineColor.Content" xml:space="preserve">
+    <value>線色</value>
   </data>
   <data name="InputLoopPlayMeasureConnect.Header" xml:space="preserve">
     <value>小節接続数</value>
@@ -324,6 +351,12 @@ BPMノートを含める</value>
   </data>
   <data name="InputNoteOnOff.OnContent" xml:space="preserve">
     <value>Note On</value>
+  </data>
+  <data name="InputNoteTermHeight.Header" xml:space="preserve">
+    <value>ノート間隔 高さ</value>
+  </data>
+  <data name="InputNoteTermWidth.Header" xml:space="preserve">
+    <value>ノート間隔 横幅</value>
   </data>
   <data name="InputNoteWidth.Header" xml:space="preserve">
     <value>ノート横幅</value>

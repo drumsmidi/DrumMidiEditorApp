@@ -4,7 +4,7 @@ using Windows.UI;
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 /// <summary>
-/// グラフィックアイテム：直線
+/// グラフィックアイテム：線
 /// </summary>
 public class FormatLine
 {
@@ -12,11 +12,27 @@ public class FormatLine
     /// ライン色
     /// </summary>
     [JsonInclude]
-    public Color LineColor = ColorHelper.EmptyColor;
+    public FormatColor LineColor = new();
 
     /// <summary>
     /// ラインサイズ
     /// </summary>
     [JsonInclude]
     public float LineSize = 1;
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public FormatLine() { }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="aLineColor"></param>
+    /// <param name="aLineSize"></param>
+    public FormatLine( Color aLineColor, float aLineSize )
+    {
+        LineColor   = new( aLineColor );
+        LineSize    = aLineSize;
+    }
 }

@@ -36,14 +36,14 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatRect TextRightRect { get; set; } = new()
     { 
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 12,
-            HorizontalAlignment = CanvasHorizontalAlignment.Right,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Text    = new( Color.FromArgb( 255, 100, 200, 100 ),
+                        new()
+                        {
+                            FontFamily          = "system-ui",
+                            FontSize            = 12,
+                            HorizontalAlignment = CanvasHorizontalAlignment.Right,
+                            VerticalAlignment   = CanvasVerticalAlignment.Center,
+                        } ),
     };
 
     /// <summary>
@@ -52,14 +52,14 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatRect TextCenterRect { get; set; } = new()
     { 
-        TextColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        TextFormat  = new()
-        {
-            FontFamily          = "system-ui",
-            FontSize            = 12,
-            HorizontalAlignment = CanvasHorizontalAlignment.Center,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        },
+        Text    = new( Color.FromArgb( 255, 100, 200, 100 ),
+                        new()
+                        {
+                            FontFamily          = "system-ui",
+                            FontSize            = 12,
+                            HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                            VerticalAlignment   = CanvasVerticalAlignment.Center,
+                        } ),
     };
 
     #endregion
@@ -72,7 +72,7 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatLine Line { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 255, 30, 30, 30 ),
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = 1,
     };
 
@@ -86,9 +86,8 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatRect PointSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255, 100, 200, 100 ),
-        LineColor   = Color.FromArgb( 255,   0, 100, 255 ),
-        LineSize    = 1,
+        Background  = new( Color.FromArgb( 255, 100, 200, 100 ) ),
+        Line        = new( Color.FromArgb( 255,   0, 100, 255 ), 1F ),
     };
 
     /// <summary>
@@ -97,9 +96,8 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatRect PointNonSelectRect { get; set; } = new()
     {
-        BackColor   = Color.FromArgb( 255, 0, 100, 255 ),
-        LineColor   = Color.FromArgb( 255,   0, 100, 255 ),
-        LineSize    = 1,
+        Background  = new( Color.FromArgb( 255, 0, 100, 255 ) ),
+        Line        = new( Color.FromArgb( 255,   0, 100, 255 ), 1F ),
     };
 
     /// <summary>
@@ -274,7 +272,7 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatLine WaveLeftLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 100, 255, 0, 0 ),
+        LineColor   = new( Color.FromArgb( 100, 255, 0, 0 ) ),
         LineSize    = 0.4F,
     };
 
@@ -284,7 +282,7 @@ public class ConfigEqualizer
     [JsonInclude]
     public FormatLine WaveRightLine { get; set; } = new()
     {
-        LineColor   = Color.FromArgb( 100, 0, 255, 0 ),
+        LineColor   = new( Color.FromArgb( 100, 0, 255, 0 ) ),
         LineSize    = 0.4F,
     };
 
