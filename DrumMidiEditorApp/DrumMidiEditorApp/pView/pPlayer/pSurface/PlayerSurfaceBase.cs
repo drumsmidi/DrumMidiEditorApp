@@ -289,7 +289,7 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <param name="aMeasureNo">小節番号</param>
     protected virtual void UpdateBpmMeasure( int aMeasureNo ) { }
 
-    public virtual bool OnDraw( CanvasSwapChainPanel sender, CanvasDrawEventArgs args )
+    public virtual bool OnDraw( CanvasDrawEventArgs args )
     {
         // SwapChainの描画セッション作成時に背景色指定済み
         //args.DrawingSession.Clear( DrawSetCom.SheetColor.Color );

@@ -364,6 +364,9 @@ BPMノートを含める</value>
   <data name="InputPlayerDisplay.Header" xml:space="preserve">
     <value>プレイヤー表示</value>
   </data>
+  <data name="InputPlayerDrawDirectionMode.Header" xml:space="preserve">
+    <value>描画方向</value>
+  </data>
   <data name="InputPlayerEditMode.Header" xml:space="preserve">
     <value>プレイヤー編集モード</value>
   </data>

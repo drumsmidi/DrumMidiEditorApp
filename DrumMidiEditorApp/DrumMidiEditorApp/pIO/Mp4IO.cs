@@ -36,19 +36,19 @@ internal class Mp4IO : DisposeBaseClass
     /// <param name="aWidth">映像横幅</param>
     /// <param name="aHeight">映像高さ</param>
     /// <returns>映像書込用のBitmap</returns>
-    public Bitmap Open( GeneralPath aGeneralPath, FourCC aCodec, int aFrameRate, int aWidth, int aHeight )
+    public Bitmap Open( GeneralPath aGeneralPath, string aCodec, int aFrameRate, int aWidth, int aHeight )
     {
         Close();
 
         _Writer = new VideoWriter
             (
                 aGeneralPath.AbsoulteFilePath,
-                aCodec,
+                string.IsNullOrEmpty( aCodec ) ? FourCC.Default : FourCC.FromString( aCodec ),
                 aFrameRate, 
                 new( aWidth, aHeight ) 
             );
 
-        _Bmp = new Bitmap( aWidth, aHeight, PixelFormat.Format24bppRgb );
+        _Bmp = new Bitmap( aWidth, aHeight, PixelFormat.Format32bppArgb );
 
         return _Bmp;
     }
@@ -87,8 +87,8 @@ internal class Mp4IO : DisposeBaseClass
         var bmpData = _Bmp.LockBits
             (
                 new( 0, 0, _Bmp.Width, _Bmp.Height ), 
-                ImageLockMode.ReadOnly, 
-                PixelFormat.Format24bppRgb
+                ImageLockMode.ReadOnly,
+                _Bmp.PixelFormat
             );
 
         var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
@@ -98,7 +98,8 @@ internal class Mp4IO : DisposeBaseClass
             return false;
         }
 
-        using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
+        using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
+//      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
         _Writer.Write( mat );
 

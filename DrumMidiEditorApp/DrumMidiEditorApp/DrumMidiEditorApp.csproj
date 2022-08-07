@@ -19,7 +19,6 @@
     <None Remove="pView\pConfig\PageConfigPlayer.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerScore.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSequence.xaml" />
-    <None Remove="pView\pConfig\PageConfigPlayerSequenceVertical.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSimuration.xaml" />
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
@@ -61,10 +60,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pConfig\PageConfigPlayerScore.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pConfig\PageConfigPlayerSequenceVertical.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

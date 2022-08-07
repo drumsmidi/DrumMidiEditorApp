@@ -213,10 +213,10 @@ public class ConfigSystem
     public int NoteCount => MeasureCount * MeasureNoteNumber;
 
     /// <summary>
-    /// 進捗バー
+    /// 進捗バー（０～１００）
     /// </summary>
     [JsonIgnore]
-    public int ProgressBarValue { get; set; } = 0;
+    public double ProgressBarValue { get; set; } = 0;
 
     #endregion
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-
+using System.Threading.Tasks;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
@@ -10,6 +10,7 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pIO.pJson;
 using DrumMidiEditorApp.pIO.pScore;
+using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pIO;
 
@@ -322,107 +323,99 @@ public static class FileIO
     /// <param name="aFilePath">出力先ファイルパス</param>
     /// <param name="aScore">保存スコア</param>
     /// <returns>True:保存成功、False:保存失敗</returns>
-    public static bool SaveVideo( GeneralPath aFilePath, Score aScore )
+    public static async void SaveVideoAsync( GeneralPath aFilePath, Score aScore )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+	    using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
-            // TODO: MP4の出力処理改善が必要
+            var mp4_codec = Config.Media.OutputVideoCodec;
+            var fps       = Config.Media.OutputVideoFps;
 
-            // using var size = DMS.PlayerForm?.GetFrame( 0 );
+            ControlAccess.UCPlayerPanel?.StartGetFrame();
 
-            // if ( size == null )
-            // {
-            //     Log.Error( $"frame read failure.", true );
-            //     return false;
-            // }
+            using var frameSize = ControlAccess.UCPlayerPanel?.GetFrame( 0 );
 
-            // var mp4_codec = Config.Media.OutputVideoCodec;
-            // var fps       = Config.Media.OutputVideoFps;
+            if ( frameSize == null )
+            {
+                Log.Error( $"get frame failure.", true );
+                return;
+            }
 
-            // try
-            // {
-            //     using var mp4 = new Mp4IO();
+            using var mp4 = new Mp4IO();
 
-            //     var bmp = mp4.Open( aFilePath, mp4_codec, fps, size.Width, size.Height );
+            var bmp = mp4.Open
+                ( 
+                    aFilePath, 
+                    mp4_codec, 
+                    fps, 
+                    (int)frameSize.Size.Width,
+                    (int)frameSize.Size.Height
+                );
 
-            //     if ( bmp == null )
-            //     {
-            //         Log.Error( $"open video file failure.", true );
-            //         return false;
-            //     }
+            if ( bmp == null )
+            {
+                Log.Error( $"open video file failure.", true );
+                return;
+            }
 
-            //     DmsControl.RecordPreSequence();
-            //     //DMS.PlayerForm.Visible = true;
+            var frameTime = 1d / fps;
 
-            //     var frameTime = 1D / fps;
+            int log_cnt = 0;
 
-            //     DmsControl.WaitRecorder();
+            await Task.Run
+                (
+                    () => 
+                    { 
+                        for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
+                        {
+                            if ( log_cnt++ % fps == 0 )
+                            { 
+                                Config.System.ProgressBarValue = time * 100 / DmsControl.EndPlayTime;
+                                ControlAccess.PageStatusBar?.ReloadProgressBar();
+                                Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time*100/DmsControl.EndPlayTime, 2 )}%)", true );
+                            }
 
-            //     int log_cnt = 0;
+                            using var frame = ControlAccess.UCPlayerPanel?.GetFrame( time );
 
-            //     for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
-            //     {
-            //         if ( log_cnt++ % fps == 0 )
-            //         { 
-            //             Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time*100/DmsControl.EndPlayTime, 2 )}%)", true );
-            //         }
+                            if ( frame == null )
+                            {
+                                Log.Error( $"frame read error.[{time}]" );
+                                continue;
+                            }
 
-            //         using var frame = DMS.PlayerForm?.GetFrame( time );
+                            var buffer = frame.GetPixelBytes();
 
-            //         if ( frame == null )
-            //         {
-            //             Log.Error( $"frame read error.[{time}]" );
-            //             continue;
-            //         }
+                            var bmpData = bmp.LockBits
+                            (
+                                new( 0, 0, bmp.Width, bmp.Height ),
+                                ImageLockMode.WriteOnly,
+                                bmp.PixelFormat
+                            );
 
-            //         var frameData = frame.LockBits
-				        //     (
-					        //      new( 0, 0, frame.Width, frame.Height ),
-					        //      ImageLockMode.ReadOnly,
-            //                     frame.PixelFormat
-				        //     );
+                            Marshal.Copy( buffer, 0, bmpData.Scan0, buffer.Length );
 
-            //         var bmpData = bmp.LockBits
-				        //     (
-					        //      new( 0, 0, bmp.Width, bmp.Height ),
-					        //      ImageLockMode.WriteOnly,
-					        //      bmp.PixelFormat
-				        //     );
+                            bmp.UnlockBits( bmpData );
 
-            //         var buffer = new byte[ frameData.Stride * frameData.Height ];
+                            mp4.AddFrame();
+                        }
 
-            //         Marshal.Copy( frameData.Scan0, buffer, 0, buffer.Length );
-            //         Marshal.Copy( buffer, 0, bmpData.Scan0, buffer.Length );
+                        Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
 
-            //         frame.UnlockBits( frameData );
-			        //bmp.UnlockBits( bmpData );
+                        Config.System.ProgressBarValue = 0;
+                        ControlAccess.PageStatusBar?.ReloadProgressBar();
 
-            //         mp4.AddFrame();
-            //     }
-            // }
-            // catch ( Exception e )
-            // {
-            //     Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-            //     return false;
-            // }
-            // finally
-            // {
-            //     DmsControl.StopPreSequence();
-
-            //     //DMS.PlayerForm.Visible = false;
-            // }
-
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+                        ControlAccess.UCPlayerPanel?.EndGetFrame();
+                    }
+                );
         }
         catch ( Exception e )
         {
             Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-            return false;
+
+            ControlAccess.UCPlayerPanel?.EndGetFrame();
         }
-        return true;
     }
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Numerics;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
@@ -119,6 +119,15 @@ public class PlayerSurface : PlayerSurfaceBase
     protected override void UpdateScore()
 	{
         base.UpdateScore();
+
+        // screen
+        if ( DrawSet.DrawDirectionModeSelect == ConfigPlayerSequence.DrawDirectionMode.Vertical )
+        { 
+            var s = _ScreenSize;
+
+            _ScreenSize.Height  = s.Width;
+            _ScreenSize.Width   = s.Height;
+        }
 
         // bpm header
         _BpmHeadRange.X             = 0;
@@ -567,11 +576,20 @@ public class PlayerSurface : PlayerSurfaceBase
         #endregion
     }
 
-    public override bool OnDraw( CanvasSwapChainPanel sender, CanvasDrawEventArgs args )
+    public override bool OnDraw( CanvasDrawEventArgs args )
     {
-        if ( !base.OnDraw( sender, args ) )
+        if ( !base.OnDraw( args ) )
         {
             return false;
+        }
+
+        // 描画回転
+        if ( DrawSet.DrawDirectionModeSelect == ConfigPlayerSequence.DrawDirectionMode.Vertical )
+        {
+            args.DrawingSession.Transform = 
+                Matrix3x2.CreateTranslation( - _ScreenSize._height, 0 ) *
+                Matrix3x2.CreateRotation( (float)( Math.PI * -90 / 180.0 ) ) *
+                Matrix3x2.CreateTranslation( 0, _ScreenSize._width - _ScreenSize._height );
         }
 
         var head            = _ScoreHeadRange;

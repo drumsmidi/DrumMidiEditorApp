@@ -65,7 +65,6 @@ public class ConfigPlayer
     public enum PlayerSurfaceMode : int
     {
         Sequence = 0,
-        SequenceVertical,
         Score,
         Simuration,
     }
@@ -188,12 +187,6 @@ public class ConfigPlayer
     /// </summary>
     [JsonInclude]
     public ConfigPlayerSimuration Simuration { get; set; } = new();
-
-    /// <summary>
-    /// プレイヤー描画モード別設定
-    /// </summary>
-    [JsonInclude]
-    public ConfigPlayerSequenceVertical Vertical { get; set; } = new();
 
     #endregion
 }

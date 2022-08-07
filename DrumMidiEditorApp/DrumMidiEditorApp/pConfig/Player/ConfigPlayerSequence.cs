@@ -12,6 +12,31 @@ namespace DrumMidiEditorApp.pConfig;
 /// </summary>
 public class ConfigPlayerSequence
 {
+    /// <summary>
+    /// 描画方向モード
+    /// </summary>
+    public enum DrawDirectionMode : int
+    {
+        Horizontal = 0,
+        Vertical,
+    }
+
+    /// <summary>
+    /// プレイヤー描画モード
+    /// </summary>
+    [JsonInclude]
+    public DrawDirectionMode DrawDirectionModeSelect = DrawDirectionMode.Horizontal;
+
+    /// <summary>
+    /// プレイヤー描画モード
+    /// </summary>
+    [JsonIgnore]
+    public int DrawDirectionModeSelectIndex
+    {
+        get => (int)DrawDirectionModeSelect;
+        set => DrawDirectionModeSelect = (DrawDirectionMode)value;
+    }
+
     #region Bpm
 
     /// <summary>

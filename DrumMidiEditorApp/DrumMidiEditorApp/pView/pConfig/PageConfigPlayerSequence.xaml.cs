@@ -27,14 +27,9 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 	private ConfigMedia ConfigMedia => Config.Media;
 
 	/// <summary>
-	/// プレイヤー描画モードリスト
+	/// 描画方向リスト
 	/// </summary>
-	private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
-
-	/// <summary>
-	/// スクリーンサイズリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _PlayerScreenSizeList = new();
+	private readonly ObservableCollection<string> _DrawDirectionModeList = new();
 
     #endregion
 
@@ -45,6 +40,15 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     {
 		// 初期化
 		InitializeComponent();
+
+		#region 描画方向リスト作成
+
+		foreach ( var name in Enum.GetNames<ConfigPlayerSequence.DrawDirectionMode>() )
+		{
+			_DrawDirectionModeList.Add( name );
+		}
+
+        #endregion
 
         #region NumberBox の入力書式設定
 
@@ -100,6 +104,23 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
 	#endregion
+
+    /// <summary>
+    /// 描画方向変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void DrawDirectionModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+		try
+		{
+			Config.EventUpdatePlayerScore();
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
 
 	/// <summary>
 	/// 共通：トグル切替

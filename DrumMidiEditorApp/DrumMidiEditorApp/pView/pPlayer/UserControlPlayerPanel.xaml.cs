@@ -10,6 +10,8 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using System.Threading.Tasks;
+using Windows.Graphics.DirectX;
+using DrumMidiEditorApp.pControl;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -47,22 +49,30 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 96
             );
 
-        PlayerIdleAsync();
+        //PlayerIdleAsync();
     }
+
+
+    private Task? _IdleTask = null;
+
+    private CancellationTokenSource? _IdleTaskCancelToken = null;
 
 	/// <summary>
 	/// 描画ループ
 	/// </summary>
-	public async void PlayerIdleAsync()
+	public void PlayerIdleAsync()
     {
         try
         {
             Config.EventUpdatePlayerMode();
 
+            _IdleTaskCancelToken?.Dispose();
+            _IdleTaskCancelToken = new();
+
             // TODO: 描画処理を非同期実行。
             // TODO: 非同期処理を考慮していなかったの落ちる可能性高いです。
             // TODO: そのうち見直し予定
-            await Task.Run
+            _IdleTask = Task.Run
                 (
                     () => 
                     { 
@@ -71,7 +81,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                         fps.Set( 2, DrawSet.Fps );
                         fps.Start();
 
-                        while ( true )
+                        while ( !_IdleTaskCancelToken.IsCancellationRequested )
                         {
                             // プレイヤー描画モード変更
                             if ( DrawSet.UpdateSurfaceModoFlag )
@@ -113,6 +123,84 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
+
+    private CanvasRenderTarget? _Offscreen = null;
+
+    public void StartGetFrame()
+    {
+        _IdleTaskCancelToken?.Cancel();
+        _IdleTask?.Wait();
+
+        DmsControl.RecordPreSequence();
+        DmsControl.WaitRecorder();
+
+        UpdateSurfaceMode();
+        UpdatePanelSize();
+
+        // 描画処理
+        _Offscreen = new CanvasRenderTarget
+            (
+                CanvasDevice.GetSharedDevice(),
+                DrawSet.ResolutionScreenWidth,
+                DrawSet.ResolutionScreenHeight,
+                96
+            );
+    }
+
+    /// <summary>
+    /// 画面コピー取得
+    /// </summary>
+    /// <param name="aFrameTime"></param>
+	public CanvasBitmap? GetFrame( double aFrameTime )
+    {
+        if ( _Offscreen == null )
+        {
+            return null;
+        }
+
+        try
+        {
+            // フレーム処理
+            _PlayerSurface?.OnMove( aFrameTime );
+
+            // 描画処理
+            using var drawSession = _Offscreen.CreateDrawingSession();
+
+            drawSession.Clear( DrawSet.SheetColor.Color );
+
+            var args = new CanvasDrawEventArgs( drawSession );
+
+            _PlayerSurface?.OnDraw( args );
+
+            // Bitmap作成
+            return CanvasBitmap.CreateFromBytes
+                (
+                    drawSession,
+                    _Offscreen.GetPixelBytes( 0, 0, (int)_Offscreen.SizeInPixels.Width, (int)_Offscreen.SizeInPixels.Height ),
+                    (int)_Offscreen.SizeInPixels.Width,
+                    (int)_Offscreen.SizeInPixels.Height,
+                    DirectXPixelFormat.R8G8B8A8UIntNormalized,
+                //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                    96,
+                    CanvasAlphaMode.Premultiplied
+                );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return null;
+        }
+    }
+
+    public void EndGetFrame()
+    {
+        DmsControl.StopPreSequence();
+
+        _Offscreen?.Dispose();
+
+        PlayerIdleAsync();
+    }
+
     /// <summary>
     /// プレイヤー描画モード変更
     /// </summary>
@@ -122,9 +210,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
         {
 			case ConfigPlayer.PlayerSurfaceMode.Sequence:
    				_PlayerSurface = new pSequence.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.SequenceVertical:
-   				_PlayerSurface = new pSequenceVertical.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Score:
    				_PlayerSurface = new pScore.PlayerSurface();
@@ -238,7 +323,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
             var args = new CanvasDrawEventArgs( drawSession );
 
-            _PlayerSurface?.OnDraw( _PlayerCanvas, args );
+            _PlayerSurface?.OnDraw( args );
 
             _PlayerCanvas.SwapChain.Present();
         }

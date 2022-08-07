@@ -1,19 +1,16 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage.Pickers;
+using Windows.UI;
+using WinRT.Interop;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using Microsoft.Graphics.Canvas;
-using Microsoft.UI.Windowing;
-using DrumMidiEditorApp.pView.pEditer;
-using WinRT.Interop;
-using Windows.UI;
-using System.Numerics;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -273,8 +270,6 @@ public static class XamlHelper
         // テキスト
         if ( aLabelText.Length != 0 )
         {
-            //aGraphics.Transform = Matrix3x2.CreateRotation( (float)( Math.PI * 45 / 180.0 ) );
-
             aGraphics.DrawText
                 (
                     aLabelText,
@@ -282,8 +277,6 @@ public static class XamlHelper
                     aFormatRect.Text.TextColor.Color,
                     aFormatRect.Text.TextFormat
                 );
-
-            //aGraphics.Transform = Matrix3x2.CreateRotation( 0 );
         }
 
         // 外枠

@@ -40,5 +40,5 @@ interface IPlayerSurface
     /// 描画
     /// </summary>
     /// <returns>True:処理続行、False:処理中断</returns>
-    bool OnDraw( CanvasSwapChainPanel sender, CanvasDrawEventArgs args );
+    bool OnDraw( CanvasDrawEventArgs args );
 }

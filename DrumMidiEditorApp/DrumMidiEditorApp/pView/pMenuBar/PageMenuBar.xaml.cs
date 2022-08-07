@@ -354,10 +354,8 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     {
 						filepath.Extension = ConfigSystem.ExtentionVideo;
 
-						if ( !FileIO.SaveVideo( filepath, DMS.SCORE ) )
-						{
-							return;
-						}
+						// TODO: 対応中。非同期処理時に何か操作すると落ちるかも
+						FileIO.SaveVideoAsync( filepath, DMS.SCORE );
 					}
 				);
 		}

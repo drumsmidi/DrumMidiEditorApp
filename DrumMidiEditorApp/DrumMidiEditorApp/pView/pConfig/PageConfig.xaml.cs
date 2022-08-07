@@ -50,7 +50,6 @@ public sealed partial class PageConfig : Page
             ( "PageConfigEditer"    , typeof( PageConfigEditer )    ),
             ( "PageConfigPlayer"    , typeof( PageConfigPlayer )    ),
             ( "PageConfigPlayerA"   , typeof( PageConfigPlayerSequence )            ),
-            ( "PageConfigPlayerB"   , typeof( PageConfigPlayerSequenceVertical )    ),
             ( "PageConfigPlayerC"   , typeof( PageConfigPlayerScore )               ),
             ( "PageConfigPlayerD"   , typeof( PageConfigPlayerSimuration )          ),
         };

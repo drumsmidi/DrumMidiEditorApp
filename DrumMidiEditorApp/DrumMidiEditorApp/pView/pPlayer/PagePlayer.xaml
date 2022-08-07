@@ -15,7 +15,7 @@
     VerticalAlignment="Top"
     Background="#00000000">
 
-    <Grid BorderBrush="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" BorderThickness="4">
+    <Grid>
         <local:UserControlPlayerPanel />
     </Grid>
 </Page>

@@ -11,6 +11,11 @@
 
         <StackPanel Orientation="Vertical" Spacing="6">
 
+            <ComboBox x:Uid="InputPlayerDrawDirectionMode"
+                ItemsSource="{x:Bind _DrawDirectionModeList, Mode=OneTime}"
+                SelectedIndex="{x:Bind DrawSet.DrawDirectionModeSelectIndex, Mode=TwoWay}"
+                SelectionChanged="DrawDirectionModeComboBox_SelectionChanged" />
+
             <ToggleSwitch x:Uid="InputVolumeSize"
                 IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
                 Toggled="ToggleSwitch_Toggled" />

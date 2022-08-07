@@ -36,6 +36,17 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 	/// </summary>
 	public void ReloadProgressBar()
 	{
+		if ( !DispatcherQueue.HasThreadAccess )
+        {
+            DispatcherQueue.TryEnqueue
+                (
+                    DispatcherQueuePriority.Normal,
+                    () => ReloadProgressBar()
+				);
+
+			return;
+        }
+
 		OnPropertyChanged( "ConfigSystem" );
 	}
 

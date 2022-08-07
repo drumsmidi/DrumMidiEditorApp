@@ -154,7 +154,7 @@ public class ConfigMedia
     /// 動画出力FPS：最大値
     /// </summary>
     [JsonIgnore]
-    public int OutputVideoFpsMin { get; set; } = 30;
+    public int OutputVideoFpsMin { get; set; } = 1;
 
     /// <summary>
     /// 動画出力FPS：最小値
