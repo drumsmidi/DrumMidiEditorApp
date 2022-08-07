@@ -49,7 +49,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 96
             );
 
-        //PlayerIdleAsync();
+        PlayerIdleAsync();
     }
 
 
@@ -65,6 +65,9 @@ public sealed partial class UserControlPlayerPanel : UserControl
         try
         {
             Config.EventUpdatePlayerMode();
+
+            _IdleTaskCancelToken?.Cancel();
+            _IdleTask?.Wait();
 
             _IdleTaskCancelToken?.Dispose();
             _IdleTaskCancelToken = new();
