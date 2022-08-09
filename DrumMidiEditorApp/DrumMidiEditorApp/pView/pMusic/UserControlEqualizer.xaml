@@ -26,9 +26,9 @@
                         <AppBarSeparator />
 
                         <AppBarToggleButton x:Uid="ButtonEqualizer"
-                            IsChecked="{x:Bind DrawSet.EqualizerOn, Mode=TwoWay}"
+                            IsChecked="{x:Bind DrawSet.EqualizerOn, Mode=OneTime}"
                             Checked="EqualizerAppBarToggleButton_CheckChanged"
-                            Unchecked="EqualizerAppBarToggleButton_CheckChanged" />
+                            Unchecked="EqualizerAppBarToggleButton_UncheckChanged" />
 
                         <AppBarSeparator />
 
@@ -45,8 +45,8 @@
                         PointerPressed="EqualizerCanvas_PointerPressed"
                         PointerMoved="EqualizerCanvas_PointerMoved"
                         PointerReleased="EqualizerCanvas_PointerReleased"
+                        PointerExited="EqualizerCanvas_PointerReleased"
                         PointerCanceled="EqualizerCanvas_PointerReleased"
-                                          PointerExited="EqualizerCanvas_PointerReleased"
                         PointerCaptureLost="EqualizerCanvas_PointerReleased" />
 
                     <TextBlock x:Name="_EqualizerInfoTextBlock"

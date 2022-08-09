@@ -13,6 +13,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -54,21 +55,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	/// 範囲選択タイプリスト
 	/// </summary>
 	private readonly ObservableCollection<string> _RangeSelectTypeList = new();
-
-	/// <summary>
-	/// マウスダウン押下時のマウス位置
-	/// </summary>
-	private Point _MouseDownPosition = new();
-
-	/// <summary>
-	/// マウスダウン押下中のマウス位置
-	/// </summary>
-	private Point _MouseMovePosition = new();
-
-	/// <summary>
-	/// 等間隔処理実行用タイマー
-	/// </summary>
-	private PeriodicTimer? _Timer = null;
 
 	#endregion
 
@@ -138,7 +124,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	/// </summary>
 	public void ReloadConfigEditer()
     {
-		OnPropertyChanged( "DrawSet" );
+		try
+		{
+			OnPropertyChanged( "DrawSet" );
+		}
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -180,17 +173,32 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
 		DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
-		Config.EventUpdateEditerSheetPos();
+		EventManage.EventEditUpdateSheetPos();
     }
 
-    #endregion
+	#endregion
 
-    #region Move sheet Mouse Event
+	#region Move sheet Mouse Event
 
-    /// <summary>
-    /// アクション状態一覧
-    /// </summary>
-    private enum EActionState
+	/// <summary>
+	/// マウスダウン押下時のマウス位置
+	/// </summary>
+	private Point _MouseDownPosition = new();
+
+	/// <summary>
+	/// マウスダウン押下中のマウス位置
+	/// </summary>
+	private Point _MouseMovePosition = new();
+
+	/// <summary>
+	/// 等間隔処理実行用タイマー
+	/// </summary>
+	private PeriodicTimer? _Timer = null;
+
+	/// <summary>
+	/// アクション状態一覧
+	/// </summary>
+	private enum EActionState
     {
         None = 0,
         MoveSheet,
@@ -223,8 +231,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
 				_ActionState = EActionState.MoveSheet;
 			}
-
-            //Refresh();
         }
         catch ( Exception e )
         {
@@ -258,8 +264,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                     }
                     break;
     		}
-
-            //Refresh();
         }
         catch ( Exception e )
         {
@@ -293,8 +297,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                     }
                     break;
 			}
-
-            //Refresh();
         }
         catch ( Exception e )
         {
@@ -360,7 +362,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
             DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
 
-            Config.EventUpdateEditerSheetPos();
+            EventManage.EventEditUpdateSheetPos();
         }
     }
 
@@ -377,7 +379,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	{
 		try
 		{
-			Config.EventClearEditerRangeSelect();
+			EventManage.EventEditClearRangeSelect();
 		}
 		catch ( Exception e )
         {
@@ -404,7 +406,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 				return;
             }
 
-			Config.EventUpdateEditerSize();
+			EventManage.EventEditItemResize();
 		}
 		catch ( Exception e )
         {
@@ -425,7 +427,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	{
 		try
 		{
-			Config.EventEditerUndo();
+			EventManage.EventEditUndo();
 		}
 		catch ( Exception e )
 		{
@@ -442,7 +444,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
 		try
 		{
-			Config.EventEditerRedo();
+			EventManage.EventEditRedo();
 		}
         catch ( Exception e )
         {
@@ -605,7 +607,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 	/// </summary>
 	private void UpdateVolumeLevel()
 	{
-		Config.EventUpdateEditerWaveForm();
+		EventManage.EventEditUpdateWaveForm();
 	}
 
 	/// <summary>

@@ -130,7 +130,7 @@ internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBp
 		}
 		if ( GetType() != aOther.GetType() )
 		{
-                throw new ArgumentException( "Invalid aOther", nameof( aOther ) );
+            throw new ArgumentException( "Invalid aOther", nameof( aOther ) );
 		}
 		return CompareTo( aOther as DmsItemBpm );
 	}

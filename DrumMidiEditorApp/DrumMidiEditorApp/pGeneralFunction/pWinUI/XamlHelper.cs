@@ -11,6 +11,7 @@ using WinRT.Interop;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using Microsoft.UI.Dispatching;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -289,6 +290,26 @@ public static class XamlHelper
                     aFormatRect.Line.LineSize
                 );
         }
+    }
+
+    #endregion
+
+    #region UserControl
+
+    /// <summary>
+    /// スレッドアクセスを持たない場合、aActionイベントを実行する
+    /// </summary>
+    /// <param name="aUserControl"></param>
+    /// <param name="aAction"></param>
+    /// <returns>True:スレッドアクセスあり、False:スレッドアクセスなし</returns>
+    public static bool DispatcherQueueHasThreadAccess( UserControl aUserControl, Action aAction )
+    {
+		if ( !aUserControl.DispatcherQueue.HasThreadAccess )
+        {
+            aUserControl.DispatcherQueue.TryEnqueue( DispatcherQueuePriority.Normal, () => aAction() );
+            return false;
+        }
+        return true;
     }
 
     #endregion

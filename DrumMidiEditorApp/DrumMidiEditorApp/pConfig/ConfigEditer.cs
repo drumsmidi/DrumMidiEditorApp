@@ -18,24 +18,6 @@ public class ConfigEditer
     #region Update flag
 
     /// <summary>
-    /// Undo実行フラグ
-    /// </summary>
-    [JsonIgnore]
-    public bool UpdateUndoFlag { get; set; } = false;
-
-    /// <summary>
-    /// Redo実行フラグ
-    /// </summary>
-    [JsonIgnore]
-    public bool UpdateRedoFlag { get; set; } = false;
-
-    /// <summary>
-    /// 履歴クリアフラグ
-    /// </summary>
-    [JsonIgnore]
-    public bool UpdateResumeClearFlag { get; set; } = false;
-
-    /// <summary>
     /// シート移動フラグ
     /// </summary>
     [JsonIgnore]
@@ -367,6 +349,15 @@ public class ConfigEditer
     /// </summary>
     [JsonIgnore]
     public PointInt NotePosition { get; set; } = new( 0, 0 );
+
+    /// <summary>
+    /// ノートOFFペン
+    /// </summary>
+    [JsonInclude]
+    public FormatLine NoteOffLine { get; set; } = new()
+    {
+        LineSize    = _BassLineSize,
+    };
 
     /// <summary>
     /// ノート選択時の外枠ペン

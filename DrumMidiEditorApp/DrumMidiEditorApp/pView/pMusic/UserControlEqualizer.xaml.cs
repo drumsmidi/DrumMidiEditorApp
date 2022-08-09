@@ -61,14 +61,27 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// BGMへイコライザ入力内容を適用
     /// </summary>
-    public void ApplyEqulizer() => UpdateEqualizer();
+    public void ApplyEqulizer()
+    { 
+        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ApplyEqulizer() ) )
+        {
+            return;
+        }
+
+        UpdateEqualizerAudio();
+    }
 
 	/// <summary>
 	/// イコライザの入力およびBGMのイコライザ設定をリセット
 	/// </summary>
-	public void ResetEqulizer() 
+	public void ResetEqualizer() 
 	{
-		ResetEqualizer();
+        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ResetEqualizer() ) )
+        {
+            return;
+        }
+
+		ResetEqualizerAudio();
 		Refresh();
 	}
 
@@ -83,7 +96,8 @@ public sealed partial class UserControlEqualizer : UserControl
     {
 		try
 		{
-			ResetEqulizer();
+            ResetEqualizerAudio();
+            Refresh();
 		}
 		catch ( Exception e )
 		{
@@ -100,9 +114,28 @@ public sealed partial class UserControlEqualizer : UserControl
     {
 		try
 		{
-            ApplyEqulizer();
+            DrawSet.EqualizerOn = true;
+            UpdateEqualizerAudio();
         }
 		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+    /// <summary>
+    /// イコライザON/OFFの切替
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void EqualizerAppBarToggleButton_UncheckChanged( object sender, RoutedEventArgs args )
+    {
+		try
+		{
+            DrawSet.EqualizerOn = false;
+            UpdateEqualizerAudio();
+        }
+        catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
@@ -117,7 +150,12 @@ public sealed partial class UserControlEqualizer : UserControl
 	{
 		try
 		{
-            var ischecked = ( sender as AppBarToggleButton )?.IsChecked ?? false ;
+            if ( sender is not AppBarToggleButton item )
+            {
+                return;
+            }
+
+            var ischecked = item?.IsChecked ?? false ;
 
             // 波形描画用のタイマー設定
             if ( ischecked )
@@ -453,7 +491,7 @@ public sealed partial class UserControlEqualizer : UserControl
             SetEqualizerInfo( aMousePos );
         }
 
-        UpdateEqualizer();
+        UpdateEqualizerAudio();
     }
 
     /// <summary>
@@ -474,7 +512,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
         SetEqualizerInfo( p );
 
-        UpdateEqualizer();
+        UpdateEqualizerAudio();
     }
 
     /// <summary>
@@ -489,7 +527,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// BGMイコライザ設定反映
     /// </summary>
-    public void UpdateEqualizer()
+    public void UpdateEqualizerAudio()
 	{
 		try
 		{
@@ -523,7 +561,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザ設定リセット
     /// </summary>
-    public void ResetEqualizer()
+    public void ResetEqualizerAudio()
     {
         try
         {
@@ -663,64 +701,70 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 周波数解析
 
-            // TODO: 仮作成。BGMの再読み込み時にエラーになるので使う場合は改良が必要
-
             if ( DrawSet.WaveFormOn )
             {
-                var bgm = DmsControl.AudioData;
+                // TODO: 仮作成。MusicスレッドでBGMの再読み込み時にエラーになる場合があるので使う場合は改良が必要
+                try
+                { 
+                    var bgm = DmsControl.AudioData;
 
-                if ( bgm?.IsEnableFFT() ?? false )
-                {
-                    lock ( bgm )
-                    { 
-                        var fft = bgm.GetFFTPlaying();
+                    if ( bgm?.IsEnableFFT() ?? false )
+                    {
+                        lock ( bgm )
+                        { 
+                            var fft = bgm.GetFFTPlaying();
 
-                        var hzPerOne = (float)bgm.GetSampleRate() / ( fft.Count * bgm.Channels );
+                            var hzPerOne = (float)bgm.GetSampleRate() / ( fft.Count * bgm.Channels );
 
-                        var pen = new FormatLine[ 2 ]
-                            {
-                                DrawSet.WaveLeftLine,
-                                DrawSet.WaveRightLine,
-                            };
-
-                        var r = new Rect( 0, 0, 2, 1 );
-
-                        for ( int k = 0; k < fft.Count; k++ )
-                        {
-                            var format = pen[ k % bgm.Channels ];
-
-                            r.X         = body.X - k % bgm.Channels * format.LineSize;
-                            r.Height    = fft[ k ] * body.Height;
-                            r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
-
-                            var hz_b    = 0d;
-                            var hz      = hzPerOne * ( k + 1 - k % bgm.Channels );
-
-                            foreach ( var item in DrawSet.HzList )
-                            {
-                                if ( hz > item.Hz )
+                            var pen = new FormatLine[ 2 ]
                                 {
-                                    r.X += item.Width;
-                                    hz_b = item.Hz;
-                                }
-                                else
+                                    DrawSet.WaveLeftLine,
+                                    DrawSet.WaveRightLine,
+                                };
+
+                            var r = new Rect( 0, 0, 2, 1 );
+
+                            for ( int k = 0; k < fft.Count; k++ )
+                            {
+                                var format = pen[ k % bgm.Channels ];
+
+                                r.X         = body.X - k % bgm.Channels * format.LineSize;
+                                r.Height    = fft[ k ] * body.Height;
+                                r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
+
+                                var hz_b    = 0d;
+                                var hz      = hzPerOne * ( k + 1 - k % bgm.Channels );
+
+                                foreach ( var item in DrawSet.HzList )
                                 {
-                                    r.X += item.Width * ( hz - hz_b ) / ( item.Hz - hz_b );
-                                    break;
+                                    if ( hz > item.Hz )
+                                    {
+                                        r.X += item.Width;
+                                        hz_b = item.Hz;
+                                    }
+                                    else
+                                    {
+                                        r.X += item.Width * ( hz - hz_b ) / ( item.Hz - hz_b );
+                                        break;
+                                    }
                                 }
+
+                                args.DrawingSession.DrawLine
+                                    (
+                                        r._x,
+                                        r._y,
+                                        r._x,
+                                        (float)r.Bottom,
+                                        format.LineColor.Color,
+                                        format.LineSize
+                                    );
                             }
-
-                            args.DrawingSession.DrawLine
-                                (
-                                    r._x,
-                                    r._y,
-                                    r._x,
-                                    (float)r.Bottom,
-                                    format.LineColor.Color,
-                                    format.LineSize
-                                );
                         }
                     }
+                }
+                catch ( Exception )
+                {
+                    //Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
                 }
             }
             #endregion

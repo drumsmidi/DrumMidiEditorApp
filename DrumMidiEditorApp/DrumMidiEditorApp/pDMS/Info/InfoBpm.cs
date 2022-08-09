@@ -1,4 +1,6 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+
+using DrumMidiEditorApp.pConfig;
 
 namespace DrumMidiEditorApp.pDMS;
 
@@ -7,6 +9,8 @@ namespace DrumMidiEditorApp.pDMS;
 /// </summary>
 public class InfoBpm : InfoBase
 {
+    #region Member
+
     /// <summary>
     /// BPM
     /// </summary>
@@ -15,8 +19,10 @@ public class InfoBpm : InfoBase
     /// <summary>
     /// 検索キー（小節番号✕1,000＋小節内ノート位置）
     /// </summary>
-    public override int SearchKey 
+    public override int SearchKey
         => base.MeasureNo * 1000 + base.NotePos;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -65,20 +71,25 @@ public class InfoBpm : InfoBase
     /// BPM情報を設定
     /// </summary>
     /// <param name="aInfo">BPM情報</param>
-    public void Set( InfoBpm aInfo )
+    public override void Set( object aInfo )
     {
         base.Set( aInfo );
 
-        Bpm = aInfo.Bpm;
+        if ( aInfo is not InfoBpm info )
+        { 
+            throw new InvalidCastException();
+        }
+
+        Bpm = info.Bpm;
     }
 
     /// <summary>
     /// BPM情報を複製
     /// </summary>
-    /// <returns>BPM情報</returns>
-    public InfoBpm Clone()
+    /// <returns>BPM情報(InfoBpm)</returns>
+    public override object Clone()
     {
-        return new()
+        return new InfoBpm()
             {
                 MeasureNo   = base.MeasureNo,
                 NotePos     = base.NotePos,

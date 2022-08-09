@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -34,7 +35,7 @@ public sealed partial class PageScore : Page
 	/// </summary>
 	private void UpdateScore()
 	{
-		Config.EventUpdateScoreTab();
+		EventManage.EventScoreUpdateTab();
 	}
 
 	/// <summary>

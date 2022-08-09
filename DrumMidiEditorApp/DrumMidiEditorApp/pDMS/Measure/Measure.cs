@@ -9,12 +9,16 @@ namespace DrumMidiEditorApp.pDMS;
 /// </summary>
 public class Measure : DisposeBaseClass
 {
+    #region Member
+
     /// <summary>
     /// 小節ライン（NOTE）（MidiMapキー、小節ライン）
     /// </summary>
     public Dictionary<int,MeasureLine<InfoNote>> NoteLines { get; private set; } = new();
 
-	protected override void Dispose( bool aDisposing )
+    #endregion
+
+    protected override void Dispose( bool aDisposing )
 	{
 		if ( !_Disposed )
 		{
@@ -114,5 +118,21 @@ public class Measure : DisposeBaseClass
             }
         }
         return NoteLines.Count == 0 ;
+    }
+
+    /// <summary>
+    /// 複製
+    /// </summary>
+    /// <returns></returns>
+    public Measure Clone()
+    {
+        var measure = new Measure();
+
+        foreach ( var item in NoteLines )
+        {
+            measure.NoteLines.Add( item.Key, item.Value.Clone() );
+        }
+
+        return measure;
     }
 }

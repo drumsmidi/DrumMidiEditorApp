@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
@@ -9,12 +10,16 @@ namespace DrumMidiEditorApp.pDMS;
 /// </summary>
 public class MeasureLine<T> : DisposeBaseClass where T : InfoBase
 {
+    #region Member
+
     /// <summary>
     /// 小節内1行分のITEM情報（小節内ノート位置、情報）
     /// </summary>
     public Dictionary<int,T> InfoStates { get; private set; } = new();
 
-	protected override void Dispose( bool aDisposing )
+    #endregion
+
+    protected override void Dispose( bool aDisposing )
 	{
 		if ( !_Disposed )
 		{
@@ -73,5 +78,26 @@ public class MeasureLine<T> : DisposeBaseClass where T : InfoBase
         InfoStates.Remove( aNotePos );
 
         return InfoStates.Count == 0 ;
+    }
+
+    /// <summary>
+    /// 複製
+    /// </summary>
+    /// <returns></returns>
+    public MeasureLine<T> Clone()
+    {
+        var measureLine = new MeasureLine<T>();
+
+        foreach ( var item in InfoStates )
+        {
+            if ( item.Value.Clone() is not T info )
+            { 
+                throw new InvalidCastException();
+            }
+
+            measureLine.InfoStates.Add( item.Key, info );
+        }
+
+        return measureLine;
     }
 }

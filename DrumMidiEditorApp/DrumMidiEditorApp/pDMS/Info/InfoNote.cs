@@ -1,10 +1,14 @@
-﻿namespace DrumMidiEditorApp.pDMS;
+﻿using System;
+
+namespace DrumMidiEditorApp.pDMS;
 
 /// <summary>
 /// NOTE情報
 /// </summary>
 public class InfoNote : InfoBase
 {
+    #region Member
+
     /// <summary>
     /// チェンネル番号
     /// </summary>
@@ -33,8 +37,10 @@ public class InfoNote : InfoBase
     /// <summary>
     /// 検索キー（MidiMapキー✕1,000,000＋小節番号✕1,000＋小節内ノート位置）
     /// </summary>
-    public override int SearchKey 
+    public override int SearchKey
         => MidiMapKey * 1000000 + base.MeasureNo * 1000 + base.NotePos;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -107,24 +113,29 @@ public class InfoNote : InfoBase
     /// NOTE情報を設定
     /// </summary>
     /// <param name="aInfo">NOTE情報</param>
-    public void Set( InfoNote aInfo )
+    public override void Set( object aInfo )
     {
         base.Set( aInfo );
 
-        ChannelNo  = aInfo.ChannelNo;
-        MidiMapKey = aInfo.MidiMapKey;
-        Volume     = aInfo.Volume;
-        NoteOn     = aInfo.NoteOn;
-        NoteOff    = aInfo.NoteOff;
+        if ( aInfo is not InfoNote info )
+        { 
+            throw new InvalidCastException();
+        }
+
+        ChannelNo  = info.ChannelNo;
+        MidiMapKey = info.MidiMapKey;
+        Volume     = info.Volume;
+        NoteOn     = info.NoteOn;
+        NoteOff    = info.NoteOff;
     }
 
     /// <summary>
     /// NOTE情報を複製
     /// </summary>
-    /// <returns>NOTE情報</returns>
-    public InfoNote Clone()
+    /// <returns>NOTE情報(InfoNote)</returns>
+    public override object Clone()
     {
-        return new()
+        return new InfoNote()
         {
             MeasureNo   = base.MeasureNo,
             NotePos     = base.NotePos,

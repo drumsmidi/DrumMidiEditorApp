@@ -7,12 +7,16 @@ namespace DrumMidiEditorApp.pDMS;
 /// </summary>
 public class MeasureSys : DisposeBaseClass
 {
+    #region Member
+
     /// <summary>
     /// 小節ライン（BPM）
     /// </summary>
     public MeasureLine<InfoBpm> BpmLine { get; private set; } = new();
 
-	protected override void Dispose( bool aDisposing )
+    #endregion
+
+    protected override void Dispose( bool aDisposing )
 	{
 		if ( !_Disposed )
 		{
@@ -62,5 +66,19 @@ public class MeasureSys : DisposeBaseClass
         BpmLine.RemoveInfo( aNotePos );
 
         return BpmLine.InfoStates.Count == 0;
+    }
+
+    /// <summary>
+    /// 複製
+    /// </summary>
+    /// <returns></returns>
+    public MeasureSys Clone()
+    {
+        var measureSys = new MeasureSys()
+        {
+            BpmLine = this.BpmLine.Clone(),
+        };
+
+        return measureSys;
     }
 }

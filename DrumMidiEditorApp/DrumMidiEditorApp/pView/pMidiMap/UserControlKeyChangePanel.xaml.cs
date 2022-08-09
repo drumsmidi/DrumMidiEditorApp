@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -168,9 +169,12 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
 					            ResourcesHelper.GetString( "Dialog/No" ),
 					            new( () =>
                                 {
-    			                    Score.EditChannel.KeyChange( bef_key, aft_key );
+                                    lock ( Score.LockObj )
+                                    { 
+        			                    Score.EditChannel.KeyChange( bef_key, aft_key );
+                                    }
 
-   				                    Config.EventChangeMidiMapKey();
+   				                    EventManage.EventChangeMidiMapKey();
 					            })
 				            );
                     }

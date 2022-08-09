@@ -11,7 +11,9 @@ namespace DrumMidiEditorApp.pDMS;
 /// チャンネル情報
 /// </summary>
 public class Channel : DisposeBaseClass
-{ 
+{
+    #region Member
+
     /// <summary>
     /// MIDIチャンネル番号(0-15)
     /// </summary>
@@ -36,6 +38,8 @@ public class Channel : DisposeBaseClass
     /// NOTEが存在する小節番号最大値
     /// </summary>
     public int MaxMeasureNo { get; private set; } = 0;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -238,6 +242,36 @@ public class Channel : DisposeBaseClass
     #endregion
 
     #region Function
+
+    /// <summary>
+    /// 複製
+    /// </summary>
+    /// <returns></returns>
+    public Channel Clone()
+    {
+        var channel = new Channel( this.ChannelNo )
+        {
+            MidiMapSet      = this.MidiMapSet.Clone(),
+            MaxMeasureNo    = this.MaxMeasureNo,
+        };
+
+        foreach ( var item in NoteInfoList )
+        {
+            if ( item.Value.Clone() is not InfoNote info )
+            {
+                throw new InvalidCastException();
+            }
+
+            channel.NoteInfoList.Add( item.Key, info );
+        }
+
+        foreach ( var item in MeasureList )
+        {
+            channel.MeasureList.Add( item.Key, item.Value.Clone() );
+        }
+
+        return channel;
+    }
 
     /// <summary>
     /// データクリア（小節/NOTE情報）

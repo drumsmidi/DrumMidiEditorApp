@@ -4,9 +4,9 @@ using System;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pAudio;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pIO;
 
 namespace DrumMidiEditorApp.pView;
@@ -86,6 +86,9 @@ public sealed partial class WindowEditer : Window
 			// 再生コントロール停止
 			DmsControl.StopPreSequence();
 			DmsControl.End();
+
+			// プレイヤー停止
+			ControlAccess.UCPlayerPanel?.DrawTaskStop();
 
 			// 設定ファイル保存
 			FileIO.SaveConfig();

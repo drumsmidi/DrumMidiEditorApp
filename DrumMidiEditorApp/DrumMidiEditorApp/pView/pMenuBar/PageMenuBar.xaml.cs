@@ -12,6 +12,7 @@ using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 
@@ -117,7 +118,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
 			SetSubTitle();
 
-			Config.EventReloadScore();
+			EventManage.EventReloadScore();
 		}
 		catch ( Exception e )
 		{
@@ -196,8 +197,11 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 							return;
 						}
 
-						DMS.SCORE			= score;
-						DMS.OpenFilePath	= filepath;
+						lock ( DMS.SCORE.LockObj )
+						{ 
+							DMS.SCORE			= score;
+							DMS.OpenFilePath	= filepath;
+						}
 
 						ApplyScore();
 					}
@@ -434,7 +438,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 		{
 			Score.EditChannelNo = (byte)_ChannelNoComboBox.SelectedItem;
 
-			Config.EventChangeChannel();
+			EventManage.EventChangeChannel();
 		}
 		catch ( Exception e )
 		{
@@ -587,9 +591,12 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 	{
         try
         {
-			ConfigPlayer.DisplayPlayer = ( sender as ToggleSwitch )?.IsOn ?? false ;
+			if ( sender is not ToggleSwitch item )
+            {
+				return;
+            }
 
-			Config.EventUpdatePlayerDisplay();
+			EventManage.EventPlayerUpdateDisplay( item?.IsOn ?? false );
 		}
 		catch ( Exception e )
 		{

@@ -6,8 +6,9 @@ using Windows.Foundation;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pEvent;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer;
 
 public sealed partial class PagePlayer : Page
 {
@@ -64,13 +65,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn )
+			if ( DrawSet.EditModeOn || _ActionState != EActionState.None )
 			{ 
-				return;
-			}
-
-			if ( _ActionState != EActionState.None )
-			{
 				return;
 			}
 
@@ -87,10 +83,7 @@ public sealed partial class PagePlayer : Page
             else if ( p.Properties.IsRightButtonPressed )
 			{
 				// 非表示
-				DrawSet.DisplayPlayer = false;
-				Config.EventUpdatePlayerDisplay();
-
-				_ActionState = EActionState.None;
+				EventManage.EventPlayerUpdateDisplay( false );
 			}
         }
         catch ( Exception e )
@@ -110,13 +103,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn )
+			if ( DrawSet.EditModeOn || _ActionState == EActionState.None )
 			{ 
-				return;
-			}
-
-			if ( _ActionState == EActionState.None )
-			{
 				return;
 			}
 
@@ -149,13 +137,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn )
+			if ( DrawSet.EditModeOn || _ActionState == EActionState.None )
 			{ 
-				return;
-			}
-
-			if ( _ActionState == EActionState.None )
-			{
 				return;
 			}
 

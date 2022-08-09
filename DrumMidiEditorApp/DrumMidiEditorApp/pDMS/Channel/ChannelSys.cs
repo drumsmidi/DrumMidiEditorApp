@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
@@ -9,6 +10,8 @@ namespace DrumMidiEditorApp.pDMS;
 /// </summary>
 public class ChannelSys : DisposeBaseClass
 {
+    #region Member
+
     /// <summary>
     /// BPM情報リスト
     /// </summary>
@@ -23,6 +26,8 @@ public class ChannelSys : DisposeBaseClass
     /// システム情報が存在する小節番号最大値
     /// </summary>
     public int MaxMeasureNo { get; private set; } = 0;
+
+    #endregion
 
     protected override void Dispose( bool aDisposing )
 	{
@@ -153,6 +158,35 @@ public class ChannelSys : DisposeBaseClass
     #endregion
 
     #region Function
+
+    /// <summary>
+    /// 複製
+    /// </summary>
+    /// <returns></returns>
+    public ChannelSys Clone()
+    {
+        var channelSys = new ChannelSys()
+        {
+            MaxMeasureNo = this.MaxMeasureNo,
+        };
+
+        foreach ( var item in BpmInfoList )
+        {
+            if ( item.Value.Clone() is not InfoBpm info )
+            {
+                throw new InvalidCastException();
+            }
+
+            channelSys.BpmInfoList.Add( item.Key, info );
+        }
+
+        foreach ( var item in MeasureList )
+        {
+            channelSys.MeasureList.Add( item.Key, item.Value.Clone() );
+        }
+
+        return channelSys;
+    }
 
     /// <summary>
     /// データクリア（小節/BPM情報）

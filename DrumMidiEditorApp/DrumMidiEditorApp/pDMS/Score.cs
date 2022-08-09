@@ -11,6 +11,11 @@ namespace DrumMidiEditorApp.pDMS;
 public class Score : DisposeBaseClass
 {
     /// <summary>
+    /// スコアロック用オブジェクト
+    /// </summary>
+    public readonly object LockObj = new();
+
+    /// <summary>
     /// ファイルパス（現状未使用）
     /// </summary>
     public GeneralPath FilePath { get; set; } = Config.System.DefaultScoreFilePath;
@@ -101,6 +106,32 @@ public class Score : DisposeBaseClass
     private bool _Disposed = false;
 
     #region Function
+
+	/// <summary>
+	/// MidiMapSetを複製
+	/// </summary>
+	/// <returns>MidiMapSet</returns>
+	public Score Clone()
+	{
+		var score = new Score()
+        {
+            FilePath                    = this.FilePath,
+            Info                        = this.Info,
+            BgmFilePath                 = this.BgmFilePath,
+            BgmPlaybackStartPosition    = this.BgmPlaybackStartPosition,
+            Bpm                         = this.Bpm,
+            BgmVolume                   = this.BgmVolume,
+            EditChannelNo               = this.EditChannelNo,
+            SysChannel                  = this.SysChannel.Clone(),
+        };
+
+        foreach ( var item in this.Channels )
+        {
+            score.Channels[ item.Key ] = item.Value.Clone();
+        }
+
+        return score;
+	}
 
     /// <summary>
     /// データクリア（チャンネル情報）

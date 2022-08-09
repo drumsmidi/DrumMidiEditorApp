@@ -3,12 +3,13 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
-
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -114,7 +115,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     {
 		try
 		{
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
 		{
@@ -131,7 +132,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     {
 		try
 		{
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
         {
@@ -154,7 +155,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 				return;
             }
 
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
         {
@@ -204,7 +205,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 			DrawSet.HeaderGroupOn = item.IsOn;
 
 			ReloadConfig();
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
         {

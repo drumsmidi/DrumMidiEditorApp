@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 using Microsoft.ML;
 using Microsoft.ML.Data;
@@ -10,8 +11,8 @@ using Microsoft.ML.Trainers;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
-using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 
@@ -436,6 +437,6 @@ public static class MLControl
 			Log.Info( $"{en.Current.AbsoultNotePos / Config.System.MeasureNoteNumber}-{en.Current.AbsoultNotePos % Config.System.MeasureNoteNumber}-{result.DrumPattern}" );
 		}
 
-		Config.EventUpdateScorePredict();
+		EventManage.EventEditUpdateScorePredict();
 	}
 }

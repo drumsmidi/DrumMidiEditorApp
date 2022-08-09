@@ -9,6 +9,7 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
@@ -185,11 +186,14 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-            Score.EditMidiMapSet = CreateMidiMapSet();
-            Score.EditMidiMapSet.ClearSelect();
-            Score.EditMidiMapSet.UpdateInfo();
+            lock ( Score.LockObj )
+            { 
+                Score.EditMidiMapSet = CreateMidiMapSet();
+                Score.EditMidiMapSet.ClearSelect();
+                Score.EditMidiMapSet.UpdateInfo();
+            }
 
-            Config.EventReloadMidiMapSet();
+            EventManage.EventReloadMidiMapSet();
         }
         catch ( Exception e )
         {
@@ -231,20 +235,23 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                 {
                                     var keyChangeDic = page.GetChangeKeys();
 
-			                        foreach ( var item in keyChangeDic )
-                                    {
-				                        Score.EditChannel.KeyChange( item.Key, -item.Value );
-			                        }
+                                    lock ( Score.LockObj )
+                                    { 
+			                            foreach ( var item in keyChangeDic )
+                                        {
+				                            Score.EditChannel.KeyChange( item.Key, -item.Value );
+			                            }
 
-			                        foreach ( var item in keyChangeDic )
-			                        {
-                                        Score.EditChannel.KeyChange( -item.Value, item.Value );
-			                        }
+			                            foreach ( var item in keyChangeDic )
+			                            {
+                                            Score.EditChannel.KeyChange( -item.Value, item.Value );
+			                            }
 
-                                    Score.EditMidiMapSet = midiMapSet;
-                                    Score.EditMidiMapSet.UpdateInfo();
+                                        Score.EditMidiMapSet = midiMapSet;
+                                        Score.EditMidiMapSet.UpdateInfo();
+                                    }
 
-                                    Config.EventReloadMidiMapSet();
+                                    EventManage.EventReloadMidiMapSet();
                                 }
                             );
 					}

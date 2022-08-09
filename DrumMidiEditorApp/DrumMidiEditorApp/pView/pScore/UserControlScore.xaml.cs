@@ -67,6 +67,7 @@ public sealed partial class UserControlScore : UserControl
             {
                 DrawSet.UpdateScoreFlag = false;
 
+                _ScoreBitmap?.Dispose();
                 _ScoreBitmap = CreateScoreBitmap();
             }
         }
@@ -274,7 +275,7 @@ public sealed partial class UserControlScore : UserControl
             OnMove();
 
             // 画像表示
-            if ( _ScoreBitmap != null)
+            if ( _ScoreBitmap != null )
             {
                 args.DrawingSession.DrawImage( _ScoreBitmap, 0, 0 );
             }

@@ -1,4 +1,4 @@
-﻿using DrumMidiEditorApp.pDMS;
+﻿using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pView.pEditer;
 
@@ -87,6 +87,6 @@ internal class ResumeEditNoteRange : DisposeBaseClass, IResume
     /// </summary>
     private void Update()
     {
-        //DMS.EditerForm?.EditerCtl.DoClearRangeCheckBox( _RangeRef?.Selected ?? false );
+        EventManage.EventEditUpdateRangeSelect( _RangeRef?.Selected ?? false );
     }
 }

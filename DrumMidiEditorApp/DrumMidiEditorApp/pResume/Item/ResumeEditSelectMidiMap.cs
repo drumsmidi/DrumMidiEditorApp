@@ -1,5 +1,5 @@
-﻿using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
+﻿using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pResume;
@@ -64,6 +64,6 @@ internal class ResumeEditSelectMidiMap : DisposeBaseClass, IResume
         }
         _MidiMap.Selected = !_MidiMap.Selected;
 
-        Config.EventUpdateEditerDisplayNoteVolume();
+        EventManage.EventEditUpdateDisplayNoteVolume();
     }
 }

@@ -1,4 +1,6 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pDMS;
@@ -7,7 +9,9 @@ namespace DrumMidiEditorApp.pDMS;
 /// 情報ベース
 /// </summary>
 public class InfoBase : DisposeBaseClass
-{ 
+{
+    #region Member
+
     /// <summary>
     /// 小節番号
     /// </summary>
@@ -34,6 +38,8 @@ public class InfoBase : DisposeBaseClass
     /// </summary>
     public virtual int SearchKey => 0;
 
+    #endregion
+
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -56,10 +62,24 @@ public class InfoBase : DisposeBaseClass
     /// 情報を設定
     /// </summary>
     /// <param name="aInfo">情報</param>
-    public virtual void Set( InfoBase aInfo )
+    public virtual void Set( object aInfo )
     {
-        MeasureNo  = aInfo.MeasureNo;
-        NotePos    = aInfo.NotePos;
-        Selected   = aInfo.Selected;
+        if ( aInfo is not InfoBase info )
+        { 
+            throw new InvalidCastException();
+        }
+
+        MeasureNo  = info.MeasureNo;
+        NotePos    = info.NotePos;
+        Selected   = info.Selected;
+    }
+
+    /// <summary>
+    /// NOTE情報を複製
+    /// </summary>
+    /// <returns>情報(InfoBase)</returns>
+    public virtual object Clone() 
+    { 
+        return new InfoBase( MeasureNo, NotePos, Selected );
     }
 }

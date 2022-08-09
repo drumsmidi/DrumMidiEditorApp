@@ -1,11 +1,11 @@
-﻿using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
 
@@ -32,22 +32,25 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 	#region INotifyPropertyChanged
 
 	/// <summary>
+	/// プログレスバー再読み込み
+	/// 
 	/// x:Bind OneWay/TwoWay 再読み込み
 	/// </summary>
 	public void ReloadProgressBar()
 	{
-		if ( !DispatcherQueue.HasThreadAccess )
-        {
-            DispatcherQueue.TryEnqueue
-                (
-                    DispatcherQueuePriority.Normal,
-                    () => ReloadProgressBar()
-				);
+		try
+		{
+			if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ReloadProgressBar() ) )
+			{
+				return;
+			}
 
-			return;
-        }
-
-		OnPropertyChanged( "ConfigSystem" );
+			OnPropertyChanged( "ConfigSystem" );
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -91,16 +94,10 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
     {
 		try
 		{
-			if ( !DispatcherQueue.HasThreadAccess )
-            {
-                DispatcherQueue.TryEnqueue
-                    (
-                        DispatcherQueuePriority.Normal,
-                        () => SetStatusText( aTitle, aContent, aSeverity )
-                    );
-
+			if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => SetStatusText( aTitle, aContent, aSeverity ) ) )
+			{
 				return;
-            }
+			}
 
 			_InfoBar.Title		= aTitle;
 			_InfoBar.Content	= aContent;

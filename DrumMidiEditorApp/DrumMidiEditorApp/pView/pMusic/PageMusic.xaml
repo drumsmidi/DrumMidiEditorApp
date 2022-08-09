@@ -56,7 +56,7 @@
                     Maximum="{x:Bind ConfigMedia.BgmPlaybackStartMaxPosition, Mode=OneTime}"
                     SmallChange="0.01" 
                     LargeChange="0.1" 
-                    ValueChanged="MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged" />
+                    ValueChanged="NumberBox_ValueChanged" />
 
                 <NumberBox x:Name="_MusicInfoBgmVolumeNumberBox" x:Uid="InputBgmVolume"
                     Value="{x:Bind MusicInfo.BgmVolume, Mode=TwoWay}" 

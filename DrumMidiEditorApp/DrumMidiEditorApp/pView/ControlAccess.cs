@@ -2,7 +2,7 @@
 using DrumMidiEditorApp.pView.pMenuBar;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
-using DrumMidiEditorApp.pView.pPlayer.pSurface;
+using DrumMidiEditorApp.pView.pPlayer;
 using DrumMidiEditorApp.pView.pScore;
 using DrumMidiEditorApp.pView.pStatusBar;
 

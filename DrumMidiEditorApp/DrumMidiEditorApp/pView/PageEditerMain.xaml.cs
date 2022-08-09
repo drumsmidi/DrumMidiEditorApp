@@ -1,11 +1,12 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pConfig;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -52,7 +53,7 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     {
         try
         {
-            Config.EventWindowResize();
+            EventManage.EventResizeWindow();
 		}
 		catch ( Exception e )
 		{

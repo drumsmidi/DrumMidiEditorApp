@@ -21,6 +21,7 @@ using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
+using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -120,21 +121,6 @@ public sealed partial class UserControlEditerPanel : UserControl
     private float _ScoreViewHeight = 0;
 
     /// <summary>
-    /// マウスダウン押下時のマウス位置
-    /// </summary>
-    private Point _MouseDownPosition = new();
-
-    /// <summary>
-    /// マウスダウン押下時のマウス位置にあるノート位置（絶対値）
-    /// </summary>
-    private PointInt _NoteDownPosition = new();
-
-    /// <summary>
-    /// マウス位置にあるノート位置（絶対値）
-    /// </summary>
-    private PointInt _NoteCursorPosition = new( -1, -1 );
-
-    /// <summary>
     /// ノートコピー範囲内で左端ノートのノート位置（絶対値）
     /// </summary>
 	private int	_CopyNotePositionX = 0;
@@ -220,11 +206,6 @@ public sealed partial class UserControlEditerPanel : UserControl
     private CanvasBitmap? _ScaleBitmap = null;
 
     /// <summary>
-    /// 等間隔処理実行用タイマー
-    /// </summary>
-    private PeriodicTimer? _Timer = null;
-
-    /// <summary>
     /// マウス位置：ノート範囲移動時のタイマー処理用
     /// </summary>
     private Point _MoveMousePoint = new();
@@ -240,6 +221,21 @@ public sealed partial class UserControlEditerPanel : UserControl
     }
 
     #region Mouse Event
+
+    /// <summary>
+    /// マウスダウン押下時のマウス位置
+    /// </summary>
+    private Point _MouseDownPosition = new();
+
+    /// <summary>
+    /// マウスダウン押下時のマウス位置にあるノート位置（絶対値）
+    /// </summary>
+    private PointInt _NoteDownPosition = new();
+
+    /// <summary>
+    /// マウス位置にあるノート位置（絶対値）
+    /// </summary>
+    private PointInt _NoteCursorPosition = new( -1, -1 );
 
     /// <summary>
     /// アクション状態一覧
@@ -524,11 +520,6 @@ public sealed partial class UserControlEditerPanel : UserControl
 
     /// <summary>
     /// マウスアップ処理
-    /// 
-    /// https://docs.microsoft.com/ja-jp/windows/apps/design/input/handle-pointer-input
-    /// PointerPressed イベントと PointerReleased イベントは、常にペアで発生するわけではありません。
-    /// アプリでは、ポインターの押下を終了させる可能性のあるすべてのイベント
-    /// (PointerExited、PointerCanceled、PointerCaptureLost など) をリッスンして処理する必要があります。
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
@@ -617,6 +608,11 @@ public sealed partial class UserControlEditerPanel : UserControl
             _ActionState = EActionState.None;
         }
     }
+
+    /// <summary>
+    /// 等間隔処理実行用タイマー
+    /// </summary>
+    private PeriodicTimer? _Timer = null;
 
     /// <summary>
     /// タイマー停止
@@ -735,9 +731,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
 
-            Config.EventUpdateEditerSheetPos();
-
-	        Refresh();
+            EventManage.EventEditUpdateSheetPos();
         }
     }
 
@@ -992,7 +986,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             }
             else
             {
-                info_new = info_old.Clone();
+                info_new = (InfoBpm)info_old.Clone();
             }
 
             var page = new PageInputBpm
@@ -1157,7 +1151,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     return;
                 }
 
-                info_new = info_old.Clone();
+                info_new = (InfoNote)info_old.Clone();
 
                 if ( DrawSet.NoteOn )
                 {
@@ -1187,14 +1181,14 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         else if ( DrawSet.NoteOn && info_old.NoteOff )
         {
-            var info_new = info_old.Clone();
+            var info_new = (InfoNote)info_old.Clone();
             info_new.NoteOn = false;
 
             rs.AddNote( info_old, info_new );
         }
         else if ( !DrawSet.NoteOn && info_old.NoteOn )
         {
-            var info_new = info_old.Clone();
+            var info_new = (InfoNote)info_old.Clone();
             info_new.NoteOff = false;
 
             rs.AddNote( info_old, info_new );
@@ -1229,8 +1223,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aResume">履歴</param>
 	private void ClearSelectNoteRange( ref ResumeMultiple aResume )
     {
-        DrawSet.IsRangeSelect = false;
-        Config.EventUpdateEditerRangeSelect();
+        EventManage.EventEditUpdateRangeSelect( false );
 
         if ( !_NoteRange.Selected )
         {
@@ -1431,8 +1424,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             _EditResumeMng.ExcuteAndResume( rs );
         }
 
-        DrawSet.IsRangeSelect = true;
-        Config.EventUpdateEditerRangeSelect();
+        EventManage.EventEditUpdateRangeSelect( true );
     }
 
     /// <summary>
@@ -1650,7 +1642,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 					_CopyNotePositionX = info.AbsoluteNotePos;
 				}
 
-				_CopyNoteList.Add( info.Clone() );
+				_CopyNoteList.Add( (InfoNote)info.Clone() );
             }
         }
 
@@ -1663,7 +1655,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 					_CopyNotePositionX = info.AbsoluteNotePos;
 				}
 
-				_CopyBpmList.Add( info.Clone() );
+				_CopyBpmList.Add( (InfoBpm)info.Clone() );
             }
         }
 
@@ -1820,7 +1812,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         continue;
                     }
 
-                    var info_new = info_old.Clone();
+                    var info_new = (InfoNote)info_old.Clone();
 
                     switch ( _VolumeRange.EditType )
                     {
@@ -1882,22 +1874,14 @@ public sealed partial class UserControlEditerPanel : UserControl
 	{
         #region Resume
 
-        if ( DrawSet.UpdateRedoFlag )
-        {
-            _EditResumeMng.Redo();
-            DrawSet.UpdateRedoFlag = false;
-        }
-
-        if ( DrawSet.UpdateUndoFlag )
-        {
-            _EditResumeMng.Undo();
-            DrawSet.UpdateUndoFlag = false;
-        }
-
-        if ( DrawSet.UpdateResumeClearFlag )
-        {
-            _EditResumeMng.Clear();
-            DrawSet.UpdateResumeClearFlag = false;
+        while ( EventManage.ResumeRequestQueue.TryDequeue( out var action ) )
+        { 
+            switch ( action )
+            {
+                case EventManage.EResumeAction.Redo:    _EditResumeMng.Redo();  break;
+                case EventManage.EResumeAction.Undo:    _EditResumeMng.Undo();  break;
+                case EventManage.EResumeAction.Clear:   _EditResumeMng.Clear(); break;
+            }
         }
 
         #endregion
@@ -1950,6 +1934,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             UpdateNoteMeasure();
             UpdateNoteVolumeMeasure();
             UpdateNoteOnOff();
+            UpdateNotePredictListMeasure();
 
             DrawSet.UpdateScoreBpmMeasureNoList.Clear();
             DrawSet.UpdateScoreNoteMeasureNoList.Clear();
@@ -1959,6 +1944,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             DrawSet.UpdateScoreBpmFlag          = false;
             DrawSet.UpdateScoreNoteFlag         = false;
             DrawSet.UpdateScoreNoteVolumeFlag   = false;
+            DrawSet.UpdateScoreNotePredictFlag  = false;
         }
 
         #endregion
@@ -1991,21 +1977,6 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #endregion
 
-        #region Bgm
-
-        if ( DrawSet.UpdateScoreBgmFlag )
-        {
-            UpdateScaleBgm();
-            DrawSet.UpdateScoreBgmFlag = false;
-        }
-
-        if ( DrawSet.UpdateScoreBgmScaleFlag )
-        {
-            UpdateScaleBgmBitmap();
-        }
-
-        #endregion
-
         #region Bpm
 
         if ( DrawSet.UpdateScoreBpmFlag )
@@ -2030,6 +2001,21 @@ public sealed partial class UserControlEditerPanel : UserControl
             }
             DrawSet.UpdateScoreNoteVolumeMeasureNoList.Clear();
             DrawSet.UpdateScoreNoteVolumeFlag = false;
+        }
+
+        #endregion
+
+        #region Bgm
+
+        if ( DrawSet.UpdateScoreBgmFlag )
+        {
+            UpdateScaleBgm();
+            DrawSet.UpdateScoreBgmFlag = false;
+        }
+
+        if ( DrawSet.UpdateScoreBgmScaleFlag )
+        {
+            UpdateScaleBgmBitmap();
         }
 
         #endregion
@@ -2400,11 +2386,10 @@ public sealed partial class UserControlEditerPanel : UserControl
                 // ノート描画用の書式を登録
                 if ( !_MidiMapNoteFormatList.ContainsKey( midiMap.MidiMapKey ) )
                 {
-                    // TODO: 線の色とか情報追加が必要
                     var formatRect = new FormatRect
                     {
                         Background  = new( midiMap.Color ),
-                        Line        = new( midiMap.Color, DrawSet.NoteSelectLine.LineSize ),
+                        Line        = new( midiMap.Color, DrawSet.NoteOffLine.LineSize ),
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
@@ -2531,53 +2516,6 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
             }
         }
-
-#if false
-        var befNoteOff = new Dictionary<int, DmsItemNote>();
-
-        for ( int measure_no = Config.System.MeasureMaxNumber; measure_no >= 0; measure_no-- )
-        {
-            if ( !_NoteList.TryGetValue( measure_no, out var lst ) )
-            {
-                continue;
-            }
-
-            lst.Reverse();
-
-            foreach ( var item in lst )
-            {
-                item.NoteLength = 0;
-                item.NoteOnItem = null;
-
-                if ( item.InfoNote == null )
-                {
-                    continue;
-                }
-
-                if ( item.InfoNote.NoteOn )
-                {
-                    if ( befNoteOff.TryGetValue( item.InfoNote.MidiMapKey, out var bef_item ) && bef_item.InfoNote != null )
-                    {
-                        item.NoteLength = ( bef_item.InfoNote.MeasureNo * DrawSet.MeasureSize + bef_item.NoteRect.Left ) 
-                                        - ( item.InfoNote.MeasureNo     * DrawSet.MeasureSize + item.NoteRect.Right );
-
-                        bef_item.NoteOnItem = item;
-
-                        befNoteOff.Remove( item.InfoNote.MidiMapKey );
-                    }
-                }
-
-                if ( item.InfoNote.NoteOff )
-                {
-                    befNoteOff[ item.InfoNote.MidiMapKey ] = item;
-                }
-            }
-
-            lst.Sort();
-        }
-
-        befNoteOff.Clear();
-#endif
     }
 
     /// <summary>
@@ -2844,23 +2782,41 @@ public sealed partial class UserControlEditerPanel : UserControl
     }
 
     /// <summary>
-    /// BGM音階表示更新
+    /// BGM音階画像作成用タスク
+    /// </summary>
+    private Task? _ScaleWaveFormTask = null;
+
+    /// <summary>
+    /// BGM音階解析用のBGM更新
     /// </summary>
     private void UpdateScaleBgm()
     {
         try
         {
-            DrawSet.UpdateScoreBgmScaleFlag = false;
+            Task.Run
+                (
+                    () =>
+                    {
+                        // 音階表示用画像作成中であれば終わるまで待つ
+                        _ScaleWaveFormTask?.Wait();
+                        _ScaleWaveFormTask?.Dispose();
+                        _ScaleWaveFormTask = null;
 
-            _ScaleBgm?.Dispose();
-            _ScaleBgm = null;
+                        // BGM削除
+                        _ScaleBgm?.Dispose();
+                        _ScaleBgm = null;
 
-            if (Score.BgmFilePath.IsExistFile )
-            { 
-                _ScaleBgm = new NAudioData(Score.BgmFilePath, true );
-            }
+                        // BGM読込
+                        if ( Score.BgmFilePath.IsExistFile )
+                        { 
+                            _ScaleBgm = new NAudioData( Score.BgmFilePath, true );
+                        }
 
-            DrawSet.UpdateScoreBgmScaleFlag = true;
+                        DrawSet.UpdateScoreBgmScaleFlag = true;
+
+                        Log.Info( $"BGM読込OK" );
+                    }
+                );
         }
         catch ( Exception e )
 		{
@@ -2871,37 +2827,56 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// BGM音階表示画像更新
     /// </summary>
-    private async void UpdateScaleBgmBitmap()
+    private void UpdateScaleBgmBitmap()
     {
-        await Task.Run
+        // タスクが終わっていなければスキップ。次回の処理で更新する
+        if ( !( _ScaleWaveFormTask?.IsCompleted ?? true ) )
+        { 
+            return;
+        }
+
+        // タスク破棄
+        _ScaleWaveFormTask?.Dispose();
+        _ScaleWaveFormTask = null;
+
+        // タスク作成
+        _ScaleWaveFormTask = Task.Run
             ( 
                 () =>
-                    { 
-                        if ( _ScaleBgm == null )
-                        {
-                            _ScaleBitmap?.Dispose();
-                            _ScaleBitmap = null;
-
-                            DrawSet.UpdateScoreBgmScaleFlag = false;
-                            return;
-                        }
-
-                        if ( !_ScaleBgm.IsEnableFFT() )
-                        {
-                            return;
-                        }
+                { 
+                    if ( _ScaleBgm == null )
+                    {
+                        _ScaleBitmap?.Dispose();
+                        _ScaleBitmap = null;
 
                         DrawSet.UpdateScoreBgmScaleFlag = false;
 
-                        try
-                        {
-                            _ScaleBitmap = CreateScaleBitmap();
-                        }
-                        catch ( Exception e )
-			            {
-                            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-			            }
-                    } 
+                        Refresh();
+                        return;
+                    }
+
+                    if ( !_ScaleBgm.IsEnableFFT() )
+                    {
+                        return;
+                    }
+
+                    DrawSet.UpdateScoreBgmScaleFlag = false;
+
+                    try
+                    {
+                        Log.Info( $"画像作成開始" );
+
+                        _ScaleBitmap = CreateScaleBitmap();
+
+                        Log.Info( $"画像作成終了" );
+
+                        Refresh();
+                    }
+                    catch ( Exception e )
+			        {
+                        Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+			        }
+                } 
             );
     }
 
@@ -2928,14 +2903,18 @@ public sealed partial class UserControlEditerPanel : UserControl
             return null;
         }
 
-		if ( !Score.EditMidiMapSet.DisplayMidiMaps
+        // 非同期処理なので、スコア情報のコピーを使用して画像を作成する
+        var tmpMidiMapSet   = Score.EditMidiMapSet.Clone();
+        var bgm_position    = Score.BgmPlaybackStartPosition;
+
+        if ( !tmpMidiMapSet.DisplayMidiMaps
                 .Where( item => ConfigScale.GetScaleListIndex( item.Scale ) != -1 ).Any() )
         {
             return null;
         }
 
         var bgm_time        = _ScaleBgm.GetDuration();
-        var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + Score.BgmPlaybackStartPosition );
+        var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
         var note_rect       = new Rect( 0, 0, 1, 1 );
 
         var body = new Rect
@@ -2943,16 +2922,14 @@ public sealed partial class UserControlEditerPanel : UserControl
                 0,
                 0,
                 note_rect.Width  * note_pos_x_last,
-                note_rect.Height * Score.EditMidiMapSet.DisplayMidiMapAllCount
+                note_rect.Height * tmpMidiMapSet.DisplayMidiMapAllCount
             );
-
-        var device = CanvasDevice.GetSharedDevice();
 
         var bmp = default( CanvasBitmap );
 
         var offscreen = new CanvasRenderTarget
             (
-                device,
+                CanvasDevice.GetSharedDevice(),
                 body._width,
                 body._height, 
                 96
@@ -2968,14 +2945,14 @@ public sealed partial class UserControlEditerPanel : UserControl
             for ( int fft_offset = 0; fft_offset < _ScaleBgm.FFTBufferLength0; fft_offset++ )
             {
                 var note_pos_time   = _ScaleBgm.GetFFTTime( fft_offset );
-                var note_pos_x      = DmsControl.SearchPosition( note_pos_time + Score.BgmPlaybackStartPosition );
+                var note_pos_x      = DmsControl.SearchPosition( note_pos_time + bgm_position );
 
                 var fft             = _ScaleBgm.GetFFTBuffer( fft_offset );
                 var hzPerOne        = (float)_ScaleBgm.GetSampleRate() / ( fft.Count * _ScaleBgm.Channels );
 
                 var midimap_index = -1;
 
-			    foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+			    foreach ( var midiMap in tmpMidiMapSet.DisplayMidiMaps )
 			    {
                     midimap_index++;
 
@@ -3096,7 +3073,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 // TODO: WaveForm 何か案を思いつけば対応
 
                 // 画像表示
-                if ( ConfigScale.WaveFormOn && _ScaleBitmap != null)
+                if ( ConfigScale.WaveFormOn && _ScaleBitmap != null )
                 {
                     // 描画範囲
                     var destRect = new Rect

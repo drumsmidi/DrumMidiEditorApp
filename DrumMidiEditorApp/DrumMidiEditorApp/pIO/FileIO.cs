@@ -332,7 +332,7 @@ public static class FileIO
             var mp4_codec = Config.Media.OutputVideoCodec;
             var fps       = Config.Media.OutputVideoFps;
 
-            ControlAccess.UCPlayerPanel?.StartGetFrame();
+            ControlAccess.UCPlayerPanel?.GetFrameStart();
 
             using var frameSize = ControlAccess.UCPlayerPanel?.GetFrame( 0 );
 
@@ -405,7 +405,7 @@ public static class FileIO
                         Config.System.ProgressBarValue = 0;
                         ControlAccess.PageStatusBar?.ReloadProgressBar();
 
-                        ControlAccess.UCPlayerPanel?.EndGetFrame();
+                        ControlAccess.UCPlayerPanel?.GetFrameEnd();
                     }
                 );
         }
@@ -414,7 +414,7 @@ public static class FileIO
             Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 
-            ControlAccess.UCPlayerPanel?.EndGetFrame();
+            ControlAccess.UCPlayerPanel?.GetFrameEnd();
         }
     }
 

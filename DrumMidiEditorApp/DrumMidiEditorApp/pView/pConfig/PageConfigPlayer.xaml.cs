@@ -5,8 +5,9 @@ using System;
 using System.Collections.ObjectModel;
 
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -78,7 +79,7 @@ public sealed partial class PageConfigPlayer : Page
 				return;
             }
 
-			Config.EventUpdatePlayerMode();
+			EventManage.EventPlayerUpdateSufaceMode();
 		}
 		catch ( Exception e )
 		{
@@ -101,7 +102,7 @@ public sealed partial class PageConfigPlayer : Page
 				return;
             }
 
-			Config.EventUpdatePlayerScreenSize();
+			EventManage.EventPlayerUpdateScreenSize();
 		}
 		catch ( Exception e )
 		{

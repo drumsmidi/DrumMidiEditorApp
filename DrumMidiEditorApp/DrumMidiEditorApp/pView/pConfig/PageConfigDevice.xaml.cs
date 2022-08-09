@@ -6,6 +6,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -87,7 +88,7 @@ public sealed partial class PageConfigDevice : Page
 				return;
             }
 
-			Config.EventReloadBgm();
+			EventManage.EventUpdateMidiOutLatency();
 		}
 		catch ( Exception e )
 		{

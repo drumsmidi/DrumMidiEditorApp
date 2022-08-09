@@ -7,6 +7,7 @@ using Windows.Storage.Pickers;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
@@ -83,11 +84,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 	#region MusicInfo
 
 	/// <summary>
-	/// BGM再読込
-	/// </summary>
-	private static void UpdateMusicInfo() => Config.EventReloadBgm();
-
-	/// <summary>
 	/// BGMファイルの選択
 	/// </summary>
 	/// <param name="sender"></param>
@@ -125,7 +121,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     {
 		try
 		{
-			UpdateMusicInfo();
+			EventManage.EventReloadBgm();
 		}
 		catch ( Exception e )
 		{
@@ -148,7 +144,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 				return;
             }
 
-			UpdateMusicInfo();
+			EventManage.EventEditBaseBpm();
 		}
 		catch ( Exception e )
 		{
@@ -157,34 +153,11 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     }
 
 	/// <summary>
-	/// BGM再生開始位置の変更
+	/// 共通：数値必須入力チェック
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-	private void MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-    {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
-            {
-				return;
-            }
-
-			UpdateMusicInfo();
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-    }
-
-	/// <summary>
-	/// BGM音量の変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-    private void MusicInfoBgmVolumeNumberBox_ValueChanged(　NumberBox sender, NumberBoxValueChangedEventArgs args )
+    private void NumberBox_ValueChanged(　NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
 		try
 		{
@@ -200,5 +173,29 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 		}
     }
 
-    #endregion
+	/// <summary>
+	/// BGM音量変更
+	/// </summary>
+	/// <param name="sender"></param>
+	/// <param name="args"></param>
+	private void MusicInfoBgmVolumeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+	{
+		try
+		{
+			// 必須入力チェック
+			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+				return;
+            }
+
+			Config.Media.BgmVolume = (int)sender.Value;
+		}
+		catch ( Exception e )
+		{
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+	}
+
+	#endregion
+
 }

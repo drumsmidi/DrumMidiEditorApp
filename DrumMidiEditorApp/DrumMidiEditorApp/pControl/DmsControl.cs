@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 using DrumMidiEditorApp.pAudio;
@@ -18,31 +17,7 @@ namespace DrumMidiEditorApp.pControl;
 /// </summary>
 public static class DmsControl
 {
-    #region Member
-
-    /// <summary>
-    /// 音楽再生状態 一覧
-    /// </summary>
-    private enum DmsState : int
-	{
-		DmsState_None = 0,
-		DmsState_PrePlay,
-		DmsState_PlayStart,
-		DmsState_Playing,
-		DmsState_PreLoopPlay,
-		DmsState_LoopPlayStart,
-		DmsState_LoopPlaying,
-		DmsState_PreStop,
-		DmsState_Pause,
-		DmsState_Stop,
-		DmsState_PreRecord,
-		DmsState_Recording,
-	}
-
-	/// <summary>
-	/// 音楽再生状態
-	/// </summary>
-	private static DmsState	_State = DmsState.DmsState_None;
+	#region 初期化／終了処理
 
 	/// <summary>
 	/// 音楽再生タスク
@@ -52,67 +27,7 @@ public static class DmsControl
 	/// <summary>
 	/// 音楽再生タスク 停止フラグ
 	/// </summary>
-	private static bool _TaskStop = true;
-
-	/// <summary>
-	/// 描画側準備完了フラグ
-	/// </summary>
-	private static bool	_UpdatePlayer = false;
-
-	/// <summary>
-	/// 音楽再生準備完了フラグ
-	/// </summary>
-	private static bool	_UpdateAudio = false;
-
-	/// <summary>
-	/// ＢＧＭデータ
-	/// </summary>
-	private static IAudio? _BgmAudio = null;
-
-	/// <summary>
-	/// ＢＧＭ再生開始時間
-	/// </summary>
-    private static double _BgmStartTime = 0;
-
-	/// <summary>
-	/// 再生開始時間
-	/// </summary>
-    private static double _RangeStartTime = 0;
-
-	/// <summary>
-	/// 再生終了時間
-	/// </summary>
-    private static double _RangeEndTime = 0;
-
-	/// <summary>
-	/// ノート再生位置（絶対値）。
-	/// プレイヤー検索用
-	/// </summary>
-    private static int _NoteSecPos = 0;
-
-	/// <summary>
-	/// TimeTable
-	/// </summary>
-	private static readonly TimeTable _TimeTable = new();
-
-	/// <summary>
-	/// ノート再生シーケンスリスト
-	/// </summary>
-	private static List<DmsControlNoteInfo> _SequenceInfoList = new();
-
-	/// <summary>
-	/// MidiMap情報リスト（チャンネル番号、MidiMapキー、MidiMap情報）
-	/// </summary>
-    private static Dictionary<int,Dictionary<int,DmsControlMidiMapInfo>> _MidiMapInfoList = new();
-
-	/// <summary>
-	/// 音楽再生時間ストップウォッチ
-	/// </summary>
-    private static readonly Stopwatch _PlayTimeStopWatch = new();
-
-	#endregion
-
-	#region 初期化／終了処理
+	private static bool _MusicTaskStop = true;
 
 	/// <summary>
 	/// 音楽再生タスク開始
@@ -121,14 +36,14 @@ public static class DmsControl
 	{
 		try
 		{
-			_State = DmsState.DmsState_Stop;
+			End();
 
 			_TimeTable.Refresh();
 			_TimeTable.Update();
 
-			_TaskStop = false;
+			_MusicTaskStop = false;
 
-			_MusicTask = Task.Run( () => { ProcSequence(); } );
+			_MusicTask = Task.Run( () => { ProcSequenceAsync(); } );
 
             Log.Info( $"{Log.GetThisMethodName}:start thread" );
 		}
@@ -143,12 +58,24 @@ public static class DmsControl
 	/// </summary>
 	public static void End()
 	{
-		_TaskStop = true;
+		try
+		{
+			_MusicTaskStop = true;
 
-		// ロックしないように、10秒のみ待つ
-		_MusicTask?.Wait( 10000 );
+			if ( _MusicTask != null )
+			{ 
+				// ロックしないように、10秒のみ待つ
+				_MusicTask.Wait( 10000 );
+				_MusicTask.Dispose();
+				_MusicTask = null;
 
-		Log.Info( $"{Log.GetThisMethodName}:end thread" );
+				Log.Info( $"{Log.GetThisMethodName}:end thread" );
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
 	}
 
     #endregion
@@ -171,7 +98,7 @@ public static class DmsControl
 	/// 1ノート辺りの時間（秒）を取得。
 	/// （Musicタブで入力したBPM値基準）
 	/// </summary>
-	public static double NoteTime => TimeTable.NoteTime;
+	public static double NoteTime => _TimeTable.NoteTime;
 
 	/// <summary>
 	/// 再生開始処理後の現在の再生時間（秒）
@@ -207,21 +134,24 @@ public static class DmsControl
 			return _NoteSecPos;
 		}
 
-		while ( _NoteSecPos	<  max_note
-			&& _TimeTable[ _NoteSecPos ]     <  aPlayTime
-			&& _TimeTable[ _NoteSecPos + 1 ] <= aPlayTime )
-		{
-			_NoteSecPos += 1;
-		}
+		lock ( _TimeTable.LockObj )
+		{ 
+			while ( _NoteSecPos	<  max_note
+				&& _TimeTable[ _NoteSecPos ]     <  aPlayTime
+				&& _TimeTable[ _NoteSecPos + 1 ] <= aPlayTime )
+			{
+				_NoteSecPos += 1;
+			}
 
-		if ( _NoteSecPos == 0 )
-		{
-			return (float)( aPlayTime / _TimeTable[ _NoteSecPos + 1 ] );
-		}
-		else
-		{
-			return (float)( _NoteSecPos + ( aPlayTime - _TimeTable[ _NoteSecPos ] )
-				/ ( _TimeTable[ _NoteSecPos + 1 ] - _TimeTable[ _NoteSecPos ] ) );
+			if ( _NoteSecPos == 0 )
+			{
+				return (float)( aPlayTime / _TimeTable[ _NoteSecPos + 1 ] );
+			}
+			else
+			{
+				return (float)( _NoteSecPos + ( aPlayTime - _TimeTable[ _NoteSecPos ] )
+					/ ( _TimeTable[ _NoteSecPos + 1 ] - _TimeTable[ _NoteSecPos ] ) );
+			}
 		}
 	}
 
@@ -237,58 +167,58 @@ public static class DmsControl
 	/// </summary>
 	public static NAudioData? AudioData => ( _BgmAudio as AudioBgm )?.AudioData;
 
-    #endregion
+	#endregion
 
-    #region リクエスト
+	#region リクエスト
 
-    /// <summary>
-    /// 通常再生リクエスト
-    /// </summary>
-    public static void PlayPreSequence()
+	/// <summary>
+	/// 音楽再生状態 一覧
+	/// </summary>
+	private enum DmsState : int
 	{
-		_UpdatePlayer	= false;
-		_UpdateAudio	= false;
-
-		_State = DmsState.DmsState_PrePlay;
-
-		SetPlayerRequest( ConfigPlayer.PlayRequest.PrePlay );
+		DmsState_None = 0,
+		DmsState_PrePlay,
+		DmsState_PlayStart,
+		DmsState_Playing,
+		DmsState_PreLoopPlay,
+		DmsState_LoopPlayStart,
+		DmsState_LoopPlaying,
+		DmsState_PreStop,
+		DmsState_Pause,
+		DmsState_Stop,
+		DmsState_PreRecord,
+		DmsState_Recording,
 	}
+
+	/// <summary>
+	/// 音楽再生状態
+	/// </summary>
+	private static DmsState _State = DmsState.DmsState_None;
+
+	/// <summary>
+	/// 音楽再生リクエスト
+	/// </summary>
+	private static DmsState _RequestState = DmsState.DmsState_None;
+
+	/// <summary>
+	/// 通常再生リクエスト
+	/// </summary>
+	public static void PlayPreSequence() => _RequestState = DmsState.DmsState_PrePlay;
 
 	/// <summary>
 	/// ループ再生リクエスト
 	/// </summary>
-	public static void PlayPreLoopSequence()
-	{
-		_UpdatePlayer	= false;
-		_UpdateAudio	= false;
-
-		_State = DmsState.DmsState_PreLoopPlay;
-
-		SetPlayerRequest( ConfigPlayer.PlayRequest.PreLoopPlay );
-	}
+	public static void PlayPreLoopSequence() => _RequestState = DmsState.DmsState_PreLoopPlay;
 
 	/// <summary>
 	/// 停止リクエスト
 	/// </summary>
-	public static void StopPreSequence()
-	{
-		_State = DmsState.DmsState_PreStop;
-
-		SetPlayerRequest( ConfigPlayer.PlayRequest.PreStop );
-	}
+	public static void StopPreSequence() => _RequestState = DmsState.DmsState_PreStop;
 
 	/// <summary>
 	/// レコード再生リクエスト
 	/// </summary>
-	public static void RecordPreSequence()
-	{
-		_UpdatePlayer	= false;
-		_UpdateAudio	= false;
-
-		_State = DmsState.DmsState_PreRecord;
-
-		SetPlayerRequest( ConfigPlayer.PlayRequest.PreRecord );
-	}
+	public static void RecordPreSequence() => _RequestState = DmsState.DmsState_PreRecord;
 
 	/// <summary>
 	/// プレイヤーフォームへのリクエスト設定
@@ -297,21 +227,40 @@ public static class DmsControl
 	private static void SetPlayerRequest( ConfigPlayer.PlayRequest aRequest )
 		=> Config.Player.PlayReq = aRequest;
 
-    #endregion
+	#endregion
 
-    #region 同期処理
+	#region 同期制御（力技）
 
-    /// <summary>
-    /// 録画準備が整ったら呼び出す
-    /// （音楽再生準備の完了を待つ）
-    /// </summary>
-    public static void WaitRecorder()
+	/// <summary>
+	/// 描画側準備完了フラグ
+	/// </summary>
+	private static bool _UpdatePlayer = false;
+
+	/// <summary>
+	/// 音楽再生準備完了フラグ
+	/// </summary>
+	private static bool _UpdateAudio = false;
+
+	/// <summary>
+	/// 待機フラグリセット
+	/// </summary>
+	private static void WaitFlagReset()
+    {
+		_UpdatePlayer	= false;
+		_UpdateAudio	= false;
+	}
+
+	/// <summary>
+	/// 録画準備が整ったら呼び出す
+	/// （音楽再生準備の完了を待つ）
+	/// </summary>
+	public static void WaitRecorder()
     {
 		int cnt = 3000;
 
 		while ( !_UpdatePlayer && !_UpdateAudio && cnt-- > 0 )
 		{
-			Thread.Sleep( 1 );
+			Task.Delay( 1 );
 		}
     }
 
@@ -327,7 +276,7 @@ public static class DmsControl
 
 		while ( !_UpdatePlayer && cnt-- > 0 )
 		{
-			Thread.Sleep( 1 );
+			Task.Delay( 1 );
 		}
 	}
 
@@ -343,16 +292,69 @@ public static class DmsControl
 
 		while ( !_UpdateAudio && cnt-- > 0 )
 		{
-			Thread.Sleep( 1 );
+			Task.Delay( 1 );
 		}
 	}
 
-    #endregion
+	#endregion
 
-    /// <summary>
-    /// 音楽再生処理
-    /// </summary>
-    private static void ProcSequence()
+	#region Music sequence Task
+
+	/// <summary>
+	/// 非同期処理用スコア情報
+	/// </summary>
+	private static Score _TmpScore = new();
+
+	/// <summary>
+	/// ＢＧＭデータ
+	/// </summary>
+	private static IAudio? _BgmAudio = null;
+
+	/// <summary>
+	/// ＢＧＭ再生開始時間
+	/// </summary>
+	private static double _BgmStartTime = 0;
+
+	/// <summary>
+	/// 再生開始時間
+	/// </summary>
+	private static double _RangeStartTime = 0;
+
+	/// <summary>
+	/// 再生終了時間
+	/// </summary>
+	private static double _RangeEndTime = 0;
+
+	/// <summary>
+	/// ノート再生位置（絶対値）。
+	/// プレイヤー検索用
+	/// </summary>
+	private static int _NoteSecPos = 0;
+
+	/// <summary>
+	/// TimeTable
+	/// </summary>
+	private static readonly TimeTable _TimeTable = new();
+
+	/// <summary>
+	/// ノート再生シーケンスリスト
+	/// </summary>
+	private static List<DmsControlNoteInfo> _SequenceInfoList = new();
+
+	/// <summary>
+	/// MidiMap情報リスト（チャンネル番号、MidiMapキー、MidiMap情報）
+	/// </summary>
+	private static Dictionary<int, Dictionary<int, DmsControlMidiMapInfo>> _MidiMapInfoList = new();
+
+	/// <summary>
+	/// 音楽再生時間ストップウォッチ
+	/// </summary>
+	private static readonly Stopwatch _PlayTimeStopWatch = new();
+
+	/// <summary>
+	/// 音楽再生処理
+	/// </summary>
+	private async static void ProcSequenceAsync()
 	{
 		bool	range_play		= false;
 		int		loop_start;
@@ -364,19 +366,68 @@ public static class DmsControl
 		double	playtime;
 		int		seq_cnt			= 0;
 		var		sounds			= new List<DmsControlNoteInfo>();
-		int		sleeptime		= 1;
+		int		sleeptime		= 500;
 
 		DmsControlNoteInfo info;
 
 		try
 		{
-			while ( !_TaskStop )
+			// 初期化
+			_State = DmsState.DmsState_Stop;
+
+			// スレッドプール
+			while ( !_MusicTaskStop )
 			{
-				Thread.Sleep( sleeptime );
+				//Thread.Sleep( sleeptime );
+				await Task.Delay( sleeptime );
 
 				try
 				{
-					switch ( _State )
+					#region リクエスト受付＆初期化
+
+					if ( _RequestState != DmsState.DmsState_None )
+                    {
+						// 初期化
+						switch ( _RequestState )
+						{
+							case DmsState.DmsState_PrePlay:
+								{
+									WaitFlagReset();
+
+									SetPlayerRequest( ConfigPlayer.PlayRequest.PrePlay );
+								}
+								break;
+							case DmsState.DmsState_PreLoopPlay:
+								{
+									WaitFlagReset();
+
+									SetPlayerRequest( ConfigPlayer.PlayRequest.PreLoopPlay );
+								}
+								break;
+							case DmsState.DmsState_PreStop:
+								{ 
+									SetPlayerRequest( ConfigPlayer.PlayRequest.PreStop );
+								}
+								break;
+							case DmsState.DmsState_PreRecord:
+								{
+									WaitFlagReset();
+
+									SetPlayerRequest( ConfigPlayer.PlayRequest.PreRecord );
+								}
+								break;
+						}
+
+						// 状態更新
+						_State			= _RequestState;
+						_RequestState	= DmsState.DmsState_None;
+					}
+
+                    #endregion
+
+                    #region 状態別処理
+
+                    switch ( _State )
 					{
 						case DmsState.DmsState_Playing:
 						case DmsState.DmsState_LoopPlayStart:
@@ -385,13 +436,16 @@ public static class DmsControl
 							}
 						case DmsState.DmsState_PrePlay:
 							{
+								// スコア情報コピー
+								CloneScore();
+
 								_TimeTable.Update();
 
 								UpdateBgm();
 								UpdateMidiMapSet();
 								UpdateScore();
 
-								_BgmStartTime	= DMS.SCORE.BgmPlaybackStartPosition;
+								_BgmStartTime	= _TmpScore.BgmPlaybackStartPosition;
 								_RangeStartTime	= 0;
 								_RangeEndTime	= _TimeTable.EndTime;
 								_NoteSecPos		= 0;
@@ -424,16 +478,19 @@ public static class DmsControl
 									continue;
 								}
 
+								// スコア情報コピー
+								CloneScore();
+
 								_TimeTable.Update();
 
 								UpdateBgm();
 								UpdateMidiMapSet();
 								UpdateScore();
 
-								_BgmStartTime	= DMS.SCORE.BgmPlaybackStartPosition;
-                                _RangeStartTime = _TimeTable[ ( loop_start == 0 ) ? 0 : loop_start * Config.System.MeasureNoteNumber ];
-                                _RangeEndTime	= _TimeTable[ ( loop_end   == 0 ) ? 0 : loop_end   * Config.System.MeasureNoteNumber + 1 ];
-                                _NoteSecPos		= loop_start * Config.System.MeasureNoteNumber;
+								_BgmStartTime	= _TmpScore.BgmPlaybackStartPosition;
+								_RangeStartTime = _TimeTable[ ( loop_start == 0 ) ? 0 : loop_start * Config.System.MeasureNoteNumber ];
+								_RangeEndTime	= _TimeTable[ ( loop_end   == 0 ) ? 0 : loop_end   * Config.System.MeasureNoteNumber + 1 ];
+								_NoteSecPos		= loop_start * Config.System.MeasureNoteNumber;
 								pos				= 0;
 								seq_cnt			= _SequenceInfoList.Count;
 								range_play		= true;
@@ -480,15 +537,18 @@ public static class DmsControl
 							}
 						case DmsState.DmsState_PreRecord:
 							{
+								// スコア情報コピー
+								CloneScore();
+
 								_TimeTable.Update();
 
 								UpdateBgm();
 								UpdateMidiMapSet();
 								UpdateScore();
 
-								loop_end = DMS.SCORE.GetMaxMeasureNo() + 3;
+								loop_end = _TmpScore.GetMaxMeasureNo() + 3;
 
-								_BgmStartTime	= DMS.SCORE.BgmPlaybackStartPosition;
+								_BgmStartTime	= _TmpScore.BgmPlaybackStartPosition;
 								_RangeStartTime = 0;
 								_RangeEndTime	= _TimeTable[ loop_end * Config.System.MeasureNoteNumber + 1 ];
 								_NoteSecPos		= 0;
@@ -514,8 +574,10 @@ public static class DmsControl
 								continue;
 							}
 					}
-				}
-				catch ( Exception e )
+
+                    #endregion
+                }
+                catch ( Exception e )
 				{
 					Log.Warning( $"{Log.GetThisMethodName}:{e.Message}" );
 					continue;
@@ -526,7 +588,7 @@ public static class DmsControl
 				note_play_on = Config.Media.NotePlayOn;
 
 				// ＢＧＭの音量設定
-				_BgmAudio?.SetVolume( bgm_play_on ? DMS.SCORE.BgmVolume : 0 );
+				_BgmAudio?.SetVolume( bgm_play_on ? Config.Media.BgmVolume : 0 );
 
 				// 現在の再生時間（秒）を取得
 				playtime = PlayTime;
@@ -603,7 +665,7 @@ public static class DmsControl
         }
 		catch ( Exception )
         {
-			_TaskStop = true;
+			_MusicTaskStop = true;
 
             throw;
         }
@@ -614,7 +676,29 @@ public static class DmsControl
 		}
 	}
 
-    #region 更新処理
+	/// <summary>
+	/// スコア情報コピー
+	/// </summary>
+	private static void CloneScore()
+    {
+		try
+		{
+			if ( Config.Media.UpdateDmsControlBgm || Config.Media.UpdateDmsControlMidiMap || Config.Media.UpdateDmsControlScore )
+			{ 
+				// スコア情報コピー
+				_TmpScore.Dispose();
+
+				lock ( DMS.SCORE.LockObj )
+				{
+					_TmpScore = DMS.SCORE.Clone();
+				}
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
 
     /// <summary>
     /// ＢＧＭを更新
@@ -630,7 +714,7 @@ public static class DmsControl
 
 				AudioFactory.Release( _BgmAudio );
 
-				_BgmAudio = AudioFactory.CreateBgm( DMS.SCORE.BgmFilePath, DMS.SCORE.BgmVolume );
+				_BgmAudio = AudioFactory.CreateBgm( _TmpScore.BgmFilePath, _TmpScore.BgmVolume );
 			}
 
 			// ＢＧＭへのイコライザ適用
@@ -657,7 +741,7 @@ public static class DmsControl
 
 		var dlist = new Dictionary<int, Dictionary<int, DmsControlMidiMapInfo>>();
 
-		foreach ( var channel in DMS.SCORE.Channels.Values )
+		foreach ( var channel in _TmpScore.Channels.Values )
 		{
 			dlist.Add( channel.ChannelNo, new() );
 
@@ -705,7 +789,7 @@ public static class DmsControl
 
 		#region Create NoteInfo
 
-		foreach ( var channel in DMS.SCORE.Channels.Values )
+		foreach ( var channel in _TmpScore.Channels.Values )
 		{
 			if ( !_MidiMapInfoList.TryGetValue( channel.ChannelNo, out var midiMapInfoList ) )
             {

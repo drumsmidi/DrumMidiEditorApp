@@ -1,10 +1,12 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pDMS;
-using Windows.Foundation;
+using System;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -13,6 +15,8 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// </summary>
 public class PlayerSurfaceBase : IPlayerSurface
 {
+    #region Member
+
     /// <summary>
     /// プレイヤー設定（共通）
     /// </summary>
@@ -31,7 +35,7 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <summary>
     /// スコア
     /// </summary>
-    protected Score Score => DMS.SCORE;
+    protected Score Score = new();
 
     /// <summary>
     /// スクリーンサイズ
@@ -54,16 +58,6 @@ public class PlayerSurfaceBase : IPlayerSurface
     protected double _DmsPlayTime = 0.0D;
 
     /// <summary>
-    /// 再生状態
-    /// </summary>
-    private PlayState _DmsPlayState = PlayState.Stop;
-
-    /// <summary>
-    /// 再生要求内容（通常再生、ループ再生の判定に使用）
-    /// </summary>
-    private PlayState _DmsPlayStatePre = PlayState.Stop;
-
-    /// <summary>
     /// 再生状態一覧
     /// </summary>
     private enum PlayState : int
@@ -75,6 +69,18 @@ public class PlayerSurfaceBase : IPlayerSurface
         PreRecord,
         Recording,
     }
+
+    /// <summary>
+    /// 再生状態
+    /// </summary>
+    private PlayState _DmsPlayState = PlayState.Stop;
+
+    /// <summary>
+    /// 再生要求内容（通常再生、ループ再生の判定に使用）
+    /// </summary>
+    private PlayState _DmsPlayStatePre = PlayState.Stop;
+
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -107,6 +113,10 @@ public class PlayerSurfaceBase : IPlayerSurface
                     {
                         if ( DrawSetCom.UpdateScoreFlag )
                         {
+                            DrawSetCom.UpdateScoreFlag = false;
+
+                            CloneScore();
+
                             UpdateScore();
                             UpdateScoreLine();
                             UpdateScoreHeader();
@@ -129,8 +139,6 @@ public class PlayerSurfaceBase : IPlayerSurface
                                     UpdateScoreMeasure( measure_no );
                                 }
                             }
-
-                            DrawSetCom.UpdateScoreFlag = false;
                         }
 
                         // Calc sheet position
@@ -173,6 +181,8 @@ public class PlayerSurfaceBase : IPlayerSurface
                     {
                         _DmsPlayStatePre = _DmsPlayState;
 
+                        CloneScore();
+
                         UpdateScore();
                         UpdateScoreLine();
                         UpdateScoreHeader();
@@ -199,6 +209,8 @@ public class PlayerSurfaceBase : IPlayerSurface
                     {
                         _DmsPlayStatePre = _DmsPlayState;
 
+                        CloneScore();
+                        
                         UpdateScore();
                         UpdateScoreLine();
                         UpdateScoreHeader();
@@ -222,6 +234,8 @@ public class PlayerSurfaceBase : IPlayerSurface
                 case PlayState.PreRecord:
                     {
                         _DmsPlayStatePre = _DmsPlayState;
+
+                        CloneScore();
 
                         UpdateScore();
                         UpdateScoreLine();
@@ -250,6 +264,27 @@ public class PlayerSurfaceBase : IPlayerSurface
         #endregion
 
         return true;
+    }
+
+	/// <summary>
+	/// スコア情報コピー
+	/// </summary>
+	private void CloneScore()
+    {
+		try
+		{
+			// スコア情報コピー
+			Score.Dispose();
+
+			lock ( DMS.SCORE.LockObj )
+			{
+                Score = DMS.SCORE.Clone();
+			}
+		}
+		catch ( Exception e )
+		{
+			Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
     }
 
     /// <summary>

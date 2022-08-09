@@ -5,8 +5,9 @@ using System;
 using System.Collections.ObjectModel;
 
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -27,12 +28,7 @@ public sealed partial class PageConfigPlayerScore : Page
 	/// <summary>
 	/// プレイヤー描画モードリスト
 	/// </summary>
-	private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
-
-	/// <summary>
-	/// スクリーンサイズリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _PlayerScreenSizeList = new();
+	//private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
 
     #endregion
 
@@ -73,7 +69,7 @@ public sealed partial class PageConfigPlayerScore : Page
     {
 		try
 		{
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
         {
@@ -96,7 +92,7 @@ public sealed partial class PageConfigPlayerScore : Page
 				return;
             }
 
-			Config.EventUpdatePlayerScore();
+			EventManage.EventPlayerUpdateScore();
 		}
 		catch ( Exception e )
         {

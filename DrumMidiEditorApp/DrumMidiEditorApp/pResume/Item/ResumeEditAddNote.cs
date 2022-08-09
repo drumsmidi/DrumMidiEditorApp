@@ -1,5 +1,5 @@
-﻿using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
+﻿using DrumMidiEditorApp.pDMS;
+using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pResume;
@@ -84,6 +84,6 @@ internal class ResumeEditAddNote : DisposeBaseClass, IResume
     /// </summary>
     private static void Update( int aMeasureNo )
     {
-        Config.EventEditNote( aMeasureNo );
+        EventManage.EventEditNote( aMeasureNo );
     }
 }

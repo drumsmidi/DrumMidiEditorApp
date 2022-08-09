@@ -70,6 +70,12 @@ public class ConfigMedia
     public bool NotePlayOn { get; set; } = true;
 
     /// <summary>
+    /// BGM音量（Musicスレッド リアルタイム更新用）
+    /// </summary>
+    [JsonIgnore]
+    public int BgmVolume { get; set; } = Config.System.DefaultBgmVolume;
+
+    /// <summary>
     /// ノート音量ランダム
     /// </summary>
     [JsonInclude]

@@ -4,16 +4,17 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
-using System.Threading;
-
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using System.Threading.Tasks;
 using Windows.Graphics.DirectX;
-using DrumMidiEditorApp.pControl;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiEditorApp.pGeneralFunction.pUtil;
+using DrumMidiEditorApp.pView.pPlayer.pSurface;
+
+namespace DrumMidiEditorApp.pView.pPlayer;
 
 public sealed partial class UserControlPlayerPanel : UserControl
 {
@@ -49,76 +50,35 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 96
             );
 
-        PlayerIdleAsync();
+        DrawTaskStart();
     }
 
+    #region 描画スレッドプール
 
+    /// <summary>
+    /// 描画タスク
+    /// </summary>
     private Task? _IdleTask = null;
 
-    private CancellationTokenSource? _IdleTaskCancelToken = null;
+    /// <summary>
+    /// .描画タスク停止フラグ
+    /// </summary>
+    private bool _IdleTaskStop = true;
 
 	/// <summary>
-	/// 描画ループ
+	/// 描画タスク開始
 	/// </summary>
-	public void PlayerIdleAsync()
+	public void DrawTaskStart()
     {
         try
         {
-            Config.EventUpdatePlayerMode();
+            DrawTaskStop();
 
-            _IdleTaskCancelToken?.Cancel();
-            _IdleTask?.Wait();
+            EventManage.EventPlayerUpdateSufaceMode();
 
-            _IdleTaskCancelToken?.Dispose();
-            _IdleTaskCancelToken = new();
+            _IdleTaskStop = false;
 
-            // TODO: 描画処理を非同期実行。
-            // TODO: 非同期処理を考慮していなかったの落ちる可能性高いです。
-            // TODO: そのうち見直し予定
-            _IdleTask = Task.Run
-                (
-                    () => 
-                    { 
-                        var fps = new Fps();
-                        fps.Set( 1, 0 );
-                        fps.Set( 2, DrawSet.Fps );
-                        fps.Start();
-
-                        while ( !_IdleTaskCancelToken.IsCancellationRequested )
-                        {
-                            // プレイヤー描画モード変更
-                            if ( DrawSet.UpdateSurfaceModoFlag )
-                            {
-                                DrawSet.UpdateSurfaceModoFlag = false;
-                                UpdateSurfaceMode();
-                            }
-
-                            // サイズ変更
-                            if ( DrawSet.UpdateSizeFlag )
-                            {
-                                DrawSet.UpdateSizeFlag = false;
-                                UpdatePanelSize();
-                            }
-
-                            // フレーム更新＆描画処理
-                            fps.Tick();
-
-			                if ( fps.TickFpsWeight( 1 ) )
-			                { 
-				                _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
-			                }
-
-			                if ( fps.TickFpsWeight( 2 ) )
-			                {
-                                PlayerCanvasSwapChain_Draw();
-
-                                fps.TickFpsWeight( 2 );
-			                }
-
-                            Task.Delay( 1 );
-                        }
-                    }
-                );
+            _IdleTask = Task.Run( () => DrawTaskAsync() );
         }
         catch ( Exception e )
         {
@@ -126,28 +86,122 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
+    /// <summary>
+    /// 描画タスク
+    /// </summary>
+    public async void DrawTaskAsync()
+    {
+        try
+        {
+            var fps = new Fps();
+            fps.Set( 1, 0 );
+            fps.Set( 2, DrawSet.Fps );
+            fps.Start();
 
+            while ( !_IdleTaskStop )
+            {
+                // サイズ変更
+                if ( DrawSet.UpdateSizeFlag )
+                {
+                    DrawSet.UpdateSizeFlag = false;
+                    UpdatePanelSize();
+                }
+
+                // プレイヤー描画モード変更
+                if ( DrawSet.UpdateSurfaceModoFlag )
+                {
+                    DrawSet.UpdateSurfaceModoFlag = false;
+                    UpdateSurfaceMode();
+
+                    EventManage.EventPlayerUpdateScore();
+                }
+
+                // フレーム更新＆描画処理
+                fps.Tick();
+
+			    if ( fps.TickFpsWeight( 1 ) )
+			    {
+                    // フレーム更新
+                    _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
+			    }
+
+			    if ( fps.TickFpsWeight( 2 ) )
+			    {
+                    // 描画処理
+                    using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+
+                    _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
+
+                    _PlayerCanvas.SwapChain.Present();
+
+                    //fps.TickFpsWeight( 2 );
+                }
+
+                await Task.Delay( 1 );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+	/// <summary>
+	/// 描画タスク停止
+	/// </summary>
+	public void DrawTaskStop()
+    {
+        try
+        {
+            _IdleTaskStop = true;
+            _IdleTask?.Wait();
+            _IdleTask?.Dispose();
+            _IdleTask = null;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    #region 画面ハードコピー
+
+    /// <summary>
+    /// 画面ハードコピー用オフスクリーン
+    /// </summary>
     private CanvasRenderTarget? _Offscreen = null;
 
-    public void StartGetFrame()
+    /// <summary>
+    /// 画面ハードコピー開始準備
+    /// </summary>
+    public void GetFrameStart()
     {
-        _IdleTaskCancelToken?.Cancel();
-        _IdleTask?.Wait();
+        try
+        {
+            DrawTaskStop();
 
-        DmsControl.RecordPreSequence();
-        DmsControl.WaitRecorder();
+            DmsControl.RecordPreSequence();
+            DmsControl.WaitRecorder();
 
-        UpdateSurfaceMode();
-        UpdatePanelSize();
+            // 更新処理
+            UpdateSurfaceMode();
+            UpdatePanelSize();
 
-        // 描画処理
-        _Offscreen = new CanvasRenderTarget
-            (
-                CanvasDevice.GetSharedDevice(),
-                DrawSet.ResolutionScreenWidth,
-                DrawSet.ResolutionScreenHeight,
-                96
-            );
+            // オフスクリーン作成
+            _Offscreen = new CanvasRenderTarget
+                (
+                    CanvasDevice.GetSharedDevice(),
+                    DrawSet.ResolutionScreenWidth,
+                    DrawSet.ResolutionScreenHeight,
+                    96
+                );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
     /// <summary>
@@ -171,9 +225,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
             drawSession.Clear( DrawSet.SheetColor.Color );
 
-            var args = new CanvasDrawEventArgs( drawSession );
-
-            _PlayerSurface?.OnDraw( args );
+            _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
             // Bitmap作成
             return CanvasBitmap.CreateFromBytes
@@ -183,7 +235,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     (int)_Offscreen.SizeInPixels.Width,
                     (int)_Offscreen.SizeInPixels.Height,
                     DirectXPixelFormat.R8G8B8A8UIntNormalized,
-                //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
                     96,
                     CanvasAlphaMode.Premultiplied
                 );
@@ -195,14 +246,29 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
-    public void EndGetFrame()
+    /// <summary>
+    /// 画面ハードコピー終了準備
+    /// </summary>
+    public void GetFrameEnd()
     {
-        DmsControl.StopPreSequence();
+        try
+        {
+            DmsControl.StopPreSequence();
 
-        _Offscreen?.Dispose();
+            _Offscreen?.Dispose();
+            _Offscreen = null;
 
-        PlayerIdleAsync();
+            DrawTaskStart();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
+
+    #endregion
+
+    #region Update
 
     /// <summary>
     /// プレイヤー描画モード変更
@@ -212,13 +278,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
         switch ( DrawSet.PlayerSurfaceModeSelect )
         {
 			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-   				_PlayerSurface = new pSequence.PlayerSurface();
+   				_PlayerSurface = new pSurface.pSequence.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Score:
-   				_PlayerSurface = new pScore.PlayerSurface();
+   				_PlayerSurface = new pSurface.pScore.PlayerSurface();
 				break;
 			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-   				_PlayerSurface = new pSimuration.PlayerSurface();
+   				_PlayerSurface = new pSurface.pSimuration.PlayerSurface();
 				break;
         }
     }
@@ -235,6 +301,8 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 96
             );
     }
+
+    #endregion
 
     #region Mouse Event
 
@@ -291,8 +359,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
     #endregion
 
-    #region Draw
-
     /// <summary>
     /// Win2D アンロード処理
     /// </summary>
@@ -311,30 +377,4 @@ public sealed partial class UserControlPlayerPanel : UserControl
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    /// <summary>
-    /// 描画
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvasSwapChain_Draw()
-    {
-        try
-        {
-            using var drawSession = _PlayerCanvas.SwapChain
-                .CreateDrawingSession( DrawSet.SheetColor.Color );
-
-            var args = new CanvasDrawEventArgs( drawSession );
-
-            _PlayerSurface?.OnDraw( args );
-
-            _PlayerCanvas.SwapChain.Present();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    #endregion
 }

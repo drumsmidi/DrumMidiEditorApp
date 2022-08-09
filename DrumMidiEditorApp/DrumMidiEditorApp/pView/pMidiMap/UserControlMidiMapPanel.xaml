@@ -7,19 +7,6 @@
     xmlns:x1="using:DrumMidiEditorApp.pDMS"
     mc:Ignorable="d">
 
-    <UserControl.Resources>
-<!-- x:Bind 使うとエラーになる
-        <Style x:Key="VolumeStyle" TargetType="NumberBox">
-            <Setter Property="Minimum" Value="{x:Bind ConfigMedia.MidiAddMinVolume}" />
-            <Setter Property="Maximum" Value="{x:Bind ConfigMedia.MidiAddMaxVolume}" />
-        </Style>
-        <Style x:Key="MidiStyle" TargetType="NumberBox">
-            <Setter Property="Minimum" Value="{x:Bind ConfigMedia.MidiNoteMin}" />
-            <Setter Property="Maximum" Value="{x:Bind ConfigMedia.MidiNoteMax}" />
-        </Style>
--->
-    </UserControl.Resources>
-
     <Grid Padding="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
