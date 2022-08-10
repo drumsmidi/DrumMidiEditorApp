@@ -129,7 +129,7 @@ public class NAudioData : DisposeBaseClass
 
             _Wave.Init( _Mixer );
 
-            CalcFFT();
+            //CalcFFT();
         }
     }
 

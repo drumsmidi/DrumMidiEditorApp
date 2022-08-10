@@ -710,6 +710,14 @@ public static class DmsControl
 	{
 		try
 		{
+			// 暫定回避策
+			// 停止せずに再生終了した場合、再生できなくなる為
+			// その場合は再度BGMを読み込むようにする。
+			if ( !( ( _BgmAudio as AudioBgm )?.AudioData?.IsPlaying() ?? false ) )
+            {
+				Config.Media.UpdateDmsControlBgm = true;
+			}
+
 			// ＢＧＭ再読み込み
 			if ( Config.Media.UpdateDmsControlBgm )
 			{

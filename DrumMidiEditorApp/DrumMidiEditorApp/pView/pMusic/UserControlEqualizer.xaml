@@ -34,7 +34,7 @@
 
                         <AppBarToggleButton x:Uid="ButtonEqualizerWaveForm"
                             IsChecked="{x:Bind DrawSet.WaveFormOn, Mode=TwoWay}"
-                            IsEnabled="True"
+                            IsEnabled="False"
                             Checked="EqualizerWaveFormAppBarToggleButton_CheckChanged"
                             Unchecked="EqualizerWaveFormAppBarToggleButton_CheckChanged" />
 
