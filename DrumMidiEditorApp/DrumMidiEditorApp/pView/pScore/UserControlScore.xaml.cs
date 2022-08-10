@@ -145,11 +145,9 @@ public sealed partial class UserControlScore : UserControl
 
         #endregion
 
-        var device = CanvasDevice.GetSharedDevice();
-
         var offscreen = new CanvasRenderTarget
             (
-                device,
+                CanvasDevice.GetSharedDevice(),
                 ActualSize.X,
                 ActualSize.Y,
                 96
@@ -250,7 +248,7 @@ public sealed partial class UserControlScore : UserControl
                 (int)offscreen.SizeInPixels.Height,
                 DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
                 96,
-                CanvasAlphaMode.Ignore
+                CanvasAlphaMode.Premultiplied
             );
     }
 

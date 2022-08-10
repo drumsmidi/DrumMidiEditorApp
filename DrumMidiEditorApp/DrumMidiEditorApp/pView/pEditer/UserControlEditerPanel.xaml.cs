@@ -22,6 +22,8 @@ using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
 using DrumMidiEditorApp.pEvent;
+using Windows.Graphics.DirectX;
+using System.Collections.Concurrent;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -195,15 +197,6 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private readonly DmsItemVolumeRange _VolumeRange = new();
 
-    /// <summary>
-    /// 音階別周波数表示用BGM
-    /// </summary>
-    private NAudioData? _ScaleBgm = null;
-
-    /// <summary>
-    /// 音階別周波数表示用Bitmap
-    /// </summary>
-    private CanvasBitmap? _ScaleBitmap = null;
 
     /// <summary>
     /// マウス位置：ノート範囲移動時のタイマー処理用
@@ -2015,7 +2008,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         if ( DrawSet.UpdateScoreBgmScaleFlag )
         {
-            UpdateScaleBgmBitmap();
+            UpdateScaleBgmBitmapAsync();
         }
 
         #endregion
@@ -2781,6 +2774,18 @@ public sealed partial class UserControlEditerPanel : UserControl
         #endregion
     }
 
+    #region BgmScale
+
+    /// <summary>
+    /// 音階別周波数表示用BGM
+    /// </summary>
+    private NAudioData? _ScaleBgm = null;
+
+    /// <summary>
+    /// 音階別周波数表示用画像＜小節番号、画像＞
+    /// </summary>
+    private readonly ConcurrentDictionary<int,CanvasBitmap> _ScaleBitmapDic = new();
+
     /// <summary>
     /// BGM音階画像作成用タスク
     /// </summary>
@@ -2827,7 +2832,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// BGM音階表示画像更新
     /// </summary>
-    private void UpdateScaleBgmBitmap()
+    private async void UpdateScaleBgmBitmapAsync()
     {
         // タスクが終わっていなければスキップ。次回の処理で更新する
         if ( !( _ScaleWaveFormTask?.IsCompleted ?? true ) )
@@ -2846,8 +2851,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 { 
                     if ( _ScaleBgm == null )
                     {
-                        _ScaleBitmap?.Dispose();
-                        _ScaleBitmap = null;
+                        _ScaleBitmapDic.Clear();
 
                         DrawSet.UpdateScoreBgmScaleFlag = false;
 
@@ -2866,7 +2870,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     {
                         Log.Info( $"画像作成開始" );
 
-                        _ScaleBitmap = CreateScaleBitmap();
+                        CreateScaleBitmap();
 
                         Log.Info( $"画像作成終了" );
 
@@ -2884,11 +2888,11 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// 音階別周波数表示用Bitmap作成
     /// </summary>
     /// <returns>音階別周波数表示用Bitmap</returns>
-    private CanvasBitmap? CreateScaleBitmap()
+    private void CreateScaleBitmap()
     {
         if ( !( _ScaleBgm?.IsEnableFFT() ?? false ) )
         {
-            return null;
+            return;
         }
 
         // TODO: WaveForm 何か案を思いつけば対応
@@ -2900,7 +2904,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         if ( t_level - l_level <= 0F )
         {
-            return null;
+            return;
         }
 
         // 非同期処理なので、スコア情報のコピーを使用して画像を作成する
@@ -2910,22 +2914,22 @@ public sealed partial class UserControlEditerPanel : UserControl
         if ( !tmpMidiMapSet.DisplayMidiMaps
                 .Where( item => ConfigScale.GetScaleListIndex( item.Scale ) != -1 ).Any() )
         {
-            return null;
+            return;
         }
 
-        var bgm_time        = _ScaleBgm.GetDuration();
-        var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
+//      var bgm_time        = _ScaleBgm.GetDuration();
+//      var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
         var note_rect       = new Rect( 0, 0, 1, 1 );
+//      var note_rect       = new Rect( 0, 0, DrawSet.NoteWidthSize, DrawSet.NoteHeightSize );
 
         var body = new Rect
             (
                 0,
                 0,
-                note_rect.Width  * note_pos_x_last,
+                note_rect.Width  * Config.System.MeasureNoteNumber,
+            //  note_rect.Width  * note_pos_x_last,
                 note_rect.Height * tmpMidiMapSet.DisplayMidiMapAllCount
             );
-
-        var bmp = default( CanvasBitmap );
 
         var offscreen = new CanvasRenderTarget
             (
@@ -2940,15 +2944,47 @@ public sealed partial class UserControlEditerPanel : UserControl
         // 背景色塗りつぶし
         g.Clear( DrawSet.SheetColor.Color );
 
+        // 描画書込み用アクション
+        var createAction = new Action<int>( ( measure_no ) =>
+        {
+            // Bitmap作成
+            var bmp = CanvasBitmap.CreateFromBytes
+                (
+                    g,
+                    offscreen.GetPixelBytes( 0, 0, (int)offscreen.SizeInPixels.Width, (int)offscreen.SizeInPixels.Height ),
+                    (int)offscreen.SizeInPixels.Width,
+                    (int)offscreen.SizeInPixels.Height,
+                    DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
+                    96,
+                    CanvasAlphaMode.Premultiplied
+                );
+
+
+            _ScaleBitmapDic.TryAdd( measure_no, bmp );
+        } );
+
         #region 周波数
         {
+            int measure_no = 0;
+            int note_pos_x = 0;
+
             for ( int fft_offset = 0; fft_offset < _ScaleBgm.FFTBufferLength0; fft_offset++ )
             {
                 var note_pos_time   = _ScaleBgm.GetFFTTime( fft_offset );
-                var note_pos_x      = DmsControl.SearchPosition( note_pos_time + bgm_position );
+                note_pos_x          = DmsControl.SearchPosition( note_pos_time + bgm_position );
 
                 var fft             = _ScaleBgm.GetFFTBuffer( fft_offset );
                 var hzPerOne        = (float)_ScaleBgm.GetSampleRate() / ( fft.Count * _ScaleBgm.Channels );
+
+                if ( measure_no != note_pos_x / Config.System.MeasureNoteNumber )
+                { 
+                    createAction( measure_no );
+
+                    measure_no++;
+
+                    // 背景色塗りつぶし
+                    g.Clear( DrawSet.SheetColor.Color );
+                }
 
                 var midimap_index = -1;
 
@@ -2990,16 +3026,16 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
 
                     byte alpha   = 255;//155 + (int)( 100 * db );
-                    byte red     = (byte)( db >= h_level ? 255 * db : 0 );
-                    byte green   = (byte)( db >= m_level ? 255 * db : 0 );
-                    byte blue    = (byte)( db >= l_level ? 255 * db : 0 );
+                    byte red     = (byte)( db >= h_level ? (int)( 255 * db ) : 0 );
+                    byte green   = (byte)( db >= m_level ? (int)( 255 * db ) : 0 );
+                    byte blue    = (byte)( db >= l_level ? (int)( 255 * db ) : 0 );
                     //var red     = t_level > db && db >= h_level ? (int)( 255 * db ) : 0;
                     //var green   = h_level > db && db >= m_level ? (int)( 255 * db ) : 0;
                     //var blue    = m_level > db && db >= l_level ? (int)( 255 * db ) : 0;
 
                     if ( db > 0F )
                     {
-                        note_rect.X = body.X + note_rect.Width  * note_pos_x;
+                        note_rect.X = body.X + note_rect.Width  * ( note_pos_x % Config.System.MeasureNoteNumber );
                         note_rect.Y = body.Y + note_rect.Height * midimap_index;
 
                         g.FillRectangle
@@ -3010,11 +3046,16 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
                 }
             }
+
+            if ( measure_no != note_pos_x / Config.System.MeasureNoteNumber )
+            { 
+                createAction( measure_no );
+            }
         }
         #endregion
-
-        return bmp;
     }
+
+    #endregion
 
     #endregion
 
@@ -3073,50 +3114,62 @@ public sealed partial class UserControlEditerPanel : UserControl
                 // TODO: WaveForm 何か案を思いつけば対応
 
                 // 画像表示
-                if ( ConfigScale.WaveFormOn && _ScaleBitmap != null )
+                if ( ConfigScale.WaveFormOn && !_ScaleBitmapDic.IsEmpty )
                 {
-                    // 描画範囲
-                    var destRect = new Rect
-                        (
-                            body.X,
-                            body.Y,
-                            body.Width,
-                            body.Height
-                        );
-
-                    // 切取範囲
-                    var srcRect = new Rect
-                        (
-                            sheet_pos.X     / DrawSet.NoteWidthSize,
-                            sheet_pos.Y     / DrawSet.NoteHeightSize,
-                            destRect.Width  / DrawSet.NoteWidthSize,
-                            destRect.Height / DrawSet.NoteHeightSize
-                        );
-
-                    var t_level = ConfigScale.VolumeLevelTop;
-                    var h_level = ConfigScale.VolumeLevelHigh;
-                    var m_level = ConfigScale.VolumeLevelMid;
-                    var l_level = ConfigScale.VolumeLevelLow;
-
-                    // 色補正
-                    var matrix = new Matrix4x4
+                    for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
-                        M11 = ConfigScale.SensitivityLevel >= h_level / 4.0F ? ConfigScale.SensitivityLevel : 0F,
-                        M22 = ConfigScale.SensitivityLevel >= m_level / 3.0F ? ConfigScale.SensitivityLevel : 0F,
-                        M33 = ConfigScale.SensitivityLevel >= l_level / 2.0F ? ConfigScale.SensitivityLevel : 0F,
-                        M44 = 1F,
-                    };
+                        if ( !_ScaleBitmapDic.TryGetValue( measure_no, out var bmp ) )
+                        { 
+                            continue;
+                        }
 
-                    // 描画
-                    args.DrawingSession.DrawImage
-                        (
-                            _ScaleBitmap,
-                            destRect,
-                            srcRect,
-                            1.0F,
-                            CanvasImageInterpolation.NearestNeighbor,
-                            matrix
-                        );
+                        var diff_x = measure_size * measure_no - sheet_pos._x;
+
+                        // 描画範囲
+                        var destRect = new Rect
+                            (
+                                body.X + diff_x,
+                                body.Y - sheet_pos._y,
+                                measure_size,
+                                bmp.SizeInPixels.Height * DrawSet.NoteHeightSize
+                            );
+
+                        // 切取範囲
+                        var srcRect = new Rect
+                            (
+                                0,
+                                0,
+                                bmp.SizeInPixels.Width,
+                                bmp.SizeInPixels.Height
+                            );
+
+                        var t_level = ConfigScale.VolumeLevelTop;
+                        var h_level = ConfigScale.VolumeLevelHigh;
+                        var m_level = ConfigScale.VolumeLevelMid;
+                        var l_level = ConfigScale.VolumeLevelLow;
+
+                        var sen = ConfigScale.SensitivityLevel / 100F;
+
+                        // 色補正（設定方法が違うようだ）
+                        var matrix = new Matrix4x4
+                        {
+                            M11 = sen >= h_level / 4.0F ? sen : 0F,
+                            M22 = sen >= m_level / 3.0F ? sen : 0F,
+                            M33 = sen >= l_level / 2.0F ? sen : 0F,
+                            M44 = 1F,
+                        };
+
+                        // 描画
+                        args.DrawingSession.DrawImage
+                            (
+                                bmp,
+                                destRect,
+                                srcRect,
+                                1.0F,
+                                CanvasImageInterpolation.NearestNeighbor
+                                //matrix
+                            );
+                    }
                 }
             }
             #endregion

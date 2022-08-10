@@ -18,7 +18,7 @@ public class FormatText
     /// <summary>
     /// テキスト書式
     /// </summary>
-    [JsonIgnore]
+    [JsonInclude]
     public CanvasTextFormat TextFormat { get; set; } = new()
     {
         FontFamily          = "system-ui",

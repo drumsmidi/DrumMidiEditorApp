@@ -61,7 +61,7 @@ internal static class JsonIO
 	private static void SetConverter( JsonSerializerOptions aOption )
     {
 		aOption.Converters.Add( new ColorConverter() );
-		aOption.Converters.Add( new FontConverter() );
+		aOption.Converters.Add( new CanvasTextFormatConverter() );
 		aOption.Converters.Add( new PointConverter() );
 	}
 }

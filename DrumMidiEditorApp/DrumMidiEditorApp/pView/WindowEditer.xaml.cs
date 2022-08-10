@@ -32,7 +32,7 @@ public sealed partial class WindowEditer : Window
     /// </summary>
     public WindowEditer()
     {
-#if !DEBUG
+#if !DEBUG_DEFAULT
 		// Configファイル読込
 		FileIO.LoadConfig();
 #endif

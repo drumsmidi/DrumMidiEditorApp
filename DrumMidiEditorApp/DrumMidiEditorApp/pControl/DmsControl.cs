@@ -692,6 +692,9 @@ public static class DmsControl
 				{
 					_TmpScore = DMS.SCORE.Clone();
 				}
+
+				// ループ処理内での即時反映用
+				Config.Media.BgmVolume = _TmpScore.BgmVolume;
 			}
 		}
 		catch ( Exception e )
