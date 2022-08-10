@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pDMS;
 
 namespace DrumMidiEditorApp.pResume;
 
@@ -26,7 +27,12 @@ public class ResumeManage
     public void ExcuteAndResume( IResume aResume )
     {
         _RedoResumeStack.Clear();
-        aResume.Redo();
+
+        lock ( DMS.SCORE.LockObj )
+        { 
+            aResume.Redo();
+        }
+
         _UndoResumeStack.Push( aResume );
 
         // レジューム保持数を超えたデータを削除
@@ -64,7 +70,12 @@ public class ResumeManage
         if ( _UndoResumeStack.Count > 0 )
         {
             var rs = _UndoResumeStack.Pop();
-            rs.Undo();
+
+            lock ( DMS.SCORE.LockObj )
+            { 
+                rs.Undo();
+            }
+
             _RedoResumeStack.Push( rs );
         }
     }
@@ -77,7 +88,12 @@ public class ResumeManage
         if ( _RedoResumeStack.Count > 0 )
         {
             var rs = _RedoResumeStack.Pop();
-            rs.Redo();
+
+            lock ( DMS.SCORE.LockObj )
+            { 
+                rs.Redo();
+            }
+
             _UndoResumeStack.Push( rs );
         }
     }
