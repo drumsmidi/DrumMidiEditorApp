@@ -72,7 +72,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 			return;
         }
 
-		var distance = ( _NotePosX + aDiffX ) / 10F;
+		var distance = _NotePosX + aDiffX;
 
 		if ( distance < 0F && 9F < distance )
 		{
@@ -80,7 +80,12 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 		}
 
 		// 1:0, 10:1
-		var sa = 1F + (float)Math.Log10( distance + 1 );
+		var sa = 1F + Math.Log10( distance + 1 );
+
+		if ( sa <= 0 )
+		{
+			return;
+		}
 
 		var rect = _DmsItemMidiMap.DrawRect;
 		rect.Width	*= sa;
@@ -88,15 +93,16 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
 		rect.X		-= ( rect.Width  - _DmsItemMidiMap.DrawRect.Width  ) / 2.0F;
 		rect.Y		-= ( rect.Height - _DmsItemMidiMap.DrawRect.Height ) / 2.0F;
 
-        // 背景色
-        aGraphics.FillEllipse
-            (
-				rect._x,
-				rect._y,
-				rect._width,
-				rect._height,
-				_FormatRect.Background.Color
-            );
+		// 背景色
+		aGraphics.DrawEllipse
+			(
+				rect._x + rect._width  / 2,
+				rect._y + rect._height / 2,
+				rect._width  / 2,
+				rect._height / 2,
+				_FormatRect.Line.LineColor.Color,
+				_FormatRect.Line.LineSize
+			);
     }
 
 	/// <summary>

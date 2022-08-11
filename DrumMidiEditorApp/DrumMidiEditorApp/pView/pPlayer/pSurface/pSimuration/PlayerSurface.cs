@@ -149,23 +149,20 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
-            if ( p.Properties.IsLeftButtonPressed)
+			switch ( _ActionState )
 			{
-				switch ( _ActionState )
-				{
-                    case EActionState.MoveHeader:
-                        {
-                            _HeaderList[ _MoveMidiMapKey ].SetMovePosition
-                                ( 
-                                    (float)( p.Position.X - _MousePosBef.X ),
-                                    (float)( p.Position.Y - _MousePosBef.Y )
-                                );
+                case EActionState.MoveHeader:
+                    {
+                        _HeaderList[ _MoveMidiMapKey ].SetMovePosition
+                            ( 
+                                (float)( p.Position.X - _MousePosBef.X ),
+                                (float)( p.Position.Y - _MousePosBef.Y )
+                            );
 
-                            _MousePosBef = p.Position;
-                        }
-                        break;
-    			}
-			}
+                        _MousePosBef = p.Position;
+                    }
+                    break;
+    		}
         }
         catch ( Exception e )
         {
@@ -297,7 +294,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     // TODO: 線の色とか情報追加が必要
                     var formatRect = new FormatRect
                     {
-                        Background = new( midiMap.Color )
+                        Line = new( midiMap.Color, DrawSet.HeaderRect.Line.LineSize )
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );

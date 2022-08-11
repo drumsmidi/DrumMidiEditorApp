@@ -13,6 +13,12 @@
     <StartupObject>DrumMidiEditorApp.Program</StartupObject>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>DEBUG_DEFAULT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DefineConstants>DEBUG_DEFAULT</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="pView\pConfig\PageConfigDevice.xaml" />
     <None Remove="pView\pConfig\PageConfigEditer.xaml" />
