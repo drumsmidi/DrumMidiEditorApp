@@ -1,0 +1,88 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pDebug.PageDebug"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <Style TargetType="Border" x:Key="BorderStyle">
+            <Setter Property="BorderThickness" Value="0 1 0 1" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AccentFillColorDefaultBrush}" />
+        </Style>
+
+        <Style TargetType="Grid" x:Key="GridColorStyle">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="100" />
+            <Setter Property="Height" Value="30" />
+        </Style>
+    </Page.Resources>
+    
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical" Spacing="0">
+
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewHeaderItem" />
+                </Border>
+
+                <StackPanel Orientation="Vertical" Spacing="0">
+                    <TextBlock Text="GridViewHeaderItemBackground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewHeaderItemBackground}" />
+                    <TextBlock Text="GridViewHeaderItemDividerStroke" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                </StackPanel>
+
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewItem" />
+                </Border>
+
+                <StackPanel Orientation="Vertical" Spacing="0">
+                    <TextBlock Text="GridViewItemBackground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackground}" />
+                    <TextBlock Text="GridViewItemBackgroundPointerOver" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackgroundPointerOver}" />
+                    <TextBlock Text="GridViewItemBackgroundPressed" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackgroundPressed}" />
+                    <TextBlock Text="GridViewItemBackgroundSelected" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackgroundSelected}" />
+                    <TextBlock Text="GridViewItemBackgroundSelectedPointerOver" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" />
+                    <TextBlock Text="GridViewItemBackgroundSelectedPressed" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemBackgroundSelectedPressed}" />
+                    <TextBlock Text="GridViewItemForeground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemForeground}" />
+                    <TextBlock Text="GridViewItemForegroundPointerOver" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemForegroundPointerOver}" />
+                    <TextBlock Text="GridViewItemForegroundSelected" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemForegroundSelected}" />
+                    <TextBlock Text="GridViewItemFocusVisualPrimaryBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                    <TextBlock Text="GridViewItemFocusVisualSecondaryBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                    <TextBlock Text="GridViewItemFocusBorderBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemFocusBorderBrush}" />
+                    <TextBlock Text="GridViewItemFocusSecondaryBorderBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" />
+                    <TextBlock Text="GridViewItemCheckBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemCheckBrush}" />
+                    <TextBlock Text="GridViewItemCheckBoxBrush" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemCheckBoxBrush}" />
+                    <TextBlock Text="GridViewItemDragBackground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemDragBackground}" />
+                    <TextBlock Text="GridViewItemDragForeground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemDragForeground}" />
+                    <TextBlock Text="GridViewItemPlaceholderBackground" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewItemPlaceholderBackground}" />
+                    <TextBlock Text="GridViewHeaderItemDividerStroke" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                    <TextBlock Text="GridViewHeaderItemDividerStroke" />
+                    <Grid Style="{StaticResource GridColorStyle}" Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

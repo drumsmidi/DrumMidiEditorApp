@@ -7,6 +7,7 @@ using System.Linq;
 
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pView.pConfig;
+using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
@@ -54,6 +55,7 @@ public sealed partial class PageNavigation : Page
             ( "PageEdit"     , typeof( PageEdit )    ),
             ( "PageScore"    , typeof( PageScore )   ),
             ( "PageConfig"   , typeof( PageConfig )  ),
+            ( "PageDebug"    , typeof( PageDebug )  ),
         };
 
 	/// <summary>

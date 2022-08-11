@@ -27,6 +27,7 @@
     <None Remove="pView\pConfig\PageConfigPlayerSequence.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSimuration.xaml" />
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
+    <None Remove="pView\pDebug\PageDebug.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
     <None Remove="pView\pMidiMap\PageImportMidiMap.xaml" />
@@ -82,6 +83,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pConfig\PageConfigDevice.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pDebug\PageDebug.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

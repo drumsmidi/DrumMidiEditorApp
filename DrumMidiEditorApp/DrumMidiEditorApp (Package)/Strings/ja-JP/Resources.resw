@@ -475,6 +475,12 @@ BPMノートを含める</value>
   <data name="NaviConfigVideo.Text" xml:space="preserve">
     <value>ビデオ出力設定</value>
   </data>
+  <data name="NaviDebug.Content" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="NaviDebug.Icon" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="NaviEdit.Content" xml:space="preserve">
     <value>Edit</value>
   </data>

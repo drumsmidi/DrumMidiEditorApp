@@ -47,13 +47,13 @@
 
     <Style TargetType="Grid" x:Key="TableHeader">
         <Setter Property="Padding" Value="10" />
-        <Setter Property="Background" Value="#333" />
+        <Setter Property="Background" Value="{ThemeResource GridViewHeaderItemBackground}" />
         <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
     </Style>
     <Style TargetType="Grid" x:Key="TableCell">
         <Setter Property="Padding" Value="0" />
-        <Setter Property="Background" Value="#000" />
+        <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}" />
         <Setter Property="BorderBrush" Value="{ThemeResource AccentControlElevationBorderBrush}" />
         <Setter Property="BorderThickness" Value="0 0 1 1" />
     </Style>

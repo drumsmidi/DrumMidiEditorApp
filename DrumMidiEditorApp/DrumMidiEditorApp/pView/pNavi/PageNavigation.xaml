@@ -30,6 +30,8 @@
                 <NavigationViewItem Tag="PageScore"   x:Uid="NaviScore" />
                 <NavigationViewItemSeparator />
                 <NavigationViewItem Tag="PageConfig"  x:Uid="NaviSetting" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Tag="PageDebug"  x:Uid="NaviDebug" />
             </NavigationView.MenuItems>
         </NavigationView>
         
