@@ -14,10 +14,10 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DefineConstants>DEBUG_DEFAULT</DefineConstants>
+    <DefineConstants></DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>DEBUG_DEFAULT</DefineConstants>
+    <DefineConstants></DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="pView\pConfig\PageConfigDevice.xaml" />
