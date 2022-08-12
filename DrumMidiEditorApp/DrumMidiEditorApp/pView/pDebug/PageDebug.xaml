@@ -8,193 +8,340 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <Style TargetType="Border" x:Key="BorderStyle">
+        <Style TargetType="Border">
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="30" />
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="BorderThickness" Value="0 1 0 1" />
+        </Style>
+        <Style TargetType="Border" x:Key="BorderStyle">
+            <Setter Property="Background" Value="{ThemeResource AccentAcrylicBackgroundFillColorBaseBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="{ThemeResource AccentFillColorDefaultBrush}" />
         </Style>
-        <Style TargetType="Grid">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Width" Value="100" />
-            <Setter Property="Height" Value="30" />
+
+        <Style TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Vertical" />
+            <Setter Property="Spacing" Value="6" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{ThemeResource AccentAAFillColorDefaultBrush}" />
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
     </Page.Resources>
     
     <ScrollViewer>
-        <StackPanel Orientation="Vertical" Spacing="6">
-            <TextBlock Text="{x:Bind ActualTheme}" />
-            <TextBlock Text="{x:Bind RequestedTheme}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Grid.Column="0">
 
-            <Border Style="{StaticResource BorderStyle}">
+                <TextBlock Text="{x:Bind ActualTheme}" />
+                <TextBlock Text="{x:Bind RequestedTheme}" />
+
+            </StackPanel>
+
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
                 <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewHeaderItem" />
             </Border>
 
-            <StackPanel Orientation="Vertical" Spacing="0">
+            <StackPanel Grid.Row="2" Grid.Column="1">
+
                 <TextBlock Text="GridViewHeaderItemBackground" />
-                <Grid Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
                 <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Grid Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+
             </StackPanel>
 
-            <Border Style="{StaticResource BorderStyle}">
+            <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
                 <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewItem" />
             </Border>
 
-            <StackPanel Orientation="Vertical" Spacing="0">
+            <StackPanel Grid.Row="4" Grid.Column="1">
+                
                 <TextBlock Text="GridViewItemBackground" />
-                <Grid Background="{ThemeResource GridViewItemBackground}" />
+                <Border Background="{ThemeResource GridViewItemBackground}" />
                 <TextBlock Text="GridViewItemBackgroundPointerOver" />
-                <Grid Background="{ThemeResource GridViewItemBackgroundPointerOver}" />
+                <Border Background="{ThemeResource GridViewItemBackgroundPointerOver}" />
                 <TextBlock Text="GridViewItemBackgroundPressed" />
-                <Grid Background="{ThemeResource GridViewItemBackgroundPressed}" />
+                <Border Background="{ThemeResource GridViewItemBackgroundPressed}" />
                 <TextBlock Text="GridViewItemBackgroundSelected" />
-                <Grid Background="{ThemeResource GridViewItemBackgroundSelected}" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelected}" />
                 <TextBlock Text="GridViewItemBackgroundSelectedPointerOver" />
-                <Grid Background="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" />
                 <TextBlock Text="GridViewItemBackgroundSelectedPressed" />
-                <Grid Background="{ThemeResource GridViewItemBackgroundSelectedPressed}" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPressed}" />
                 <TextBlock Text="GridViewItemForeground" />
-                <Grid Background="{ThemeResource GridViewItemForeground}" />
+                <Border Background="{ThemeResource GridViewItemForeground}" />
                 <TextBlock Text="GridViewItemForegroundPointerOver" />
-                <Grid Background="{ThemeResource GridViewItemForegroundPointerOver}" />
+                <Border Background="{ThemeResource GridViewItemForegroundPointerOver}" />
                 <TextBlock Text="GridViewItemForegroundSelected" />
-                <Grid Background="{ThemeResource GridViewItemForegroundSelected}" />
+                <Border Background="{ThemeResource GridViewItemForegroundSelected}" />
                 <TextBlock Text="GridViewItemFocusVisualPrimaryBrush" />
-                <Grid Background="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                <Border Background="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
                 <TextBlock Text="GridViewItemFocusVisualSecondaryBrush" />
-                <Grid Background="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                <Border Background="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
                 <TextBlock Text="GridViewItemFocusBorderBrush" />
-                <Grid Background="{ThemeResource GridViewItemFocusBorderBrush}" />
+                <Border Background="{ThemeResource GridViewItemFocusBorderBrush}" />
                 <TextBlock Text="GridViewItemFocusSecondaryBorderBrush" />
-                <Grid Background="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" />
+                <Border Background="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" />
                 <TextBlock Text="GridViewItemCheckBrush" />
-                <Grid Background="{ThemeResource GridViewItemCheckBrush}" />
+                <Border Background="{ThemeResource GridViewItemCheckBrush}" />
                 <TextBlock Text="GridViewItemCheckBoxBrush" />
-                <Grid Background="{ThemeResource GridViewItemCheckBoxBrush}" />
+                <Border Background="{ThemeResource GridViewItemCheckBoxBrush}" />
                 <TextBlock Text="GridViewItemDragBackground" />
-                <Grid Background="{ThemeResource GridViewItemDragBackground}" />
+                <Border Background="{ThemeResource GridViewItemDragBackground}" />
                 <TextBlock Text="GridViewItemDragForeground" />
-                <Grid Background="{ThemeResource GridViewItemDragForeground}" />
+                <Border Background="{ThemeResource GridViewItemDragForeground}" />
                 <TextBlock Text="GridViewItemPlaceholderBackground" />
-                <Grid Background="{ThemeResource GridViewItemPlaceholderBackground}" />
+                <Border Background="{ThemeResource GridViewItemPlaceholderBackground}" />
                 <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Grid Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
                 <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Grid Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
+
             </StackPanel>
 
-            <Border Style="{StaticResource BorderStyle}">
+            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
                 <TextBlock Text="Resources for Windows.UI.Xaml.Controls.Button" />
             </Border>
 
-            <StackPanel Orientation="Vertical" Spacing="0">
-                <TextBlock Text="ButtonBackground" />
-                <Grid Background="{ThemeResource ButtonBackground}" />
-                <TextBlock Text="ButtonBackgroundPointerOver" />
-                <Grid Background="{ThemeResource ButtonBackgroundPointerOver}" />
-                <TextBlock Text="ButtonBackgroundPressed" />
-                <Grid Background="{ThemeResource ButtonBackgroundPressed}" />
-                <TextBlock Text="ButtonBackgroundDisabled" />
-                <Grid Background="{ThemeResource ButtonBackgroundDisabled}" />
-                <TextBlock Text="ButtonForeground" />
-                <Grid Background="{ThemeResource ButtonForeground}" />
-                <TextBlock Text="ButtonForegroundPointerOver" />
-                <Grid Background="{ThemeResource ButtonForegroundPointerOver}" />
-                <TextBlock Text="ButtonForegroundPressed" />
-                <Grid Background="{ThemeResource ButtonForegroundPressed}" />
-                <TextBlock Text="ButtonForegroundDisabled" />
-                <Grid Background="{ThemeResource ButtonForegroundDisabled}" />
-                <TextBlock Text="ButtonBorderBrush" />
-                <Grid Background="{ThemeResource ButtonBorderBrush}" />
-                <TextBlock Text="ButtonBorderBrushPointerOver" />
-                <Grid Background="{ThemeResource ButtonBorderBrushPointerOver}" />
-                <TextBlock Text="ButtonBorderBrushPressed" />
-                <Grid Background="{ThemeResource ButtonBorderBrushPressed}" />
-                <TextBlock Text="ButtonBorderBrushDisabled" />
-                <Grid Background="{ThemeResource ButtonBorderBrushDisabled}" />
+            <StackPanel Grid.Row="6" Grid.Column="0">
+                
+                <TextBlock Text="AccentButtonStyle" />
+                <Button Style="{ThemeResource AccentButtonStyle}" Content="Button" />
+                <TextBlock Text="AlternateCloseButtonStyle" />
+                <Button Style="{ThemeResource AlternateCloseButtonStyle}" Content="Button" />
+                <TextBlock Text="ButtonRevealStyle" />
+                <Button Style="{ThemeResource ButtonRevealStyle}" Content="Button" />
+                <TextBlock Text="CommandBarFlyoutEllipsisButtonStyle" />
+                <Button Style="{ThemeResource CommandBarFlyoutEllipsisButtonStyle}" Content="Button" />
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <Button Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="Button" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <Button Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="Button" />
+                <TextBlock Text="DefaultButtonStyle" />
+                <Button Style="{ThemeResource DefaultButtonStyle}" Content="Button" />
+                <TextBlock Text="EllipsisButton" />
+                <Button Style="{ThemeResource EllipsisButton}" Content="Button" />
+                <TextBlock Text="EllipsisButtonRevealStyle" />
+                <Button Style="{ThemeResource EllipsisButtonRevealStyle}" Content="Button" />
+                <TextBlock Text="InfoBarCloseButtonStyle" />
+                <Button Style="{ThemeResource InfoBarCloseButtonStyle}" Content="Button" />
+                <TextBlock Text="NavigationBackButtonNormalStyle" />
+                <Button Style="{ThemeResource NavigationBackButtonNormalStyle}" Content="Button" />
+                <TextBlock Text="NavigationBackButtonSmallStyle" />
+                <Button Style="{ThemeResource NavigationBackButtonSmallStyle}" Content="Button" />
+                <TextBlock Text="NavigationViewOverflowButtonNoLabelStyleWhenPaneOnTop" />
+                <Button Style="{ThemeResource NavigationViewOverflowButtonNoLabelStyleWhenPaneOnTop}" Content="Button" />
+                <TextBlock Text="NavigationViewOverflowButtonStyleWhenPaneOnTop" />
+                <Button Style="{ThemeResource NavigationViewOverflowButtonStyleWhenPaneOnTop}" Content="Button" />
+                <TextBlock Text="NavigationViewPaneSearchButtonStyle" />
+                <Button Style="{ThemeResource NavigationViewPaneSearchButtonStyle}" Content="Button" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <Button Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="Button" />
+                <TextBlock Text="PagerControlNumberPanelButtonStyle" />
+                <Button Style="{ThemeResource PagerControlNumberPanelButtonStyle}" Content="Button" />
+                <TextBlock Text="PagerControlPageNavigationButtonStyle" />
+                <Button Style="{ThemeResource PagerControlPageNavigationButtonStyle}" Content="Button" />
+                <TextBlock Text="PaneToggleButtonStyle" />
+                <Button Style="{ThemeResource PaneToggleButtonStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerButtonBaseStyle" />
+                <Button Style="{ThemeResource PipsPagerButtonBaseStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerNavigationButtonBaseStyle" />
+                <Button Style="{ThemeResource PipsPagerNavigationButtonBaseStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerNextPageButtonStyle" />
+                <Button Style="{ThemeResource PipsPagerNextPageButtonStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerNormalPipButtonStyle" />
+                <Button Style="{ThemeResource PipsPagerNormalPipButtonStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerPreviousPageButtonStyle" />
+                <Button Style="{ThemeResource PipsPagerPreviousPageButtonStyle}" Content="Button" />
+                <TextBlock Text="PipsPagerSelectedPipButtonStyle" />
+                <Button Style="{ThemeResource PipsPagerSelectedPipButtonStyle}" Content="Button" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <Button Style="{ThemeResource PivotTitleContentControlStyle}" Content="Button" />
+                <!-- これはボタンには設定できない
+                <TextBlock Text="TabViewButtonStyle" />
+                <Button Style="{ThemeResource TabViewButtonStyle}" Content="Button" />
+                <TextBlock Text="TabViewCloseButtonStyle" />
+                <Button Style="{ThemeResource TabViewCloseButtonStyle}" Content="Button" />
+                    -->
+                <TextBlock Text="TextBlockButtonStyle" />
+                <Button Style="{ThemeResource TextBlockButtonStyle}" Content="Button" />
+                <TextBlock Text="WindowCaptionButton" />
+                <Button Style="{ThemeResource WindowCaptionButton}" Content="Button" />
+                <TextBlock Text="WindowChromeStyle" />
+                <Button Style="{ThemeResource WindowChromeStyle}" Content="Button" />
+
             </StackPanel>
 
-            <Border Style="{StaticResource BorderStyle}">
+            <StackPanel Grid.Row="6" Grid.Column="1">
+
+                <TextBlock Text="ButtonBackground" />
+                <Border Background="{ThemeResource ButtonBackground}" />
+                <TextBlock Text="ButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource ButtonBackgroundPointerOver}" />
+                <TextBlock Text="ButtonBackgroundPressed" />
+                <Border Background="{ThemeResource ButtonBackgroundPressed}" />
+                <TextBlock Text="ButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource ButtonBackgroundDisabled}" />
+                <TextBlock Text="ButtonForeground" />
+                <Border Background="{ThemeResource ButtonForeground}" />
+                <TextBlock Text="ButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource ButtonForegroundPointerOver}" />
+                <TextBlock Text="ButtonForegroundPressed" />
+                <Border Background="{ThemeResource ButtonForegroundPressed}" />
+                <TextBlock Text="ButtonForegroundDisabled" />
+                <Border Background="{ThemeResource ButtonForegroundDisabled}" />
+                <TextBlock Text="ButtonBorderBrush" />
+                <Border Background="{ThemeResource ButtonBorderBrush}" />
+                <TextBlock Text="ButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ButtonBorderBrushPointerOver}" />
+                <TextBlock Text="ButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource ButtonBorderBrushPressed}" />
+                <TextBlock Text="ButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource ButtonBorderBrushDisabled}" />
+
+            </StackPanel>
+
+            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource BorderStyle}">
                 <TextBlock Text="Resources for Windows.UI.Xaml.Controls.RadioButton" />
             </Border>
 
-            <StackPanel Orientation="Vertical" Spacing="0">
-                <TextBlock Text="RadioButtonForeground" />
-                <Grid Background="{ThemeResource RadioButtonForeground}" />
-                <TextBlock Text="RadioButtonForegroundPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonForegroundPointerOver}" />
-                <TextBlock Text="RadioButtonForegroundPressed" />
-                <Grid Background="{ThemeResource RadioButtonForegroundPressed}" />
-                <TextBlock Text="RadioButtonForegroundDisabled" />
-                <Grid Background="{ThemeResource RadioButtonForegroundDisabled}" />
-                <TextBlock Text="RadioButtonBackground" />
-                <Grid Background="{ThemeResource RadioButtonBackground}" />
-                <TextBlock Text="RadioButtonBackgroundPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonBackgroundPointerOver}" />
-                <TextBlock Text="RadioButtonBackgroundPressed" />
-                <Grid Background="{ThemeResource RadioButtonBackgroundPressed}" />
-                <TextBlock Text="RadioButtonBackgroundDisabled" />
-                <Grid Background="{ThemeResource RadioButtonBackgroundDisabled}" />
-                <TextBlock Text="RadioButtonBorderBrush" />
-                <Grid Background="{ThemeResource RadioButtonBorderBrush}" />
-                <TextBlock Text="RadioButtonBorderBrushPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonBorderBrushPointerOver}" />
-                <TextBlock Text="RadioButtonBorderBrushPressed" />
-                <Grid Background="{ThemeResource RadioButtonBorderBrushPressed}" />
-                <TextBlock Text="RadioButtonBorderBrushDisabled" />
-                <Grid Background="{ThemeResource RadioButtonBorderBrushDisabled}" />
-                <TextBlock Text="RadioButtonOuterEllipseStroke" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseStroke}" />
-                <TextBlock Text="RadioButtonOuterEllipseStrokePointerOver" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseStrokePointerOver}" />
-                <TextBlock Text="RadioButtonOuterEllipseStrokePressed" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseStrokePressed}" />
-                <TextBlock Text="RadioButtonOuterEllipseStrokeDisabled" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseStrokeDisabled}" />
-                <TextBlock Text="RadioButtonOuterEllipseFill" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseFill}" />
-                <TextBlock Text="RadioButtonOuterEllipseFillPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseFillPointerOver}" />
-                <TextBlock Text="RadioButtonOuterEllipseFillPressed" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseFillPressed}" />
-                <TextBlock Text="RadioButtonOuterEllipseFillDisabled" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseFillDisabled}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedStroke" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedStroke}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokePointerOver" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokePointerOver}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokePressed" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokePressed}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokeDisabled" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokeDisabled}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedFill" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedFill}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedFillPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedFillPointerOver}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedFillPressed" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedFillPressed}" />
-                <TextBlock Text="RadioButtonOuterEllipseCheckedFillDisabled" />
-                <Grid Background="{ThemeResource RadioButtonOuterEllipseCheckedFillDisabled}" />
-                <TextBlock Text="RadioButtonCheckGlyphFill" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphFill}" />
-                <TextBlock Text="RadioButtonCheckGlyphFillPointerOver" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphFillPointerOver}" />
-                <TextBlock Text="RadioButtonCheckGlyphFillPressed" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphFillPressed}" />
-                <TextBlock Text="RadioButtonCheckGlyphFillDisabled" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphFillDisabled}" />
-                <TextBlock Text="RadioButtonCheckGlyphStroke" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphStroke}" />
-                <TextBlock Text="RadioButtonCheckGlyphStrokePointerOver" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphStrokePointerOver}" />
-                <TextBlock Text="RadioButtonCheckGlyphStrokePressed" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphStrokePressed}" />
-                <TextBlock Text="RadioButtonCheckGlyphStrokeDisabled" />
-                <Grid Background="{ThemeResource RadioButtonCheckGlyphStrokeDisabled}" />
+            <StackPanel Grid.Row="8" Grid.Column="0">
+
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <RadioButton Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="RadioButton" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <RadioButton Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="RadioButton" />
+                <TextBlock Text="DefaultRadioButtonStyle" />
+                <RadioButton Style="{ThemeResource DefaultRadioButtonStyle}" Content="RadioButton" />
+                <TextBlock Text="DefaultToggleButtonStyle" />
+                <RadioButton Style="{ThemeResource DefaultToggleButtonStyle}" Content="RadioButton" />
+                <TextBlock Text="ExpanderHeaderDownStyle" />
+                <RadioButton Style="{ThemeResource ExpanderHeaderDownStyle}" Content="RadioButton" />
+                <TextBlock Text="ExpanderHeaderUpStyle" />
+                <RadioButton Style="{ThemeResource ExpanderHeaderUpStyle}" Content="RadioButton" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <RadioButton Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="RadioButton" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <RadioButton Style="{ThemeResource PivotTitleContentControlStyle}" Content="RadioButton" />
+                <TextBlock Text="TextBlockButtonStyle" />
+                <RadioButton Style="{ThemeResource TextBlockButtonStyle}" Content="RadioButton" />
+                <TextBlock Text="ToggleButtonRevealStyle" />
+                <RadioButton Style="{ThemeResource ToggleButtonRevealStyle}" Content="RadioButton" />
+                <TextBlock Text="WindowChromeStyle" />
+                <RadioButton Style="{ThemeResource WindowChromeStyle}" Content="RadioButton" />
 
             </StackPanel>
 
+            <StackPanel Grid.Row="8" Grid.Column="1">
 
-        </StackPanel>
+                <TextBlock Text="RadioButtonForeground" />
+                <Border Background="{ThemeResource RadioButtonForeground}" />
+                <TextBlock Text="RadioButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource RadioButtonForegroundPointerOver}" />
+                <TextBlock Text="RadioButtonForegroundPressed" />
+                <Border Background="{ThemeResource RadioButtonForegroundPressed}" />
+                <TextBlock Text="RadioButtonForegroundDisabled" />
+                <Border Background="{ThemeResource RadioButtonForegroundDisabled}" />
+                <TextBlock Text="RadioButtonBackground" />
+                <Border Background="{ThemeResource RadioButtonBackground}" />
+                <TextBlock Text="RadioButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource RadioButtonBackgroundPointerOver}" />
+                <TextBlock Text="RadioButtonBackgroundPressed" />
+                <Border Background="{ThemeResource RadioButtonBackgroundPressed}" />
+                <TextBlock Text="RadioButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource RadioButtonBackgroundDisabled}" />
+                <TextBlock Text="RadioButtonBorderBrush" />
+                <Border Background="{ThemeResource RadioButtonBorderBrush}" />
+                <TextBlock Text="RadioButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource RadioButtonBorderBrushPointerOver}" />
+                <TextBlock Text="RadioButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource RadioButtonBorderBrushPressed}" />
+                <TextBlock Text="RadioButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource RadioButtonBorderBrushDisabled}" />
+                <TextBlock Text="RadioButtonOuterEllipseStroke" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseStroke}" />
+                <TextBlock Text="RadioButtonOuterEllipseStrokePointerOver" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseStrokePointerOver}" />
+                <TextBlock Text="RadioButtonOuterEllipseStrokePressed" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseStrokePressed}" />
+                <TextBlock Text="RadioButtonOuterEllipseStrokeDisabled" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseStrokeDisabled}" />
+                <TextBlock Text="RadioButtonOuterEllipseFill" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseFill}" />
+                <TextBlock Text="RadioButtonOuterEllipseFillPointerOver" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseFillPointerOver}" />
+                <TextBlock Text="RadioButtonOuterEllipseFillPressed" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseFillPressed}" />
+                <TextBlock Text="RadioButtonOuterEllipseFillDisabled" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseFillDisabled}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedStroke" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedStroke}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokePointerOver" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokePointerOver}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokePressed" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokePressed}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedStrokeDisabled" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedStrokeDisabled}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedFill" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedFill}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedFillPointerOver" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedFillPointerOver}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedFillPressed" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedFillPressed}" />
+                <TextBlock Text="RadioButtonOuterEllipseCheckedFillDisabled" />
+                <Border Background="{ThemeResource RadioButtonOuterEllipseCheckedFillDisabled}" />
+                <TextBlock Text="RadioButtonCheckGlyphFill" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphFill}" />
+                <TextBlock Text="RadioButtonCheckGlyphFillPointerOver" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphFillPointerOver}" />
+                <TextBlock Text="RadioButtonCheckGlyphFillPressed" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphFillPressed}" />
+                <TextBlock Text="RadioButtonCheckGlyphFillDisabled" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphFillDisabled}" />
+                <TextBlock Text="RadioButtonCheckGlyphStroke" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphStroke}" />
+                <TextBlock Text="RadioButtonCheckGlyphStrokePointerOver" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphStrokePointerOver}" />
+                <TextBlock Text="RadioButtonCheckGlyphStrokePressed" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphStrokePressed}" />
+                <TextBlock Text="RadioButtonCheckGlyphStrokeDisabled" />
+                <Border Background="{ThemeResource RadioButtonCheckGlyphStrokeDisabled}" />
+
+            </StackPanel>
+            
+            
+            
+            
+        </Grid>
     </ScrollViewer>
 </Page>
