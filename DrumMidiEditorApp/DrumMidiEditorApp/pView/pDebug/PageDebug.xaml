@@ -42,10 +42,12 @@
     
     <ScrollViewer>
         <StackPanel Padding="10">
-            <StackPanel>
+            <VariableSizedWrapGrid>
+                <TextBlock Text="ActualTheme" />
                 <TextBlock Text="{x:Bind ActualTheme}" />
+                <TextBlock Text="RequestedTheme" />
                 <TextBlock Text="{x:Bind RequestedTheme}" />
-            </StackPanel>
+            </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
                 <TextBlock Text="DEFAULT COMMON CONTROL PROPERTIES" />
