@@ -82,6 +82,15 @@ public static class EventManage
         Config.Media.UpdateDmsControlScore = true;
     }
 
+    /// <summary>
+    /// BGM再生開始位置更新通知
+    /// </summary>
+    public static void EventEditBgmPlaybackStartPosition()
+    {
+        // スコア更新リクエスト（専用のフラグを用意していない為）
+        Config.Media.UpdateDmsControlScore = true;
+    }
+
     #endregion
 
     #region Event.MidiMap

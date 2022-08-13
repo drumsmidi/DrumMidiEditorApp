@@ -153,11 +153,11 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     }
 
 	/// <summary>
-	/// 共通：数値必須入力チェック
+	/// BGM再生開始位置変更
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="args"></param>
-    private void NumberBox_ValueChanged(　NumberBox sender, NumberBoxValueChangedEventArgs args )
+    private void MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged(　NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
 		try
 		{
@@ -166,8 +166,10 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
             {
 				return;
             }
-		}
-		catch ( Exception e )
+
+            EventManage.EventEditBgmPlaybackStartPosition();
+        }
+        catch ( Exception e )
 		{
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 		}
@@ -198,4 +200,8 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 
 	#endregion
 
+	private void _MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+	{
+
+	}
 }
