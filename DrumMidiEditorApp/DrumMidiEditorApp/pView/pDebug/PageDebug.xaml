@@ -22,8 +22,8 @@
         <Style TargetType="VariableSizedWrapGrid">
             <Setter Property="Orientation" Value="Horizontal" />
             <Setter Property="MaximumRowsOrColumns" Value="2" />
-            <Setter Property="ItemHeight" Value="30" />
-            <Setter Property="ItemWidth" Value="360" />
+            <Setter Property="ItemHeight" Value="40" />
+            <Setter Property="ItemWidth" Value="400" />
         </Style>
         <Style TargetType="StackPanel">
             <Setter Property="Orientation" Value="Vertical" />
@@ -622,6 +622,13 @@
 
             <VariableSizedWrapGrid>
 
+                <TextBlock Text="DefaultSliderStyle" />
+                <Slider Style="{ThemeResource DefaultSliderStyle}" />
+
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
                 <TextBlock Text="SliderContainerBackground" />
                 <Border Background="{ThemeResource SliderContainerBackground}" />
                 <TextBlock Text="SliderContainerBackgroundPointerOver" />
@@ -883,83 +890,178 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <CheckBox Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="CheckBox" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <CheckBox Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="CheckBox" />
+                <TextBlock Text="DefaultCheckBoxStyle" />
+                <CheckBox Style="{ThemeResource DefaultCheckBoxStyle}" Content="CheckBox" />
+                <TextBlock Text="DefaultToggleButtonStyle" />
+                <CheckBox Style="{ThemeResource DefaultToggleButtonStyle}" Content="CheckBox" />
+                <TextBlock Text="ExpanderHeaderDownStyle" />
+                <CheckBox Style="{ThemeResource ExpanderHeaderDownStyle}" Content="CheckBox" />
+                <TextBlock Text="ExpanderHeaderUpStyle" />
+                <CheckBox Style="{ThemeResource ExpanderHeaderUpStyle}" Content="CheckBox" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <CheckBox Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="CheckBox" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <CheckBox Style="{ThemeResource PivotTitleContentControlStyle}" Content="CheckBox" />
+                <TextBlock Text="TextBlockButtonStyle" />
+                <CheckBox Style="{ThemeResource TextBlockButtonStyle}" Content="CheckBox" />
+                <TextBlock Text="ToggleButtonRevealStyle" />
+                <CheckBox Style="{ThemeResource ToggleButtonRevealStyle}" Content="CheckBox" />
+                <TextBlock Text="WindowChromeStyle" />
+                <CheckBox Style="{ThemeResource WindowChromeStyle}" Content="CheckBox" />
 
-                <!--
-            <StaticResource x:Key="CheckBoxForegroundUnchecked" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundUncheckedPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundUncheckedPressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundUncheckedDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxForegroundChecked" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundCheckedPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundCheckedPressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundCheckedDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxForegroundIndeterminate" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundIndeterminatePointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundIndeterminatePressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxForegroundIndeterminateDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundUnchecked" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundUncheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundUncheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundUncheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundChecked" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundCheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundCheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundCheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundIndeterminate" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundIndeterminatePointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundIndeterminatePressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBackgroundIndeterminateDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushUnchecked" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushUncheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushUncheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushUncheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushChecked" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushCheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushCheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushCheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushIndeterminate" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushIndeterminatePointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushIndeterminatePressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxBorderBrushIndeterminateDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="ControlStrongStrokeColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeUncheckedPointerOver" ResourceKey="ControlStrongStrokeColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeUncheckedPressed" ResourceKey="ControlStrongStrokeColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeUncheckedDisabled" ResourceKey="ControlStrongStrokeColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeChecked" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeCheckedPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeCheckedPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeCheckedDisabled" ResourceKey="ControlStrongStrokeColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeIndeterminate" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeIndeterminatePointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeIndeterminatePressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundStrokeIndeterminateDisabled" ResourceKey="ControlStrongStrokeColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillUnchecked" ResourceKey="ControlAltFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" ResourceKey="ControlAltFillColorTertiaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillUncheckedPressed" ResourceKey="ControlAltFillColorQuarternaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillUncheckedDisabled" ResourceKey="ControlAltFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillChecked" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillIndeterminate" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillIndeterminatePointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillIndeterminatePressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckBackgroundFillIndeterminateDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundUnchecked" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundUncheckedPointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundUncheckedPressed" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundUncheckedDisabled" ResourceKey="TextOnAccentFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundChecked" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundCheckedPointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundCheckedPressed" ResourceKey="TextOnAccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundCheckedDisabled" ResourceKey="TextOnAccentFillColorDisabledBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminate" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminatePointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminatePressed" ResourceKey="TextOnAccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="CheckBoxCheckGlyphForegroundIndeterminateDisabled" ResourceKey="TextOnAccentFillColorDisabledBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="CheckBoxForegroundUnchecked" />
+                <Border Background="{ThemeResource CheckBoxForegroundUnchecked}" />
+                <TextBlock Text="CheckBoxForegroundUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxForegroundUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxForegroundUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxForegroundUncheckedPressed}" />
+                <TextBlock Text="CheckBoxForegroundUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxForegroundUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxForegroundChecked" />
+                <Border Background="{ThemeResource CheckBoxForegroundChecked}" />
+                <TextBlock Text="CheckBoxForegroundCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxForegroundCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxForegroundCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxForegroundCheckedPressed}" />
+                <TextBlock Text="CheckBoxForegroundCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxForegroundCheckedDisabled}" />
+                <TextBlock Text="CheckBoxForegroundIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxForegroundIndeterminate}" />
+                <TextBlock Text="CheckBoxForegroundIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxForegroundIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxForegroundIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxForegroundIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxForegroundIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxForegroundIndeterminateDisabled}" />
+                <TextBlock Text="CheckBoxBackgroundUnchecked" />
+                <Border Background="{ThemeResource CheckBoxBackgroundUnchecked}" />
+                <TextBlock Text="CheckBoxBackgroundUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxBackgroundUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxBackgroundUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxBackgroundUncheckedPressed}" />
+                <TextBlock Text="CheckBoxBackgroundUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxBackgroundUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxBackgroundChecked" />
+                <Border Background="{ThemeResource CheckBoxBackgroundChecked}" />
+                <TextBlock Text="CheckBoxBackgroundCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxBackgroundCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxBackgroundCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxBackgroundCheckedPressed}" />
+                <TextBlock Text="CheckBoxBackgroundCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxBackgroundCheckedDisabled}" />
+                <TextBlock Text="CheckBoxBackgroundIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxBackgroundIndeterminate}" />
+                <TextBlock Text="CheckBoxBackgroundIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxBackgroundIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxBackgroundIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxBackgroundIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxBackgroundIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxBackgroundIndeterminateDisabled}" />
+                <TextBlock Text="CheckBoxBorderBrushUnchecked" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushUnchecked}" />
+                <TextBlock Text="CheckBoxBorderBrushUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxBorderBrushUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushUncheckedPressed}" />
+                <TextBlock Text="CheckBoxBorderBrushUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxBorderBrushChecked" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushChecked}" />
+                <TextBlock Text="CheckBoxBorderBrushCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxBorderBrushCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushCheckedPressed}" />
+                <TextBlock Text="CheckBoxBorderBrushCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushCheckedDisabled}" />
+                <TextBlock Text="CheckBoxBorderBrushIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushIndeterminate}" />
+                <TextBlock Text="CheckBoxBorderBrushIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxBorderBrushIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxBorderBrushIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxBorderBrushIndeterminateDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeUnchecked" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeUnchecked}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeUncheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeChecked" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeChecked}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeCheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeCheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeIndeterminate}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundStrokeIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundStrokeIndeterminateDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillUnchecked" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillUnchecked}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillUncheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillChecked" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillChecked}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillCheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillCheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillIndeterminate}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxCheckBackgroundFillIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckBackgroundFillIndeterminateDisabled}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundUnchecked" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundUnchecked}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundUncheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundUncheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundUncheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundUncheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundUncheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundUncheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundChecked" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundChecked}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundCheckedPointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundCheckedPointerOver}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundCheckedPressed" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundCheckedPressed}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundCheckedDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundCheckedDisabled}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundIndeterminate" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundIndeterminate}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundIndeterminatePointerOver" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundIndeterminatePointerOver}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundIndeterminatePressed" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundIndeterminatePressed}" />
+                <TextBlock Text="CheckBoxCheckGlyphForegroundIndeterminateDisabled" />
+                <Border Background="{ThemeResource CheckBoxCheckGlyphForegroundIndeterminateDisabled}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -968,23 +1070,50 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <HyperlinkButton Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <HyperlinkButton Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="DefaultHyperlinkButtonStyle" />
+                <HyperlinkButton Style="{ThemeResource DefaultHyperlinkButtonStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <HyperlinkButton Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <HyperlinkButton Style="{ThemeResource PivotTitleContentControlStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="TextBlockButtonStyle" />
+                <HyperlinkButton Style="{ThemeResource TextBlockButtonStyle}" Content="HyperlinkButton" />
+                <TextBlock Text="WindowChromeStyle" />
+                <HyperlinkButton Style="{ThemeResource WindowChromeStyle}" Content="HyperlinkButton" />
 
-                <!--
-            <StaticResource x:Key="HyperlinkButtonForeground" ResourceKey="AccentTextFillColorPrimaryBrush" />
-            <StaticResource x:Key="HyperlinkButtonForegroundPointerOver" ResourceKey="AccentTextFillColorSecondaryBrush" />
-            <StaticResource x:Key="HyperlinkButtonForegroundPressed" ResourceKey="AccentTextFillColorTertiaryBrush" />
-            <StaticResource x:Key="HyperlinkButtonForegroundDisabled" ResourceKey="AccentTextFillColorDisabledBrush" />
-            <StaticResource x:Key="HyperlinkButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="HyperlinkButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="HyperlinkButtonBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="HyperlinkButtonBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
-            <StaticResource x:Key="HyperlinkButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="HyperlinkButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="HyperlinkButtonBorderBrushPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="HyperlinkButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="HyperlinkButtonForeground" />
+                <Border Background="{ThemeResource HyperlinkButtonForeground}" />
+                <TextBlock Text="HyperlinkButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource HyperlinkButtonForegroundPointerOver}" />
+                <TextBlock Text="HyperlinkButtonForegroundPressed" />
+                <Border Background="{ThemeResource HyperlinkButtonForegroundPressed}" />
+                <TextBlock Text="HyperlinkButtonForegroundDisabled" />
+                <Border Background="{ThemeResource HyperlinkButtonForegroundDisabled}" />
+                <TextBlock Text="HyperlinkButtonBackground" />
+                <Border Background="{ThemeResource HyperlinkButtonBackground}" />
+                <TextBlock Text="HyperlinkButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource HyperlinkButtonBackgroundPointerOver}" />
+                <TextBlock Text="HyperlinkButtonBackgroundPressed" />
+                <Border Background="{ThemeResource HyperlinkButtonBackgroundPressed}" />
+                <TextBlock Text="HyperlinkButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource HyperlinkButtonBackgroundDisabled}" />
+                <TextBlock Text="HyperlinkButtonBorderBrush" />
+                <Border Background="{ThemeResource HyperlinkButtonBorderBrush}" />
+                <TextBlock Text="HyperlinkButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource HyperlinkButtonBorderBrushPointerOver}" />
+                <TextBlock Text="HyperlinkButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource HyperlinkButtonBorderBrushPressed}" />
+                <TextBlock Text="HyperlinkButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource HyperlinkButtonBorderBrushDisabled}" />
+                
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -993,23 +1122,62 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
-
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <RepeatButton Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="RepeatButton" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <RepeatButton Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="RepeatButton" />
+                <TextBlock Text="DefaultRepeatButtonStyle" />
+                <RepeatButton Style="{ThemeResource DefaultRepeatButtonStyle}" Content="RepeatButton" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <RepeatButton Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="RepeatButton" />
                 <!--
-            <StaticResource x:Key="RepeatButtonBackground" ResourceKey="ControlFillColorDefaultBrush" />
-            <StaticResource x:Key="RepeatButtonBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-            <StaticResource x:Key="RepeatButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-            <StaticResource x:Key="RepeatButtonBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-            <StaticResource x:Key="RepeatButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RepeatButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RepeatButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="RepeatButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="RepeatButtonBorderBrush" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="RepeatButtonBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="RepeatButtonBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="RepeatButtonBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
+                <TextBlock Text="NumberBoxPopupSpinButtonStyle" />
+                <RepeatButton Style="{ThemeResource NumberBoxPopupSpinButtonStyle}" Content="RepeatButton" />
+                <TextBlock Text="NumberBoxSpinButtonStyle" />
+                <RepeatButton Style="{ThemeResource NumberBoxSpinButtonStyle}" Content="RepeatButton" />
                 -->
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <RepeatButton Style="{ThemeResource PivotTitleContentControlStyle}" Content="RepeatButton" />
+                <TextBlock Text="RepeatButtonRevealStyle" />
+                <RepeatButton Style="{ThemeResource RepeatButtonRevealStyle}" Content="RepeatButton" />
+                <!--
+                <TextBlock Text="TabViewScrollButtonStyle" />
+                <RepeatButton Style="{ThemeResource TabViewScrollButtonStyle}" Content="RepeatButton" />
+                -->
+                <TextBlock Text="TextBlockButtonStyle" />
+                <RepeatButton Style="{ThemeResource TextBlockButtonStyle}" Content="RepeatButton" />
+                <TextBlock Text="WindowChromeStyle" />
+                <RepeatButton Style="{ThemeResource WindowChromeStyle}" Content="RepeatButton" />
+
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="RepeatButtonBackground" />
+                <Border Background="{ThemeResource RepeatButtonBackground}" />
+                <TextBlock Text="RepeatButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource RepeatButtonBackgroundPointerOver}" />
+                <TextBlock Text="RepeatButtonBackgroundPressed" />
+                <Border Background="{ThemeResource RepeatButtonBackgroundPressed}" />
+                <TextBlock Text="RepeatButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource RepeatButtonBackgroundDisabled}" />
+                <TextBlock Text="RepeatButtonForeground" />
+                <Border Background="{ThemeResource RepeatButtonForeground}" />
+                <TextBlock Text="RepeatButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource RepeatButtonForegroundPointerOver}" />
+                <TextBlock Text="RepeatButtonForegroundPressed" />
+                <Border Background="{ThemeResource RepeatButtonForegroundPressed}" />
+                <TextBlock Text="RepeatButtonForegroundDisabled" />
+                <Border Background="{ThemeResource RepeatButtonForegroundDisabled}" />
+                <TextBlock Text="RepeatButtonBorderBrush" />
+                <Border Background="{ThemeResource RepeatButtonBorderBrush}" />
+                <TextBlock Text="RepeatButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource RepeatButtonBorderBrushPointerOver}" />
+                <TextBlock Text="RepeatButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource RepeatButtonBorderBrushPressed}" />
+                <TextBlock Text="RepeatButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource RepeatButtonBorderBrushDisabled}" />
+                
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1018,43 +1186,78 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DefaultToggleSwitchStyle" />
+                <ToggleSwitch Style="{ThemeResource DefaultToggleSwitchStyle}" />
 
-                <!--
-            <StaticResource x:Key="ToggleSwitchContentForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleSwitchContentForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleSwitchHeaderForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleSwitchHeaderForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleSwitchContainerBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleSwitchContainerBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleSwitchContainerBackgroundPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleSwitchContainerBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOff" ResourceKey="ControlAltFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOffPointerOver" ResourceKey="ControlAltFillColorTertiary" />
-            <StaticResource x:Key="ToggleSwitchFillOffPressed" ResourceKey="ControlAltFillColorQuarternary" />
-            <StaticResource x:Key="ToggleSwitchFillOffDisabled" ResourceKey="ControlAltFillColorDisabled" />
-            <StaticResource x:Key="ToggleSwitchStrokeOff" ResourceKey="ControlStrongStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ToggleSwitchStrokeOffPointerOver" ResourceKey="ControlStrongStrokeColorDefault" />
-            <StaticResource x:Key="ToggleSwitchStrokeOffPressed" ResourceKey="ControlStrongStrokeColorDefault" />
-            <StaticResource x:Key="ToggleSwitchStrokeOffDisabled" ResourceKey="ControlStrongStrokeColorDisabled" />
-            <StaticResource x:Key="ToggleSwitchFillOn" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOnPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOnPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="ToggleSwitchFillOnDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleSwitchStrokeOn" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="ToggleSwitchStrokeOnPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchStrokeOnPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="ToggleSwitchStrokeOnDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOff" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOffPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOffPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOffDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOn" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOnPointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOnPressed" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleSwitchKnobFillOnDisabled" ResourceKey="TextOnAccentFillColorDisabledBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ToggleSwitchContentForeground" />
+                <Border Background="{ThemeResource ToggleSwitchContentForeground}" />
+                <TextBlock Text="ToggleSwitchContentForegroundDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchContentForegroundDisabled}" />
+                <TextBlock Text="ToggleSwitchHeaderForeground" />
+                <Border Background="{ThemeResource ToggleSwitchHeaderForeground}" />
+                <TextBlock Text="ToggleSwitchHeaderForegroundDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchHeaderForegroundDisabled}" />
+                <TextBlock Text="ToggleSwitchContainerBackground" />
+                <Border Background="{ThemeResource ToggleSwitchContainerBackground}" />
+                <TextBlock Text="ToggleSwitchContainerBackgroundPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchContainerBackgroundPointerOver}" />
+                <TextBlock Text="ToggleSwitchContainerBackgroundPressed" />
+                <Border Background="{ThemeResource ToggleSwitchContainerBackgroundPressed}" />
+                <TextBlock Text="ToggleSwitchContainerBackgroundDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchContainerBackgroundDisabled}" />
+                <TextBlock Text="ToggleSwitchFillOff" />
+                <Border Background="{ThemeResource ToggleSwitchFillOff}" />
+                <TextBlock Text="ToggleSwitchFillOffPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchFillOffPointerOver}" />
+                <TextBlock Text="ToggleSwitchFillOffPressed" />
+                <Border Background="{ThemeResource ToggleSwitchFillOffPressed}" />
+                <TextBlock Text="ToggleSwitchFillOffDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchFillOffDisabled}" />
+                <TextBlock Text="ToggleSwitchStrokeOff" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOff}" />
+                <TextBlock Text="ToggleSwitchStrokeOffPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOffPointerOver}" />
+                <TextBlock Text="ToggleSwitchStrokeOffPressed" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOffPressed}" />
+                <TextBlock Text="ToggleSwitchStrokeOffDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOffDisabled}" />
+                <TextBlock Text="ToggleSwitchFillOn" />
+                <Border Background="{ThemeResource ToggleSwitchFillOn}" />
+                <TextBlock Text="ToggleSwitchFillOnPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchFillOnPointerOver}" />
+                <TextBlock Text="ToggleSwitchFillOnPressed" />
+                <Border Background="{ThemeResource ToggleSwitchFillOnPressed}" />
+                <TextBlock Text="ToggleSwitchFillOnDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchFillOnDisabled}" />
+                <TextBlock Text="ToggleSwitchStrokeOn" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOn}" />
+                <TextBlock Text="ToggleSwitchStrokeOnPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOnPointerOver}" />
+                <TextBlock Text="ToggleSwitchStrokeOnPressed" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOnPressed}" />
+                <TextBlock Text="ToggleSwitchStrokeOnDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchStrokeOnDisabled}" />
+                <TextBlock Text="ToggleSwitchKnobFillOff" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOff}" />
+                <TextBlock Text="ToggleSwitchKnobFillOffPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOffPointerOver}" />
+                <TextBlock Text="ToggleSwitchKnobFillOffPressed" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOffPressed}" />
+                <TextBlock Text="ToggleSwitchKnobFillOffDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOffDisabled}" />
+                <TextBlock Text="ToggleSwitchKnobFillOn" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOn}" />
+                <TextBlock Text="ToggleSwitchKnobFillOnPointerOver" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOnPointerOver}" />
+                <TextBlock Text="ToggleSwitchKnobFillOnPressed" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOnPressed}" />
+                <TextBlock Text="ToggleSwitchKnobFillOnDisabled" />
+                <Border Background="{ThemeResource ToggleSwitchKnobFillOnDisabled}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1063,17 +1266,19 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="ThumbBackground" />
+                <Border Background="{ThemeResource ThumbBackground}" />
+                <TextBlock Text="ThumbBackgroundPointerOver" />
+                <Border Background="{ThemeResource ThumbBackgroundPointerOver}" />
+                <TextBlock Text="ThumbBackgroundPressed" />
+                <Border Background="{ThemeResource ThumbBackgroundPressed}" />
+                <TextBlock Text="ThumbBorderBrush" />
+                <Border Background="{ThemeResource ThumbBorderBrush}" />
+                <TextBlock Text="ThumbBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ThumbBorderBrushPointerOver}" />
+                <TextBlock Text="ThumbBorderBrushPressed" />
+                <Border Background="{ThemeResource ThumbBorderBrushPressed}" />
 
-                <!--
-            <StaticResource x:Key="ThumbBackground" ResourceKey="SystemControlBackgroundBaseLowBrush" />
-            <StaticResource x:Key="ThumbBackgroundPointerOver" ResourceKey="SystemControlHighlightBaseMediumLowBrush" />
-            <StaticResource x:Key="ThumbBackgroundPressed" ResourceKey="SystemControlHighlightBaseMediumBrush" />
-            <StaticResource x:Key="ThumbBorderBrush" ResourceKey="SystemControlHighlightTransparentBrush" />
-            <StaticResource x:Key="ThumbBorderBrushPointerOver" ResourceKey="SystemControlHighlightTransparentBrush" />
-            <StaticResource x:Key="ThumbBorderBrushPressed" ResourceKey="SystemControlHighlightTransparentBrush" />
-                -->
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1082,47 +1287,104 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DateTimePickerFlyoutButtonStyle" />
+                <ToggleButton Style="{ThemeResource DateTimePickerFlyoutButtonStyle}" Content="ToggleButton" />
+                <TextBlock Text="DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle" />
+                <ToggleButton Style="{ThemeResource DateTimePickerFlyoutLoopingSelectorNavigationButtonStyle}" Content="ToggleButton" />
+                <TextBlock Text="DefaultToggleButtonStyle" />
+                <ToggleButton Style="{ThemeResource DefaultToggleButtonStyle}" Content="ToggleButton" />
+                <TextBlock Text="ExpanderHeaderDownStyle" />
+                <ToggleButton Style="{ThemeResource ExpanderHeaderDownStyle}" Content="ToggleButton" />
+                <TextBlock Text="ExpanderHeaderUpStyle" />
+                <ToggleButton Style="{ThemeResource ExpanderHeaderUpStyle}" Content="ToggleButton" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <ToggleButton Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="ToggleButton" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <ToggleButton Style="{ThemeResource PivotTitleContentControlStyle}" Content="ToggleButton" />
+                <TextBlock Text="TextBlockButtonStyle" />
+                <ToggleButton Style="{ThemeResource TextBlockButtonStyle}" Content="ToggleButton" />
+                <TextBlock Text="ToggleButtonRevealStyle" />
+                <ToggleButton Style="{ThemeResource ToggleButtonRevealStyle}" Content="ToggleButton" />
+                <TextBlock Text="WindowChromeStyle" />
+                <ToggleButton Style="{ThemeResource WindowChromeStyle}" Content="ToggleButton" />
 
-                <!--
-            <StaticResource x:Key="ToggleButtonBackground" ResourceKey="ControlFillColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundChecked" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundCheckedPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundCheckedPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundCheckedDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundIndeterminate" ResourceKey="ControlFillColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundIndeterminatePointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundIndeterminatePressed" ResourceKey="ControlFillColorTertiaryBrush" />
-            <StaticResource x:Key="ToggleButtonBackgroundIndeterminateDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundChecked" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundCheckedPointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundCheckedPressed" ResourceKey="TextOnAccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundCheckedDisabled" ResourceKey="TextOnAccentFillColorDisabled" />
-            <StaticResource x:Key="ToggleButtonForegroundIndeterminate" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundIndeterminatePointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundIndeterminatePressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ToggleButtonForegroundIndeterminateDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrush" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushChecked" ResourceKey="AccentControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushCheckedPointerOver" ResourceKey="AccentControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushCheckedPressed" ResourceKey="ControlFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushCheckedDisabled" ResourceKey="ControlFillColorTransparentBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushIndeterminate" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushIndeterminatePointerOver" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushIndeterminatePressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ToggleButtonBorderBrushIndeterminateDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-                -->
+            </VariableSizedWrapGrid>
+            
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ToggleButtonBackground" />
+                <Border Background="{ThemeResource ToggleButtonBackground}" />
+                <TextBlock Text="ToggleButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundPointerOver}" />
+                <TextBlock Text="ToggleButtonBackgroundPressed" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundPressed}" />
+                <TextBlock Text="ToggleButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundDisabled}" />
+                <TextBlock Text="ToggleButtonBackgroundChecked" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundChecked}" />
+                <TextBlock Text="ToggleButtonBackgroundCheckedPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundCheckedPointerOver}" />
+                <TextBlock Text="ToggleButtonBackgroundCheckedPressed" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundCheckedPressed}" />
+                <TextBlock Text="ToggleButtonBackgroundCheckedDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundCheckedDisabled}" />
+                <TextBlock Text="ToggleButtonBackgroundIndeterminate" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundIndeterminate}" />
+                <TextBlock Text="ToggleButtonBackgroundIndeterminatePointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundIndeterminatePointerOver}" />
+                <TextBlock Text="ToggleButtonBackgroundIndeterminatePressed" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundIndeterminatePressed}" />
+                <TextBlock Text="ToggleButtonBackgroundIndeterminateDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBackgroundIndeterminateDisabled}" />
+                <TextBlock Text="ToggleButtonForeground" />
+                <Border Background="{ThemeResource ToggleButtonForeground}" />
+                <TextBlock Text="ToggleButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonForegroundPointerOver}" />
+                <TextBlock Text="ToggleButtonForegroundPressed" />
+                <Border Background="{ThemeResource ToggleButtonForegroundPressed}" />
+                <TextBlock Text="ToggleButtonForegroundDisabled" />
+                <Border Background="{ThemeResource ToggleButtonForegroundDisabled}" />
+                <TextBlock Text="ToggleButtonForegroundChecked" />
+                <Border Background="{ThemeResource ToggleButtonForegroundChecked}" />
+                <TextBlock Text="ToggleButtonForegroundCheckedPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonForegroundCheckedPointerOver}" />
+                <TextBlock Text="ToggleButtonForegroundCheckedPressed" />
+                <Border Background="{ThemeResource ToggleButtonForegroundCheckedPressed}" />
+                <TextBlock Text="ToggleButtonForegroundCheckedDisabled" />
+                <Border Background="{ThemeResource ToggleButtonForegroundCheckedDisabled}" />
+                <TextBlock Text="ToggleButtonForegroundIndeterminate" />
+                <Border Background="{ThemeResource ToggleButtonForegroundIndeterminate}" />
+                <TextBlock Text="ToggleButtonForegroundIndeterminatePointerOver" />
+                <Border Background="{ThemeResource ToggleButtonForegroundIndeterminatePointerOver}" />
+                <TextBlock Text="ToggleButtonForegroundIndeterminatePressed" />
+                <Border Background="{ThemeResource ToggleButtonForegroundIndeterminatePressed}" />
+                <TextBlock Text="ToggleButtonForegroundIndeterminateDisabled" />
+                <Border Background="{ThemeResource ToggleButtonForegroundIndeterminateDisabled}" />
+                <TextBlock Text="ToggleButtonBorderBrush" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrush}" />
+                <TextBlock Text="ToggleButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushPointerOver}" />
+                <TextBlock Text="ToggleButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushPressed}" />
+                <TextBlock Text="ToggleButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushDisabled}" />
+                <TextBlock Text="ToggleButtonBorderBrushChecked" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushChecked}" />
+                <TextBlock Text="ToggleButtonBorderBrushCheckedPointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushCheckedPointerOver}" />
+                <TextBlock Text="ToggleButtonBorderBrushCheckedPressed" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushCheckedPressed}" />
+                <TextBlock Text="ToggleButtonBorderBrushCheckedDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushCheckedDisabled}" />
+                <TextBlock Text="ToggleButtonBorderBrushIndeterminate" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushIndeterminate}" />
+                <TextBlock Text="ToggleButtonBorderBrushIndeterminatePointerOver" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushIndeterminatePointerOver}" />
+                <TextBlock Text="ToggleButtonBorderBrushIndeterminatePressed" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushIndeterminatePressed}" />
+                <TextBlock Text="ToggleButtonBorderBrushIndeterminateDisabled" />
+                <Border Background="{ThemeResource ToggleButtonBorderBrushIndeterminateDisabled}" />
+                
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1131,54 +1393,86 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="ScrollBarBackground" />
+                <Border Background="{ThemeResource ScrollBarBackground}" />
+                <TextBlock Text="ScrollBarBackgroundPointerOver" />
+                <Border Background="{ThemeResource ScrollBarBackgroundPointerOver}" />
+                <TextBlock Text="ScrollBarBackgroundDisabled" />
+                <Border Background="{ThemeResource ScrollBarBackgroundDisabled}" />
+                <TextBlock Text="ScrollBarForeground" />
+                <Border Background="{ThemeResource ScrollBarForeground}" />
+                <TextBlock Text="ScrollBarBorderBrush" />
+                <Border Background="{ThemeResource ScrollBarBorderBrush}" />
+                <TextBlock Text="ScrollBarBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ScrollBarBorderBrushPointerOver}" />
+                <TextBlock Text="ScrollBarBorderBrushDisabled" />
+                <Border Background="{ThemeResource ScrollBarBorderBrushDisabled}" />
+                <TextBlock Text="ScrollBarButtonBackground" />
+                <Border Background="{ThemeResource ScrollBarButtonBackground}" />
+                <TextBlock Text="ScrollBarButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource ScrollBarButtonBackgroundPointerOver}" />
+                <TextBlock Text="ScrollBarButtonBackgroundPressed" />
+                <Border Background="{ThemeResource ScrollBarButtonBackgroundPressed}" />
+                <TextBlock Text="ScrollBarButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource ScrollBarButtonBackgroundDisabled}" />
+                <TextBlock Text="ScrollBarButtonBorderBrush" />
+                <Border Background="{ThemeResource ScrollBarButtonBorderBrush}" />
+                <TextBlock Text="ScrollBarButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ScrollBarButtonBorderBrushPointerOver}" />
+                <TextBlock Text="ScrollBarButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource ScrollBarButtonBorderBrushPressed}" />
+                <TextBlock Text="ScrollBarButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource ScrollBarButtonBorderBrushDisabled}" />
+                <TextBlock Text="ScrollBarButtonArrowForeground" />
+                <Border Background="{ThemeResource ScrollBarButtonArrowForeground}" />
+                <TextBlock Text="ScrollBarButtonArrowForegroundPointerOver" />
+                <Border Background="{ThemeResource ScrollBarButtonArrowForegroundPointerOver}" />
+                <TextBlock Text="ScrollBarButtonArrowForegroundPressed" />
+                <Border Background="{ThemeResource ScrollBarButtonArrowForegroundPressed}" />
+                <TextBlock Text="ScrollBarButtonArrowForegroundDisabled" />
+                <Border Background="{ThemeResource ScrollBarButtonArrowForegroundDisabled}" />
+                <TextBlock Text="ScrollBarThumbFill" />
+                <Border Background="{ThemeResource ScrollBarThumbFill}" />
+                <TextBlock Text="ScrollBarThumbFillPointerOver" />
+                <Border Background="{ThemeResource ScrollBarThumbFillPointerOver}" />
+                <TextBlock Text="ScrollBarThumbFillPressed" />
+                <Border Background="{ThemeResource ScrollBarThumbFillPressed}" />
+                <TextBlock Text="ScrollBarThumbFillDisabled" />
+                <Border Background="{ThemeResource ScrollBarThumbFillDisabled}" />
+                <TextBlock Text="ScrollBarTrackFill" />
+                <Border Background="{ThemeResource ScrollBarTrackFill}" />
+                <TextBlock Text="ScrollBarTrackFillPointerOver" />
+                <Border Background="{ThemeResource ScrollBarTrackFillPointerOver}" />
+                <TextBlock Text="ScrollBarTrackFillDisabled" />
+                <Border Background="{ThemeResource ScrollBarTrackFillDisabled}" />
+                <TextBlock Text="ScrollBarTrackStroke" />
+                <Border Background="{ThemeResource ScrollBarTrackStroke}" />
+                <TextBlock Text="ScrollBarTrackStrokePointerOver" />
+                <Border Background="{ThemeResource ScrollBarTrackStrokePointerOver}" />
+                <TextBlock Text="ScrollBarTrackStrokeDisabled" />
+                <Border Background="{ThemeResource ScrollBarTrackStrokeDisabled}" />
+                <TextBlock Text="ScrollBarPanningThumbBackgroundDisabled" />
+                <Border Background="{ThemeResource ScrollBarPanningThumbBackgroundDisabled}" />
+                <TextBlock Text="ScrollBarThumbBackgroundColor" />
+                <Border Background="{ThemeResource ScrollBarThumbBackgroundColor}" />
+                <TextBlock Text="ScrollBarPanningThumbBackgroundColor" />
+                <Border Background="{ThemeResource ScrollBarPanningThumbBackgroundColor}" />
+                <TextBlock Text="ScrollBarThumbBackground" />
+                <Border Background="{ThemeResource ScrollBarThumbBackground}" />
+                <TextBlock Text="ScrollBarPanningThumbBackground" />
+                <Border Background="{ThemeResource ScrollBarPanningThumbBackground}" />
 
                 <!--
-            <StaticResource x:Key="ScrollBarBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarForeground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ScrollBarButtonBackgroundPressed" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarButtonBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBorderBrushPressed" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ScrollBarButtonArrowForeground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarButtonArrowForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ScrollBarButtonArrowForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ScrollBarButtonArrowForegroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-            <StaticResource x:Key="ScrollBarThumbFill" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarThumbFillPointerOver" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarThumbFillPressed" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarThumbFillDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-            <StaticResource x:Key="ScrollBarTrackFill" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarTrackFillPointerOver" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarTrackFillDisabled" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarTrackStroke" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarTrackStrokePointerOver" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarTrackStrokeDisabled" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarPanningThumbBackgroundDisabled" ResourceKey="ControlStrongFillColorDisabledBrush" />
-            <StaticResource x:Key="ScrollBarThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
-            <StaticResource x:Key="ScrollBarPanningThumbBackgroundColor" ResourceKey="ControlStrongFillColorDefault" />
-            <StaticResource x:Key="ScrollBarThumbBackground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <StaticResource x:Key="ScrollBarPanningThumbBackground" ResourceKey="ControlStrongFillColorDefaultBrush" />
-            <x:String x:Key="ScrollBarExpandDuration">00:00:00.1</x:String>
-            <x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
-            <x:String x:Key="ScrollBarContractBeginTime">00:00:02.00</x:String>
-            <x:String x:Key="ScrollBarContractDelay">00:00:02</x:String>
-            <x:String x:Key="ScrollBarContractDuration">00:00:00.1</x:String>
-            <x:String x:Key="ScrollBarContractFinalKeyframe">00:00:02.1</x:String>
-            <x:Double x:Key="ScrollBarSize">16</x:Double>
-            <x:Double x:Key="SmallScrollThumbScale">0.125</x:Double>
-            <x:Double x:Key="SmallScrollThumbOffset">-2</x:Double>
-            <x:Double x:Key="ScrollBarButtonArrowIconFontSize">8</x:Double>
+                <x:String x:Key="ScrollBarExpandDuration">00:00:00.1</x:String>
+                <x:String x:Key="ScrollBarExpandBeginTime">00:00:00.40</x:String>
+                <x:String x:Key="ScrollBarContractBeginTime">00:00:02.00</x:String>
+                <x:String x:Key="ScrollBarContractDelay">00:00:02</x:String>
+                <x:String x:Key="ScrollBarContractDuration">00:00:00.1</x:String>
+                <x:String x:Key="ScrollBarContractFinalKeyframe">00:00:02.1</x:String>
+                <x:Double x:Key="ScrollBarSize">16</x:Double>
+                <x:Double x:Key="SmallScrollThumbScale">0.125</x:Double>
+                <x:Double x:Key="SmallScrollThumbOffset">-2</x:Double>
+                <x:Double x:Key="ScrollBarButtonArrowIconFontSize">8</x:Double>
                 -->
             </VariableSizedWrapGrid>
 
@@ -1188,17 +1482,43 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DefaultScrollViewerStyle" />
+                <ScrollViewer Style="{ThemeResource DefaultScrollViewerStyle}">
+                    <TextBlock Text="ScrollViewer" Height="500" />
+                </ScrollViewer>
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <ScrollViewer Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}">
+                    <TextBlock Text="ScrollViewer" Height="500" />
+                </ScrollViewer>
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <ScrollViewer Style="{ThemeResource PivotTitleContentControlStyle}">
+                    <TextBlock Text="ScrollViewer" Height="500" />
+                </ScrollViewer>
+                <!--
+                <TextBlock Text="TabScrollViewerStyle" />
+                <ScrollViewer Style="{ThemeResource TabScrollViewerStyle}">
+                    <TextBlock Text="ScrollViewer" Height="500" />
+                </ScrollViewer>
+                -->
+                <TextBlock Text="WindowChromeStyle" />
+                <ScrollViewer Style="{ThemeResource WindowChromeStyle}">
+                    <TextBlock Text="ScrollViewer" Height="500" />
+                </ScrollViewer>
+
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ScrollViewerScrollBarSeparatorBackground" />
+                <Border Background="{ThemeResource ScrollViewerScrollBarSeparatorBackground}" />
 
                 <!--
-            <StaticResource x:Key="ScrollViewerScrollBarSeparatorBackground" ResourceKey="ControlFillColorTransparentBrush" />
-            <x:String x:Key="ScrollViewerSeparatorExpandBeginTime">00:00:00.40</x:String>
-            <x:String x:Key="ScrollViewerSeparatorExpandDuration">00:00:00.1</x:String>
-            <x:String x:Key="ScrollViewerSeparatorContractBeginTime">00:00:02.00</x:String>
-            <x:String x:Key="ScrollViewerSeparatorContractDelay">00:00:02</x:String>
-            <x:String x:Key="ScrollViewerSeparatorContractDuration">00:00:00.1</x:String>
-            <x:String x:Key="ScrollViewerSeparatorContractFinalKeyframe">00:00:02.1</x:String>
+                <x:String x:Key="ScrollViewerSeparatorExpandBeginTime">00:00:00.40</x:String>
+                <x:String x:Key="ScrollViewerSeparatorExpandDuration">00:00:00.1</x:String>
+                <x:String x:Key="ScrollViewerSeparatorContractBeginTime">00:00:02.00</x:String>
+                <x:String x:Key="ScrollViewerSeparatorContractDelay">00:00:02</x:String>
+                <x:String x:Key="ScrollViewerSeparatorContractDuration">00:00:00.1</x:String>
+                <x:String x:Key="ScrollViewerSeparatorContractFinalKeyframe">00:00:02.1</x:String>
                 -->
             </VariableSizedWrapGrid>
 
@@ -1208,13 +1528,22 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <ListViewHeaderItem Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" Content="ListViewHeaderItem" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <ListViewHeaderItem Style="{ThemeResource PivotTitleContentControlStyle}" Content="ListViewHeaderItem" />
+                <TextBlock Text="WindowChromeStyle" />
+                <ListViewHeaderItem Style="{ThemeResource WindowChromeStyle}" Content="ListViewHeaderItem" />
 
-                <!--
-            <StaticResource x:Key="ListViewHeaderItemBackground" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="ListViewHeaderItemDividerStroke" ResourceKey="SystemControlForegroundBaseLowBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ListViewHeaderItemBackground" />
+                <Border Background="{ThemeResource ListViewHeaderItemBackground}" />
+                <TextBlock Text="ListViewHeaderItemDividerStroke" />
+                <Border Background="{ThemeResource ListViewHeaderItemDividerStroke}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1223,38 +1552,126 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="ComboBoxItemRevealStyle" />
+                <ComboBox>
+                    <ComboBoxItem Style="{ThemeResource ComboBoxItemRevealStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource ComboBoxItemRevealStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource ComboBoxItemRevealStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="DefaultComboBoxItemStyle" />
+                <ComboBox>
+                    <ComboBoxItem Style="{ThemeResource DefaultComboBoxItemStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource DefaultComboBoxItemStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource DefaultComboBoxItemStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <ComboBox>
+                    <ComboBoxItem Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <ComboBox>
+                    <ComboBoxItem Style="{ThemeResource PivotTitleContentControlStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource PivotTitleContentControlStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource PivotTitleContentControlStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBlock Text="WindowChromeStyle" />
+                <ComboBox>
+                    <ComboBoxItem Style="{ThemeResource WindowChromeStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource WindowChromeStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{ThemeResource WindowChromeStyle}">
+                        <TextBlock Text="AAAA" />
+                    </ComboBoxItem>
+                </ComboBox>
 
-                <!--
-            <StaticResource x:Key="ComboBoxItemForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundSelectedUnfocused" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundSelectedPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundSelectedPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxItemForegroundSelectedDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundSelected" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundSelectedUnfocused" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundSelectedPressed" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBackgroundSelectedDisabled" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushDisabled" ResourceKey="SubtleFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushSelected" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushSelectedUnfocused" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushSelectedPressed" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushSelectedPointerOver" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxItemBorderBrushSelectedDisabled" ResourceKey="SubtleFillColorSecondaryBrush" />
-                -->
+            </VariableSizedWrapGrid>
+            
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ComboBoxItemForeground" />
+                <Border Background="{ThemeResource ComboBoxItemForeground}" />
+                <TextBlock Text="ComboBoxItemForegroundPressed" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundPressed}" />
+                <TextBlock Text="ComboBoxItemForegroundPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundPointerOver}" />
+                <TextBlock Text="ComboBoxItemForegroundDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundDisabled}" />
+                <TextBlock Text="ComboBoxItemForegroundSelected" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundSelected}" />
+                <TextBlock Text="ComboBoxItemForegroundSelectedUnfocused" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundSelectedUnfocused}" />
+                <TextBlock Text="ComboBoxItemForegroundSelectedPressed" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundSelectedPressed}" />
+                <TextBlock Text="ComboBoxItemForegroundSelectedPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundSelectedPointerOver}" />
+                <TextBlock Text="ComboBoxItemForegroundSelectedDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemForegroundSelectedDisabled}" />
+                <TextBlock Text="ComboBoxItemBackground" />
+                <Border Background="{ThemeResource ComboBoxItemBackground}" />
+                <TextBlock Text="ComboBoxItemBackgroundPressed" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundPressed}" />
+                <TextBlock Text="ComboBoxItemBackgroundPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundPointerOver}" />
+                <TextBlock Text="ComboBoxItemBackgroundDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundDisabled}" />
+                <TextBlock Text="ComboBoxItemBackgroundSelected" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundSelected}" />
+                <TextBlock Text="ComboBoxItemBackgroundSelectedUnfocused" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundSelectedUnfocused}" />
+                <TextBlock Text="ComboBoxItemBackgroundSelectedPressed" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundSelectedPressed}" />
+                <TextBlock Text="ComboBoxItemBackgroundSelectedPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundSelectedPointerOver}" />
+                <TextBlock Text="ComboBoxItemBackgroundSelectedDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemBackgroundSelectedDisabled}" />
+                <TextBlock Text="ComboBoxItemBorderBrush" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrush}" />
+                <TextBlock Text="ComboBoxItemBorderBrushPressed" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushPressed}" />
+                <TextBlock Text="ComboBoxItemBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushPointerOver}" />
+                <TextBlock Text="ComboBoxItemBorderBrushDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushDisabled}" />
+                <TextBlock Text="ComboBoxItemBorderBrushSelected" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushSelected}" />
+                <TextBlock Text="ComboBoxItemBorderBrushSelectedUnfocused" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushSelectedUnfocused}" />
+                <TextBlock Text="ComboBoxItemBorderBrushSelectedPressed" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushSelectedPressed}" />
+                <TextBlock Text="ComboBoxItemBorderBrushSelectedPointerOver" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushSelectedPointerOver}" />
+                <TextBlock Text="ComboBoxItemBorderBrushSelectedDisabled" />
+                <Border Background="{ThemeResource ComboBoxItemBorderBrushSelectedDisabled}" />
+                
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1263,40 +1680,76 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="ComboBoxItemRevealStyle" />
+                <ComboBox Style="{ThemeResource DefaultComboBoxStyle}">
+                    <TextBlock Text="AAAA" />
+                    <TextBlock Text="AAAA" />
+                    <TextBlock Text="AAAA" />
+                </ComboBox>
+                
+            </VariableSizedWrapGrid>
 
-                <!--
-            <StaticResource x:Key="ComboBoxBackground" ResourceKey="ControlFillColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundPointerOver" ResourceKey="ControlFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundPressed" ResourceKey="ControlFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundDisabled" ResourceKey="ControlFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundUnfocused" ResourceKey="ControlFillColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundBorderBrushFocused" ResourceKey="FocusStrokeColorOuterBrush" />
-            <StaticResource x:Key="ComboBoxBackgroundBorderBrushUnfocused" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxForegroundFocused" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxForegroundFocusedPressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxPlaceHolderForeground" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxPlaceHolderForegroundFocusedPressed" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxBorderBrush" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ComboBoxBorderBrushPointerOver" ResourceKey="ControlElevationBorderBrush" />
-            <StaticResource x:Key="ComboBoxBorderBrushPressed" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxBorderBrushDisabled" ResourceKey="ControlStrokeColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxDropDownBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxDropDownBackgroundPointerPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxFocusedDropDownBackgroundPointerOver" ResourceKey="ControlFillColorTertiaryBrush" />
-            <StaticResource x:Key="ComboBoxFocusedDropDownBackgroundPointerPressed" ResourceKey="ControlAltFillColorQuarternaryBrush" />
-            <StaticResource x:Key="ComboBoxDropDownGlyphForeground" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxEditableDropDownGlyphForeground" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxDropDownGlyphForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
-            <StaticResource x:Key="ComboBoxDropDownGlyphForegroundFocused" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="ComboBoxDropDownGlyphForegroundFocusedPressed" ResourceKey="SystemControlHighlightAltBaseMediumHighBrush" />
-            <StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="AcrylicInAppFillColorDefaultBrush" />
-            <StaticResource x:Key="ComboBoxDropDownForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ComboBoxDropDownBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
-                -->
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ComboBoxBackground" />
+                <Border Background="{ThemeResource ComboBoxBackground}" />
+                <TextBlock Text="ComboBoxBackgroundPointerOver" />
+                <Border Background="{ThemeResource ComboBoxBackgroundPointerOver}" />
+                <TextBlock Text="ComboBoxBackgroundPressed" />
+                <Border Background="{ThemeResource ComboBoxBackgroundPressed}" />
+                <TextBlock Text="ComboBoxBackgroundDisabled" />
+                <Border Background="{ThemeResource ComboBoxBackgroundDisabled}" />
+                <TextBlock Text="ComboBoxBackgroundUnfocused" />
+                <Border Background="{ThemeResource ComboBoxBackgroundUnfocused}" />
+                <TextBlock Text="ComboBoxBackgroundBorderBrushFocused" />
+                <Border Background="{ThemeResource ComboBoxBackgroundBorderBrushFocused}" />
+                <TextBlock Text="ComboBoxBackgroundBorderBrushUnfocused" />
+                <Border Background="{ThemeResource ComboBoxBackgroundBorderBrushUnfocused}" />
+                <TextBlock Text="ComboBoxForeground" />
+                <Border Background="{ThemeResource ComboBoxForeground}" />
+                <TextBlock Text="ComboBoxForegroundDisabled" />
+                <Border Background="{ThemeResource ComboBoxForegroundDisabled}" />
+                <TextBlock Text="ComboBoxForegroundFocused" />
+                <Border Background="{ThemeResource ComboBoxForegroundFocused}" />
+                <TextBlock Text="ComboBoxForegroundFocusedPressed" />
+                <Border Background="{ThemeResource ComboBoxForegroundFocusedPressed}" />
+                <TextBlock Text="ComboBoxPlaceHolderForeground" />
+                <Border Background="{ThemeResource ComboBoxPlaceHolderForeground}" />
+                <TextBlock Text="ComboBoxPlaceHolderForegroundFocusedPressed" />
+                <Border Background="{ThemeResource ComboBoxPlaceHolderForegroundFocusedPressed}" />
+                <TextBlock Text="ComboBoxBorderBrush" />
+                <Border Background="{ThemeResource ComboBoxBorderBrush}" />
+                <TextBlock Text="ComboBoxBorderBrushPointerOver" />
+                <Border Background="{ThemeResource ComboBoxBorderBrushPointerOver}" />
+                <TextBlock Text="ComboBoxBorderBrushPressed" />
+                <Border Background="{ThemeResource ComboBoxBorderBrushPressed}" />
+                <TextBlock Text="ComboBoxBorderBrushDisabled" />
+                <Border Background="{ThemeResource ComboBoxBorderBrushDisabled}" />
+                <TextBlock Text="ComboBoxDropDownBackgroundPointerOver" />
+                <Border Background="{ThemeResource ComboBoxDropDownBackgroundPointerOver}" />
+                <TextBlock Text="ComboBoxDropDownBackgroundPointerPressed" />
+                <Border Background="{ThemeResource ComboBoxDropDownBackgroundPointerPressed}" />
+                <TextBlock Text="ComboBoxFocusedDropDownBackgroundPointerOver" />
+                <Border Background="{ThemeResource ComboBoxFocusedDropDownBackgroundPointerOver}" />
+                <TextBlock Text="ComboBoxFocusedDropDownBackgroundPointerPressed" />
+                <Border Background="{ThemeResource ComboBoxFocusedDropDownBackgroundPointerPressed}" />
+                <TextBlock Text="ComboBoxDropDownGlyphForeground" />
+                <Border Background="{ThemeResource ComboBoxDropDownGlyphForeground}" />
+                <TextBlock Text="ComboBoxEditableDropDownGlyphForeground" />
+                <Border Background="{ThemeResource ComboBoxEditableDropDownGlyphForeground}" />
+                <TextBlock Text="ComboBoxDropDownGlyphForegroundDisabled" />
+                <Border Background="{ThemeResource ComboBoxDropDownGlyphForegroundDisabled}" />
+                <TextBlock Text="ComboBoxDropDownGlyphForegroundFocused" />
+                <Border Background="{ThemeResource ComboBoxDropDownGlyphForegroundFocused}" />
+                <TextBlock Text="ComboBoxDropDownGlyphForegroundFocusedPressed" />
+                <Border Background="{ThemeResource ComboBoxDropDownGlyphForegroundFocusedPressed}" />
+                <TextBlock Text="ComboBoxDropDownBackground" />
+                <Border Background="{ThemeResource ComboBoxDropDownBackground}" />
+                <TextBlock Text="ComboBoxDropDownForeground" />
+                <Border Background="{ThemeResource ComboBoxDropDownForeground}" />
+                <TextBlock Text="ComboBoxDropDownBorderBrush" />
+                <Border Background="{ThemeResource ComboBoxDropDownBorderBrush}" />
+                
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1305,12 +1758,16 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DefaultAppBarSeparatorStyle" />
+                <AppBarSeparator Style="{ThemeResource DefaultAppBarSeparatorStyle}" />
 
-                <!--
-            <StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="DividerStrokeColorDefaultBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="AppBarSeparatorForeground" />
+                <Border Background="{ThemeResource AppBarSeparatorForeground}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1319,23 +1776,49 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="AppBar:NavigationViewTitleHeaderContentControlTextStyle" />
+                <AppBar Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                <TextBlock Text="AppBar:PivotTitleContentControlStyle" />
+                <AppBar Style="{ThemeResource PivotTitleContentControlStyle}" />
+                <TextBlock Text="AppBar:WindowChromeStyle" />
+                <AppBar Style="{ThemeResource WindowChromeStyle}" />
 
-                <!--
-            <StaticResource x:Key="AppBarEllipsisButtonBackground" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBackgroundPointerOver" ResourceKey="SystemControlHighlightListLowBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBackgroundPressed" ResourceKey="SystemControlHighlightListMediumBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBackgroundDisabled" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonForeground" ResourceKey="SystemControlForegroundBaseHighBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonForegroundPointerOver" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonForegroundPressed" ResourceKey="SystemControlForegroundBaseHighBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonForegroundDisabled" ResourceKey="SystemControlDisabledBaseMediumLowBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBorderBrush" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBorderBrushPointerOver" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBorderBrushPressed" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="AppBarEllipsisButtonBorderBrushDisabled" ResourceKey="SystemControlTransparentBrush" />
-                -->
+                <TextBlock Text="CommandBar:NavigationViewTitleHeaderContentControlTextStyle" />
+                <CommandBar Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                <TextBlock Text="CommandBar:PivotTitleContentControlStyle" />
+                <CommandBar Style="{ThemeResource PivotTitleContentControlStyle}" />
+                <TextBlock Text="CommandBar:WindowChromeStyle" />
+                <CommandBar Style="{ThemeResource WindowChromeStyle}" />
+
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="AppBarEllipsisButtonBackground" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBackground}" />
+                <TextBlock Text="AppBarEllipsisButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBackgroundPointerOver}" />
+                <TextBlock Text="AppBarEllipsisButtonBackgroundPressed" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBackgroundPressed}" />
+                <TextBlock Text="AppBarEllipsisButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBackgroundDisabled}" />
+                <TextBlock Text="AppBarEllipsisButtonForeground" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonForeground}" />
+                <TextBlock Text="AppBarEllipsisButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonForegroundPointerOver}" />
+                <TextBlock Text="AppBarEllipsisButtonForegroundPressed" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonForegroundPressed}" />
+                <TextBlock Text="AppBarEllipsisButtonForegroundDisabled" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonForegroundDisabled}" />
+                <TextBlock Text="AppBarEllipsisButtonBorderBrush" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBorderBrush}" />
+                <TextBlock Text="AppBarEllipsisButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBorderBrushPointerOver}" />
+                <TextBlock Text="AppBarEllipsisButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBorderBrushPressed}" />
+                <TextBlock Text="AppBarEllipsisButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource AppBarEllipsisButtonBorderBrushDisabled}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1344,14 +1827,24 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <AppBar Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <AppBar Style="{ThemeResource PivotTitleContentControlStyle}" />
+                <TextBlock Text="WindowChromeStyle" />
+                <AppBar Style="{ThemeResource WindowChromeStyle}" />
 
-                <!--
-            <StaticResource x:Key="AppBarBackground" ResourceKey="SystemControlBackgroundChromeMediumBrush" />
-            <StaticResource x:Key="AppBarForeground" ResourceKey="SystemControlForegroundBaseHighBrush" />
-            <StaticResource x:Key="AppBarHighContrastBorder" ResourceKey="SystemControlForegroundTransparentBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="AppBarBackground" />
+                <Border Background="{ThemeResource AppBarBackground}" />
+                <TextBlock Text="AppBarForeground" />
+                <Border Background="{ThemeResource AppBarForeground}" />
+                <TextBlock Text="AppBarHighContrastBorder" />
+                <Border Background="{ThemeResource AppBarHighContrastBorder}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1360,14 +1853,26 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="DefaultContentDialogStyle" />
+                <ContentDialog Style="{ThemeResource DefaultContentDialogStyle}" />
+                <TextBlock Text="NavigationViewTitleHeaderContentControlTextStyle" />
+                <ContentDialog Style="{ThemeResource NavigationViewTitleHeaderContentControlTextStyle}" />
+                <TextBlock Text="PivotTitleContentControlStyle" />
+                <ContentDialog Style="{ThemeResource PivotTitleContentControlStyle}" />
+                <TextBlock Text="WindowChromeStyle" />
+                <ContentDialog Style="{ThemeResource WindowChromeStyle}" />
 
-                <!--
-            <StaticResource x:Key="ContentDialogForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="ContentDialogBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
-            <StaticResource x:Key="ContentDialogBorderBrush" ResourceKey="SurfaceStrokeColorDefaultBrush" />
-                -->
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid>
+
+                <TextBlock Text="ContentDialogForeground" />
+                <Border Background="{ThemeResource ContentDialogForeground}" />
+                <TextBlock Text="ContentDialogBackground" />
+                <Border Background="{ThemeResource ContentDialogBackground}" />
+                <TextBlock Text="ContentDialogBorderBrush" />
+                <Border Background="{ThemeResource ContentDialogBorderBrush}" />
+
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1376,23 +1881,31 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="AccentButtonBackground" />
+                <Border Background="{ThemeResource AccentButtonBackground}" />
+                <TextBlock Text="AccentButtonBackgroundPointerOver" />
+                <Border Background="{ThemeResource AccentButtonBackgroundPointerOver}" />
+                <TextBlock Text="AccentButtonBackgroundPressed" />
+                <Border Background="{ThemeResource AccentButtonBackgroundPressed}" />
+                <TextBlock Text="AccentButtonBackgroundDisabled" />
+                <Border Background="{ThemeResource AccentButtonBackgroundDisabled}" />
+                <TextBlock Text="AccentButtonForeground" />
+                <Border Background="{ThemeResource AccentButtonForeground}" />
+                <TextBlock Text="AccentButtonForegroundPointerOver" />
+                <Border Background="{ThemeResource AccentButtonForegroundPointerOver}" />
+                <TextBlock Text="AccentButtonForegroundPressed" />
+                <Border Background="{ThemeResource AccentButtonForegroundPressed}" />
+                <TextBlock Text="AccentButtonForegroundDisabled" />
+                <Border Background="{ThemeResource AccentButtonForegroundDisabled}" />
+                <TextBlock Text="AccentButtonBorderBrush" />
+                <Border Background="{ThemeResource AccentButtonBorderBrush}" />
+                <TextBlock Text="AccentButtonBorderBrushPointerOver" />
+                <Border Background="{ThemeResource AccentButtonBorderBrushPointerOver}" />
+                <TextBlock Text="AccentButtonBorderBrushPressed" />
+                <Border Background="{ThemeResource AccentButtonBorderBrushPressed}" />
+                <TextBlock Text="AccentButtonBorderBrushDisabled" />
+                <Border Background="{ThemeResource AccentButtonBorderBrushDisabled}" />
 
-                <!--
-            <StaticResource x:Key="AccentButtonBackground" ResourceKey="AccentFillColorDefaultBrush" />
-            <StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="AccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="AccentButtonBackgroundPressed" ResourceKey="AccentFillColorTertiaryBrush" />
-            <StaticResource x:Key="AccentButtonBackgroundDisabled" ResourceKey="AccentFillColorDisabledBrush" />
-            <StaticResource x:Key="AccentButtonForeground" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="AccentButtonForegroundPointerOver" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="AccentButtonForegroundPressed" ResourceKey="TextOnAccentFillColorSecondaryBrush" />
-            <StaticResource x:Key="AccentButtonForegroundDisabled" ResourceKey="TextOnAccentFillColorDisabled" />
-            <StaticResource x:Key="AccentButtonBorderBrush" ResourceKey="AccentControlElevationBorderBrush" />
-            <StaticResource x:Key="AccentButtonBorderBrushPointerOver" ResourceKey="AccentControlElevationBorderBrush" />
-            <StaticResource x:Key="AccentButtonBorderBrushPressed" ResourceKey="ControlFillColorTransparentBrush" />
-            <StaticResource x:Key="AccentButtonBorderBrushDisabled" ResourceKey="ControlFillColorTransparentBrush" />
-                -->
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1896,13 +2409,11 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
+                <TextBlock Text="GridViewHeaderItemBackground" />
                 <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="GridViewHeaderItemDividerStroke" />
+                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
 
-                <!--
-            <StaticResource x:Key="GridViewHeaderItemBackground" ResourceKey="SystemControlTransparentBrush" />
-            <StaticResource x:Key="GridViewHeaderItemDividerStroke" ResourceKey="SystemControlForegroundBaseLowBrush" />
-                -->
             </VariableSizedWrapGrid>
 
             <Border Style="{StaticResource BorderStyle}">
@@ -1911,30 +2422,46 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
+                <TextBlock Text="GridViewItemBackground" />
+                <Border Background="{ThemeResource GridViewItemBackground}" />
+                <TextBlock Text="GridViewItemBackgroundPointerOver" />
+                <Border Background="{ThemeResource GridViewItemBackgroundPointerOver}" />
+                <TextBlock Text="GridViewItemBackgroundPressed" />
+                <Border Background="{ThemeResource GridViewItemBackgroundPressed}" />
+                <TextBlock Text="GridViewItemBackgroundSelected" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelected}" />
+                <TextBlock Text="GridViewItemBackgroundSelectedPointerOver" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" />
+                <TextBlock Text="GridViewItemBackgroundSelectedPressed" />
+                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPressed}" />
+                <TextBlock Text="GridViewItemForeground" />
+                <Border Background="{ThemeResource GridViewItemForeground}" />
+                <TextBlock Text="GridViewItemForegroundPointerOver" />
+                <Border Background="{ThemeResource GridViewItemForegroundPointerOver}" />
+                <TextBlock Text="GridViewItemForegroundSelected" />
+                <Border Background="{ThemeResource GridViewItemForegroundSelected}" />
+                <TextBlock Text="GridViewItemFocusVisualPrimaryBrush" />
+                <Border Background="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
+                <TextBlock Text="GridViewItemFocusVisualSecondaryBrush" />
+                <Border Background="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
+                <TextBlock Text="GridViewItemFocusBorderBrush" />
+                <Border Background="{ThemeResource GridViewItemFocusBorderBrush}" />
+                <TextBlock Text="GridViewItemFocusSecondaryBorderBrush" />
+                <Border Background="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" />
+                <TextBlock Text="GridViewItemCheckBrush" />
+                <Border Background="{ThemeResource GridViewItemCheckBrush}" />
+                <TextBlock Text="GridViewItemCheckBoxBrush" />
+                <Border Background="{ThemeResource GridViewItemCheckBoxBrush}" />
+                <TextBlock Text="GridViewItemDragBackground" />
+                <Border Background="{ThemeResource GridViewItemDragBackground}" />
+                <TextBlock Text="GridViewItemDragForeground" />
+                <Border Background="{ThemeResource GridViewItemDragForeground}" />
+                <TextBlock Text="GridViewItemPlaceholderBackground" />
+                <Border Background="{ThemeResource GridViewItemPlaceholderBackground}" />
 
                 <!--
-            <StaticResource x:Key="GridViewItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="GridViewItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="GridViewItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="GridViewItemBackgroundSelected" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="GridViewItemBackgroundSelectedPointerOver" ResourceKey="SubtleFillColorTertiaryBrush" />
-            <StaticResource x:Key="GridViewItemBackgroundSelectedPressed" ResourceKey="SubtleFillColorSecondaryBrush" />
-            <StaticResource x:Key="GridViewItemForeground" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="GridViewItemForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
-            <StaticResource x:Key="GridViewItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="GridViewItemFocusVisualPrimaryBrush" ResourceKey="FocusStrokeColorOuterBrush" />
-            <StaticResource x:Key="GridViewItemFocusVisualSecondaryBrush" ResourceKey="FocusStrokeColorInnerBrush" />
-            <StaticResource x:Key="GridViewItemFocusBorderBrush" ResourceKey="FocusStrokeColorOuterBrush" />
-            <StaticResource x:Key="GridViewItemFocusSecondaryBorderBrush" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="GridViewItemCheckBrush" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="GridViewItemCheckBoxBrush" ResourceKey="ControlOnImageFillColorDefaultBrush" />
-            <StaticResource x:Key="GridViewItemDragBackground" ResourceKey="SubtleFillColorTransparentBrush" />
-            <StaticResource x:Key="GridViewItemDragForeground" ResourceKey="TextOnAccentFillColorPrimaryBrush" />
-            <StaticResource x:Key="GridViewItemPlaceholderBackground" ResourceKey="ControlStrongFillColorDisabledBrush" />
-            <x:Boolean x:Key="GridViewItemSelectionCheckMarkVisualEnabled">True</x:Boolean>
-            <ListViewItemPresenterCheckMode x:Key="GridViewItemCheckMode">Overlay</ListViewItemPresenterCheckMode>
+                <x:Boolean x:Key="GridViewItemSelectionCheckMarkVisualEnabled">True</x:Boolean>
+                <ListViewItemPresenterCheckMode x:Key="GridViewItemCheckMode">Overlay</ListViewItemPresenterCheckMode>
                 -->
             </VariableSizedWrapGrid>
 
@@ -2307,9 +2834,9 @@
                 <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
 
                 <!--
-            <x:String x:Key="SplitViewPaneAnimationOpenDuration">00:00:00.2</x:String>
-            <x:String x:Key="SplitViewPaneAnimationOpenPreDuration">00:00:00.19999</x:String>
-            <x:String x:Key="SplitViewPaneAnimationCloseDuration">00:00:00.1</x:String>
+                <x:String x:Key="SplitViewPaneAnimationOpenDuration">00:00:00.2</x:String>
+                <x:String x:Key="SplitViewPaneAnimationOpenPreDuration">00:00:00.19999</x:String>
+                <x:String x:Key="SplitViewPaneAnimationCloseDuration">00:00:00.1</x:String>
                 -->
             </VariableSizedWrapGrid>
 
@@ -3680,75 +4207,12 @@
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="AAAA" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
-
-                <!--
-                -->
             </VariableSizedWrapGrid>
-
-            <Border Style="{StaticResource BorderStyle}">
-                <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewHeaderItem" />
-            </Border>
 
             <VariableSizedWrapGrid>
 
-                <TextBlock Text="GridViewHeaderItemBackground" />
-                <Border Background="{ThemeResource GridViewHeaderItemBackground}" />
-                <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
-
             </VariableSizedWrapGrid>
 
-            <Border Style="{StaticResource BorderStyle}">
-                <TextBlock Text="Resources for Windows.UI.Xaml.Controls.GridViewItem" />
-            </Border>
-
-            <VariableSizedWrapGrid>
-                
-                <TextBlock Text="GridViewItemBackground" />
-                <Border Background="{ThemeResource GridViewItemBackground}" />
-                <TextBlock Text="GridViewItemBackgroundPointerOver" />
-                <Border Background="{ThemeResource GridViewItemBackgroundPointerOver}" />
-                <TextBlock Text="GridViewItemBackgroundPressed" />
-                <Border Background="{ThemeResource GridViewItemBackgroundPressed}" />
-                <TextBlock Text="GridViewItemBackgroundSelected" />
-                <Border Background="{ThemeResource GridViewItemBackgroundSelected}" />
-                <TextBlock Text="GridViewItemBackgroundSelectedPointerOver" />
-                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPointerOver}" />
-                <TextBlock Text="GridViewItemBackgroundSelectedPressed" />
-                <Border Background="{ThemeResource GridViewItemBackgroundSelectedPressed}" />
-                <TextBlock Text="GridViewItemForeground" />
-                <Border Background="{ThemeResource GridViewItemForeground}" />
-                <TextBlock Text="GridViewItemForegroundPointerOver" />
-                <Border Background="{ThemeResource GridViewItemForegroundPointerOver}" />
-                <TextBlock Text="GridViewItemForegroundSelected" />
-                <Border Background="{ThemeResource GridViewItemForegroundSelected}" />
-                <TextBlock Text="GridViewItemFocusVisualPrimaryBrush" />
-                <Border Background="{ThemeResource GridViewItemFocusVisualPrimaryBrush}" />
-                <TextBlock Text="GridViewItemFocusVisualSecondaryBrush" />
-                <Border Background="{ThemeResource GridViewItemFocusVisualSecondaryBrush}" />
-                <TextBlock Text="GridViewItemFocusBorderBrush" />
-                <Border Background="{ThemeResource GridViewItemFocusBorderBrush}" />
-                <TextBlock Text="GridViewItemFocusSecondaryBorderBrush" />
-                <Border Background="{ThemeResource GridViewItemFocusSecondaryBorderBrush}" />
-                <TextBlock Text="GridViewItemCheckBrush" />
-                <Border Background="{ThemeResource GridViewItemCheckBrush}" />
-                <TextBlock Text="GridViewItemCheckBoxBrush" />
-                <Border Background="{ThemeResource GridViewItemCheckBoxBrush}" />
-                <TextBlock Text="GridViewItemDragBackground" />
-                <Border Background="{ThemeResource GridViewItemDragBackground}" />
-                <TextBlock Text="GridViewItemDragForeground" />
-                <Border Background="{ThemeResource GridViewItemDragForeground}" />
-                <TextBlock Text="GridViewItemPlaceholderBackground" />
-                <Border Background="{ThemeResource GridViewItemPlaceholderBackground}" />
-                <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
-                <TextBlock Text="GridViewHeaderItemDividerStroke" />
-                <Border Background="{ThemeResource GridViewHeaderItemDividerStroke}" />
-
-            </VariableSizedWrapGrid>
-          
         </StackPanel>
     </ScrollViewer>
 </Page>

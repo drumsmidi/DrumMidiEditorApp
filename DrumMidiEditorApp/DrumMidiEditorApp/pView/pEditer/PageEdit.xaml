@@ -257,7 +257,7 @@
             <StackPanel 
                 Orientation="Horizontal" 
                 Spacing="6" >
-
+                
                 <Border
                     BorderBrush="{ThemeResource ApplicationPointerOverForegroundThemeBrush}"
                     BorderThickness="1" >
