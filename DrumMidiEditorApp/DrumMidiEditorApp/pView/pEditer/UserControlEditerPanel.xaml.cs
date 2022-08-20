@@ -2832,7 +2832,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// BGM音階表示画像更新
     /// </summary>
-    private async void UpdateScaleBgmBitmapAsync()
+    private void UpdateScaleBgmBitmapAsync()
     {
         // タスクが終わっていなければスキップ。次回の処理で更新する
         if ( !( _ScaleWaveFormTask?.IsCompleted ?? true ) )

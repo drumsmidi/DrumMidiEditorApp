@@ -199,9 +199,4 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 	}
 
 	#endregion
-
-	private void _MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
-	{
-
-	}
 }

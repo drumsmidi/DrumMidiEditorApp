@@ -49,6 +49,8 @@
                     ItemsSource="{x:Bind _MeasureNoList, Mode=OneTime}"
                     SelectionMode="Single"
                     SelectionChanged="MeasureNoGridView_SelectionChanged"
+                    IsItemClickEnabled="True"
+                    ItemClick="MeasureNoGridView_ItemClick"
                     ScrollViewer.HorizontalScrollMode="Enabled"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     ScrollViewer.VerticalScrollMode="Disabled"

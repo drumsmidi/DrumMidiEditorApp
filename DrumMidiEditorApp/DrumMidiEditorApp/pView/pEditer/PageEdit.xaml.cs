@@ -165,11 +165,40 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 		}
     }
 
-	/// <summary>
-	/// シート位置　指定の小節番号へ移動
-	/// </summary>
-	/// <param name="aMeasureNo">小節番号</param>
-	private void JumpMeasure( int aMeasureNo )
+    /// <summary>
+    /// 小節番号移動
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MeasureNoGridView_ItemClick( object sender, ItemClickEventArgs args )
+    {
+		try
+		{
+            if ( sender is not GridView item )
+            {
+                return;
+            }
+
+            var oldValue = item.SelectedValue;
+            var newValue = args.ClickedItem;
+
+            // 同じ小節番号が選択された場合
+            if ( oldValue?.Equals( newValue ) ?? false )
+            {
+				JumpMeasure( Convert.ToInt32( newValue ) );
+            }
+		}
+		catch ( Exception e )
+		{
+			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+		}
+    }
+
+    /// <summary>
+    /// シート位置　指定の小節番号へ移動
+    /// </summary>
+    /// <param name="aMeasureNo">小節番号</param>
+    private void JumpMeasure( int aMeasureNo )
     {
 		DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
