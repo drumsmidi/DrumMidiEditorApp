@@ -89,13 +89,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// 描画タスク
     /// </summary>
-    public async void DrawTaskAsync()
+    public void DrawTaskAsync()
     {
         try
         {
             var fps = new Fps();
             fps.Set( 1, 0 );
-            fps.Set( 2, DrawSet.Fps );
+            //fps.Set( 2, DrawSet.Fps );
             fps.Start();
 
             while ( !_IdleTaskStop )
@@ -119,25 +119,20 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 // フレーム更新＆描画処理
                 fps.Tick();
 
-			    if ( fps.TickFpsWeight( 1 ) )
-			    {
-                    // フレーム更新
-                    _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
-			    }
+                // フレーム更新
+                _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
 
-			    if ( fps.TickFpsWeight( 2 ) )
-			    {
-                    // 描画処理
-                    using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+                // 描画処理
+                using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
 
-                    _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
+                _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
-                    _PlayerCanvas.SwapChain.Present();
+                _PlayerCanvas.SwapChain.Present();
 
-                    //fps.TickFpsWeight( 2 );
-                }
+                // 垂直同期
+                _PlayerCanvas.SwapChain.WaitForVerticalBlank();
 
-                await Task.Delay( 1 );
+                //await Task.Delay( 1 );
             }
         }
         catch ( Exception e )
