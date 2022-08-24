@@ -43,7 +43,15 @@ public static class DmsControl
 
 			_MusicTaskStop = false;
 
-			_MusicTask = Task.Run( () => { ProcSequenceAsync(); } );
+            // 粒度の細かいシステムではなく、タスクが長時間実行され、
+            // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
+            // これは、TaskScheduler に対し、オーバーサブスクリプションを許可してもよいことを示します。
+            // オーバーサブスクリプションを使用すると、使用可能なハードウェア スレッドよりも多くのスレッドを作成できます。
+            // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
+            // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
+            _MusicTask = Task.Factory.StartNew( ProcSequenceAsync, TaskCreationOptions.LongRunning );
+
+            //_MusicTask = Task.Run(() => { ProcSequenceAsync(); });
 
             Log.Info( $"{Log.GetThisMethodName}:start thread" );
 		}
