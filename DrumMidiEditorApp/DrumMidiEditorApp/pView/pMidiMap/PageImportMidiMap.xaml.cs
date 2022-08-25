@@ -231,6 +231,6 @@ public sealed partial class PageImportMidiMap : Page
 
 internal class ImportMidiMapData
 {
-	public string BeforeName { get; set; }
-	public string AfterName { get; set; }
+	public string BeforeName { get; set; } = string.Empty;
+	public string AfterName { get; set; } = string.Empty;
 }

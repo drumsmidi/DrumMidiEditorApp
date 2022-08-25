@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
+using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pGeneralFunction.pLog;
 
@@ -192,6 +194,17 @@ public static class Log
         {
             callback( aLevel, aText );
         }
+    }
+
+    /// <summary>
+    /// ログファイルへTraceログを出力するように設定
+    /// </summary>
+    public static void SetLogFile( GeneralPath aLogPath )
+    {
+        var log_file = File.Create( aLogPath.AbsoulteFilePath );
+
+        Trace.Listeners.Add( new TextWriterTraceListener( log_file ) );
+        Trace.AutoFlush = true;
     }
 
     #endregion

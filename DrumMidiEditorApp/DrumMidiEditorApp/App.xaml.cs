@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 
 using DrumMidiEditorApp.pView;
+using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -12,7 +13,7 @@ namespace DrumMidiEditorApp;
 /// </summary>
 public partial class App : Application
 {
-    private Window _MainWindow;
+    private Window? _MainWindow;
 
     /// <summary>
     /// シングルトンアプリケーションオブジェクトを初期化します。 
@@ -22,6 +23,8 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        Log.SetLogFile( new( "TraceLog.log" ) );
     }
 
     /// <summary>

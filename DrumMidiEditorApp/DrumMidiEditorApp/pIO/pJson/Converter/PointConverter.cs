@@ -44,9 +44,9 @@ internal class PointConverter : JsonConverter<Point>
     {
         aWriter.WriteStartObject();
         aWriter.WritePropertyName( "X" );
-        aWriter.WriteStringValue( $"{aValue.X}" );
+        aWriter.WriteNumberValue( aValue.X );
         aWriter.WritePropertyName( "Y" );
-        aWriter.WriteStringValue( $"{aValue.Y}" );
+        aWriter.WriteNumberValue( aValue.Y );
         aWriter.WriteEndObject();
     }
 }
