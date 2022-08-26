@@ -85,7 +85,7 @@ public static class Log
     /// エラーログ
     /// </summary>
     /// <param name="aText">出力内容</param>
-    public static void Error( string aText ) => Error( aText, false );
+    public static void Error( string aText ) => Error( aText, true );
 
     /// <summary>
     /// エラーログ

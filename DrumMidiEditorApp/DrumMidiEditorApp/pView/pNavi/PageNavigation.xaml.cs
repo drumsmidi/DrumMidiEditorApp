@@ -113,10 +113,11 @@ public sealed partial class PageNavigation : Page
             // ページ切替実施
             else
             {
-                // ページ切替効果の無効化
-                //      SuppressNavigationTransitionInfo を
-                //      他の NavigationTransitionInfo サブタイプの代わりに使用します。
-                // https://docs.microsoft.com/ja-jp/windows/apps/design/motion/page-transitions
+                // ページ切替効果
+                //   ページ更新　　：EntranceNavigationTransitionInfo
+                //   ドリル　　　　：DrillInNavigationTransitionInfo
+                //   横方向スライド：SlideNavigationTransitionInfo
+                //   無効化    　　：SuppressNavigationTransitionInfo
 
                 _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
             }

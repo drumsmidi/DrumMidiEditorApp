@@ -28,6 +28,8 @@
     <None Remove="pView\pConfig\PageConfigPlayerSimuration.xaml" />
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
     <None Remove="pView\pDebug\PageDebug.xaml" />
+    <None Remove="pView\pDebug\PageDebugShell.xaml" />
+    <None Remove="pView\pDebug\PageDebugStyle.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
     <None Remove="pView\pMidiMap\PageImportMidiMap.xaml" />
@@ -37,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
     <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
     <PackageReference Include="Microsoft.ML" Version="1.7.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.4" />
@@ -87,6 +90,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pDebug\PageDebug.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pDebug\PageDebugShell.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pDebug\PageDebugStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
