@@ -239,6 +239,38 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     private EActionState _ActionState = EActionState.None;
 
     /// <summary>
+    /// Flyout Open
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+	private void MoveSheetFlyout_PointerPressed( object sender, PointerRoutedEventArgs args )
+	{
+        try
+        {
+            if ( !_MoveSheetFlyout.IsOpen )
+            {
+                FlyoutBase.ShowAttachedFlyout( (FrameworkElement)sender );
+            }
+        }   
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+	}
+
+    /// <summary>
+    /// シート移動用のFlyoutを閉じる
+    /// </summary>
+    private void HideMoveSheetFlyout()
+    {
+        // Flyoutを閉じる
+        if ( _MoveSheetFlyout.IsOpen )
+        {
+            _MoveSheetFlyout.Hide();
+        }
+    }
+
+    /// <summary>
     /// マウスダウン処理
     /// </summary>
     /// <param name="sender"></param>
@@ -311,6 +343,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         if ( _ActionState == EActionState.None )
         {
+            //HideMoveSheetFlyout();
             return;
         }
 
@@ -323,6 +356,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 case EActionState.MoveSheet:
                     {
                         StopTimer();
+                        HideMoveSheetFlyout();
                     }
                     break;
 			}

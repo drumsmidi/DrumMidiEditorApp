@@ -263,20 +263,43 @@
                 <Border
                     BorderBrush="{ThemeResource ApplicationPointerOverForegroundThemeBrush}"
                     BorderThickness="1" >
-                    
+
                     <TextBlock x:Uid="InputMoveSheet"
-                        Width="140"
+                        Width="80"
                         Padding="0 20 0 0"
                         TextAlignment="Center"
-                        PointerPressed="MoveSheetTextBlock_PointerPressed"
-                        PointerMoved="MoveSheetTextBlock_PointerMoved"
-                        PointerReleased="MoveSheetTextBlock_PointerReleased"
-                        PointerCanceled="MoveSheetTextBlock_PointerReleased"
-                        PointerCaptureLost="MoveSheetTextBlock_PointerReleased"
-                        PointerExited="MoveSheetTextBlock_PointerReleased" />
-                    
+                        PointerPressed="MoveSheetFlyout_PointerPressed" >
+                        
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout x:Name="_MoveSheetFlyout"
+                                Placement="BottomEdgeAlignedLeft"
+                                AreOpenCloseAnimationsEnabled="False" >
+                                    
+                                <TextBlock x:Uid="InputMoveSheetDetail"
+                                    TextAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Width="400"
+                                    Height="160"
+                                    Padding="0 70 0 0"
+                                    PointerPressed="MoveSheetTextBlock_PointerPressed"
+                                    PointerMoved="MoveSheetTextBlock_PointerMoved"
+                                    PointerReleased="MoveSheetTextBlock_PointerReleased"
+                                    PointerCanceled="MoveSheetTextBlock_PointerReleased"
+                                    PointerCaptureLost="MoveSheetTextBlock_PointerReleased"
+                                    PointerExited="MoveSheetTextBlock_PointerReleased" />
+                                
+                                <Flyout.FlyoutPresenterStyle>
+                                    <Style TargetType="FlyoutPresenter">
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </Flyout.FlyoutPresenterStyle>                                
+                            </Flyout>
+                            
+                        </FlyoutBase.AttachedFlyout>
+                        
+                    </TextBlock>
                 </Border>
-                
+
                 <ToggleSwitch x:Name="_NoteOnOffToggleButton" x:Uid="InputNoteOnOff"
                     Margin="0 0 -40 0"
                     IsOn="{x:Bind DrawSet.NoteOn, Mode=TwoWay}" />

@@ -337,6 +337,9 @@ BPMノートを含める</value>
   <data name="InputMoveSheet.Text" xml:space="preserve">
     <value>シート移動</value>
   </data>
+  <data name="InputMoveSheetDetail.Text" xml:space="preserve">
+    <value>シート移動</value>
+  </data>
   <data name="InputMusicInfoMemo.Header" xml:space="preserve">
     <value>自由入力欄</value>
   </data>
