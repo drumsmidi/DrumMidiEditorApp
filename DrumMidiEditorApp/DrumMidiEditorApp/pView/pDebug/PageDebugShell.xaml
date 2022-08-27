@@ -24,6 +24,8 @@
 
             <Button Content="Shell Badge Clear" Click="BadgeClearButton_Click" />
 
+            <Button Content="Shell TaskBar Regist" Click="TaskBarRegistButton_Click" />
+
         </StackPanel>
     </ScrollViewer>
 </Page>

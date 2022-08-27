@@ -10,6 +10,8 @@ using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
 using System.Security.Claims;
+using Windows.Foundation.Metadata;
+using Windows.UI.Shell;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 
@@ -346,4 +348,39 @@ public sealed partial class PageDebugShell : Page
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+
+    private async void TaskBarRegistButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            // APIサポートチェック
+            if ( !ApiInformation.IsTypePresent( "Windows.UI.Shell.TaskbarManager" ) )
+            {
+                return;
+            }
+
+            // タスク バーが存在し、ピン留めを使用できるかどうかを確認
+            if ( !TaskbarManager.GetDefault().IsPinningAllowed )
+            {
+                return;
+            }
+
+            // アプリが現在タスク バーにピン留めされているかどうかを確認
+            if ( await TaskbarManager.GetDefault().IsCurrentAppPinnedAsync() )
+            {
+                return;
+            }
+
+            // ピン止め確認：エラーになる
+            if ( await TaskbarManager.GetDefault().RequestPinCurrentAppAsync() )
+            {
+            
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
 }
