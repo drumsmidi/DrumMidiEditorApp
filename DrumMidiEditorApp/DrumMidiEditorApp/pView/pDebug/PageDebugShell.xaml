@@ -18,7 +18,11 @@
 
             <Button Content="Shell Toast Clear" Click="ToastClearButton_Click" />
 
-            
+            <Button Content="Shell Badge Number" Click="BadgeNumberButton_Click" />
+
+            <Button Content="Shell Badge Glyph" Click="BadgeGlyphButton_Click" />
+
+            <Button Content="Shell Badge Clear" Click="BadgeClearButton_Click" />
 
         </StackPanel>
     </ScrollViewer>

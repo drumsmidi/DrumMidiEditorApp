@@ -8,6 +8,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
+using System.Security.Claims;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 
@@ -53,6 +55,9 @@ public sealed partial class PageDebugShell : Page
                 // ---------------------------------------------------------
                 // Visual:トーストの視覚的な部分
                 // ---------------------------------------------------------
+
+                // ヘッダー：通知ごとに同じ ID を指定すると通知内でグループ化される
+                .AddHeader( "6289", "HeaderTitle", "action=openConversation&id=6289")
 
                 // テキスト要素は３つまで追加可能。１行目がメインで、２，３行目がサブ情報
                 .AddText( "トースト　テスト通知", hintMaxLines: 2 )
@@ -142,6 +147,7 @@ public sealed partial class PageDebugShell : Page
                         new ToastButton()
                             .SetContent("Like")
                             .AddArgument("action", "like")
+                            .SetImageUri( new Uri( "Assets/NotificationButtonIcons/Dismiss.png", UriKind.Relative ) )
                             .SetBackgroundActivation()
                     )
                 //.AddButton
@@ -196,6 +202,31 @@ public sealed partial class PageDebugShell : Page
                         toast.Data.SequenceNumber                       = 0;      // 0(常に更新する)、1-(シーケンス位置指定)
                     }
                 ); 
+
+            // ヘッダーテスト
+            //new ToastContentBuilder()
+            //    // ---------------------------------------------------------
+            //    // Visual:トーストの視覚的な部分
+            //    // ---------------------------------------------------------
+
+            //    // ヘッダー
+            //    .AddHeader( "6289", "HeaderTitle", "action=openConversation&id=6289")
+
+            //    // テキスト要素は３つまで追加可能。１行目がメインで、２，３行目がサブ情報
+            //    .AddText( "２２２" )
+
+            //    // ---------------------------------------------------------
+            //    // Show
+            //    // ---------------------------------------------------------
+            //    .Show
+            //    (
+            //        ( toast ) =>
+            //        {
+            //            toast.Tag               = "TagName2";
+            //            toast.Group             = "GroupName";
+            //            toast.ExpirationTime    = DateTime.Now.AddMinutes( 3 );     // 有効期限
+            //        }
+            //    ); 
         }
         catch ( Exception e )
         {
@@ -246,4 +277,73 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
+    private void BadgeNumberButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            var badgeXml = BadgeUpdateManager.GetTemplateContent( BadgeTemplateType.BadgeNumber );
+
+            // 数値を設定
+            // 　1 ～ 99 の数字。 値 0 はグリフ値 "none" と同じであり、バッジをクリア
+            // 　99 を超える数字は、"99+" 表示
+            var badgeElement = badgeXml.SelectSingleNode( "/badge" ) as XmlElement;
+            badgeElement?.SetAttribute( "value", "99" );
+
+            // バッジ更新
+            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update( new( badgeXml ) );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    private void BadgeGlyphButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            var badgeXml = BadgeUpdateManager.GetTemplateContent( BadgeTemplateType.BadgeGlyph );
+
+            var badgeElement = badgeXml.SelectSingleNode( "/badge" ) as XmlElement;
+            badgeElement?.SetAttribute( "value", "alert" );
+
+            // -----------------------------------------------
+            // [グリフ設定値]
+            // -----------------------------------------------
+            // none        : なし
+            // activity    : activity
+            // alarm       : alarm(アラーム)
+            // alert       : アラート
+            // attention   : attention(注意)
+            // available   : 利用可能
+            // away        : away(離席中)
+            // busy        : busy(取り込み中)
+            // error       : error
+            // newMessage  : newMessage(新しいメッセージ)
+            // paused      : paused(一時停止)
+            // playing     : playing(再生)
+            // unavailable : unavailable(利用不可)
+            // -----------------------------------------------
+
+            // バッジ更新
+            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Update( new( badgeXml ) );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    private void BadgeClearButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            // バッジをクリア
+            BadgeUpdateManager.CreateBadgeUpdaterForApplication().Clear();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 }
