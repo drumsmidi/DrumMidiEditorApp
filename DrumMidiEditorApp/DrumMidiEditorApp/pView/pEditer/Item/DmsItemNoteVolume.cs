@@ -49,7 +49,7 @@ public class DmsItemNoteVolume : DisposeBaseClass
 
 	protected override void Dispose( bool aDisposing )
 	{
-		if ( !this._Disposed )
+		if ( !_Disposed )
 		{
 			if ( aDisposing )
 			{

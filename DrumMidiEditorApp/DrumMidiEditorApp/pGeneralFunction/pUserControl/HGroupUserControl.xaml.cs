@@ -15,8 +15,8 @@ public sealed partial class HGroupUserControl : UserControl
 
     public string Header
     {
-        get { return (string)GetValue( HeaderProperty ); }
-        set { SetValue( HeaderProperty, value ); }
+        get => (string)GetValue( HeaderProperty );
+        set => SetValue( HeaderProperty, value );
     }
 
     public static readonly DependencyProperty HeaderProperty =
@@ -34,7 +34,7 @@ public sealed partial class HGroupUserControl : UserControl
 
         if ( args.NewValue != args.OldValue && obj != null )
         {
-            obj._HeaderTitle.Text = args.NewValue?.ToString() ?? String.Empty ;
+            obj._HeaderTitle.Text = args.NewValue?.ToString() ?? string.Empty ;
         }
     }
 
@@ -44,8 +44,8 @@ public sealed partial class HGroupUserControl : UserControl
 
     public object CustomContent
     {
-        get { return (object)GetValue( CustomContentProperty ); }
-        set { SetValue( CustomContentProperty, value ); }
+        get => (object)GetValue( CustomContentProperty );
+        set => SetValue( CustomContentProperty, value );
     }
 
     public static readonly DependencyProperty CustomContentProperty =

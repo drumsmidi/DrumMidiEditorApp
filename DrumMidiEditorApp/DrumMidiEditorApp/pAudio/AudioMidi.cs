@@ -38,7 +38,7 @@ internal class AudioMidi : AudioBase
     /// 音量取得
     /// </summary>
     /// <returns>音量（127基準）</returns>
-    public override int GetVolume() => this._Volume;
+    public override int GetVolume() => _Volume;
 
     /// <summary>
     /// 音量設定

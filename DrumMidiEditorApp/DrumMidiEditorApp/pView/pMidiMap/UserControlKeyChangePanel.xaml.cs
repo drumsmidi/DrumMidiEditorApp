@@ -20,12 +20,12 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <summary>
     /// System設定
     /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
+    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Score情報
     /// </summary>
-    private Score Score => DMS.SCORE;
+    private static Score Score => DMS.SCORE;
 
     /// <summary>
     /// MidiMap別ノート数リスト
@@ -128,14 +128,14 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     {
     	try
     	{
-    		int index = _MidiMapNoteListBox.SelectedIndex;
+    		var index = _MidiMapNoteListBox.SelectedIndex;
 
     		if ( index == -1 )
     		{
     			return;
     		}
 
-            var bef_key = Convert.ToInt32( _MidiMapNoteListBox.SelectedValue.ToString()?.Split(' ')[ 0 ] ?? String.Empty );
+            var bef_key = Convert.ToInt32( _MidiMapNoteListBox.SelectedValue.ToString()?.Split(' ')[ 0 ] ?? string.Empty );
 
             var page = new PageInputMidiMap
             {
@@ -169,9 +169,9 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
 					            ResourcesHelper.GetString( "Dialog/No" ),
 					            new( () =>
                                 {
-                                    lock ( Score.LockObj )
-                                    { 
-        			                    Score.EditChannel.KeyChange( bef_key, aft_key );
+                                    lock (Score.LockObj )
+                                    {
+                                        Score.EditChannel.KeyChange( bef_key, aft_key );
                                     }
 
    				                    EventManage.EventChangeMidiMapKey();

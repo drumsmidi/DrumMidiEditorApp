@@ -29,8 +29,8 @@ public sealed partial class GroupBoxUserControl : UserControl
 
     public string Header
     {
-        get { return (string)GetValue(HeaderProperty); }
-        set { SetValue(HeaderProperty, value); }
+        get => (string)GetValue( HeaderProperty );
+        set => SetValue( HeaderProperty, value );
     }
 
     // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
@@ -49,7 +49,7 @@ public sealed partial class GroupBoxUserControl : UserControl
 
         if ( ev.NewValue != ev.OldValue && obj != null )
         {
-            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? String.Empty ;
+            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? string.Empty ;
         }
     }
 
@@ -59,8 +59,8 @@ public sealed partial class GroupBoxUserControl : UserControl
 
     public object CustomContent
     {
-        get { return (object)GetValue(CustomContentProperty); }
-        set { SetValue(CustomContentProperty, value); }
+        get => (object)GetValue( CustomContentProperty );
+        set => SetValue( CustomContentProperty, value );
     }
 
     public static readonly DependencyProperty CustomContentProperty =

@@ -12,6 +12,8 @@ using Windows.Data.Xml.Dom;
 using System.Security.Claims;
 using Windows.Foundation.Metadata;
 using Windows.UI.Shell;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 
@@ -38,12 +40,12 @@ public sealed partial class PageDebugShell : Page
             // トースト通知からのアプリアクティブ化
             //ToastNotificationManagerCompat.OnActivated += toastArgs =>
             //{
-            //    var args = ToastArguments.Parse( toastArgs.Argument );
+                //var args = ToastArguments.Parse( toastArgs.Argument );
 
-            //    // Obtain any user input (text boxes, menu selections) from the notification
-            //    var userInput = toastArgs.UserInput;
+                // Obtain any user input (text boxes, menu selections) from the notification
+                //var userInput = toastArgs.UserInput;
 
-            //    // 値をUIへ反映する場合、Dispatcherの処理が必要
+                // 値をUIへ反映する場合、Dispatcherの処理が必要
             //};
 
             // トーストコンテンツを構成後、通知
@@ -233,6 +235,32 @@ public sealed partial class PageDebugShell : Page
         catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+
+        // スケジュール通知
+        new ToastContentBuilder()
+            .AddText( "5秒後に通知" )
+            .Schedule
+                ( 
+                    DateTime.Now.AddSeconds( 5 ),
+                    toast =>
+                    {
+                        toast.Tag   = "18365";
+                        toast.Group = "ASTR 170B1";
+                    }
+                );
+
+        // スケジュールの削除
+        var notifier = ToastNotificationManagerCompat.CreateToastNotifier();
+
+        var scheduledToasts = notifier.GetScheduledToastNotifications();
+
+        var toRemove = scheduledToasts
+            .FirstOrDefault( toast => toast.Tag == "18365" && toast.Group == "ASTR 170B1" );
+
+        if ( toRemove != null )
+        {
+            notifier.RemoveFromSchedule( toRemove );
         }
     }
 

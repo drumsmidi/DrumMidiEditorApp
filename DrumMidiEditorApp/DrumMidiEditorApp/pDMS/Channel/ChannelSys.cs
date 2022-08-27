@@ -105,12 +105,7 @@ public class ChannelSys : DisposeBaseClass
     {
         BpmInfoList[ aInfo.SearchKey ] = aInfo;
 
-        var measure = GetMeasure( aInfo.MeasureNo );
-
-        if ( measure == null )
-        {
-            measure = new();
-        }
+        var measure = GetMeasure( aInfo.MeasureNo ) ?? new() ;
 
         measure.AddBpm( aInfo );
 
@@ -167,7 +162,7 @@ public class ChannelSys : DisposeBaseClass
     {
         var channelSys = new ChannelSys()
         {
-            MaxMeasureNo = this.MaxMeasureNo,
+            MaxMeasureNo = MaxMeasureNo,
         };
 
         foreach ( var item in BpmInfoList )

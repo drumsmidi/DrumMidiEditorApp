@@ -19,11 +19,12 @@ public static class ColorHelper
     /// </summary>
     /// <param name="aValue">テキスト</param>
     /// <returns>Color</returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0057:範囲演算子を使用", Justification = "<保留中>")]
     public static Color GetColor( string aValue )
     {
         try
         {
-            var colorText = aValue.Replace( "#", String.Empty ).ToUpper();
+            var colorText = aValue.Replace( "#", string.Empty ).ToUpper();
 
             if ( Regex.IsMatch( colorText, "^[0-9A-F]+$" ) )
             { 

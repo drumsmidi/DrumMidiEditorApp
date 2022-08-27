@@ -140,11 +140,11 @@ public class InfoNote : InfoBase
             MeasureNo   = base.MeasureNo,
             NotePos     = base.NotePos,
             Selected    = base.Selected,
-            ChannelNo   = this.ChannelNo,
-            MidiMapKey  = this.MidiMapKey,
-            Volume      = this.Volume,
-            NoteOn      = this.NoteOn,
-            NoteOff     = this.NoteOff,
+            ChannelNo   = ChannelNo,
+            MidiMapKey  = MidiMapKey,
+            Volume      = Volume,
+            NoteOn      = NoteOn,
+            NoteOff     = NoteOff,
         };
     }
 }

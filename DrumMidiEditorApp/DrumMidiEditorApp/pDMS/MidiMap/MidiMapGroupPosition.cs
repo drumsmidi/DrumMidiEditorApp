@@ -31,9 +31,9 @@ public class MidiMapGroupPosition : DisposeBaseClass
     {
 		return new()
             {
-				X				= this.X,
-				Y				= this.Y,
-				Magnification	= this.Magnification,
+				X				= X,
+				Y				= Y,
+				Magnification	= Magnification,
             };
     }
 }

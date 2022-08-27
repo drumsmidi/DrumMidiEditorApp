@@ -19,22 +19,22 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// スコア設定
     /// </summary>
-    private ConfigScore DrawSet => Config.Score;
+    private static ConfigScore DrawSet => Config.Score;
 
     /// <summary>
     /// System設定
     /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
+    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Media設定
     /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
+    private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
     /// </summary>
-    private Score Score => DMS.SCORE;
+    private static Score Score => DMS.SCORE;
 
     /// <summary>
     /// スコアBitmap
@@ -63,7 +63,7 @@ public sealed partial class UserControlScore : UserControl
         try
         {
             // スコア更新
-            if ( DrawSet.UpdateScoreFlag )
+            if (DrawSet.UpdateScoreFlag )
             {
                 DrawSet.UpdateScoreFlag = false;
 
@@ -108,12 +108,12 @@ public sealed partial class UserControlScore : UserControl
         var h_cnt_max = (int)( body.Height / h_min );
 
         // 縦横 小節表示数
-        int w_cnt = 0;
-        int h_cnt = 0;
+        var w_cnt = 0;
+        var h_cnt = 0;
 
-        for ( int h = 1; h <= h_cnt_max; h++ )
+        for ( var h = 1; h <= h_cnt_max; h++ )
         {
-            for ( int w = 1; w <= w_cnt_max; w++ )
+            for ( var w = 1; w <= w_cnt_max; w++ )
             {
                 if ( w * h >= m_max )
                 {
@@ -157,9 +157,9 @@ public sealed partial class UserControlScore : UserControl
 
         #region 描画処理
 
-        g.Clear( DrawSet.SheetColor.Color );
+        g.Clear(DrawSet.SheetColor.Color );
 
-        for ( int measure_no = 0; measure_no <= m_max; measure_no++ )
+        for ( var measure_no = 0; measure_no <= m_max; measure_no++ )
         {
             #region Set measure line
             {
@@ -204,7 +204,7 @@ public sealed partial class UserControlScore : UserControl
                     {
                         var volume = 1F;
 
-                        if ( DrawSet.NoteVolumeSizeOn )
+                        if (DrawSet.NoteVolumeSizeOn )
                         {
                             volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)ConfigMedia.MidiMaxVolume;
 
@@ -213,7 +213,7 @@ public sealed partial class UserControlScore : UserControl
                                 volume = 1F;
                             }
                         }
-                        if ( DrawSet.NoteVolumeZeroOn && volume <= 0F )
+                        if (DrawSet.NoteVolumeZeroOn && volume <= 0F )
                         {
                             volume = 1F;
                         }

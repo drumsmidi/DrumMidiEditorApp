@@ -321,9 +321,8 @@ public static class FileIO
     /// スコア - Video保存
     /// </summary>
     /// <param name="aFilePath">出力先ファイルパス</param>
-    /// <param name="aScore">保存スコア</param>
     /// <returns>True:保存成功、False:保存失敗</returns>
-    public static async void SaveVideoAsync( GeneralPath aFilePath, Score aScore )
+    public static async void SaveVideoAsync( GeneralPath aFilePath )
     {
 	    using var _ = new LogBlock( Log.GetThisMethodName );
 
@@ -361,7 +360,7 @@ public static class FileIO
 
             var frameTime = 1d / fps;
 
-            int log_cnt = 0;
+            var log_cnt = 0;
 
             await Task.Run
                 (
@@ -474,9 +473,8 @@ public static class FileIO
     /// スコア情報のインポート
     /// </summary>
     /// <param name="aFilePath">スコアファイルパス</param>
-    /// <param name="aScore">出力先スコア</param>
     /// <returns>True:インポート成功、False:インポート失敗</returns>
-    public static bool ImportScore( GeneralPath aFilePath, ref Score aScore )
+    public static bool ImportScore( GeneralPath aFilePath )
     {
         // TODO: この辺は改良の余地あり。
 

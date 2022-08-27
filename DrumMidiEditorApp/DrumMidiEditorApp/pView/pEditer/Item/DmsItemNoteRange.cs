@@ -320,18 +320,18 @@ public class DmsItemNoteRange : DisposeBaseClass
     {
         return new()
             {
-                _StartNotePosX      = this._StartNotePosX,
-                _StartNotePosY      = this._StartNotePosY,
-                _EndNotePosX        = this._EndNotePosX,
-                _EndNotePosY        = this._EndNotePosY,
-                _StartMoveNotePosX  = this._StartMoveNotePosX,
-                _StartMoveNotePosY  = this._StartMoveNotePosY,
-                _EndMoveNotePosX    = this._EndMoveNotePosX,
-                _EndMoveNotePosY    = this._EndMoveNotePosY,
-                _NoteRect           = this._NoteRect,
-                _Range              = this._Range,
-                _RangeSelectType    = this._RangeSelectType,
-                Selected            = this.Selected
+                _StartNotePosX      = _StartNotePosX,
+                _StartNotePosY      = _StartNotePosY,
+                _EndNotePosX        = _EndNotePosX,
+                _EndNotePosY        = _EndNotePosY,
+                _StartMoveNotePosX  = _StartMoveNotePosX,
+                _StartMoveNotePosY  = _StartMoveNotePosY,
+                _EndMoveNotePosX    = _EndMoveNotePosX,
+                _EndMoveNotePosY    = _EndMoveNotePosY,
+                _NoteRect           = _NoteRect,
+                _Range              = _Range,
+                _RangeSelectType    = _RangeSelectType,
+                Selected            = Selected
             };
     }
 

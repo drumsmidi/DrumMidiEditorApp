@@ -76,7 +76,7 @@ public class MeasureSys : DisposeBaseClass
     {
         var measureSys = new MeasureSys()
         {
-            BpmLine = this.BpmLine.Clone(),
+            BpmLine = BpmLine.Clone(),
         };
 
         return measureSys;

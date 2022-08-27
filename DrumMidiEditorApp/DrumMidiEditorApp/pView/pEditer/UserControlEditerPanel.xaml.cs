@@ -34,32 +34,32 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    private ConfigEditer DrawSet => Config.Editer;
+    private static ConfigEditer DrawSet => Config.Editer;
 
     /// <summary>
     /// System設定
     /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
+    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Scale設定
     /// </summary>
-    private ConfigScale ConfigScale => Config.Scale;
+    private static ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
     /// Media設定
     /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
+    private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
     /// </summary>
-    private Score Score => DMS.SCORE;
+    private static Score Score => DMS.SCORE;
 
     /// <summary>
     /// Score予測情報
     /// </summary>
-    private Score ScorePredict => DMS.SCORE_PREDICT;
+    private static Score ScorePredict => DMS.SCORE_PREDICT;
 
     /// <summary>
     /// 編集履歴管理
@@ -628,7 +628,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
+        _Timer = new( TimeSpan.FromSeconds(DrawSet.SheetTimerSecond ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
@@ -691,7 +691,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
+        _Timer = new( TimeSpan.FromSeconds(DrawSet.SheetTimerSecond ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
@@ -784,7 +784,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckNoteRangeArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _NoteRange.GetSelectRange( DrawSet.NotePosition ) );
+            && XamlHelper.CheckRange( aMousePos, _NoteRange.GetSelectRange(DrawSet.NotePosition ) );
 
     #endregion
 
@@ -802,7 +802,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( ( aMousePos.X - head.X ) / ( DrawSet.HeaderWidthSize / 2 ) ),
+            X = (int)( ( aMousePos.X - head.X ) / (DrawSet.HeaderWidthSize / 2 ) ),
             Y = (int)( note_pos.Y + ( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize )
         };
 
@@ -824,7 +824,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     /// <param name="aAbsolutePosX">ノート位置（絶対値）</param>
     /// <returns>計算後ノート位置（絶対値）</returns>
-    private int CalcNotePosition( int aAbsolutePosX )
+    private static int CalcNotePosition( int aAbsolutePosX )
     {
         var sa = aAbsolutePosX % DrawSet.DivisionLineCount;
 
@@ -958,8 +958,8 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-        int measure_no  = pos.X / ConfigSystem.MeasureNoteNumber;
-        int note        = pos.X % ConfigSystem.MeasureNoteNumber;
+        var measure_no  = pos.X / ConfigSystem.MeasureNoteNumber;
+        var note        = pos.X % ConfigSystem.MeasureNoteNumber;
 
         var info_old = Score.SysChannel.GetBpm( measure_no, note );
 
@@ -1122,8 +1122,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var rs = new ResumeMultiple();
 
-		int measure_no = pos.X / ConfigSystem.MeasureNoteNumber;
-		int note       = pos.X % ConfigSystem.MeasureNoteNumber;
+        var measure_no = pos.X / ConfigSystem.MeasureNoteNumber;
+        var note       = pos.X % ConfigSystem.MeasureNoteNumber;
 
         var info_old = Score.EditChannel.GetNote( midiMap.MidiMapKey, measure_no, note );
 
@@ -1134,11 +1134,11 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             if ( info_old == null )
             {
-                info_new = new( Score.EditChannelNo, midiMap.MidiMapKey, measure_no, note, DrawSet.NoteOn, !DrawSet.NoteOn );
+                info_new = new(Score.EditChannelNo, midiMap.MidiMapKey, measure_no, note, DrawSet.NoteOn, !DrawSet.NoteOn );
             }
             else
             {
-                if (    ( DrawSet.NoteOn && info_old.NoteOn == true && info_old.Volume == DrawSet.NoteSelectVolume )
+                if (    (DrawSet.NoteOn && info_old.NoteOn == true && info_old.Volume == DrawSet.NoteSelectVolume )
                     ||  ( !DrawSet.NoteOn && info_old.NoteOff == true ) )
                 {
                     return;
@@ -1146,7 +1146,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 info_new = (InfoNote)info_old.Clone();
 
-                if ( DrawSet.NoteOn )
+                if (DrawSet.NoteOn )
                 {
                     info_new.NoteOn = true;
                 }
@@ -1156,14 +1156,14 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
             }
 
-            if ( DrawSet.NoteOn )
+            if (DrawSet.NoteOn )
             {
                 info_new.Volume = DrawSet.NoteSelectVolume;
             }
 
             rs.AddNote( info_old, info_new );
 
-            AudioFactory.SinglePlay( Score.EditChannelNo, midiMap.Midi, (byte)( midiMap.VolumeAddIncludeGroup + info_new.Volume ) );
+            AudioFactory.SinglePlay(Score.EditChannelNo, midiMap.Midi, (byte)( midiMap.VolumeAddIncludeGroup + info_new.Volume ) );
         }
         #endregion
 
@@ -1172,7 +1172,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             return;
         }
-        else if ( DrawSet.NoteOn && info_old.NoteOff )
+        else if (DrawSet.NoteOn && info_old.NoteOff )
         {
             var info_new = (InfoNote)info_old.Clone();
             info_new.NoteOn = false;
@@ -1310,18 +1310,18 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Select notes within range
         {
-            int sx = _NoteRange.StartNotePosX;
-            int sy = _NoteRange.StartNotePosY;
-            int ex = _NoteRange.EndNotePosX;
-            int ey = _NoteRange.EndNotePosY;
+            var sx = _NoteRange.StartNotePosX;
+            var sy = _NoteRange.StartNotePosY;
+            var ex = _NoteRange.EndNotePosX;
+            var ey = _NoteRange.EndNotePosY;
 
-            int measureNoStart  = sx / ConfigSystem.MeasureNoteNumber;
-            int measureNoEnd    = ex / ConfigSystem.MeasureNoteNumber; // + ( ex % Config.System.MeasureNoteNumber == 0 ? 1 : 0 );
+            var measureNoStart  = sx / ConfigSystem.MeasureNoteNumber;
+            var measureNoEnd    = ex / ConfigSystem.MeasureNoteNumber; // + ( ex % Config.System.MeasureNoteNumber == 0 ? 1 : 0 );
 
             int notePosStart;
             int notePosEnd;
 
-            for ( int measure_no = measureNoStart; measure_no <= measureNoEnd; measure_no++ )
+            for ( var measure_no = measureNoStart; measure_no <= measureNoEnd; measure_no++ )
             {
                 var measure = Score.EditChannel.GetMeasure( measure_no );
 
@@ -1333,7 +1333,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 notePosStart    = ( measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0 );
                 notePosEnd      = ( measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1 );
 
-                for ( int y = sy; y <= ey; y++ )
+                for ( var y = sy; y <= ey; y++ )
                 {
 				    var midiMap = Score.EditMidiMapSet.DisplayMidiMaps[ y ];
                         
@@ -1347,7 +1347,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         continue;
                     }
 
-                    for ( int note_pos = notePosStart; note_pos <= notePosEnd; note_pos++ )
+                    for ( var note_pos = notePosStart; note_pos <= notePosEnd; note_pos++ )
                     {
                         if ( !note_line.InfoStates.TryGetValue( note_pos, out var info ) )
                         {
@@ -1373,20 +1373,20 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         #endregion
 
-        if ( DrawSet.IncludeBpm )
+        if (DrawSet.IncludeBpm )
         {
             #region Select bpms within range
             {
-                int sx = _NoteRange.StartNotePosX;
-                int ex = _NoteRange.EndNotePosX;
+                var sx = _NoteRange.StartNotePosX;
+                var ex = _NoteRange.EndNotePosX;
 
-                int measureNoStart  = sx / ConfigSystem.MeasureNoteNumber;
-                int measureNoEnd    = ex / ConfigSystem.MeasureNoteNumber; // + ( ex % Config.System.MeasureNoteNumber == 0 ? 1 : 0 );
+                var measureNoStart  = sx / ConfigSystem.MeasureNoteNumber;
+                var measureNoEnd    = ex / ConfigSystem.MeasureNoteNumber; // + ( ex % Config.System.MeasureNoteNumber == 0 ? 1 : 0 );
 
                 int notePosStart;
                 int notePosEnd;
 
-                for ( int measure_no = measureNoStart; measure_no <= measureNoEnd; measure_no++ )
+                for ( var measure_no = measureNoStart; measure_no <= measureNoEnd; measure_no++ )
                 {
                     var measure = Score.SysChannel.GetMeasure( measure_no );
 
@@ -1398,7 +1398,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     notePosStart    = ( measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0 );
                     notePosEnd      = ( measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1 );
 
-                    for ( int note_pos = notePosStart; note_pos <= notePosEnd; note_pos++ )
+                    for ( var note_pos = notePosStart; note_pos <= notePosEnd; note_pos++ )
                     {
                         if ( !measure.BpmLine.InfoStates.TryGetValue( note_pos, out var info ) )
                         {
@@ -1438,7 +1438,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             }
         }
 
-        if ( DrawSet.IncludeBpm )
+        if (DrawSet.IncludeBpm )
         { 
             foreach ( var info in Score.SysChannel.BpmInfoList.Values )
             {
@@ -1541,7 +1541,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     measure_no  = a / ConfigSystem.MeasureNoteNumber;
                     note_pos    = a % ConfigSystem.MeasureNoteNumber;
 
-                    int index = Score.EditMidiMapSet.GetDisplayMidiMapIndex( info_old.MidiMapKey );
+                    var index = Score.EditMidiMapSet.GetDisplayMidiMapIndex( info_old.MidiMapKey );
 
                     if ( index == -1 )
                     {
@@ -1550,7 +1550,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     index += mv_y;
 
-                    int key = Score.EditMidiMapSet.GetDisplayMidiMapKey( index );
+                    var key = Score.EditMidiMapSet.GetDisplayMidiMapKey( index );
 
                     if ( key == -1 )
                     {
@@ -1589,7 +1589,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         #endregion
 
-        if ( DrawSet.IncludeBpm )
+        if (DrawSet.IncludeBpm )
         {
             #region Add bpms to move
             { 
@@ -1681,13 +1681,13 @@ public sealed partial class UserControlEditerPanel : UserControl
         #region Add note
         foreach ( var info in _CopyNoteList )
         {
-			int x = pos.X + info.AbsoluteNotePos - _CopyNotePositionX;
+            var x = pos.X + info.AbsoluteNotePos - _CopyNotePositionX;
 
-			int measure_no = x / ConfigSystem.MeasureNoteNumber;
-			int note       = x % ConfigSystem.MeasureNoteNumber;
+            var measure_no = x / ConfigSystem.MeasureNoteNumber;
+            var note       = x % ConfigSystem.MeasureNoteNumber;
 
 			var info_old = Score.EditChannel.GetNote( info.MidiMapKey, measure_no, note );
-			var info_new = new InfoNote( Score.EditChannelNo, info.MidiMapKey, measure_no, note, info.Volume, info.NoteOn, info.NoteOff );
+			var info_new = new InfoNote(Score.EditChannelNo, info.MidiMapKey, measure_no, note, info.Volume, info.NoteOn, info.NoteOff );
 
             rs.AddNote( info_old, info_new );
         }
@@ -1695,14 +1695,14 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Add bpm
 
-        if ( DrawSet.IncludeBpm )
+        if (DrawSet.IncludeBpm )
         { 
             foreach ( var info in _CopyBpmList )
             {
-				int x = pos.X + info.AbsoluteNotePos - _CopyNotePositionX;
+                var x = pos.X + info.AbsoluteNotePos - _CopyNotePositionX;
 
-				int measure_no = x / ConfigSystem.MeasureNoteNumber;
-				int note       = x % ConfigSystem.MeasureNoteNumber;
+                var measure_no = x / ConfigSystem.MeasureNoteNumber;
+                var note       = x % ConfigSystem.MeasureNoteNumber;
 
 				var info_old	= Score.SysChannel.GetBpm( measure_no, note );
 				var info_new	= new InfoBpm( measure_no, note, info.Bpm );
@@ -1763,14 +1763,14 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var rs = new ResumeMultiple();
 
-        int sn = _VolumeRange.StartNotePosX;
-        int en = _VolumeRange.EndNotePosX;
+        var sn = _VolumeRange.StartNotePosX;
+        var en = _VolumeRange.EndNotePosX;
 
         {
             int measure_no;
             int note_pos;
 
-            for ( int x = sn; x <= en; x++ )
+            for ( var x = sn; x <= en; x++ )
             {
                 measure_no  = x / ConfigSystem.MeasureNoteNumber;
                 note_pos    = x % ConfigSystem.MeasureNoteNumber;
@@ -1845,10 +1845,10 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region ノート音量表示更新
         {
-            int sm = sn / ConfigSystem.MeasureNoteNumber;
-            int em = en / ConfigSystem.MeasureNoteNumber;
+            var sm = sn / ConfigSystem.MeasureNoteNumber;
+            var em = en / ConfigSystem.MeasureNoteNumber;
 
-            for ( int m = sm; m <= em; m++ )
+            for ( var m = sm; m <= em; m++ )
             {
                 UpdateNoteVolumeMeasure( m );
             }
@@ -1881,7 +1881,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score size
 
-        if ( DrawSet.UpdateScoreLayoutFlag )
+        if (DrawSet.UpdateScoreLayoutFlag )
 		{
             UpdateScore();
             DrawSet.UpdateScoreLayoutFlag = false;
@@ -1891,7 +1891,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Sheet potition
 
-        if ( DrawSet.UpdateCameraFlag )
+        if (DrawSet.UpdateCameraFlag )
 		{
             UpdateSheetPosition();
             DrawSet.UpdateCameraFlag = false;
@@ -1901,7 +1901,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Line
 
-        if ( DrawSet.UpdateScoreLineFlag )
+        if (DrawSet.UpdateScoreLineFlag )
 		{
             UpdateScoreLine();
             DrawSet.UpdateScoreLineFlag = false;
@@ -1911,7 +1911,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score header
 
-        if ( DrawSet.UpdateScoreHeaderFlag )
+        if (DrawSet.UpdateScoreHeaderFlag )
 		{
             UpdateMidiMapHeader();
             DrawSet.UpdateScoreHeaderFlag = false;
@@ -1921,7 +1921,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score All
 
-        if ( DrawSet.UpdateScoreFlag )
+        if (DrawSet.UpdateScoreFlag )
         {
             UpdateBpmMeasure();
             UpdateNoteMeasure();
@@ -1944,7 +1944,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note
 
-        if ( DrawSet.UpdateScoreNoteFlag )
+        if (DrawSet.UpdateScoreNoteFlag )
 		{
             foreach ( var measure_no in DrawSet.UpdateScoreNoteMeasureNoList )
             {
@@ -1961,7 +1961,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note Predict
 
-        if ( DrawSet.UpdateScoreNotePredictFlag )
+        if (DrawSet.UpdateScoreNotePredictFlag )
         {
             // TODO: 機械学習結果反映用：自動採譜を試してみるときに使うかも
             UpdateNotePredictListMeasure();
@@ -1972,7 +1972,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Bpm
 
-        if ( DrawSet.UpdateScoreBpmFlag )
+        if (DrawSet.UpdateScoreBpmFlag )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreBpmMeasureNoList )
             {
@@ -1986,7 +1986,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note Volume
 
-        if ( DrawSet.UpdateScoreNoteVolumeFlag )
+        if (DrawSet.UpdateScoreNoteVolumeFlag )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreNoteVolumeMeasureNoList )
             {
@@ -2000,13 +2000,13 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Bgm
 
-        if ( DrawSet.UpdateScoreBgmFlag )
+        if (DrawSet.UpdateScoreBgmFlag )
         {
             UpdateScaleBgm();
             DrawSet.UpdateScoreBgmFlag = false;
         }
 
-        if ( DrawSet.UpdateScoreBgmScaleFlag )
+        if (DrawSet.UpdateScoreBgmScaleFlag )
         {
             UpdateScaleBgmBitmapAsync();
         }
@@ -2015,7 +2015,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Clear range
 
-        if ( DrawSet.UpdateClearRangeFlag )
+        if (DrawSet.UpdateClearRangeFlag )
         {
 			_NoteRangeBef.Set( _NoteRange );
 
@@ -2144,7 +2144,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region 水平位置チェック
         {
-            int w_cnt = ConfigSystem.NoteCount - (int)( body._width / DrawSet.NoteWidthSize );
+            var w_cnt = ConfigSystem.NoteCount - (int)( body._width / DrawSet.NoteWidthSize );
 
             if ( note_pos.X > w_cnt )
             {
@@ -2160,8 +2160,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Vertical position check
         {
-            int d_cnt = Score.EditMidiMapSet.DisplayMidiMapAllCount;
-            int h_cnt = (int)( view_h / DrawSet.NoteHeightSize );
+            var d_cnt = Score.EditMidiMapSet.DisplayMidiMapAllCount;
+            var h_cnt = (int)( view_h / DrawSet.NoteHeightSize );
 
             if ( d_cnt <= h_cnt )
             {
@@ -2211,7 +2211,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             if ( linesize == 0 )
             {
-                for ( int i = 1; i <= 6; i++ )
+                for ( var i = 1; i <= 6; i++ )
                 {
                     if ( pens[ i ].LineSize != 0 )
                     {
@@ -2225,7 +2225,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 FormatLine? pen = null;
 
-                for ( int i = 0; i < note_num; i += linesize )
+                for ( var i = 0; i < note_num; i += linesize )
                 {
                     for ( int x = 6, y = 1; x >= 0; x--, y *= 2 )
                     {
@@ -2268,9 +2268,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                     DrawSet.SheetStaffMidiMapLine
                 };
 
-            int index = -1;
+            var index = -1;
 
-            for ( int i = 0; i <= 1; i++ )
+            for ( var i = 0; i <= 1; i++ )
             {
             	if ( pens[ i ].LineSize != 0 )
             	{
@@ -2287,7 +2287,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 var x2  = body._width;
                 var y   = body._y;
 
-                for ( int i = 0; i < Score.EditMidiMapSet.DisplayGroupCount; i++ )
+                for ( var i = 0; i < Score.EditMidiMapSet.DisplayGroupCount; i++ )
                 {
                     #region MidiMapGroupの上線
 
@@ -2299,13 +2299,13 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     #region MidiMapの上線
 
-                    int midiMapCount = Score.EditMidiMapSet.DisplayMidiMapCountByGroup[ i ];
+                    var midiMapCount = Score.EditMidiMapSet.DisplayMidiMapCountByGroup[ i ];
 
                     var pen = pens[ 1 ];
 
                     if ( pen.LineSize != 0 )
                     {
-                		for ( int j = 1; j < midiMapCount; j++ )
+                		for ( var j = 1; j < midiMapCount; j++ )
                 		{
                 			_StaffLineList.Add( new( x1, y, x2, 0, pen ) );
 
@@ -2350,7 +2350,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             y = head._y;
             w = head._width / 2;
 
-            for ( int index = 0; index < Score.EditMidiMapSet.DisplayGroupCount; index++ )
+            for ( var index = 0; index < Score.EditMidiMapSet.DisplayGroupCount; index++ )
             {
                 h = DrawSet.NoteHeightSize * Score.EditMidiMapSet.DisplayMidiMapCountByGroup[ index ];
 
@@ -2406,7 +2406,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void UpdateNoteMeasure()
     {
-        for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
         {
             UpdateNoteMeasure( measure_no );
         }
@@ -2516,7 +2516,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void UpdateNotePredictListMeasure()
     {
-        for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
         {
             UpdateNotePredictListMeasure( measure_no );
         }
@@ -2606,7 +2606,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void UpdateNoteVolumeMeasure()
     {
-        for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
         {
             UpdateNoteVolumeMeasure( measure_no );
         }
@@ -2689,7 +2689,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void UpdateBpmMeasure()
     {
-        for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
         {
             UpdateBpmMeasure( measure_no );
         }
@@ -2812,9 +2812,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                         _ScaleBgm = null;
 
                         // BGM読込
-                        if ( Score.BgmFilePath.IsExistFile )
+                        if (Score.BgmFilePath.IsExistFile )
                         { 
-                            _ScaleBgm = new NAudioData( Score.BgmFilePath, true );
+                            _ScaleBgm = new NAudioData(Score.BgmFilePath, true );
                         }
 
                         DrawSet.UpdateScoreBgmScaleFlag = true;
@@ -2942,7 +2942,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         using var g = offscreen.CreateDrawingSession();
 
         // 背景色塗りつぶし
-        g.Clear( DrawSet.SheetColor.Color );
+        g.Clear(DrawSet.SheetColor.Color );
 
         // 描画書込み用アクション
         var createAction = new Action<int>( ( measure_no ) =>
@@ -2965,10 +2965,10 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region 周波数
         {
-            int measure_no = 0;
-            int note_pos_x = 0;
+            var measure_no = 0;
+            var note_pos_x = 0;
 
-            for ( int fft_offset = 0; fft_offset < _ScaleBgm.FFTBufferLength0; fft_offset++ )
+            for ( var fft_offset = 0; fft_offset < _ScaleBgm.FFTBufferLength0; fft_offset++ )
             {
                 var note_pos_time   = _ScaleBgm.GetFFTTime( fft_offset );
                 note_pos_x          = DmsControl.SearchPosition( note_pos_time + bgm_position );
@@ -2983,7 +2983,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     measure_no++;
 
                     // 背景色塗りつぶし
-                    g.Clear( DrawSet.SheetColor.Color );
+                    g.Clear(DrawSet.SheetColor.Color );
                 }
 
                 var midimap_index = -1;
@@ -3009,7 +3009,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
 
                     var db = fft[ fft_index ];
-                    for ( int x = 1; x < _ScaleBgm.Channels; x++ )
+                    for ( var x = 1; x < _ScaleBgm.Channels; x++ )
                     {
                         db = Math.Max( db, fft[ fft_index + x ] );
                     }
@@ -3026,9 +3026,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
 
                     byte alpha   = 255;//155 + (int)( 100 * db );
-                    byte red     = (byte)( db >= h_level ? (int)( 255 * db ) : 0 );
-                    byte green   = (byte)( db >= m_level ? (int)( 255 * db ) : 0 );
-                    byte blue    = (byte)( db >= l_level ? (int)( 255 * db ) : 0 );
+                    var red     = (byte)( db >= h_level ? (int)( 255 * db ) : 0 );
+                    var green   = (byte)( db >= m_level ? (int)( 255 * db ) : 0 );
+                    var blue    = (byte)( db >= l_level ? (int)( 255 * db ) : 0 );
                     //var red     = t_level > db && db >= h_level ? (int)( 255 * db ) : 0;
                     //var green   = h_level > db && db >= m_level ? (int)( 255 * db ) : 0;
                     //var blue    = m_level > db && db >= l_level ? (int)( 255 * db ) : 0;
@@ -3100,12 +3100,12 @@ public sealed partial class UserControlEditerPanel : UserControl
             var note_pos        = DrawSet.NotePosition;
             var sheet_pos       = new Point( note_pos.X * DrawSet.NoteWidthSize, note_pos.Y * DrawSet.NoteHeightSize );
             var measure_size    = DrawSet.MeasureSize;
-            int measure_start   = note_pos.X / ConfigSystem.MeasureNoteNumber;
-            int measure_end     = (int)( ( note_pos.X + body._width / DrawSet.NoteWidthSize ) / ConfigSystem.MeasureNoteNumber + 1 );
+            var measure_start   = note_pos.X / ConfigSystem.MeasureNoteNumber;
+            var measure_end     = (int)( ( note_pos.X + body._width / DrawSet.NoteWidthSize ) / ConfigSystem.MeasureNoteNumber + 1 );
 
             #region 背景色
             {
-                args.DrawingSession.Clear( DrawSet.SheetColor.Color );
+                args.DrawingSession.Clear(DrawSet.SheetColor.Color );
             }
             #endregion
 
@@ -3114,9 +3114,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                 // TODO: WaveForm 何か案を思いつけば対応
 
                 // 画像表示
-                if ( ConfigScale.WaveFormOn && !_ScaleBitmapDic.IsEmpty )
+                if (ConfigScale.WaveFormOn && !_ScaleBitmapDic.IsEmpty )
                 {
-                    for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                    for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
                         if ( !_ScaleBitmapDic.TryGetValue( measure_no, out var bmp ) )
                         { 
@@ -3199,7 +3199,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 float diff_x;
 
-                for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                 {
                     diff_x = measure_size * measure_no - sheet_pos._x;
 
@@ -3230,7 +3230,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 float diff_x;
 
-                for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                 {
                     if ( !_NoteList.TryGetValue( measure_no, out var notes ) )
                     {
@@ -3251,7 +3251,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 float diff_x;
 
-                for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                 {
                     if ( !_NotePredictList.TryGetValue( measure_no, out var notes ) )
                     {
@@ -3282,7 +3282,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     float diff_x;
 
-                    for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                    for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
                         if ( !_BpmList.TryGetValue( measure_no, out var bpms ) )
                         {
@@ -3333,7 +3333,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             #endregion
 
             #region Volume
-            if ( DrawSet.VolumeDisplay && _VolumeList.Count != 0 )
+            if (DrawSet.VolumeDisplay && _VolumeList.Count != 0 )
             {
                 #region body
                 {
@@ -3349,7 +3349,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // 音量描画
                     float diff_x;
 
-                    for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                    for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
                         if ( !_VolumeList.TryGetValue( measure_no, out var notes ) )
                         {
@@ -3405,7 +3405,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             _MeasureNoBodyRange.Height
                         );
 
-                    for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+                    for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
                         rect.X = _MeasureNoBodyRange.X + measure_size * measure_no - sheet_pos.X;
 
@@ -3422,7 +3422,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         // テキスト
                         args.DrawingSession.DrawText
                             (
-                                String.Format( "{0:000}", measure_no ),
+                                string.Format( "{0:000}", measure_no ),
                                 rect,
                                 DrawSet.MeasureNoBodyRect.Text.TextColor.Color,
                                 DrawSet.MeasureNoBodyRect.Text.TextFormat

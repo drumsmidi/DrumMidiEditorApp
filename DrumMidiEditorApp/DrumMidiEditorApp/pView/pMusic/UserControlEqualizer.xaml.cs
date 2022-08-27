@@ -183,7 +183,7 @@ public sealed partial class UserControlEqualizer : UserControl
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds( DrawSet.WaveFormDrawInterval ) );
+        _Timer = new( TimeSpan.FromSeconds(DrawSet.WaveFormDrawInterval ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
@@ -398,7 +398,7 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         var pointRect = new Rect( 0, 0, DrawSet.PointSize, DrawSet.PointSize );
 
-        for ( int index = _GainCenters.Count - 1; index >= 0; index-- )
+        for ( var index = _GainCenters.Count - 1; index >= 0; index-- )
         {
             var p = _GainCenters[ index ];
 
@@ -420,8 +420,8 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <returns>音量増減値</returns>
     private float CalcGain( double aMousePosY )
     {
-        return (float)( DrawSet.DbGainMax -
-                ( DrawSet.DbGainMax - DrawSet.DbGainMin ) *
+        return (float)(DrawSet.DbGainMax -
+                (DrawSet.DbGainMax - DrawSet.DbGainMin ) *
                 ( aMousePosY - _EqulizerBodyRange.Y ) / _EqulizerBodyRange.Height );
     }
 
@@ -434,7 +434,7 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         float hz = 0;
 
-        float x = (float)( aMousePosX - _EqulizerBodyRange.X );
+        var x = (float)( aMousePosX - _EqulizerBodyRange.X );
 
         foreach ( var item in DrawSet.HzList )
         {
@@ -533,7 +533,7 @@ public sealed partial class UserControlEqualizer : UserControl
 		{
             if ( DrawSet.EqualizerOn )
 			{
-				for ( int index = 0; index < _GainCenters.Count; index++ )
+				for ( var index = 0; index < _GainCenters.Count; index++ )
 				{
                     var p = _GainCenters[ index ];
 
@@ -542,7 +542,7 @@ public sealed partial class UserControlEqualizer : UserControl
             }
             else
 			{
-                for ( int index = 0; index < _GainCenters.Count; index++ )
+                for ( var index = 0; index < _GainCenters.Count; index++ )
 			    {
                     var p = _GainCenters[ index ];
 
@@ -565,7 +565,7 @@ public sealed partial class UserControlEqualizer : UserControl
     {
         try
         {
-            for ( int index = 0; index < _GainCenters.Count; index++ )
+            for ( var index = 0; index < _GainCenters.Count; index++ )
 			{
                 var p = _GainCenters[ index ];
 
@@ -589,7 +589,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// フレーム処理
     /// </summary>
-    private void OnMove()
+    private static void OnMove()
     {
     }
 
@@ -633,7 +633,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 背景色
             {
-                args.DrawingSession.Clear( DrawSet.BackGround.Color );
+                args.DrawingSession.Clear(DrawSet.BackGround.Color );
             }
             #endregion
 
@@ -671,7 +671,7 @@ public sealed partial class UserControlEqualizer : UserControl
             {
                 var pos_y = body.Y;
 
-                for ( int y = 0; y <= DrawSet.DbGainSeparateHeightCount; y++ )
+                for ( var y = 0; y <= DrawSet.DbGainSeparateHeightCount; y++ )
                 {
                     var db = DrawSet.DbGainMax - DrawSet.DbGainSeparate * y;
 
@@ -701,7 +701,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 周波数解析
 
-            if ( DrawSet.WaveFormOn )
+            if (DrawSet.WaveFormOn )
             {
                 // TODO: 仮作成。MusicスレッドでBGMの再読み込み時にエラーになる場合があるので使う場合は改良が必要
                 try
@@ -724,7 +724,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
                             var r = new Rect( 0, 0, 2, 1 );
 
-                            for ( int k = 0; k < fft.Count; k++ )
+                            for ( var k = 0; k < fft.Count; k++ )
                             {
                                 var format = pen[ k % bgm.Channels ];
 
@@ -771,7 +771,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region point
             {
-                for ( int index = 0; index < _GainCenters.Count; index++ )
+                for ( var index = 0; index < _GainCenters.Count; index++ )
                 {
                     var point = _GainCenters[ index ];
 
@@ -781,7 +781,7 @@ public sealed partial class UserControlEqualizer : UserControl
                         (
                             point._x,
                             point._y,
-                            (float)( DrawSet.PointSize / 2d ),
+                            (float)(DrawSet.PointSize / 2d ),
                             format.Line.LineColor.Color,
                             format.Line.LineSize
                         );
@@ -790,7 +790,7 @@ public sealed partial class UserControlEqualizer : UserControl
                         (
                             point._x,
                             point._y,
-                            (float)( DrawSet.PointSize / 2d ),
+                            (float)(DrawSet.PointSize / 2d ),
                             format.Background.Color
                         );
                 }

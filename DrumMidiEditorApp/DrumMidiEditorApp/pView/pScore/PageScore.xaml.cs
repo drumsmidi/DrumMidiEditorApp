@@ -33,7 +33,7 @@ public sealed partial class PageScore : Page
 	/// <summary>
 	/// スコア更新フラグ設定
 	/// </summary>
-	private void UpdateScore()
+	private static void UpdateScore()
 	{
 		EventManage.EventScoreUpdateTab();
 	}
@@ -47,7 +47,7 @@ public sealed partial class PageScore : Page
     {
 		try
 		{
-			UpdateScore();
+            UpdateScore();
 		}
 		catch ( Exception e )
         {
@@ -70,7 +70,7 @@ public sealed partial class PageScore : Page
 				return;
             }
 
-			UpdateScore();
+            UpdateScore();
 		}
 		catch ( Exception e )
         {

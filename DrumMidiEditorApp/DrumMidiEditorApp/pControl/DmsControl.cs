@@ -135,7 +135,7 @@ public static class DmsControl
 	/// <returns>ノート位置（絶対値）小数点含む</returns>
 	public static float PlayNote( double aPlayTime )
 	{
-		int	max_note = Config.System.NoteCount - 1;
+		var	max_note = Config.System.NoteCount - 1;
 
 		if ( _NoteSecPos >= max_note )
 		{
@@ -264,7 +264,7 @@ public static class DmsControl
 	/// </summary>
 	public static void WaitRecorder()
     {
-		int cnt = 3000;
+        var cnt = 3000;
 
 		while ( !_UpdatePlayer && !_UpdateAudio && cnt-- > 0 )
 		{
@@ -278,7 +278,7 @@ public static class DmsControl
 	/// </summary>
 	private static void WaitPlayer()
 	{
-		int cnt = 3000;
+        var cnt = 3000;
 
 		_UpdateAudio = true;
 
@@ -294,7 +294,7 @@ public static class DmsControl
 	/// </summary>
 	public static void WaitAudio()
 	{
-		int cnt = 3000;
+        var cnt = 3000;
 
 		_UpdatePlayer = true;
 
@@ -362,19 +362,19 @@ public static class DmsControl
 	/// <summary>
 	/// 音楽再生処理
 	/// </summary>
-	private async static void ProcSequenceAsync()
+	private static async void ProcSequenceAsync()
 	{
-		bool	range_play		= false;
+        var     range_play		= false;
 		int		loop_start;
 		int		loop_end;
-		bool	bgm_play        = false;
+        var     bgm_play        = false;
 		bool	bgm_play_on;
 		bool	note_play_on;
-		int		pos				= 0;
+        var     pos				= 0;
 		double	playtime;
-		int		seq_cnt			= 0;
+        var     seq_cnt			= 0;
 		var		sounds			= new List<DmsControlNoteInfo>();
-		int		sleeptime		= 500;
+        var     sleeptime		= 500;
 
 		DmsControlNoteInfo info;
 

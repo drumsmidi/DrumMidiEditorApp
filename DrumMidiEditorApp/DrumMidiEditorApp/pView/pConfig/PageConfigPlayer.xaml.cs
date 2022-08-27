@@ -23,7 +23,7 @@ public sealed partial class PageConfigPlayer : Page
 	/// <summary>
 	/// Media設定
 	/// </summary>
-	private ConfigMedia ConfigMedia => Config.Media;
+	//private ConfigMedia ConfigMedia => Config.Media;
 
 	/// <summary>
 	/// プレイヤー描画モードリスト

@@ -122,7 +122,7 @@ public static class MLControl
 
 		var range = new Rect( 0, 0, bgm.Channels, bgm.FFTBufferLength1 );
 
-		for ( int offset_x = 0; offset_x < bgm.FFTBufferLength0 - range.Width; offset_x += (int)range.Width )
+		for ( var offset_x = 0; offset_x < bgm.FFTBufferLength0 - range.Width; offset_x += (int)range.Width )
         {
 			var offset_time = bgm.GetFFTTime( offset_x );
 
@@ -145,7 +145,7 @@ public static class MLControl
 
             range.X = offset_x;
 
-            for ( int offset_y = 0; offset_y < bgm.FFTBufferLength1; offset_y += (int)range.Height )
+            for ( var offset_y = 0; offset_y < bgm.FFTBufferLength1; offset_y += (int)range.Height )
             {
                 range.Y = offset_y;
 
@@ -153,7 +153,7 @@ public static class MLControl
                     (
                         new()
                         {
-                            DrumPattern		= aPrediction ? String.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? String.Empty,
+                            DrumPattern		= aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
                             AbsoultNotePos	= note_pos,
                             HzCenter		= bgm.GetHz( offset_y + (int)range.Height / 2 ),
                             FFTBuffer		= bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ).ToArray(),
@@ -197,11 +197,11 @@ public static class MLControl
 		var formatedModel		= formatPipeline.Fit( trainData );
 		var formatedModelData	= formatedModel.Transform( trainData );
 
-		#endregion
+        #endregion
 
-		#region トレーニング
+        #region トレーニング
 
-		string retraining_filepath = String.Empty;
+        var retraining_filepath = string.Empty;
 
 		IEstimator<ITransformer>?	trainingPipeline;
         ITransformer?				trainedModel = null;
@@ -283,11 +283,8 @@ public static class MLControl
                 return;
         }
 
-		if ( trainedModel == null )
-		{ 
-			// トレーニング実施
-			trainedModel = trainingPipeline.Fit( formatedModelData );
-		}
+		trainedModel ??= trainingPipeline.Fit( formatedModelData );
+
 		trainedModelData = trainedModel.Transform( formatedModelData );
 
 		#endregion

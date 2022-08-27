@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pIO.pScore;
 /// <summary>
 /// Score出力
 /// </summary>
-interface IScoreWriter
+internal interface IScoreWriter
 {
 	/// <summary>
 	/// Score＋MidiMapSet保存

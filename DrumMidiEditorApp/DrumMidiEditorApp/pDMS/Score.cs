@@ -79,7 +79,7 @@ public class Score : DisposeBaseClass
     /// </summary>
     public Score()
     {
-        for ( byte channel_no = Config.Media.ChannelMinNo; channel_no <= Config.Media.ChannelMaxNo; channel_no++ )
+        for ( var channel_no = Config.Media.ChannelMinNo; channel_no <= Config.Media.ChannelMaxNo; channel_no++ )
         {
             Channels.Add( channel_no, new( channel_no ) );
         }
@@ -115,17 +115,17 @@ public class Score : DisposeBaseClass
 	{
 		var score = new Score()
         {
-            FilePath                    = this.FilePath,
-            Info                        = this.Info,
-            BgmFilePath                 = this.BgmFilePath,
-            BgmPlaybackStartPosition    = this.BgmPlaybackStartPosition,
-            Bpm                         = this.Bpm,
-            BgmVolume                   = this.BgmVolume,
-            EditChannelNo               = this.EditChannelNo,
-            SysChannel                  = this.SysChannel.Clone(),
+            FilePath                    = FilePath,
+            Info                        = Info,
+            BgmFilePath                 = BgmFilePath,
+            BgmPlaybackStartPosition    = BgmPlaybackStartPosition,
+            Bpm                         = Bpm,
+            BgmVolume                   = BgmVolume,
+            EditChannelNo               = EditChannelNo,
+            SysChannel                  = SysChannel.Clone(),
         };
 
-        foreach ( var item in this.Channels )
+        foreach ( var item in Channels )
         {
             score.Channels[ item.Key ] = item.Value.Clone();
         }

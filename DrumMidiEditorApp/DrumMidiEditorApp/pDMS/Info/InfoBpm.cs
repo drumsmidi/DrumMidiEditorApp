@@ -94,7 +94,7 @@ public class InfoBpm : InfoBase
                 MeasureNo   = base.MeasureNo,
                 NotePos     = base.NotePos,
                 Selected    = base.Selected,
-                Bpm         = this.Bpm,
+                Bpm         = Bpm,
             };
     }
 }

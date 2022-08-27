@@ -20,7 +20,7 @@ namespace DrumMidiEditorApp.pGeneralFunction.pWinUI;
 /// </summary>
 public static class XamlHelper
 {
-    public async static void MessageDialogOk( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
+    public static async void MessageDialogOk( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
     {
         var cd = new ContentDialog
         {
@@ -38,7 +38,7 @@ public static class XamlHelper
         }
     }
 
-    public async static void MessageDialogYesNoAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aYesButtonText, string aNoButtonText, Action aAction )
+    public static async void MessageDialogYesNoAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aYesButtonText, string aNoButtonText, Action aAction )
     {
         var cd = new ContentDialog
         {
@@ -61,14 +61,14 @@ public static class XamlHelper
         => InputDialogOkCancelAsync
             (
                 aContentXamlRoot,
-                ResourcesHelper.GetString( "Dialog/Input" ),
+                string.IsNullOrEmpty( aTitle ) ? ResourcesHelper.GetString( "Dialog/Input" ) : aTitle,
                 aPageContent,
                 ResourcesHelper.GetString( "Dialog/Ok" ),
                 ResourcesHelper.GetString( "Dialog/Cancel" ),
                 aAction
             );
 
-    public async static void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, string aYesButtonText, string aCancelButtonText, Action aAction )
+    public static async void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, string aYesButtonText, string aCancelButtonText, Action aAction )
     {
         var cd = new ContentDialog
         {
@@ -94,7 +94,7 @@ public static class XamlHelper
     /// <param name="aContentXamlRoot"></param>
     /// <param name="aColor"></param>
     /// <param name="aAction"></param>
-    public async static void ColorDialogAsync( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
+    public static async void ColorDialogAsync( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
     {
         var content = new ColorPicker
         {
@@ -140,7 +140,7 @@ public static class XamlHelper
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
+    public static async void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -201,7 +201,7 @@ public static class XamlHelper
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public async static void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, string aSaveFileName, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
+    public static async void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, string aSaveFileName, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
         if ( aOwnerWindow == null )
         {
@@ -342,7 +342,7 @@ public static class XamlHelper
     /// <param name="args"></param>
     public static bool NumberBox_RequiredInputValidation( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		if ( Double.IsNaN( args.NewValue ) )
+		if ( double.IsNaN( args.NewValue ) )
 		{
 			sender.Value = args.OldValue;
             return false;

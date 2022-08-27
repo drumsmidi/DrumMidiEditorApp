@@ -25,7 +25,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 	/// <summary>
 	/// Media設定
 	/// </summary>
-	private ConfigMedia ConfigMedia => Config.Media;
+	//private ConfigMedia ConfigMedia => Config.Media;
 
 	/// <summary>
 	/// 描画方向リスト

@@ -111,11 +111,11 @@ public class MidiMapGroup : DisposeBaseClass
     {
         var group = new MidiMapGroup
         {
-            Display		= this.Display,
-            GroupKey	= this.GroupKey,
-            GroupName	= this.GroupName,
-            VolumeAdd	= this.VolumeAdd,
-        //  Selected	= this.Selected,
+            Display		= Display,
+            GroupKey	= GroupKey,
+            GroupName	= GroupName,
+            VolumeAdd	= VolumeAdd,
+        //  Selected	= Selected,
         };
 
         foreach ( var midiMap in MidiMaps )

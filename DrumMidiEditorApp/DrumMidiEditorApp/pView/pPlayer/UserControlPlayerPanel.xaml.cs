@@ -23,7 +23,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// Player設定
     /// </summary>
-    private ConfigPlayer DrawSet => Config.Player;
+    private static ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
     /// プレイヤーサーフェイス
@@ -108,14 +108,14 @@ public sealed partial class UserControlPlayerPanel : UserControl
             while ( !_IdleTaskStop )
             {
                 // サイズ変更
-                if ( DrawSet.UpdateSizeFlag )
+                if (DrawSet.UpdateSizeFlag )
                 {
                     DrawSet.UpdateSizeFlag = false;
                     UpdatePanelSize();
                 }
 
                 // プレイヤー描画モード変更
-                if ( DrawSet.UpdateSurfaceModoFlag )
+                if (DrawSet.UpdateSurfaceModoFlag )
                 {
                     DrawSet.UpdateSurfaceModoFlag = false;
                     UpdateSurfaceMode();
@@ -130,7 +130,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
 
                 // 描画処理
-                using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+                using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession(DrawSet.SheetColor.Color );
 
                 _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
@@ -225,7 +225,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             // 描画処理
             using var drawSession = _Offscreen.CreateDrawingSession();
 
-            drawSession.Clear( DrawSet.SheetColor.Color );
+            drawSession.Clear(DrawSet.SheetColor.Color );
 
             _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
@@ -277,7 +277,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     private void UpdateSurfaceMode()
     {
-        switch ( DrawSet.PlayerSurfaceModeSelect )
+        switch (DrawSet.PlayerSurfaceModeSelect )
         {
 			case ConfigPlayer.PlayerSurfaceMode.Sequence:
    				_PlayerSurface = new pSurface.pSequence.PlayerSurface();

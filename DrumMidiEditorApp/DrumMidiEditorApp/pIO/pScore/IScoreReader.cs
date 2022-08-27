@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pIO.pScore;
 /// <summary>
 /// Score読取
 /// </summary>
-interface IScoreReader
+internal interface IScoreReader
 {
 	/// <summary>
 	/// XML妥当性チェック

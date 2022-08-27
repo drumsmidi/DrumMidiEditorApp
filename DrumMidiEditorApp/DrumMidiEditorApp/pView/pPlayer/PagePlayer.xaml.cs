@@ -15,7 +15,7 @@ public sealed partial class PagePlayer : Page
 	/// <summary>
 	/// 描画設定
 	/// </summary>
-	private ConfigPlayer DrawSet => Config.Player;
+	private static ConfigPlayer DrawSet => Config.Player;
 
 	/// <summary>
 	/// プレイヤー表示位置調整用マージン
@@ -65,7 +65,7 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn || _ActionState != EActionState.None )
+			if (DrawSet.EditModeOn || _ActionState != EActionState.None )
 			{ 
 				return;
 			}
@@ -103,7 +103,7 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn || _ActionState == EActionState.None )
+			if (DrawSet.EditModeOn || _ActionState == EActionState.None )
 			{ 
 				return;
 			}
@@ -137,7 +137,7 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-			if ( DrawSet.EditModeOn || _ActionState == EActionState.None )
+			if (DrawSet.EditModeOn || _ActionState == EActionState.None )
 			{ 
 				return;
 			}

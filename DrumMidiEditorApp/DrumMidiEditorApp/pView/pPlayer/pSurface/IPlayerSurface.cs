@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤーサーフェイスインタフェース
 /// </summary>
-interface IPlayerSurface
+internal interface IPlayerSurface
 {
     /// <summary>
     /// マウスダウンイベント

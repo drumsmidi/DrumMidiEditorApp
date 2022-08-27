@@ -18,7 +18,7 @@ public sealed partial class WindowEditer : Window
     /// <summary>
     /// システム設定
     /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
+    private static ConfigSystem ConfigSystem => Config.System;
 
 	/// <summary>
 	/// 本ウィンドウへのアクセス
@@ -55,13 +55,13 @@ public sealed partial class WindowEditer : Window
 		SetSubTitle( "[]" );
 
 		// ウィンドウ初期サイズ変更
-		if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
+		if (ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
 		{ 
 			AppWindowHelper.ResizeWindow
 				(
-					_AppWindow, 
-					ConfigSystem.WindowSizeWidth, 
-					ConfigSystem.WindowSizeHeight 
+					_AppWindow,
+                    ConfigSystem.WindowSizeWidth,
+                    ConfigSystem.WindowSizeHeight 
 				);
 		}
 

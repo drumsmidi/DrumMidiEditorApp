@@ -110,15 +110,15 @@ public class MidiMap : DisposeBaseClass
     {
         return new()
         {
-        //  Group       = this.Group,
-            Display     = this.Display,
-            MidiMapKey  = this.MidiMapKey,
-            MidiMapName = this.MidiMapName,
-            VolumeAdd   = this.VolumeAdd,
-            Midi        = this.Midi,
-            Color       = this.Color,
-        //  Selected    = this.Selected,
-            Scale       = this.Scale,
+        //  Group       = Group,
+            Display     = Display,
+            MidiMapKey  = MidiMapKey,
+            MidiMapName = MidiMapName,
+            VolumeAdd   = VolumeAdd,
+            Midi        = Midi,
+            Color       = Color,
+        //  Selected    = Selected,
+            Scale       = Scale,
         };
     }
 }

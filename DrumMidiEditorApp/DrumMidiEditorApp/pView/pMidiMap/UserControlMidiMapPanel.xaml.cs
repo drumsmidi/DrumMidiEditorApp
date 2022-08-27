@@ -24,27 +24,27 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// Player設定
     /// </summary>
-    private ConfigPlayer DrawSet => Config.Player;
+    //private static ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
     /// System設定
     /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
+    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Scale設定
     /// </summary>
-    private ConfigScale ConfigScale => Config.Scale;
+    //private static ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
     /// Media設定
     /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
+    private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
     /// </summary>
-    private Score Score => DMS.SCORE;
+    private static Score Score => DMS.SCORE;
 
 	/// <summary>
 	/// 編集中のMidiMapセット
@@ -186,8 +186,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-            lock ( Score.LockObj )
-            { 
+            lock (Score.LockObj )
+            {
                 Score.EditMidiMapSet = CreateMidiMapSet();
                 Score.EditMidiMapSet.ClearSelect();
                 Score.EditMidiMapSet.UpdateInfo();
@@ -213,9 +213,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 			XamlHelper.OpenDialogAsync
 				(
 					ControlAccess.MainWindow,
-					ConfigSystem.SupportMidiMapSet,
+                    ConfigSystem.SupportMidiMapSet,
 					PickerLocationId.DocumentsLibrary,
-					ConfigSystem.FolderMidiMapSet,
+                    ConfigSystem.FolderMidiMapSet,
 					( filepath ) =>
                     {
                         if ( !FileIO.LoadMidiMapSet( filepath, out var midiMapSet ) )
@@ -235,11 +235,11 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                 {
                                     var keyChangeDic = page.GetChangeKeys();
 
-                                    lock ( Score.LockObj )
+                                    lock (Score.LockObj )
                                     { 
 			                            foreach ( var item in keyChangeDic )
                                         {
-				                            Score.EditChannel.KeyChange( item.Key, -item.Value );
+                                            Score.EditChannel.KeyChange( item.Key, -item.Value );
 			                            }
 
 			                            foreach ( var item in keyChangeDic )
@@ -275,10 +275,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 			XamlHelper.SaveDialogAsync
 				(
 					ControlAccess.MainWindow,
-					ConfigSystem.SupportMidiMapSet,
+                    ConfigSystem.SupportMidiMapSet,
 					"",
 					PickerLocationId.DocumentsLibrary,
-					ConfigSystem.FolderMidiMapSet,
+                    ConfigSystem.FolderMidiMapSet,
 					( filepath ) =>
                     {
 						filepath.Extension = ConfigSystem.ExtentionDms;
@@ -345,7 +345,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-    		int new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
+            var new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
 
     		if ( new_key == ConfigSystem.MidiMapGroupKeyNotSelect )
     		{
@@ -508,7 +508,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     			return;
     		}
 
-    		int new_key = _TmpMidiMapSet.GetMidiMapNewKey();
+    		var new_key = _TmpMidiMapSet.GetMidiMapNewKey();
 
     		if ( new_key == ConfigSystem.MidiMapKeyNotSelect )
     		{

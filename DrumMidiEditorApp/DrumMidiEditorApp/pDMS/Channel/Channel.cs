@@ -189,12 +189,7 @@ public class Channel : DisposeBaseClass
     {
         NoteInfoList[ aInfo.SearchKey ] = aInfo;
 
-        var measure = GetMeasure( aInfo.MeasureNo );
-
-        if ( measure == null )
-        {
-            measure = new Measure();
-        }
+        var measure = GetMeasure( aInfo.MeasureNo ) ?? new() ;
 
         measure.AddNote( aInfo );
 
@@ -249,10 +244,10 @@ public class Channel : DisposeBaseClass
     /// <returns></returns>
     public Channel Clone()
     {
-        var channel = new Channel( this.ChannelNo )
+        var channel = new Channel( ChannelNo )
         {
-            MidiMapSet      = this.MidiMapSet.Clone(),
-            MaxMeasureNo    = this.MaxMeasureNo,
+            MidiMapSet      = MidiMapSet.Clone(),
+            MaxMeasureNo    = MaxMeasureNo,
         };
 
         foreach ( var item in NoteInfoList )
@@ -326,7 +321,7 @@ public class Channel : DisposeBaseClass
             return;
         }
 
-        for ( int measure_no = 0; measure_no <= MaxMeasureNo; measure_no++ )
+        for ( var measure_no = 0; measure_no <= MaxMeasureNo; measure_no++ )
         {
 			var measure = GetMeasure( measure_no );
 
@@ -372,7 +367,7 @@ public class Channel : DisposeBaseClass
             return "NONE";
         }
 
-        string data = String.Empty;
+        var data = string.Empty;
 
         foreach ( var measure_line in measure.NoteLines.Values )
         {
@@ -396,7 +391,7 @@ public class Channel : DisposeBaseClass
     /// <returns>NoteOff イベントまでの距離</returns>
     public int GetNotePosDistanceToNextNoteOff( InfoNote aInfo )
     {
-        int distance = 0;
+        var distance = 0;
 
         var nextInfo = NoteInfoList.FirstOrDefault( item => item.Key > aInfo.SearchKey ).Value;
 
