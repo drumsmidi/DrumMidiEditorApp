@@ -4,6 +4,8 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
   IgnorableNamespaces="uap rescap">
 
   <Identity
@@ -40,7 +42,24 @@
         <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
-    </Application>
+
+      <Extensions>
+        <!--Specify which CLSID to activate when notification is clicked-->
+        <desktop:Extension Category="windows.toastNotificationActivation">
+            <desktop:ToastNotificationActivation ToastActivatorCLSID="013F361C-A05E-4425-9E0F-F9D7EA076E56" />
+        </desktop:Extension>
+
+        <!--Register COM CLSID-->
+        <com:Extension Category="windows.comServer">
+            <com:ComServer>
+                <com:ExeServer Executable="DrumMidiEditorApp\DrumMidiEditorApp.exe" DisplayName="DrumMidiEditorApp" Arguments="----AppNotificationActivated:">
+                    <com:Class Id="013F361C-A05E-4425-9E0F-F9D7EA076E56" />
+                </com:ExeServer>
+            </com:ComServer>
+        </com:Extension>
+      </Extensions>
+
+	</Application>
   </Applications>
 
   <Capabilities>
