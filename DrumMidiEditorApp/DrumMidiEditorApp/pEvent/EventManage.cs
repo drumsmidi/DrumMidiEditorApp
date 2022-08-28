@@ -351,7 +351,7 @@ public static class EventManage
     /// <summary>
     /// レジュームリクエストキュー
     /// </summary>
-    public static ConcurrentQueue<EResumeAction> ResumeRequestQueue = new();
+    public static ConcurrentQueue<EResumeAction> ResumeRequestQueue { get; private set; } = new();
 
     /// <summary>
     /// Undoリクエスト

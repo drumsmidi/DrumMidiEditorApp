@@ -8,6 +8,7 @@ using DrumMidiEditorApp.pGeneralFunction.pAudio;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pIO;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -74,12 +75,33 @@ public sealed partial class WindowEditer : Window
 		DmsControl.Start();
 	}
 
-	/// <summary>
-	/// ウィンドウ終了処理
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void Window_Closed( object sender, WindowEventArgs args )
+    /// <summary>
+    /// アクティブ状態更新
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void Window_Activated( object sender, WindowActivatedEventArgs args )
+    {
+		try
+		{
+            // タイトルバーが非アクティブ状態による前景色の変更
+            var key = ( args.WindowActivationState == WindowActivationState.Deactivated )
+                ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
+
+            _AppTitleTextBlock.Foreground = (SolidColorBrush)App.Current.Resources[ key ];
+        }
+		catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ウィンドウ終了処理
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void Window_Closed( object sender, WindowEventArgs args )
     {
 		try
 		{

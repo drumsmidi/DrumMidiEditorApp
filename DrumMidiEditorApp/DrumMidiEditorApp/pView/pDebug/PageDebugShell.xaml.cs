@@ -14,6 +14,9 @@ using Windows.Foundation.Metadata;
 using Windows.UI.Shell;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.ApplicationModel.Core;
+using Microsoft.Windows.AppLifecycle;
+using Windows.ApplicationModel.Activation;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 
@@ -411,4 +414,63 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
+    private void RestartAppButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            var restartArgsInput = string.Empty;
+
+            // アプリ起動時のコマンドライン引数を取得
+            var commandLineArguments = Environment.GetCommandLineArgs();
+
+            if ( commandLineArguments.Length > 1 )
+            {
+                commandLineArguments = commandLineArguments.Skip( 1 ).ToArray();
+
+                restartArgsInput = string.Join( ",", commandLineArguments );
+            }
+
+            // アクティブ化時の引数を取得
+            var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+
+            switch ( activatedArgs.Kind )
+            {
+                case ExtendedActivationKind.Launch:
+                    {
+                        if ( activatedArgs.Data is ILaunchActivatedEventArgs launchArgs )
+                        {
+                            var argStrings = launchArgs.Arguments.Split();
+
+                            if ( argStrings.Length > 1 )
+                            {
+                                argStrings = argStrings.Skip( 1 ).ToArray();
+
+                                restartArgsInput = string.Join( ",", argStrings.Where( s => !string.IsNullOrEmpty( s ) ) );
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            // アプリ再起動
+            var restartError = AppInstance.Restart( restartArgsInput );
+
+            switch ( restartError )
+            {
+                case AppRestartFailureReason.RestartPending:
+                    Log.Error( "Another restart is currently pending." );
+                    break;
+                case AppRestartFailureReason.InvalidUser:
+                    Log.Error( "Current user is not signed in or not a valid user." );
+                    break;
+                case AppRestartFailureReason.Other:
+                    Log.Error( "Failure restarting." );
+                    break;
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 }

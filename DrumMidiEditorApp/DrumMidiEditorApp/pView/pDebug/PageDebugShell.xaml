@@ -8,7 +8,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <ScrollViewer>
-        <StackPanel Padding="10">
+        <StackPanel Padding="10" Spacing="10">
 
             <Button Content="Open explore" Click="OpenButton_Click" />
             
@@ -25,6 +25,8 @@
             <Button Content="Shell Badge Clear" Click="BadgeClearButton_Click" />
 
             <Button Content="Shell TaskBar Regist" Click="TaskBarRegistButton_Click" />
+
+            <Button Content="Restart application" Click="RestartAppButton_Click" />
 
         </StackPanel>
     </ScrollViewer>

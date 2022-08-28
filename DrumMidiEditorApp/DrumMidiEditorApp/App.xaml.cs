@@ -2,6 +2,7 @@
 
 using DrumMidiEditorApp.pView;
 using DrumMidiEditorApp.pGeneralFunction.pLog;
+using Microsoft.Windows.AppLifecycle;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +26,22 @@ public partial class App : Application
         InitializeComponent();
 
         Log.SetLogFile( new( "TraceLog.log" ) );
+
+        #region インスタンス管理
+
+        // 既定で、単一インスタンス アプリ なので多重起動の制御は不要
+
+        // GetInstancesに現在のインスタンスを追加と記載があったが
+        // 実行しないでも登録されている？
+        //AppInstance.GetCurrent();
+
+        // AppInstanceに登録されているインスタンスの一覧
+        foreach ( var instance in AppInstance.GetInstances() )
+        {
+            Log.Info( $"ProcessId={instance.ProcessId}, Key={instance.Key}, IsCurrent={instance.IsCurrent}" );
+        }
+
+        #endregion
     }
 
     /// <summary>
