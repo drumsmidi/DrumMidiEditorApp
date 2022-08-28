@@ -51,6 +51,23 @@ public partial class App : Application
     /// <param name="args">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs args )
     {
+        #region デバッグ設定
+#if DEBUG
+        // [エラーになる]フレーム レートとフレームごとの CPU 使用率情報を表示するかどうか
+        //DebugSettings.EnableFrameRateCounter = true;
+
+        // [エラーになる]XAML エラーがエラーを返すのではなく、すぐに FailFast を発生させるかどうか
+        //DebugSettings.FailFastOnErrors = true;
+
+        // バインド トレース機能
+        //DebugSettings.IsBindingTracingEnabled = true;
+
+        // テキスト パフォーマンス視覚化機能
+        //DebugSettings.IsTextPerformanceVisualizationEnabled = true;
+#endif
+        #endregion
+
+        // メインウィンドウ作成
         _MainWindow = new WindowEditer();
         _MainWindow.Activate();
     }
