@@ -4,9 +4,10 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using DrumMidiClassLibrary.pLog;
+
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -15,7 +16,7 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private ConfigPlayer ConfigPlayer => Config.Player;
+    private ConfigPlayer ConfigPlayer => ConfigLocal.Player;
 
     /// <summary>
     /// コンストラクタ

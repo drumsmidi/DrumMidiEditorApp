@@ -1,14 +1,17 @@
-﻿using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Windowing;
 using System;
 
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
+using DrumMidiEditerApp.pIO;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pGeneralFunction.pAudio;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pIO;
-using Microsoft.UI.Xaml.Media;
+using DrumMidiClassLibrary.pModel;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -39,7 +42,7 @@ public sealed partial class WindowEditer : Window
 #endif
 
 		// Midiデバイス初期化
-		MidiNet.InitDevice();
+		MidiNet.InitDevice( Config.Media.MidiOutDeviceName );
 
 		// ウィンドウ構築
 		InitializeComponent();
@@ -73,7 +76,10 @@ public sealed partial class WindowEditer : Window
 
 		// 再生コントロール開始
 		DmsControl.Start();
-	}
+
+        // プレイヤーリクエスト通知
+        DmsControl.SetPlayerRequestCallback = ( request ) => ConfigLocal.Player.PlayReq = request;
+    }
 
     /// <summary>
     /// アクティブ状態更新

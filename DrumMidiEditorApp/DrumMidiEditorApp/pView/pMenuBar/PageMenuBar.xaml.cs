@@ -1,18 +1,22 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage.Pickers;
 
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pIO;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiEditerApp.pIO;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 
@@ -25,15 +29,25 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 	/// </summary>
 	private ConfigMedia ConfigMedia => Config.Media;
 
-	/// <summary>
-	/// システム設定
-	/// </summary>
-	private ConfigSystem ConfigSystem => Config.System;
+    /// <summary>
+    /// メディア設定
+    /// </summary>
+    private byte ChannelDrum => MidiNet.ChannelDrum;
+
+    /// <summary>
+    /// メディア設定
+    /// </summary>
+    private List<byte> ChannelNoList => MidiNet.ChannelNoList;
+
+    /// <summary>
+    /// システム設定
+    /// </summary>
+    private ConfigSystem ConfigSystem => Config.System;
 
 	/// <summary>
 	/// プレイヤー設定
 	/// </summary>
-	private ConfigPlayer ConfigPlayer => Config.Player;
+	private ConfigPlayer ConfigPlayer => ConfigLocal.Player;
 
 	/// <summary>
 	/// スコア
@@ -114,7 +128,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
 			Score.EditChannelNo = _ChannelNoComboBox.SelectedValue != null 
 				? Convert.ToByte( _ChannelNoComboBox.SelectedValue.ToString() )
-				: ConfigMedia.ChannelDrum;
+				: MidiNet.ChannelDrum;
 
 			SetSubTitle();
 

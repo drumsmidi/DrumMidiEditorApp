@@ -2,8 +2,8 @@
 using System;
 using Windows.Foundation;
 
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -79,7 +79,7 @@ internal class DmsItemMeasure : DisposeBaseClass
 
 		aGraphics.DrawText
 			(
-				String.Format( "{0:000}", aMeasureNo ),
+				string.Format( "{0:000}", aMeasureNo ),
 				rect,
 				_FormatRect.Text.TextColor.Color,
 				_FormatRect.Text.TextFormat

@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 
@@ -24,7 +25,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private static ConfigPlayerSimuration DrawSet => Config.Player.Simuration;
+    private static ConfigPlayerSimuration DrawSet => ConfigLocal.Player.Simuration;
 
     /// <summary>
     /// スコア範囲
@@ -194,7 +195,7 @@ public class PlayerSurface : PlayerSurfaceBase
                             );
 
                         var dgp = Score.EditMidiMapSet
-                            .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+                            .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
 
                         dgp.X = _HeaderList[ _MoveMidiMapKey ].DrawRect._x;
                         dgp.Y = _HeaderList[ _MoveMidiMapKey ].DrawRect._y;
@@ -267,7 +268,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 }
 
                 var dgp = Score.EditMidiMapSet
-                    .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, group.GroupKey );
+                    .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, group.GroupKey );
 
                 var obj = new DmsItemMidiMap
 					( 
@@ -430,14 +431,14 @@ public class PlayerSurface : PlayerSurfaceBase
         var note_pos        = _NotePositionX;            
         var sheet_pos_x     = (float)Math.Round( _SheetPosX * DrawSet.NoteTermSize, 0 );
         var measure_size    = DrawSet.MeasureSize;
-        int measure_start   = note_pos / ConfigSystem.MeasureNoteNumber;
-        int measure_end     = measure_start + DrawSet.DrawMeasureCount - 1;
+        var measure_start   = note_pos / ConfigSystem.MeasureNoteNumber;
+        var measure_end     = measure_start + DrawSet.DrawMeasureCount - 1;
 
         #region Paint note
         {
             float diff_x;
 
-            for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+            for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
             {
                 if ( !_NoteList.TryGetValue( measure_no, out var notes ) )
                 {

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using CommunityToolkit.WinUI.Notifications;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 

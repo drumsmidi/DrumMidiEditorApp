@@ -8,12 +8,14 @@ using System.Runtime.CompilerServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
 
-using DrumMidiEditorApp.pConfig;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pIO;
+using DrumMidiEditerApp.pIO;
+using DrumMidiClassLibrary.pAudio;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -686,7 +688,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 				return;
             }
 
-            sender.Value = ConfigMedia.CheckMidiNote( (int)args.NewValue );
+            sender.Value = MidiNet.CheckMidiNote( (int)args.NewValue );
 		}
 		catch ( Exception e )
         {

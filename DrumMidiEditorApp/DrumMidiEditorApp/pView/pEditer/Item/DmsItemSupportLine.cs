@@ -2,8 +2,10 @@
 using System;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pUtil;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -98,13 +100,13 @@ public class DmsItemSupportLine : DisposeBaseClass
             return;
         }
 
-        var format = Config.Editer.SheetSupportLine;
+        var format = ConfigLocal.Editer.SheetSupportLine;
 
         var interval_x = IntervalNotePosX;
 
         if ( interval_x == 0 )
         {
-            float x = _NoteColumnRect._x + ( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width;
+            var x = _NoteColumnRect._x + ( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width;
 
             aGraphics.DrawLine
                 (
@@ -125,7 +127,7 @@ public class DmsItemSupportLine : DisposeBaseClass
 
             float x;
 
-            for ( int i = s_note; i <= e_note; i += interval_x )
+            for ( var i = s_note; i <= e_note; i += interval_x )
             {
                 x = _NoteColumnRect._x + ( i - aNotePosX ) * _NoteColumnRect._width;
 

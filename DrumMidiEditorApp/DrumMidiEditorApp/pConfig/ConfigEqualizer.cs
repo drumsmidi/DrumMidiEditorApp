@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pConfig;
 

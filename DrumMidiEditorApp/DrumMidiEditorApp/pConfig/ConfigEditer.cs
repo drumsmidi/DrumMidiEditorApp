@@ -1,12 +1,12 @@
 ﻿using Microsoft.Graphics.Canvas.Text;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pConfig;
 

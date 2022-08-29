@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using CommunityToolkit.WinUI.Notifications;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Foundation.Collections;
 using Windows.UI.Notifications;
 using Windows.Data.Xml.Dom;
-using System.Security.Claims;
 using Windows.Foundation.Metadata;
 using Windows.UI.Shell;
-using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel.Core;
 using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
+
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pDebug;
 

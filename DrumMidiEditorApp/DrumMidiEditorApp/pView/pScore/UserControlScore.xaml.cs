@@ -6,9 +6,12 @@ using System;
 using Windows.Foundation;
 using Windows.Graphics.DirectX;
 
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pDMS;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
@@ -19,17 +22,12 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// スコア設定
     /// </summary>
-    private static ConfigScore DrawSet => Config.Score;
+    private static ConfigScore DrawSet => ConfigLocal.Score;
 
     /// <summary>
     /// System設定
     /// </summary>
     private static ConfigSystem ConfigSystem => Config.System;
-
-    /// <summary>
-    /// Media設定
-    /// </summary>
-    private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
@@ -63,7 +61,7 @@ public sealed partial class UserControlScore : UserControl
         try
         {
             // スコア更新
-            if (DrawSet.UpdateScoreFlag )
+            if ( DrawSet.UpdateScoreFlag )
             {
                 DrawSet.UpdateScoreFlag = false;
 
@@ -157,7 +155,7 @@ public sealed partial class UserControlScore : UserControl
 
         #region 描画処理
 
-        g.Clear(DrawSet.SheetColor.Color );
+        g.Clear( DrawSet.SheetColor.Color );
 
         for ( var measure_no = 0; measure_no <= m_max; measure_no++ )
         {
@@ -204,16 +202,16 @@ public sealed partial class UserControlScore : UserControl
                     {
                         var volume = 1F;
 
-                        if (DrawSet.NoteVolumeSizeOn )
+                        if ( DrawSet.NoteVolumeSizeOn )
                         {
-                            volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)ConfigMedia.MidiMaxVolume;
+                            volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)MidiNet.MidiMaxVolume;
 
                             if ( volume > 1F )
                             {
                                 volume = 1F;
                             }
                         }
-                        if (DrawSet.NoteVolumeZeroOn && volume <= 0F )
+                        if ( DrawSet.NoteVolumeZeroOn && volume <= 0F )
                         {
                             volume = 1F;
                         }

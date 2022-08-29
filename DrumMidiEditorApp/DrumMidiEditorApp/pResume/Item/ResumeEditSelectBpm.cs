@@ -1,5 +1,5 @@
-﻿using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
+﻿using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pUtil;
 
 namespace DrumMidiEditorApp.pResume;
 

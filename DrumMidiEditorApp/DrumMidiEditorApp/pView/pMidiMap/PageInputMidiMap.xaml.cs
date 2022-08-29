@@ -1,10 +1,10 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using System;
 
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -85,7 +85,7 @@ public sealed partial class PageInputMidiMap : Page
 
 			SelectMidiMapKey = midiMap.MidiMapKey;
 
-			AudioFactory.SinglePlay( Score.EditChannelNo, midiMap.Midi, ConfigMedia.MidiMaxVolume );
+			AudioFactory.SinglePlay( Score.EditChannelNo, midiMap.Midi, MidiNet.MidiMaxVolume );
         }
 		catch ( Exception e )
 		{

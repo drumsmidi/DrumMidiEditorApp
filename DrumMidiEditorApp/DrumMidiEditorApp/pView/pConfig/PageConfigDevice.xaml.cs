@@ -2,10 +2,11 @@
 using System;
 using System.Collections.ObjectModel;
 
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pAudio;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pConfig;
@@ -61,7 +62,7 @@ public sealed partial class PageConfigDevice : Page
     {
 		try
 		{
-			if ( !MidiNet.InitDevice() )
+			if ( !MidiNet.InitDevice( ConfigMedia.MidiOutDeviceName ) )
 			{
 				Log.Error( ResourcesHelper.GetString( "ErrMsgInitMidiDevice", ConfigMedia.MidiOutDeviceName ) );
 				return;

@@ -2,9 +2,9 @@
 using System;
 using Windows.Foundation;
 
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -87,7 +87,7 @@ internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBp
 
 		aGraphics.DrawText
 			(
-				_Info?.Bpm.ToString() ?? String.Empty,
+				_Info?.Bpm.ToString() ?? string.Empty,
 				rect,
 				_FormatRect.Text.TextColor.Color,
 				_FormatRect.Text.TextFormat

@@ -4,10 +4,11 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
 
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -18,7 +19,7 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayer DrawSet => Config.Player;
+    private ConfigPlayer DrawSet => ConfigLocal.Player;
 
 	/// <summary>
 	/// Media設定

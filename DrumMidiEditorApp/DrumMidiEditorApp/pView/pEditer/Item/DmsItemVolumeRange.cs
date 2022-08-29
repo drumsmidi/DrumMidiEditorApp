@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pUtil;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -103,14 +105,14 @@ public class DmsItemVolumeRange : DisposeBaseClass
                     {
                         if ( _Direct )
                         {
-                            foreach ( int v in _VolumeList )
+                            foreach ( var v in _VolumeList )
                             {
                                 lst.Add( _EndVolume - v );
                             }
                         }
                         else
                         {
-                            for ( int i = _VolumeList.Count - 1; i >= 0; i-- )
+                            for ( var i = _VolumeList.Count - 1; i >= 0; i-- )
                             {
                                 lst.Add( _EndVolume - _VolumeList[ i ] );
                             }
@@ -121,14 +123,14 @@ public class DmsItemVolumeRange : DisposeBaseClass
                     {
                         if ( _Direct )
                         {
-                            foreach ( int v in _VolumeList )
+                            foreach ( var v in _VolumeList )
                             {
                                 lst.Add( v );
                             }
                         }
                         else
                         {
-                            for ( int i = _VolumeList.Count - 1; i >= 0; i-- )
+                            for ( var i = _VolumeList.Count - 1; i >= 0; i-- )
                             {
                                 lst.Add( _VolumeList[ i ] );
                             }
@@ -179,7 +181,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
     {
         _StartNotePosX = aNotePosX;
         _EndNotePosX   = aNotePosX;
-        _StartVolume   = Config.Media.CheckMidiVolume( aVolume );
+        _StartVolume   = MidiNet.CheckMidiVolume( aVolume );
         EditType       = aType;
 
         _VolumeList.Clear();
@@ -197,7 +199,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
     public void SetEndPos( int aNotePosX, int aVolume )
     {
         _EndNotePosX  = aNotePosX;
-        _EndVolume    = Config.Media.CheckMidiVolume( aVolume );
+        _EndVolume    = MidiNet.CheckMidiVolume( aVolume );
 
         CalcRange();
     }
@@ -212,11 +214,11 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// </summary>
     public void CalcRange()
     {
-        int s  = _StartNotePosX;
-        int e  = _EndNotePosX;
-        int sa = TermNotePosX;
+        var s  = _StartNotePosX;
+        var e  = _EndNotePosX;
+        var sa = TermNotePosX;
 
-        bool dir = ( e - s > 0 );
+        var dir = ( e - s > 0 );
 
         if ( sa == 0 )
         {
@@ -225,7 +227,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
         }
         else if ( dir == _Direct && EditType == ConfigEditer.VolumeEditType.FreeHand )
         {
-            int cnt = _VolumeList.Count;
+            var cnt = _VolumeList.Count;
 
             if ( cnt >= sa )
             {
@@ -234,9 +236,9 @@ public class DmsItemVolumeRange : DisposeBaseClass
             }
             else
             {
-                int volume = ( cnt == 0 ? StartVolume : _VolumeList[ cnt - 1 ] );
+                var volume = ( cnt == 0 ? StartVolume : _VolumeList[ cnt - 1 ] );
 
-                for ( int i = cnt; i <= sa; i++ )
+                for ( var i = cnt; i <= sa; i++ )
                 {
                     _VolumeList.Add( (int)( volume + ( _EndVolume - volume ) * ( i - cnt ) / ( sa - cnt ) ) );
                 }
@@ -249,7 +251,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
         {
             _VolumeList.Clear();
 
-            for ( int i = 0; i <= sa; i++ )
+            for ( var i = 0; i <= sa; i++ )
             {
                 _VolumeList.Add( (int)_StartVolume );
             }
@@ -259,7 +261,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
         {
             _VolumeList.Clear();
 
-            for ( int i = 0; i <= sa; i++ )
+            for ( var i = 0; i <= sa; i++ )
             {
                 _VolumeList.Add( (int)( _StartVolume + ( _EndVolume - _StartVolume ) * i / sa ) );
             }
@@ -292,9 +294,9 @@ public class DmsItemVolumeRange : DisposeBaseClass
 
             _VolumeList.Clear();
 
-            for ( int i = 0; i <= sa; i++ )
+            for ( var i = 0; i <= sa; i++ )
             {
-                var vol = MathUtil.GetBezierCurvePosition
+                var vol = MathHelper.GetBezierCurvePosition
                     ( 
                         _StartVolume,
                         c1,
@@ -325,21 +327,21 @@ public class DmsItemVolumeRange : DisposeBaseClass
         var p1 = _BottomPoint;
         var p2 = _BottomPoint;
 
-        p1.X += ( _StartNotePosX - aStartNotePosX ) * Config.Editer.NoteWidthSize;
+        p1.X += ( _StartNotePosX - aStartNotePosX ) * ConfigLocal.Editer.NoteWidthSize;
         p2.X  = p1.X;
 
-        int cnt = _VolumeList.Count - 1;
+        var cnt = _VolumeList.Count - 1;
 
         if ( cnt <= 0 )
         {
             return;
         }
 
-        var format = Config.Editer.VolumeInputLine;
+        var format = ConfigLocal.Editer.VolumeInputLine;
 
-        var term = Config.Editer.NoteWidthSize * ( _Direct ? 1 : -1 );
+        var term = ConfigLocal.Editer.NoteWidthSize * ( _Direct ? 1 : -1 );
 
-        for ( int i = 0; i < cnt; i++ )
+        for ( var i = 0; i < cnt; i++ )
         {
             p1.X  = p2.X;
             p2.X  = p1.X + term;

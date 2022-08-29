@@ -1,12 +1,14 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
+using System;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using System;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -20,7 +22,7 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <summary>
     /// プレイヤー設定（共通）
     /// </summary>
-    protected ConfigPlayer DrawSetCom => Config.Player;
+    protected ConfigPlayer DrawSetCom => ConfigLocal.Player;
 
     /// <summary>
     /// システム設定
@@ -99,13 +101,13 @@ public class PlayerSurfaceBase : IPlayerSurface
         { 
             switch ( DrawSetCom.PlayReq )
             {
-                case ConfigPlayer.PlayRequest.PrePlay      : _DmsPlayState = PlayState.PrePlayStart;     break;
-                case ConfigPlayer.PlayRequest.PreLoopPlay  : _DmsPlayState = PlayState.PreLoopPlayStart; break;
-                case ConfigPlayer.PlayRequest.PreStop      : _DmsPlayState = PlayState.Stop;             break;
-                case ConfigPlayer.PlayRequest.PreRecord    : _DmsPlayState = PlayState.PreRecord;        break;
+                case PlayRequest.PrePlay      : _DmsPlayState = PlayState.PrePlayStart;     break;
+                case PlayRequest.PreLoopPlay  : _DmsPlayState = PlayState.PreLoopPlayStart; break;
+                case PlayRequest.PreStop      : _DmsPlayState = PlayState.Stop;             break;
+                case PlayRequest.PreRecord    : _DmsPlayState = PlayState.PreRecord;        break;
             }
 
-            DrawSetCom.PlayReq = ConfigPlayer.PlayRequest.None;
+            DrawSetCom.PlayReq = PlayRequest.None;
 
             switch ( _DmsPlayState )
             {
@@ -125,7 +127,7 @@ public class PlayerSurfaceBase : IPlayerSurface
                             {
                                 var measureMaxNo = Score.GetMaxMeasureNo();
 
-                                for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
+                                for ( var measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                                 {
 									UpdateBpmMeasure( measure_no );
 									UpdateScoreMeasure( measure_no );
@@ -133,7 +135,7 @@ public class PlayerSurfaceBase : IPlayerSurface
                             }
                             else
                             {
-                                for ( int measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
+                                for ( var measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
                                 {
                                     UpdateBpmMeasure( measure_no );
                                     UpdateScoreMeasure( measure_no );
@@ -191,7 +193,7 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         var measureMaxNo = Score.GetMaxMeasureNo();
 
-                        for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
+                        for ( var measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                         {
 							UpdateBpmMeasure( measure_no );
 							UpdateScoreMeasure( measure_no );
@@ -217,7 +219,7 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         ClearMeasure();
 
-                        for ( int measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
+                        for ( var measure_no = ConfigMedia.PlayLoopStart; measure_no <= ConfigMedia.PlayLoopEnd; measure_no++ )
                         {
                             UpdateBpmMeasure( measure_no );
                             UpdateScoreMeasure( measure_no );
@@ -245,7 +247,7 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         var measureMaxNo = Score.GetMaxMeasureNo();
 
-                        for ( int measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
+                        for ( var measure_no = 0; measure_no <= measureMaxNo; measure_no++ )
                         {
 							UpdateBpmMeasure( measure_no );
 							UpdateScoreMeasure( measure_no );

@@ -8,11 +8,14 @@ using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
 
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 
@@ -156,7 +159,7 @@ public static class MLControl
                             DrumPattern		= aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
                             AbsoultNotePos	= note_pos,
                             HzCenter		= bgm.GetHz( offset_y + (int)range.Height / 2 ),
-                            FFTBuffer		= bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ).ToArray(),
+                            FFTBuffer		= bgm.GetFFTBuffer( range, ConfigLocal.Scale.VolumeLevelLow ).ToArray(),
                         }
                     );
             }
@@ -207,7 +210,7 @@ public static class MLControl
         ITransformer?				trainedModel = null;
 		IDataView?					trainedModelData;
 
-		var mode = Config.Machine.TrainingModeTypeSelect;
+		var mode = ConfigLocal.Machine.TrainingModeTypeSelect;
 
         switch ( mode )
         {
@@ -423,8 +426,8 @@ public static class MLControl
 				DMS.SCORE_PREDICT.EditChannel.AddNote
 					( 
 						int.Parse( drumKey ), 
-						en.Current.AbsoultNotePos, 
-						Config.Media.MidiMaxVolume, 
+						en.Current.AbsoultNotePos,
+                        MidiNet.MidiMaxVolume, 
 						true,
 						false,
 						false 

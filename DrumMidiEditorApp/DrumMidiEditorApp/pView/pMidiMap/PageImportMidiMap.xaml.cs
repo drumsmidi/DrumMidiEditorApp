@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 

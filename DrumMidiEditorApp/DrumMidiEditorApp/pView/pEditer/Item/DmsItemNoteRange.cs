@@ -2,9 +2,11 @@
 using System;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -300,7 +302,7 @@ public class DmsItemNoteRange : DisposeBaseClass
             return;
         }
 
-        var format = Config.Editer.NoteRangeLine;
+        var format = ConfigLocal.Editer.NoteRangeLine;
 
         var rect = GetSelectRange( aStartNotePos );
 

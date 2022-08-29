@@ -4,8 +4,9 @@ using Microsoft.UI.Xaml.Input;
 using System;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pLog;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
@@ -15,7 +16,7 @@ public sealed partial class PagePlayer : Page
 	/// <summary>
 	/// 描画設定
 	/// </summary>
-	private static ConfigPlayer DrawSet => Config.Player;
+	private static ConfigPlayer DrawSet => ConfigLocal.Player;
 
 	/// <summary>
 	/// プレイヤー表示位置調整用マージン

@@ -2,8 +2,8 @@
 using System;
 using Windows.Foundation;
 
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -20,7 +20,7 @@ internal class DmsItemLabel : DisposeBaseClass
     /// <summary>
     /// 描画テキスト
     /// </summary>
-    public string Text { get; set; } = String.Empty;
+    public string Text { get; set; } = string.Empty;
 
     /// <summary>
     /// 描画書式
@@ -82,7 +82,7 @@ internal class DmsItemLabel : DisposeBaseClass
                 aGraphics,
                 _DrawRect,
                 _FormatRect,
-                Text ?? String.Empty
+                Text ?? string.Empty
             );
     }
 }

@@ -1,11 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
-
-using DrumMidiEditorApp.pView;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 using Microsoft.Windows.AppLifecycle;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using DrumMidiClassLibrary.pLog;
+
+using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp;
 

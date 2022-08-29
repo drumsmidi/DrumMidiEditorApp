@@ -1,8 +1,8 @@
 ﻿using Microsoft.Graphics.Canvas;
 using System;
 
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 

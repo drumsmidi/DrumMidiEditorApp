@@ -4,7 +4,8 @@ using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -147,18 +148,6 @@ public class ConfigPlayer
     #endregion
 
     #region 再生リクエスト
-
-    /// <summary>
-    /// プレイヤー再生リクエスト一覧
-    /// </summary>
-    public enum PlayRequest : int
-    {
-        None = 0
-    ,   PreStop
-    ,   PrePlay
-    ,   PreLoopPlay
-    ,   PreRecord
-    }
 
     /// <summary>
     /// プレイヤー再生リクエスト

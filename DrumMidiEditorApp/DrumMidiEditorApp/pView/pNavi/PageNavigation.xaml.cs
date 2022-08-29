@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using DrumMidiEditorApp.pGeneralFunction.pLog;
+using DrumMidiClassLibrary.pLog;
+
 using DrumMidiEditorApp.pView.pConfig;
 using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;
@@ -76,7 +77,7 @@ public sealed partial class PageNavigation : Page
             }
             else if ( args.SelectedItemContainer != null )
             {
-                navItemTag = args.SelectedItemContainer.Tag.ToString() ?? String.Empty ;
+                navItemTag = args.SelectedItemContainer.Tag.ToString() ?? string.Empty ;
             }
 
             NavigationView_Navigate( navItemTag );

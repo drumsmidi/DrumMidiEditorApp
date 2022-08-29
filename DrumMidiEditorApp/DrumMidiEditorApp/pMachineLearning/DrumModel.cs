@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.ML.Data;
+﻿using Microsoft.ML.Data;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 
@@ -12,7 +11,7 @@ internal class DrumModel
     /// ドラムパターン
     /// </summary>
     [LoadColumn(0)]
-    public string DrumPattern { get; set; } = String.Empty;
+    public string DrumPattern { get; set; } = string.Empty;
 
     /// <summary>
     /// ノート位置
@@ -42,5 +41,5 @@ internal class DrumPrediction
     /// ドラムパターン予測結果
     /// </summary>
     [ColumnName("PredictedLabel")]
-    public string DrumPattern { get; set; } = String.Empty;
+    public string DrumPattern { get; set; } = string.Empty;
 }

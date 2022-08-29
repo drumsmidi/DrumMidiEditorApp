@@ -3,18 +3,17 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
 
 public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 {
-	/// <summary>
-	/// システム設定
-	/// </summary>
-	private ConfigSystem ConfigSystem => Config.System;
+    /// <summary>
+    /// 進捗バー（０～１００）
+    /// </summary>
+    private double _ProgressBarValue = 0;
 
 	/// <summary>
 	/// コンストラクタ
@@ -29,23 +28,26 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 		Log.LogOutputCallback.Enqueue( SetStatusText );
 	}
 
-	#region INotifyPropertyChanged
+    #region INotifyPropertyChanged
 
-	/// <summary>
-	/// プログレスバー再読み込み
-	/// 
-	/// x:Bind OneWay/TwoWay 再読み込み
-	/// </summary>
-	public void ReloadProgressBar()
+    /// <summary>
+    /// プログレスバー再読み込み
+    /// 
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    /// <param name="aProgressBarValue">進捗バー（０～１００）</param>
+    public void ReloadProgressBar( double aProgressBarValue )
 	{
 		try
 		{
-			if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ReloadProgressBar() ) )
+			if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ReloadProgressBar( aProgressBarValue ) ) )
 			{
 				return;
 			}
 
-			OnPropertyChanged( "ConfigSystem" );
+            _ProgressBarValue = aProgressBarValue;
+
+            OnPropertyChanged( "_ProgressBarValue" );
 		}
 		catch ( Exception e )
 		{

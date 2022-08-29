@@ -6,10 +6,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -20,7 +21,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerSequence DrawSet => Config.Player.Sequence;
+    private ConfigPlayerSequence DrawSet => ConfigLocal.Player.Sequence;
 
 	/// <summary>
 	/// Media設定

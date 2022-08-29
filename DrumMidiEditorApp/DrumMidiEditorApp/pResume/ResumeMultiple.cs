@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using DrumMidiEditorApp.pDMS;
+using DrumMidiClassLibrary.pModel;
+
 using DrumMidiEditorApp.pView.pEditer;
 
 namespace DrumMidiEditorApp.pResume;
@@ -98,7 +99,7 @@ public class ResumeMultiple : IResume
 
     public void Undo()
     {
-        for ( int index = _ResumeList.Count - 1; index >= 0; index-- )
+        for ( var index = _ResumeList.Count - 1; index >= 0; index-- )
         {
             _ResumeList[ index ].Undo();
         }

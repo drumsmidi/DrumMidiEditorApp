@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
+using DrumMidiClassLibrary.pAudio;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScore;
 
@@ -21,7 +23,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private ConfigPlayerScore DrawSet => Config.Player.Score;
+    private ConfigPlayerScore DrawSet => ConfigLocal.Player.Score;
 
     /// <summary>
     /// セクション範囲
@@ -160,7 +162,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
             if ( linesize == 0 )
             {
-                for ( int i = 1; i < pens.Length; i++ )
+                for ( var i = 1; i < pens.Length; i++ )
                 {
                     if ( pens[ i ].LineSize != 0 ) 
                     {
@@ -174,10 +176,10 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 FormatLine? pen = null;
 
-				int note_num   = ConfigSystem.MeasureNoteNumber;
+				var note_num   = ConfigSystem.MeasureNoteNumber;
                 var note_width = DrawSet.NoteTermWidthSize;
 
-                for ( int i = 0; i < note_num; i += linesize )
+                for ( var i = 0; i < note_num; i += linesize )
                 {
                     for ( int x = 6, y = 1; x >= 0; x--, y *= 2 )
                     {
@@ -291,7 +293,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     _NowBpmRange._y,
                     _NowBpmRange._width,
                     _NowBpmRange._height,
-                    String.Empty,
+                    string.Empty,
 				    DrawSet.BpmNowRect
                 );
         }
@@ -352,10 +354,10 @@ public class PlayerSurface : PlayerSurfaceBase
                         continue;
                     }
 
-                    float volume = 1F;
+                    var volume = 1F;
                     if ( DrawSet.NoteVolumeSizeOn )
                     {
-                        volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)ConfigMedia.MidiMaxVolume;
+                        volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)MidiNet.MidiMaxVolume;
 
                         if ( volume > 1F )
                         {
@@ -432,8 +434,8 @@ public class PlayerSurface : PlayerSurfaceBase
         var body            = _ScoreBodyRange;
         var note_pos        = _NotePositionX;
         var measure_size    = DrawSet.MeasureSize;
-        int measure_x       = (int)( body.Width / measure_size );
-        int measure_y       = (int)( ( _ScreenSize.Height - section.Top ) / section.Height );
+        var measure_x       = (int)( body.Width / measure_size );
+        var measure_y       = (int)( ( _ScreenSize.Height - section.Top ) / section.Height );
 
         if ( measure_x < 0 )
         {
@@ -444,8 +446,8 @@ public class PlayerSurface : PlayerSurfaceBase
             measure_y = 0;
         }
 
-        int measure_start   = note_pos / ConfigSystem.MeasureNoteNumber;
-        int measure_end     = measure_start + measure_x * measure_y - 1;
+        var measure_start   = note_pos / ConfigSystem.MeasureNoteNumber;
+        var measure_end     = measure_start + measure_x * measure_y - 1;
 
         #region Paint section
         {
@@ -453,7 +455,7 @@ public class PlayerSurface : PlayerSurfaceBase
 			float   diff_x;
 			float   diff_y;
 
-            for ( int measure_no = measure_start; measure_no <= measure_end; measure_no++ )
+            for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
             {
                 diff_x = measure_size    * (int)( measure_no % measure_x );
                 diff_y = section._height * (int)( measure_no / measure_x % measure_y );
@@ -462,7 +464,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 { 
                     cnt = _MeasureLineList.Count;
 
-					for ( int index = 0; index < cnt; index++ )
+					for ( var index = 0; index < cnt; index++ )
 					{
 					    _MeasureLineList[ index ].Draw( args.DrawingSession, diff_x, diff_y );
                     }
@@ -517,7 +519,7 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             if ( DrawSet.BpmNowDisplay && _NowBpm != null )
             { 
-                _NowBpm.Text = String.Format( "[Bpm:{0, 6:##0.00}]", DmsControl.GetBpm( _NotePositionX ) );
+                _NowBpm.Text = string.Format( "[Bpm:{0, 6:##0.00}]", DmsControl.GetBpm( _NotePositionX ) );
                 _NowBpm.Draw( args.DrawingSession );
             }
         }

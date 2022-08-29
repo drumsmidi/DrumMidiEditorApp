@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pEvent;
@@ -66,8 +68,8 @@ public static class EventManage
         Config.Media.UpdateDmsControlBgm = true;
 
         // BGMの再読み込み後、波形を読み込む
-        Config.Editer.UpdateScoreBgmFlag        = true;
-        Config.Editer.UpdateScoreBgmScaleFlag   = false;
+        ConfigLocal.Editer.UpdateScoreBgmFlag        = true;
+        ConfigLocal.Editer.UpdateScoreBgmScaleFlag   = false;
     }
 
     /// <summary>
@@ -155,18 +157,18 @@ public static class EventManage
         // 範囲選択解除
         EventEditClearRangeSelect();
 
-        Config.Editer.UpdateScoreLayoutFlag     = true;
-        Config.Editer.UpdateCameraFlag          = true;
-        Config.Editer.UpdateScoreLineFlag       = true;
-        Config.Editer.UpdateScoreHeaderFlag     = true;
-        Config.Editer.UpdateScoreFlag           = true;
-        Config.Editer.UpdateScoreBgmScaleFlag   = true;
+        ConfigLocal.Editer.UpdateScoreLayoutFlag     = true;
+        ConfigLocal.Editer.UpdateCameraFlag          = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag       = true;
+        ConfigLocal.Editer.UpdateScoreHeaderFlag     = true;
+        ConfigLocal.Editer.UpdateScoreFlag           = true;
+        ConfigLocal.Editer.UpdateScoreBgmScaleFlag   = true;
 
-        //Config.Editer.UpdateScoreNoteFlag         = true;
-        //Config.Editer.UpdateScoreNotePredictFlag  = true;
-        //Config.Editer.UpdateScoreBgmFlag          = true;
-        //Config.Editer.UpdateScoreBpmFlag          = true;
-        //Config.Editer.UpdateScoreNoteVolumeFlag   = true;
+        //ConfigLocal.Editer.UpdateScoreNoteFlag         = true;
+        //ConfigLocal.Editer.UpdateScoreNotePredictFlag  = true;
+        //ConfigLocal.Editer.UpdateScoreBgmFlag          = true;
+        //ConfigLocal.Editer.UpdateScoreBpmFlag          = true;
+        //ConfigLocal.Editer.UpdateScoreNoteVolumeFlag   = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -176,10 +178,10 @@ public static class EventManage
     /// </summary>
     private static void EventEditPanelResize()
     {
-        Config.Editer.UpdateScoreLayoutFlag = true;
-        Config.Editer.UpdateCameraFlag      = true;
-        Config.Editer.UpdateScoreLineFlag   = true;
-        Config.Editer.UpdateScoreHeaderFlag = true;
+        ConfigLocal.Editer.UpdateScoreLayoutFlag = true;
+        ConfigLocal.Editer.UpdateCameraFlag      = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag   = true;
+        ConfigLocal.Editer.UpdateScoreHeaderFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -189,11 +191,11 @@ public static class EventManage
     /// </summary>
     public static void EventEditItemResize()
     {
-        Config.Editer.UpdateScoreLayoutFlag = true;
-        Config.Editer.UpdateCameraFlag      = true;
-        Config.Editer.UpdateScoreLineFlag   = true;
-        Config.Editer.UpdateScoreHeaderFlag = true;
-        Config.Editer.UpdateScoreFlag       = true;
+        ConfigLocal.Editer.UpdateScoreLayoutFlag = true;
+        ConfigLocal.Editer.UpdateCameraFlag      = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag   = true;
+        ConfigLocal.Editer.UpdateScoreHeaderFlag = true;
+        ConfigLocal.Editer.UpdateScoreFlag       = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -203,7 +205,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditUpdateSheetPos()
     {
-        Config.Editer.UpdateCameraFlag = true;
+        ConfigLocal.Editer.UpdateCameraFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -214,7 +216,7 @@ public static class EventManage
     /// <param name="aRangeSelect"></param>
     public static void EventEditUpdateRangeSelect( bool aRangeSelect )
     {
-        Config.Editer.IsRangeSelect = aRangeSelect;
+        ConfigLocal.Editer.IsRangeSelect = aRangeSelect;
 
         ControlAccess.PageEdit?.ReloadConfigEditer();
     }
@@ -224,7 +226,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditClearRangeSelect()
     {
-        Config.Editer.UpdateClearRangeFlag = true;
+        ConfigLocal.Editer.UpdateClearRangeFlag = true;
 
         ControlAccess.PageEdit?.ReloadConfigEditer();
         ControlAccess.PageEdit?.Refresh();
@@ -235,7 +237,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditUpdateWaveForm()
     {
-        Config.Editer.UpdateScoreBgmScaleFlag = true;
+        ConfigLocal.Editer.UpdateScoreBgmScaleFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -246,7 +248,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditUpdateDisplayNoteVolume()
     {
-        Config.Editer.UpdateScoreNoteVolumeFlag = true;
+        ConfigLocal.Editer.UpdateScoreNoteVolumeFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -256,7 +258,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditUpdateScorePredict()
     {
-        Config.Editer.UpdateScoreNotePredictFlag = true;
+        ConfigLocal.Editer.UpdateScoreNotePredictFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -271,12 +273,12 @@ public static class EventManage
         Config.Media.UpdateDmsControlScore = true;
 
         // NOTE表示更新リクエスト
-        Config.Editer.UpdateScoreNoteFlag = true;
+        ConfigLocal.Editer.UpdateScoreNoteFlag = true;
 
         // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreNoteMeasureNoList.Contains( aMeasureNo ) )
+        if ( !ConfigLocal.Editer.UpdateScoreNoteMeasureNoList.Contains( aMeasureNo ) )
         {
-            Config.Editer.UpdateScoreNoteMeasureNoList.Add( aMeasureNo );
+            ConfigLocal.Editer.UpdateScoreNoteMeasureNoList.Add( aMeasureNo );
         }
 
         // スコアタブ表示更新リクエスト
@@ -297,12 +299,12 @@ public static class EventManage
         Config.Media.UpdateDmsControlScore = true;
 
         // BPM表示更新リクエスト
-        Config.Editer.UpdateScoreBpmFlag = true;
+        ConfigLocal.Editer.UpdateScoreBpmFlag = true;
 
         // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreBpmMeasureNoList.Contains( aMeasureNo ) )
+        if ( !ConfigLocal.Editer.UpdateScoreBpmMeasureNoList.Contains( aMeasureNo ) )
         {
-            Config.Editer.UpdateScoreBpmMeasureNoList.Add( aMeasureNo );
+            ConfigLocal.Editer.UpdateScoreBpmMeasureNoList.Add( aMeasureNo );
         }
 
         // プレイヤスコア更新リクエスト
@@ -319,12 +321,12 @@ public static class EventManage
         Config.Media.UpdateDmsControlScore = true;
 
         // ノート音量表示更新リクエスト
-        Config.Editer.UpdateScoreNoteVolumeFlag = true;
+        ConfigLocal.Editer.UpdateScoreNoteVolumeFlag = true;
 
         // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Contains( aMeasureNo ) )
+        if ( !ConfigLocal.Editer.UpdateScoreNoteVolumeMeasureNoList.Contains( aMeasureNo ) )
         {
-            Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Add( aMeasureNo );
+            ConfigLocal.Editer.UpdateScoreNoteVolumeMeasureNoList.Add( aMeasureNo );
         }
 
         // スコアタブ表示更新リクエスト
@@ -390,7 +392,7 @@ public static class EventManage
     /// </summary>
     public static void EventScoreUpdateTab()
     {
-        Config.Score.UpdateScoreFlag = true;
+        ConfigLocal.Score.UpdateScoreFlag = true;
 
         // 描画時に更新
         ControlAccess.UCScore?.Refresh();
@@ -406,7 +408,7 @@ public static class EventManage
     public static void EventPlayerUpdateSufaceMode()
     {
         // 描画ループ処理内で更新フラグを見て更新
-        Config.Player.UpdateSurfaceModoFlag = true;
+        ConfigLocal.Player.UpdateSurfaceModoFlag = true;
     }
 
     /// <summary>
@@ -418,7 +420,7 @@ public static class EventManage
         ControlAccess.PagePlayer?.UpdatePageSize();
 
         // Panel用フラグ更新：描画ループ処理内で更新フラグを見て更新
-        Config.Player.UpdateSizeFlag = true;
+        ConfigLocal.Player.UpdateSizeFlag = true;
 
         // スクリーンサイズ変更に伴う更新
         EventPlayerUpdateScore();
@@ -429,7 +431,7 @@ public static class EventManage
     /// </summary>
     public static void EventPlayerUpdateScore()
     {
-        Config.Player.UpdateScoreFlag = true;
+        ConfigLocal.Player.UpdateScoreFlag = true;
     }
 
     /// <summary>
@@ -438,7 +440,7 @@ public static class EventManage
     /// <param name="aDisplayPlayer"></param>
     public static void EventPlayerUpdateDisplay( bool aDisplayPlayer )
     {
-        Config.Player.DisplayPlayer = aDisplayPlayer;
+        ConfigLocal.Player.DisplayPlayer = aDisplayPlayer;
 
         // メニューバーのプレイヤースイッチ切替
         ControlAccess.PageMenuBar?.ReloadConfigPlayer();

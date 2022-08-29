@@ -5,11 +5,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 

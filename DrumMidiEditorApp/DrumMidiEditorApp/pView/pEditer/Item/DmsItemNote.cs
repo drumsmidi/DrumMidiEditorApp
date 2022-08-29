@@ -5,10 +5,11 @@ using System;
 using System.Numerics;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -160,7 +161,7 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
 
 		if ( InfoNote.Selected )
 		{
-			var format = Config.Editer.NoteSelectLine;
+			var format = ConfigLocal.Editer.NoteSelectLine;
 
 			// ノート選択時の外枠を描画
 			aGraphics.DrawRectangle
@@ -185,7 +186,7 @@ public class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNot
             return;
         }
 
-		var format = Config.Editer.NotePredictLine;
+		var format = ConfigLocal.Editer.NotePredictLine;
 
 		var rect = new Rect
 			(

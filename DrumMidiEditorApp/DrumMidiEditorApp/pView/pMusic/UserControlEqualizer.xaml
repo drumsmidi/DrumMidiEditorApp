@@ -5,13 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    xmlns:userctl="using:DrumMidiEditorApp.pGeneralFunction.pUserControl" 
+    xmlns:userctl="using:DrumMidiClassLibrary.pUserControl" 
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <Grid>
-        <userctl:HGroupUserControl x:Uid="HGroupEqualizerSetting">
-            <userctl:HGroupUserControl.CustomContent>
+        <userctl:HGroup x:Uid="HGroupEqualizerSetting">
+            <userctl:HGroup.CustomContent>
 
                 <StackPanel Orientation="Vertical" Spacing="6">
                     <CommandBar
@@ -54,7 +54,7 @@
 
                 </StackPanel>
                 
-            </userctl:HGroupUserControl.CustomContent>
-        </userctl:HGroupUserControl>
+            </userctl:HGroup.CustomContent>
+        </userctl:HGroup>
     </Grid>
 </UserControl>

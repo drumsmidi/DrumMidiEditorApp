@@ -2,24 +2,25 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
 public sealed partial class PageScore : Page
 {
-	/// <summary>
-	/// スコア設定
-	/// </summary>
-	private ConfigScore DrawSet => Config.Score;
+    /// <summary>
+    /// スコア設定
+    /// </summary>
+    private ConfigScore DrawSet => ConfigLocal.Score;
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageScore()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageScore()
     {
         InitializeComponent();
 

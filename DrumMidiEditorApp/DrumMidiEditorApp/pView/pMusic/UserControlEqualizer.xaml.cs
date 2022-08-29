@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Threading;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 
@@ -21,7 +22,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザ設定
     /// </summary>
-    private ConfigEqualizer DrawSet => Config.Equalizer;
+    private ConfigEqualizer DrawSet => ConfigLocal.Equalizer;
 
     /// <summary>
     /// イコライザ入力エリア
@@ -56,6 +57,9 @@ public sealed partial class UserControlEqualizer : UserControl
 
         // イコライザ描画範囲初期化
         UpdateRange();
+
+        // イコライザ反映処理設定
+        DmsControl.ApplyEqualizerCallback = ApplyEqulizer;
     }
 
     /// <summary>

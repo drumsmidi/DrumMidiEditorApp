@@ -7,11 +7,12 @@ using System;
 using System.Threading.Tasks;
 using Windows.Graphics.DirectX;
 
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pUtil;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
 using DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
@@ -23,7 +24,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// Player設定
     /// </summary>
-    private static ConfigPlayer DrawSet => Config.Player;
+    private static ConfigPlayer DrawSet => ConfigLocal.Player;
 
     /// <summary>
     /// プレイヤーサーフェイス

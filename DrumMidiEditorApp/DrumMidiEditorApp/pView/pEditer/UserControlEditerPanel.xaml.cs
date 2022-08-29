@@ -4,26 +4,27 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Graphics.DirectX;
 using Windows.System;
 using Windows.UI;
 
-using DrumMidiEditorApp.pAudio;
+using DrumMidiClassLibrary.pAudio;
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pAudio;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 using DrumMidiEditorApp.pResume;
 using DrumMidiEditorApp.pEvent;
-using Windows.Graphics.DirectX;
-using System.Collections.Concurrent;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -34,7 +35,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    private static ConfigEditer DrawSet => Config.Editer;
+    private static ConfigEditer DrawSet => ConfigLocal.Editer;
 
     /// <summary>
     /// System設定
@@ -44,7 +45,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Scale設定
     /// </summary>
-    private static ConfigScale ConfigScale => Config.Scale;
+    private static ConfigScale ConfigScale => ConfigLocal.Scale;
 
     /// <summary>
     /// Media設定
@@ -935,7 +936,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             pos.X = -1;
         }
 
-        pos.Y = ConfigMedia.CheckMidiVolume( pos.Y );
+        pos.Y = MidiNet.CheckMidiVolume( pos.Y );
 
 		return pos;
 	}
@@ -1829,7 +1830,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             break;
                     }
 
-                    info_new.Volume = ConfigMedia.CheckMidiVolume( info_new.Volume );
+                    info_new.Volume = MidiNet.CheckMidiVolume( info_new.Volume );
 
                     rs.SetNoteVolume( info_old, info_new );
 				}

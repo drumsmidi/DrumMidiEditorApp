@@ -9,10 +9,12 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pConfig;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pView.pEditer;
@@ -24,7 +26,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    private ConfigEditer DrawSet => Config.Editer;
+    private ConfigEditer DrawSet => ConfigLocal.Editer;
 
     /// <summary>
     /// System設定
@@ -34,7 +36,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Scale設定
     /// </summary>
-    private ConfigScale ConfigScale => Config.Scale;
+    private ConfigScale ConfigScale => ConfigLocal.Scale;
 
     /// <summary>
     /// Score情報
@@ -69,9 +71,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         #region 小節番号リスト作成
 
-        int keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
+        var keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
 
-		for ( int measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+		for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
 		{
 			_MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
 		}

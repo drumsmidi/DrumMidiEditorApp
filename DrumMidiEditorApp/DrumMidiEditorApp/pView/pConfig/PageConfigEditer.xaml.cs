@@ -2,12 +2,11 @@
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
-using System.Collections.ObjectModel;
+
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pWinUI;
 
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
-using DrumMidiEditorApp.pGeneralFunction.pLog;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -18,7 +17,7 @@ public sealed partial class PageConfigEditer : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigEditer DrawSet => Config.Editer;
+    private ConfigEditer DrawSet => ConfigLocal.Editer;
 
 	/// <summary>
 	/// Media設定

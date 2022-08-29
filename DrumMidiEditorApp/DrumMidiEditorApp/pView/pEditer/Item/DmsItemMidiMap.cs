@@ -1,10 +1,11 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
+using DrumMidiClassLibrary.pModel;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiClassLibrary.pWinUI;
+
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pDMS;
-using DrumMidiEditorApp.pGeneralFunction.pUtil;
-using DrumMidiEditorApp.pGeneralFunction.pWinUI;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -110,7 +111,7 @@ public class DmsItemMidiMap : DisposeBaseClass
             text    = _MidiMap.MidiMapName;
             select  = _MidiMap.Selected;
         }
-        else if( _MidiMapGroup != null )
+        else if ( _MidiMapGroup != null )
         {
             text    = _MidiMapGroup.GroupName;
             select  = _MidiMapGroup.Selected;
@@ -129,7 +130,7 @@ public class DmsItemMidiMap : DisposeBaseClass
             (
                 aGraphics,
                 rect,
-                select ? Config.Editer.HeaderSelectRect : Config.Editer.HeaderNonSelectRect,
+                select ? ConfigLocal.Editer.HeaderSelectRect : ConfigLocal.Editer.HeaderNonSelectRect,
                 text
             );
     }

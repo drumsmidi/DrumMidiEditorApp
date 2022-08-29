@@ -15,7 +15,7 @@
                 IsClosable="True" />
 
             <ProgressBar
-                Value="{x:Bind ConfigSystem.ProgressBarValue, Mode=OneWay}" />
+                Value="{x:Bind _ProgressBarValue, Mode=OneWay}" />
             
         </StackPanel>
     </Grid>
