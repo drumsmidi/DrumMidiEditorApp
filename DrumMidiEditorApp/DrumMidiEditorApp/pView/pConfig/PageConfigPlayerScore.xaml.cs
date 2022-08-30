@@ -114,9 +114,9 @@ public sealed partial class PageConfigPlayerScore : Page
                 return;
             }
 
-            XamlHelper.ColorDialogAsync
+            XamlHelper.ColorDialog
                 (
-                    Content.XamlRoot,
+                    item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
                     ( color ) =>
                     {

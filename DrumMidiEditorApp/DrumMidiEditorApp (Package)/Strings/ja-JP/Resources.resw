@@ -214,6 +214,9 @@ BPMノートを含める</value>
   <data name="ColumnMidiMapVolume.Text" xml:space="preserve">
     <value>Volume(±)</value>
   </data>
+  <data name="Dialog.Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="Dialog.Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

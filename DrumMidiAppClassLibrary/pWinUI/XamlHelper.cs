@@ -13,6 +13,8 @@ using Microsoft.Graphics.Canvas;
 
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pUtil;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using DrumMidiClassLibrary.pUserControl;
 
 namespace DrumMidiClassLibrary.pWinUI;
 
@@ -89,13 +91,71 @@ public static class XamlHelper
     }
 
     /// <summary>
+    /// 色選択ダイアログ（Flyout）
+    /// </summary>
+    /// <param name="aElement"></param>
+    /// <param name="aColor"></param>
+    /// <param name="aAction"></param>
+    public static void ColorDialog( FrameworkElement aElement, Color aColor, Action<Color> aAction )
+    {
+        var stack_panel = new StackPanel()
+        {
+            Orientation = Orientation.Vertical,
+            Spacing     = 6,
+        };
+
+        var color_picker = new ColorPicker
+        {
+            Color                           = aColor,
+            ColorSpectrumComponents         = ColorSpectrumComponents.ValueSaturation,
+            ColorSpectrumShape              = ColorSpectrumShape.Box,
+            IsColorSpectrumVisible          = true,
+            IsColorPreviewVisible           = true,
+            IsMoreButtonVisible             = false,
+            IsColorSliderVisible            = true,
+            IsColorChannelTextInputVisible  = false,
+            IsHexInputVisible               = true,
+            IsAlphaEnabled                  = true,
+            IsAlphaSliderVisible            = true,
+            IsAlphaTextInputVisible         = false,
+        };
+
+        var apply_button = new Button()
+        {
+            Content = ResourcesHelper.GetString( "Dialog/Apply" ),
+        };
+
+        stack_panel.Children.Add( color_picker );
+        stack_panel.Children.Add( apply_button );
+
+        var flyout = new Flyout()
+        {
+            Content     = stack_panel,
+            Placement   = FlyoutPlacementMode.Right,
+        };
+
+        // 適用ボタン押下時の処理
+        apply_button.Click += ( sender, args ) => 
+        { 
+            aAction( color_picker.Color );
+            flyout.Hide();
+
+            // flyoutの破棄処理はいるのかな？
+        };
+
+        // Flyoutを追加し、表示する
+        FlyoutBase.SetAttachedFlyout( aElement, flyout );
+        FlyoutBase.ShowAttachedFlyout( aElement );
+    }
+
+    /// <summary>
     /// 色選択ダイアログ
     /// （Spectrum が表示されない不具合あり）
     /// </summary>
     /// <param name="aContentXamlRoot"></param>
     /// <param name="aColor"></param>
     /// <param name="aAction"></param>
-    public static async void ColorDialogAsync( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
+    public static async void ColorDialog( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
     {
         var content = new ColorPicker
         {
@@ -113,6 +173,7 @@ public static class XamlHelper
             IsAlphaTextInputVisible         = false,
         };
 
+        // ▼ContentDialog で ColorPicker を表示すると Spectrum が表示されない不具合あり
         var cd = new ContentDialog
         {
             Title               = ResourcesHelper.GetString( "Dialog/Input" ),
@@ -123,13 +184,13 @@ public static class XamlHelper
         };
 
         var result = await cd.ShowAsync();
-            
+
         if ( result == ContentDialogResult.Primary )
         {
             aAction( content.Color );
         }
+        // ▲ContentDialog で ColorPicker を表示すると Spectrum が表示されない不具合あり
     }
-
 
 
     /// <summary>

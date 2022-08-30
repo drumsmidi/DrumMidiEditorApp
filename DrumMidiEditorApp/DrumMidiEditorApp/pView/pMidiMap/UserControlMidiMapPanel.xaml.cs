@@ -710,9 +710,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
 
-            XamlHelper.ColorDialogAsync
+            XamlHelper.ColorDialog
                 (
-                    Content.XamlRoot,
+                    item,
                     ( item.Background as SolidColorBrush )?.Color ?? ConfigSystem.DefaultMidiMapColor,
                     ( color ) =>
                     {

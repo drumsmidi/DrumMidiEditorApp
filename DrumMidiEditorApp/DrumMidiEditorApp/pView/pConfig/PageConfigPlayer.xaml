@@ -7,6 +7,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <Flyout x:Key="myColorPickerFlyout">
+            <RelativePanel>
+                <ColorPicker x:Name="myColorPicker"
+                    IsColorChannelTextInputVisible="False"
+                    IsHexInputVisible="False" />
+
+                <Grid 
+                    RelativePanel.Below="myColorPicker"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button 
+                        Content="OK" 
+                        Click="confirmColor_Click"
+                        Margin="0,12,2,0" 
+                        HorizontalAlignment="Stretch" />
+                    
+                    <Button 
+                        Content="Cancel" 
+                        Click="cancelColor_Click"
+                        Margin="2,12,0,0" 
+                        HorizontalAlignment="Stretch"
+                        Grid.Column="1" />
+                </Grid>
+            </RelativePanel>
+        </Flyout>
+    </Page.Resources>
+    
     <Grid Padding="10">
         <StackPanel Orientation="Vertical" Spacing="6">
 
@@ -27,6 +61,11 @@
                 Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
                 Click="ColorButton_Click" />
 
+<!--            
+            <Button x:Uid="InputBackgroudColor"
+                Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=OneWay}"
+                Flyout="{StaticResource myColorPickerFlyout}" />
+-->
         </StackPanel>
     </Grid>
 </Page>

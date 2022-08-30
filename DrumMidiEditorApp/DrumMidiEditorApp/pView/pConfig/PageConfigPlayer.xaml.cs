@@ -9,6 +9,7 @@ using DrumMidiClassLibrary.pWinUI;
 
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -125,19 +126,35 @@ public sealed partial class PageConfigPlayer : Page
                 return;
             }
 
-            XamlHelper.ColorDialogAsync
+            XamlHelper.ColorDialog
                 (
-                    Content.XamlRoot,
+                    item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
                     ( color ) =>
                     {
-                        item.Background = new SolidColorBrush( color );
+                        item.Background = new SolidColorBrush(color);
                     }
                 );
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+
+    private void confirmColor_Click(object sender, RoutedEventArgs e)
+    {
+        // Assign the selected color to a variable to use outside the popup.
+        //myColor = myColorPicker.Color;
+
+        // Close the Flyout.
+        //colorPickerButton.Flyout.Hide();
+    }
+
+    private void cancelColor_Click(object sender, RoutedEventArgs e)
+    {
+        // Close the Flyout.
+        //colorPickerButton.Flyout.Hide();
+    }
+
 }

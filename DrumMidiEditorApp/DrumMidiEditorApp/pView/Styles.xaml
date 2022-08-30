@@ -30,9 +30,6 @@
         <Setter Property="LargeChange" Value="1.0" />
     </Style>
 
-
-    
-
     <Style TargetType="ComboBox">
         <Setter Property="Height" Value="60" />
     </Style>

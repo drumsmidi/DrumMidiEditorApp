@@ -110,9 +110,9 @@ public sealed partial class PageConfigEditer : Page
                 return;
             }
 
-            XamlHelper.ColorDialogAsync
+            XamlHelper.ColorDialog
                 (
-                    Content.XamlRoot,
+                    item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
                     ( color ) =>
                     {

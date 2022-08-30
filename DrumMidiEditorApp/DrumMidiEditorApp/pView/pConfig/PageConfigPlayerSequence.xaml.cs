@@ -178,9 +178,9 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
                 return;
             }
 
-            XamlHelper.ColorDialogAsync
+            XamlHelper.ColorDialog
                 (
-                    Content.XamlRoot,
+                    item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
                     ( color ) =>
                     {
