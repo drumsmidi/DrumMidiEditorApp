@@ -50,7 +50,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Media設定
     /// </summary>
-    private static ConfigMedia ConfigMedia => Config.Media;
+    //private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報

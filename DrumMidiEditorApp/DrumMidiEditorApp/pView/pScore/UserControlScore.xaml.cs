@@ -90,13 +90,21 @@ public sealed partial class UserControlScore : UserControl
             return null;
         }
 
+        var tmp_width  = ActualSize.X - DrawSet.NoteWidthSize  * 2;
+        var tmp_height = ActualSize.Y - DrawSet.NoteHeightSize * 2;
+
+        if ( tmp_width < 0 || tmp_height < 0 )
+        {
+            return null;
+        }
+
         // 描画範囲：ノートの半サイズ分 外枠に余白を持たせる
         var body = new Rect
             (
                 DrawSet.NoteWidthSize,
                 DrawSet.NoteHeightSize,
-                ActualSize.X - DrawSet.NoteWidthSize  * 2,
-                ActualSize.Y - DrawSet.NoteHeightSize * 2
+                tmp_width,
+                tmp_height
             );
 
         #region 縦横 小節表示数 算出
@@ -133,6 +141,11 @@ public sealed partial class UserControlScore : UserControl
             h_cnt = h_cnt_max;
         }
 
+        if ( w_cnt == 0 || h_cnt == 0 )
+        {
+            return null;
+        }
+
         // 縦横 ノート間隔
         var t_w = (float)w_cnt_max / w_cnt;
         var t_h = (float)h_cnt_max / h_cnt;
@@ -161,15 +174,18 @@ public sealed partial class UserControlScore : UserControl
         {
             #region Set measure line
             {
-                g.DrawRectangle
-                    (
-                        body._x + measure_no % w_cnt * m_w,
-                        body._y + measure_no / w_cnt * m_h,
-                        m_w,
-                        m_h,
-                        DrawSet.MeasureLine.LineColor.Color,
-                        DrawSet.MeasureLine.LineSize
-                    );
+                if ( m_w > 0 && m_h > 0 )
+                {
+                    g.DrawRectangle
+                        (
+                            body._x + measure_no % w_cnt * m_w,
+                            body._y + measure_no / w_cnt * m_h,
+                            m_w,
+                            m_h,
+                            DrawSet.MeasureLine.LineColor.Color,
+                            DrawSet.MeasureLine.LineSize
+                        );
+                }
             }
             #endregion
 
@@ -221,14 +237,17 @@ public sealed partial class UserControlScore : UserControl
                         note_rect.Width     = DrawSet.NoteWidthSize  * volume / 2;
                         note_rect.Height    = DrawSet.NoteHeightSize * volume / 2;
 
-                        g.FillEllipse
-                            ( 
-                                note_rect._x,
-                                note_rect._y,
-                                note_rect._width,
-                                note_rect._height,
-                                midiMap.Color 
-                            );
+                        if ( note_rect.Width > 0 && note_rect.Height > 0 )
+                        {
+                            g.FillEllipse
+                                ( 
+                                    note_rect._x,
+                                    note_rect._y,
+                                    note_rect._width,
+                                    note_rect._height,
+                                    midiMap.Color 
+                                );
+                        }
                     }
                 }
             }

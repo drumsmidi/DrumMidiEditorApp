@@ -149,7 +149,7 @@ public static class XamlHelper
     }
 
     /// <summary>
-    /// 色選択ダイアログ
+    /// 色選択ダイアログ（ContentDialog）
     /// （Spectrum が表示されない不具合あり）
     /// </summary>
     /// <param name="aContentXamlRoot"></param>

@@ -20,7 +20,7 @@ public sealed partial class PageInputMidiMap : Page
 	/// <summary>
 	/// Media設定
 	/// </summary>
-	private ConfigMedia ConfigMedia => Config.Media;
+	//private ConfigMedia ConfigMedia => Config.Media;
 
 	/// <summary>
 	/// Score情報
