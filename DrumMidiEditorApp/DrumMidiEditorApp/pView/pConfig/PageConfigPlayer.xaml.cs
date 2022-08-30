@@ -141,20 +141,4 @@ public sealed partial class PageConfigPlayer : Page
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    private void confirmColor_Click(object sender, RoutedEventArgs e)
-    {
-        // Assign the selected color to a variable to use outside the popup.
-        //myColor = myColorPicker.Color;
-
-        // Close the Flyout.
-        //colorPickerButton.Flyout.Hide();
-    }
-
-    private void cancelColor_Click(object sender, RoutedEventArgs e)
-    {
-        // Close the Flyout.
-        //colorPickerButton.Flyout.Hide();
-    }
-
 }
