@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:local1="using:DrumMidiEditorApp.pView.pMenuBar" 
-    xmlns:local2="using:DrumMidiEditorApp.pView.pStatusBar" 
     xmlns:local3="using:DrumMidiEditorApp.pView.pNavi"
     xmlns:local4="using:DrumMidiEditorApp.pView.pPlayer" 
     mc:Ignorable="d"
@@ -22,15 +21,10 @@
 
             <local3:PageNavigation x:Name="_PageNavigation" 
                 RelativePanel.Below="_PageMenuBar"
-                RelativePanel.Above="_PageStatusBar"
-                RelativePanel.AlignLeftWithPanel="True"                                
-                RelativePanel.AlignRightWithPanel="True" />
-
-            <local2:PageStatusBar x:Name="_PageStatusBar" 
                 RelativePanel.AlignBottomWithPanel="True"
                 RelativePanel.AlignLeftWithPanel="True"                                
                 RelativePanel.AlignRightWithPanel="True" />
-
+            
             <local4:PagePlayer x:Name="_PagePlayer"
                 RelativePanel.AlignTopWithPanel="True"
                 RelativePanel.AlignBottomWithPanel="True"
