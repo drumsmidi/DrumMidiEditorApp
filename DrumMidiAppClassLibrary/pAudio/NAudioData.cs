@@ -365,7 +365,6 @@ public class NAudioData : DisposeBaseClass
 
     #endregion
 
-
     #region 周波数解析
 
     /// <summary>

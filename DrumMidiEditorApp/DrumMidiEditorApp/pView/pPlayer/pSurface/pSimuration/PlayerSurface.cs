@@ -111,7 +111,7 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
-            if ( p.Properties.IsLeftButtonPressed)
+            if ( p.Properties.IsLeftButtonPressed )
 			{
                 _MousePosBef       = p.Position;
                 _MoveMidiMapKey    = ConfigSystem.MidiMapKeyNotSelect;
@@ -199,6 +199,17 @@ public class PlayerSurface : PlayerSurfaceBase
 
                         dgp.X = _HeaderList[ _MoveMidiMapKey ].DrawRect._x;
                         dgp.Y = _HeaderList[ _MoveMidiMapKey ].DrawRect._y;
+
+
+                        // TODO: 元データに対して更新が必要（暫定対応）
+			            lock ( DMS.SCORE.LockObj )
+			            {
+                            var dgp2 = DMS.SCORE.EditMidiMapSet
+                                .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+
+                            dgp2.X = _HeaderList[ _MoveMidiMapKey ].DrawRect._x;
+                            dgp2.Y = _HeaderList[ _MoveMidiMapKey ].DrawRect._y;
+			            }
 
                         _MoveMidiMapKey = ConfigSystem.MidiMapKeyNotSelect;
                     }

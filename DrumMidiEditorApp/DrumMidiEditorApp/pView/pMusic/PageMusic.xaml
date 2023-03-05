@@ -16,7 +16,7 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -25,7 +25,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Horizontal" Spacing="6">
+            <StackPanel Orientation="Vertical" Spacing="6">
 
                 <TextBox x:Uid="InputBgmFilePath" 
                     Text="{x:Bind MusicInfo.BgmFilePath.AbsoulteFilePath, Mode=OneWay}" 

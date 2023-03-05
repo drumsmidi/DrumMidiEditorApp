@@ -36,7 +36,7 @@ public sealed partial class PageNavigation : Page
         try
         {
 			// 初期ページへ移動
-            NavigationView_Navigate( "PageConfig" );
+            NavigationView_Navigate( "PageMusic" );
         }
         catch ( Exception e )
         {

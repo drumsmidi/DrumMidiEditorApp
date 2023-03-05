@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -238,7 +237,7 @@ public static class DmsControl
     /// プレイヤーフォームへのリクエスト設定コールバック
     /// </summary>
     public static SetPlayerRequest? SetPlayerRequestCallback = null;
-
+        
 	#endregion
 
 	#region 同期制御（力技）

@@ -109,14 +109,14 @@ public sealed partial class UserControlPlayerPanel : UserControl
             while ( !_IdleTaskStop )
             {
                 // サイズ変更
-                if (DrawSet.UpdateSizeFlag )
+                if ( DrawSet.UpdateSizeFlag )
                 {
                     DrawSet.UpdateSizeFlag = false;
                     UpdatePanelSize();
                 }
 
                 // プレイヤー描画モード変更
-                if (DrawSet.UpdateSurfaceModoFlag )
+                if ( DrawSet.UpdateSurfaceModoFlag )
                 {
                     DrawSet.UpdateSurfaceModoFlag = false;
                     UpdateSurfaceMode();
