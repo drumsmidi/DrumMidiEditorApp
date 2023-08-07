@@ -7,7 +7,7 @@ namespace DrumMidiClassLibrary.pWinUI;
 /// <summary>
 /// 色変換補助
 /// </summary>
-public static class ColorHelper
+public static partial class ColorHelper
 {
     /// <summary>
     /// 空色
@@ -26,7 +26,7 @@ public static class ColorHelper
         {
             var colorText = aValue.Replace( "#", string.Empty ).ToUpper();
 
-            if ( Regex.IsMatch( colorText, "^[0-9A-F]+$" ) )
+            if ( ColorRegex().IsMatch( colorText ) )
             { 
                 switch ( colorText.Length )
                 {
@@ -77,5 +77,8 @@ public static class ColorHelper
     /// <param name="aColor">Color</param>
     /// <returns>#FFFFFF 表記の文字</returns>
     public static string GetColor( Color aColor )
-        => ( $"#{aColor.A:X2}{aColor.R:X2}{aColor.G:X2}{aColor.B:X2}" ).ToUpper();
+        =>  $"#{aColor.A:X2}{aColor.R:X2}{aColor.G:X2}{aColor.B:X2}" .ToUpper();
+
+    [GeneratedRegex("^[0-9A-F]+$")]
+    private static partial Regex ColorRegex();
 }

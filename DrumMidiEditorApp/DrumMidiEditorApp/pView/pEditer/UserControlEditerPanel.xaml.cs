@@ -1922,7 +1922,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score All
 
-        if (DrawSet.UpdateScoreFlag )
+        if ( DrawSet.UpdateScoreFlag )
         {
             UpdateBpmMeasure();
             UpdateNoteMeasure();
@@ -1973,7 +1973,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Bpm
 
-        if (DrawSet.UpdateScoreBpmFlag )
+        if ( DrawSet.UpdateScoreBpmFlag )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreBpmMeasureNoList )
             {
@@ -1987,7 +1987,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note Volume
 
-        if (DrawSet.UpdateScoreNoteVolumeFlag )
+        if ( DrawSet.UpdateScoreNoteVolumeFlag )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreNoteVolumeMeasureNoList )
             {
@@ -2001,13 +2001,13 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Bgm
 
-        if (DrawSet.UpdateScoreBgmFlag )
+        if ( DrawSet.UpdateScoreBgmFlag )
         {
             UpdateScaleBgm();
             DrawSet.UpdateScoreBgmFlag = false;
         }
 
-        if (DrawSet.UpdateScoreBgmScaleFlag )
+        if ( DrawSet.UpdateScoreBgmScaleFlag )
         {
             UpdateScaleBgmBitmapAsync();
         }
@@ -2016,7 +2016,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Clear range
 
-        if (DrawSet.UpdateClearRangeFlag )
+        if ( DrawSet.UpdateClearRangeFlag )
         {
 			_NoteRangeBef.Set( _NoteRange );
 
