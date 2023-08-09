@@ -26,7 +26,7 @@
     <DefaultLanguage>ja-JP</DefaultLanguage>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\DrumMidiEditorApp\DrumMidiEditorApp.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>59EF02DAD6144525DEA817644C7FE945972F256B</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>73A019019CFF94D2905FF8C9EC8D919E7F83A86F</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
