@@ -579,10 +579,10 @@ internal class ScoreStream : IScoreReader, IScoreWriter
 					count++;
 				}
 			}
-		}
+        }
 
-		#region Midi Header
-		{
+        #region Midi Header
+        {
 			// chunk type
 			writer.WriteByte( (byte)0x4D );
 			writer.WriteByte( (byte)0x54 );
