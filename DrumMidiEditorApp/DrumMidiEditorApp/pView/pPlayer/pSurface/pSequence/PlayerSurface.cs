@@ -443,6 +443,10 @@ public class PlayerSurface : PlayerSurfaceBase
                         {
                             volume = 1F;
                         }
+                        else if ( volume < 0F )
+                        {
+                            volume = 0F;
+                        }
                     }
                     if ( DrawSet.NoteVolumeZeroOn && volume <= 0F )
                     {

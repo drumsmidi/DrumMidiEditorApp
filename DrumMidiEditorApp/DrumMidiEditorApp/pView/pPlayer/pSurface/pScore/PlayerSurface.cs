@@ -109,7 +109,7 @@ public class PlayerSurface : PlayerSurfaceBase
         // measure no body
         _MeasureNoBodyRange.X		= 20;
         _MeasureNoBodyRange.Y		= _NowBpmRange.Bottom;
-        _MeasureNoBodyRange.Width	= ( _ScreenSize.Width - 40 ) / DrawSet.MeasureSize * DrawSet.MeasureSize;
+        _MeasureNoBodyRange.Width	= (int)( ( _ScreenSize.Width - 40 ) / DrawSet.MeasureSize ) * DrawSet.MeasureSize;
         _MeasureNoBodyRange.Height	= DrawSet.MeasureNoHeightSize;
 
         // score body
@@ -363,13 +363,17 @@ public class PlayerSurface : PlayerSurfaceBase
                         {
                             volume = 1F;
                         }
+                        else if ( volume < 0F )
+                        {
+                            volume = 0F;
+                        }
                     }
                     if ( DrawSet.NoteVolumeZeroOn && volume <= 0F )
                     {
                         volume = 1F;
                     }
 
-                    note_rect.X         = body_s.X + info.NotePos * DrawSet.NoteTermWidthSize - ( volume * DrawSet.NoteWidthSize / 2.0F );
+                    note_rect.X         = body_s.X + info.NotePos * DrawSet.NoteTermWidthSize; //- ( volume * DrawSet.NoteWidthSize / 2.0F );
                     note_rect.Y         = body_s.Y + idx * DrawSet.NoteTermHeightSize + ( ( DrawSet.NoteTermHeightSize - volume * DrawSet.NoteHeightSize ) / 2.0F );
                     note_rect.Width     = DrawSet.NoteWidthSize  * volume;
                     note_rect.Height    = DrawSet.NoteHeightSize * volume;
