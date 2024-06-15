@@ -26,7 +26,7 @@
     <DefaultLanguage>ja-JP</DefaultLanguage>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\DrumMidiEditorApp\DrumMidiEditorApp.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>73A019019CFF94D2905FF8C9EC8D919E7F83A86F</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>769FA5958558BFA1A352C6784CCF3D6836F93A5E</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -34,7 +34,57 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DrumMidiEditorApp (Package)_TemporaryKey.pfx" />
+    <Content Include="Images\StoreLogo.scale-100.png" />
+    <Content Include="Images\StoreLogo.scale-125.png" />
+    <Content Include="Images\StoreLogo.scale-150.png" />
+    <Content Include="Images\StoreLogo.scale-200.png" />
+    <Content Include="Images\StoreLogo.scale-400.png" />
+    <Content Include="Images\Wide310x150Logo.scale-100.png" />
+    <Content Include="Images\Wide310x150Logo.scale-125.png" />
+    <Content Include="Images\Wide310x150Logo.scale-150.png" />
+    <Content Include="Images\Wide310x150Logo.scale-200.png" />
+    <Content Include="Images\Wide310x150Logo.scale-400.png" />
+    <None Include="DrumMidiEditorApp %28Package%29_TemporaryKey.pfx" />
+    <Content Include="Images\LargeTile.scale-100.png" />
+    <Content Include="Images\LargeTile.scale-125.png" />
+    <Content Include="Images\LargeTile.scale-150.png" />
+    <Content Include="Images\LargeTile.scale-200.png" />
+    <Content Include="Images\LargeTile.scale-400.png" />
+    <Content Include="Images\SmallTile.scale-100.png" />
+    <Content Include="Images\SmallTile.scale-125.png" />
+    <Content Include="Images\SmallTile.scale-150.png" />
+    <Content Include="Images\SmallTile.scale-200.png" />
+    <Content Include="Images\SmallTile.scale-400.png" />
+    <Content Include="Images\SplashScreen.scale-100.png" />
+    <Content Include="Images\SplashScreen.scale-125.png" />
+    <Content Include="Images\SplashScreen.scale-150.png" />
+    <Content Include="Images\SplashScreen.scale-200.png" />
+    <Content Include="Images\SplashScreen.scale-400.png" />
+    <Content Include="Images\Square150x150Logo.scale-100.png" />
+    <Content Include="Images\Square150x150Logo.scale-125.png" />
+    <Content Include="Images\Square150x150Logo.scale-150.png" />
+    <Content Include="Images\Square150x150Logo.scale-200.png" />
+    <Content Include="Images\Square150x150Logo.scale-400.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-24.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Images\Square44x44Logo.scale-100.png" />
+    <Content Include="Images\Square44x44Logo.scale-125.png" />
+    <Content Include="Images\Square44x44Logo.scale-150.png" />
+    <Content Include="Images\Square44x44Logo.scale-200.png" />
+    <Content Include="Images\Square44x44Logo.scale-400.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-24.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-48.png" />
     <Content Include="Images\stop.jpg" />
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>
