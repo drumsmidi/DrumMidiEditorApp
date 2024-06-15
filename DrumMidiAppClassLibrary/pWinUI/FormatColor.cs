@@ -1,5 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 
 namespace DrumMidiClassLibrary.pWinUI;
@@ -32,13 +32,15 @@ public class FormatColor
     public Brush ColorBrush
     {
         get => new SolidColorBrush( Color );
-        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor ;
+        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor;
     }
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public FormatColor() { }
+    public FormatColor()
+    {
+    }
 
     /// <summary>
     /// コンストラクタ

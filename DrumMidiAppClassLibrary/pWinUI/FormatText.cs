@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Windows.UI;
-
 using Microsoft.Graphics.Canvas.Text;
+using Windows.UI;
 
 namespace DrumMidiClassLibrary.pWinUI;
 
@@ -20,27 +19,32 @@ public class FormatText
     /// テキスト書式
     /// </summary>
     [JsonInclude]
-    public CanvasTextFormat TextFormat { get; set; } = new()
+    public CanvasTextFormat TextFormat
     {
-        FontFamily          = "system-ui",
-        FontSize            = 8,
+        get; set;
+    } = new()
+    {
+        FontFamily = "system-ui",
+        FontSize = 8,
         HorizontalAlignment = CanvasHorizontalAlignment.Center,
-        VerticalAlignment   = CanvasVerticalAlignment.Center,
+        VerticalAlignment = CanvasVerticalAlignment.Center,
     };
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public FormatText() { }
+    public FormatText()
+    {
+    }
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
     /// <param name="aTextColor"></param>
     /// <param name="aTextFormat"></param>
-    public FormatText( Color aTextColor, CanvasTextFormat aTextFormat ) 
+    public FormatText( Color aTextColor, CanvasTextFormat aTextFormat )
     {
-        TextColor   = new( aTextColor );
-        TextFormat  = aTextFormat;
+        TextColor = new( aTextColor );
+        TextFormat = aTextFormat;
     }
 }

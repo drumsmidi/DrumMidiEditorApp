@@ -19,7 +19,7 @@ public static partial class ColorHelper
     /// </summary>
     /// <param name="aValue">テキスト</param>
     /// <returns>Color</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0057:範囲演算子を使用", Justification = "<保留中>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0057:範囲演算子を使用", Justification = "<保留中>" )]
     public static Color GetColor( string aValue )
     {
         try
@@ -27,20 +27,20 @@ public static partial class ColorHelper
             var colorText = aValue.Replace( "#", string.Empty ).ToUpper();
 
             if ( ColorRegex().IsMatch( colorText ) )
-            { 
+            {
                 switch ( colorText.Length )
                 {
                     case 3:
                         return Color.FromArgb
-                            ( 
-                                255, 
+                            (
+                                255,
                                 Convert.ToByte( colorText.Substring( 0, 1 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 1, 1 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 2, 1 ), 16 )
                             );
                     case 4:
                         return Color.FromArgb
-                            ( 
+                            (
                                 Convert.ToByte( colorText.Substring( 0, 1 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 1, 1 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 2, 1 ), 16 ),
@@ -48,15 +48,15 @@ public static partial class ColorHelper
                             );
                     case 6:
                         return Color.FromArgb
-                            ( 
-                                255, 
+                            (
+                                255,
                                 Convert.ToByte( colorText.Substring( 0, 2 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 2, 2 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 4, 2 ), 16 )
                             );
                     case 8:
                         return Color.FromArgb
-                            ( 
+                            (
                                 Convert.ToByte( colorText.Substring( 0, 2 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 2, 2 ), 16 ),
                                 Convert.ToByte( colorText.Substring( 4, 2 ), 16 ),
@@ -77,8 +77,8 @@ public static partial class ColorHelper
     /// <param name="aColor">Color</param>
     /// <returns>#FFFFFF 表記の文字</returns>
     public static string GetColor( Color aColor )
-        =>  $"#{aColor.A:X2}{aColor.R:X2}{aColor.G:X2}{aColor.B:X2}" .ToUpper();
+        => $"#{aColor.A:X2}{aColor.R:X2}{aColor.G:X2}{aColor.B:X2}".ToUpper();
 
-    [GeneratedRegex("^[0-9A-F]+$")]
+    [GeneratedRegex( "^[0-9A-F]+$" )]
     private static partial Regex ColorRegex();
 }

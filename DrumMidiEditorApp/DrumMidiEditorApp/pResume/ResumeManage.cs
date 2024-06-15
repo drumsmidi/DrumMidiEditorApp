@@ -30,7 +30,7 @@ public class ResumeManage
         _RedoResumeStack.Clear();
 
         lock ( DMS.SCORE.LockObj )
-        { 
+        {
             aResume.Redo();
         }
 
@@ -45,7 +45,7 @@ public class ResumeManage
             }
             while ( _RedoResumeStack.Count > ConfigLocal.Editer.ResumeStackCount )
             {
-                _RedoResumeStack.Pop();
+                _ = _RedoResumeStack.Pop();
             }
             while ( _RedoResumeStack.Count > 0 )
             {
@@ -73,7 +73,7 @@ public class ResumeManage
             var rs = _UndoResumeStack.Pop();
 
             lock ( DMS.SCORE.LockObj )
-            { 
+            {
                 rs.Undo();
             }
 
@@ -91,7 +91,7 @@ public class ResumeManage
             var rs = _RedoResumeStack.Pop();
 
             lock ( DMS.SCORE.LockObj )
-            { 
+            {
                 rs.Redo();
             }
 

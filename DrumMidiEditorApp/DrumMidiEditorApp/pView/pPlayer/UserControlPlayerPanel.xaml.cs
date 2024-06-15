@@ -1,19 +1,20 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using System;
+using System.Drawing;
+using System.Numerics;
+using System.Threading.Tasks;
+using DrumMidiClassLibrary.pControl;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pUtil;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pView.pPlayer.pSurface;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System;
-using System.Threading.Tasks;
 using Windows.Graphics.DirectX;
-
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pUtil;
-
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
 
@@ -48,7 +49,10 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 new CanvasDevice(),
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                96
+                96, // DisplayInformation.GetForCurrentView().LogicalDpi
+                DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                2,
+                CanvasAlphaMode.Premultiplied
             );
 
         DrawTaskStart();
@@ -66,10 +70,10 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     private bool _IdleTaskStop = true;
 
-	/// <summary>
-	/// 描画タスク開始
-	/// </summary>
-	public void DrawTaskStart()
+    /// <summary>
+    /// 描画タスク開始
+    /// </summary>
+    public void DrawTaskStart()
     {
         try
         {
@@ -128,17 +132,38 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 fps.Tick();
 
                 // フレーム更新
-                _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) );
+                _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) ) );
 
-                // 描画処理
-                using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession(DrawSet.SheetColor.Color );
 
-                _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
+                var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
+
+                //// 描画処理
+                using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+                using var drawSessionB = cl.CreateDrawingSession();
+
+                var args = new CanvasDrawEventArgs( drawSessionB );
+
+                _ = ( _PlayerSurface?.OnDraw( args ) );
+
+                // https://microsoft.github.io/Win2D/WinUI2/html/N_Microsoft_Graphics_Canvas_Effects.htm
+
+                var blur = GetEffectImage( cl );
+                if ( blur != null )
+                {
+                    drawSessionA.DrawImage( blur );
+                }
 
                 _PlayerCanvas.SwapChain.Present();
 
+                //// 描画処理
+                //using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+
+                //_PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
+
+                //_PlayerCanvas.SwapChain.Present();
+
                 // 垂直同期
-                _PlayerCanvas.SwapChain.WaitForVerticalBlank();
+                //_PlayerCanvas.SwapChain.WaitForVerticalBlank();
 
                 //await Task.Delay( 1 );
             }
@@ -149,10 +174,539 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
-	/// <summary>
-	/// 描画タスク停止
-	/// </summary>
-	public void DrawTaskStop()
+    private static ICanvasImage? GetEffectImage( CanvasCommandList aCanvasCommandList )
+    {
+        ICanvasImage? blur = null;
+        switch ( DrawSet.PlayerSurfaceEffectModeSelect )
+        {
+            case ConfigPlayer.PlayerSurfaceEffectMode.AlphaMaskEffect:
+                {
+                    blur = new AlphaMaskEffect
+                    {
+                        Source      = aCanvasCommandList,
+                        AlphaMask   = aCanvasCommandList,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ArithmeticCompositeEffect:
+                {
+                    blur = new ArithmeticCompositeEffect
+                    {
+                        Source1         = aCanvasCommandList,
+                        Source2         = aCanvasCommandList,
+                        MultiplyAmount  = 0.5f, // 0.5で均等に合成
+                        Source1Amount   = 0.5f,  // 1.0で画像1を完全に表示
+                        Source2Amount   = 0.5f,   // 1.0で画像2を完全に表示
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.AtlasEffect:
+                {
+                    blur = new AtlasEffect
+                    {
+                        Source = aCanvasCommandList,
+                        //PaddingRectangle = new( 0, 0, 400, 8000 ),
+                        //SourceRectangle = new( 0, 0, 400, 700 ),
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.BlendEffect:
+                {
+                    blur = new BlendEffect
+                    {
+                        Background = aCanvasCommandList,
+                        Foreground = aCanvasCommandList,
+                        Mode       = BlendEffectMode.Screen,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.BorderEffect:
+                {
+                    blur = new BorderEffect
+                    {
+                        Source = aCanvasCommandList,
+                        ExtendX = CanvasEdgeBehavior.Wrap,
+                        ExtendY = CanvasEdgeBehavior.Clamp,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.BrightnessEffect:
+                {
+                    blur = new BrightnessEffect
+                    {
+                        Source = aCanvasCommandList,
+                        BlackPoint = new(0.3f,0.5f),
+                    //    WhitePoint = new(0.8f,08f),
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ChromaKeyEffect:
+                {
+                    blur = new ChromaKeyEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ColorManagementEffect:
+                {
+                    blur = new ColorManagementEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ColorManagementProfile:
+                {
+                    //blur = new ColorManagementProfile
+                    //{
+                    //};
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ColorMatrixEffect:
+                {
+                    blur = new ColorMatrixEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ColorSourceEffect:
+                {
+                    blur = new ColorSourceEffect
+                    {
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.CompositeEffect:
+                {
+                    blur = new CompositeEffect
+                    {
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ContrastEffect:
+                {
+                    blur = new ContrastEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ConvolveMatrixEffect:
+                {
+                    blur = new ConvolveMatrixEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.CropEffect:
+                {
+                    blur = new CropEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.CrossFadeEffect:
+                {
+                    blur = new CrossFadeEffect
+                    {
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DirectionalBlurEffect:
+                {
+                    blur = new DirectionalBlurEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DiscreteTransferEffect:
+                {
+                    blur = new DiscreteTransferEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DisplacementMapEffect:
+                {
+                    blur = new DisplacementMapEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DistantDiffuseEffect:
+                {
+                    blur = new DistantDiffuseEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DistantSpecularEffect:
+                {
+                    blur = new DistantSpecularEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.DpiCompensationEffect:
+                {
+                    blur = new DpiCompensationEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.EdgeDetectionEffect:
+                {
+                    blur = new EdgeDetectionEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.EffectTransferTable3D:
+                {
+                    //blur = new EffectTransferTable3D
+                    //{
+                    //};
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.EmbossEffect:
+                {
+                    blur = new EmbossEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ExposureEffect:
+                {
+                    blur = new ExposureEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.GammaTransferEffect:
+                {
+                    blur = new GammaTransferEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.GaussianBlurEffect:
+                {
+                    blur = new GaussianBlurEffect
+                    {
+                        Source = aCanvasCommandList,
+                        BlurAmount = 1,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.GrayscaleEffect:
+                {
+                    blur = new GrayscaleEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.HighlightsAndShadowsEffect:
+                {
+                    blur = new HighlightsAndShadowsEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.HueRotationEffect:
+                {
+                    blur = new HueRotationEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.HueToRgbEffect:
+                {
+                    blur = new HueToRgbEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.InvertEffect:
+                {
+                    blur = new InvertEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.LinearTransferEffect:
+                {
+                    blur = new LinearTransferEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.LuminanceToAlphaEffect:
+                {
+                    blur = new LuminanceToAlphaEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.MorphologyEffect:
+                {
+                    blur = new MorphologyEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.OpacityEffect:
+                {
+                    blur = new OpacityEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.OpacityMetadataEffect:
+                {
+                    blur = new OpacityMetadataEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.PixelShaderEffect:
+                {
+                    //blur = new PixelShaderEffect
+                    //{
+                    //};
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.PointDiffuseEffect:
+                {
+                    blur = new PointDiffuseEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.PointSpecularEffect:
+                {
+                    blur = new PointSpecularEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.PosterizeEffect:
+                {
+                    blur = new PosterizeEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.PremultiplyEffect:
+                {
+                    blur = new PremultiplyEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.RgbToHueEffect:
+                {
+                    blur = new RgbToHueEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.SaturationEffect:
+                {
+                    blur = new SaturationEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ScaleEffect:
+                {
+                    blur = new ScaleEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.SepiaEffect:
+                {
+                    blur = new SepiaEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.ShadowEffect:
+                {
+                    blur = new ShadowEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.SharpenEffect:
+                {
+                    blur = new SharpenEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.SpotDiffuseEffect:
+                {
+                    blur = new SpotDiffuseEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.SpotSpecularEffect:
+                {
+                    blur = new SpotSpecularEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.StraightenEffect:
+                {
+                    blur = new StraightenEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TableTransfer3DEffect:
+                {
+                    blur = new TableTransfer3DEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TableTransferEffect:
+                {
+                    blur = new TableTransferEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TemperatureAndTintEffect:
+                {
+                    blur = new TemperatureAndTintEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TileEffect:
+                {
+                    blur = new TileEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TintEffect:
+                {
+                    blur = new TintEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.Transform2DEffect:
+                {
+                    blur = new Transform2DEffect
+                    {
+                        Source = aCanvasCommandList,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.Transform3DEffect:
+                {
+                    blur = new Transform3DEffect
+                    {
+                        Source              = aCanvasCommandList,
+                        TransformMatrix     = Matrix4x4.CreateRotationX( 45.0f, new Vector3( 0, 1024, 0 ) ),
+                        BorderMode          = EffectBorderMode.Soft,
+                        InterpolationMode   = CanvasImageInterpolation.MultiSampleLinear,
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.TurbulenceEffect:
+                {
+                    blur = new TurbulenceEffect
+                    {
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.UnPremultiplyEffect:
+                {
+                    blur = new UnPremultiplyEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+            case ConfigPlayer.PlayerSurfaceEffectMode.VignetteEffect:
+                {
+                    blur = new VignetteEffect
+                    {
+                        Source = aCanvasCommandList,
+                        Amount = 0.5F,
+                        Color  = Windows.UI.Color.FromArgb(255,255,255,255),
+                        Curve  = 0.5F,
+
+                    };
+                }
+                break;
+            default:
+                {
+                    blur = new AtlasEffect
+                    {
+                        Source = aCanvasCommandList
+                    };
+                }
+                break;
+        }
+
+        return blur;
+    }
+
+
+    /// <summary>
+    /// 描画タスク停止
+    /// </summary>
+    public void DrawTaskStop()
     {
         try
         {
@@ -221,19 +775,37 @@ public sealed partial class UserControlPlayerPanel : UserControl
         try
         {
             // フレーム処理
-            _PlayerSurface?.OnMove( aFrameTime );
+            _ = ( _PlayerSurface?.OnMove( aFrameTime ) );
 
-            // 描画処理
-            using var drawSession = _Offscreen.CreateDrawingSession();
+            var cl = new CanvasCommandList( _Offscreen );
 
-            drawSession.Clear(DrawSet.SheetColor.Color );
+            //// 描画処理
+            using var drawSessionA = _Offscreen.CreateDrawingSession();
+            using var drawSessionB = cl.CreateDrawingSession();
 
-            _PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
+            var args = new CanvasDrawEventArgs( drawSessionB );
+
+            _ = ( _PlayerSurface?.OnDraw( args ) );
+
+            drawSessionA.Clear( DrawSet.SheetColor.Color );
+
+            var blur = GetEffectImage( cl );
+            if ( blur != null )
+            {
+                drawSessionA.DrawImage( blur );
+            }
+
+            //// 描画処理
+            //using var drawSession = _Offscreen.CreateDrawingSession();
+
+            //drawSession.Clear( DrawSet.SheetColor.Color );
+
+            //_PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
             // Bitmap作成
             return CanvasBitmap.CreateFromBytes
                 (
-                    drawSession,
+                    drawSessionA,
                     _Offscreen.GetPixelBytes( 0, 0, (int)_Offscreen.SizeInPixels.Width, (int)_Offscreen.SizeInPixels.Height ),
                     (int)_Offscreen.SizeInPixels.Width,
                     (int)_Offscreen.SizeInPixels.Height,
@@ -278,17 +850,20 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     private void UpdateSurfaceMode()
     {
-        switch (DrawSet.PlayerSurfaceModeSelect )
+        switch ( DrawSet.PlayerSurfaceModeSelect )
         {
-			case ConfigPlayer.PlayerSurfaceMode.Sequence:
-   				_PlayerSurface = new pSurface.pSequence.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Score:
-   				_PlayerSurface = new pSurface.pScore.PlayerSurface();
-				break;
-			case ConfigPlayer.PlayerSurfaceMode.Simuration:
-   				_PlayerSurface = new pSurface.pSimuration.PlayerSurface();
-				break;
+            case ConfigPlayer.PlayerSurfaceMode.Sequence:
+                _PlayerSurface = new pSurface.pSequence.PlayerSurface();
+                break;
+            case ConfigPlayer.PlayerSurfaceMode.Score:
+                _PlayerSurface = new pSurface.pScore.PlayerSurface();
+                break;
+            case ConfigPlayer.PlayerSurfaceMode.Simuration:
+                _PlayerSurface = new pSurface.pSimuration.PlayerSurface();
+                break;
+            case ConfigPlayer.PlayerSurfaceMode.ScoreType2:
+                _PlayerSurface = new pSurface.pScoreType2.PlayerSurface();
+                break;
         }
     }
 

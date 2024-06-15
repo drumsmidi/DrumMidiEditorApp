@@ -1,21 +1,19 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Pickers;
-
+using DrumMidiClassLibrary.pAudio;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pEvent;
-using DrumMidiEditerApp.pIO;
-using DrumMidiClassLibrary.pAudio;
+using DrumMidiEditorApp.pIO;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.Pickers;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -48,15 +46,15 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     private static Score Score => DMS.SCORE;
 
-	/// <summary>
-	/// 編集中のMidiMapセット
-	/// </summary>
-	private MidiMapSet _TmpMidiMapSet = new();
+    /// <summary>
+    /// 編集中のMidiMapセット
+    /// </summary>
+    private MidiMapSet _TmpMidiMapSet = new();
 
-	/// <summary>
-	/// 選択中のMidiMapGroupインデックス
-	/// </summary>
-	private int _MidiMapGroupSelectIndex = -1;
+    /// <summary>
+    /// 選択中のMidiMapGroupインデックス
+    /// </summary>
+    private int _MidiMapGroupSelectIndex = -1;
 
     /// <summary>
     /// GridView 移動前のインデックス位置
@@ -66,12 +64,12 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// 編集中のMidiMapGroupリスト
     /// </summary>
-    private readonly ObservableCollection<MidiMapGroup> _TmpMidiMapGroupList = new();
+    private readonly ObservableCollection<MidiMapGroup> _TmpMidiMapGroupList = [];
 
     /// <summary>
     /// 編集中のMidiMapリスト
     /// </summary>
-	private readonly ObservableCollection<MidiMap> _TmpMidiMapList = new();
+	private readonly ObservableCollection<MidiMap> _TmpMidiMapList = [];
 
     #endregion
 
@@ -82,7 +80,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         InitializeComponent();
 
-		ControlAccess.UCMidiMapPanel = this;
+        ControlAccess.UCMidiMapPanel = this;
 
         // 初回表示時に読み込んでおく
         ReloadMidiMapSet();
@@ -97,21 +95,21 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     public void ReloadMidiMapSet()
     {
         try
-		{
+        {
             // 正本のMidiMapSetの情報を一時データとしてコピー
-			_TmpMidiMapSet.Dispose();
-			_TmpMidiMapSet = Score.EditMidiMapSet.Clone();
+            _TmpMidiMapSet.Dispose();
+            _TmpMidiMapSet = Score.EditMidiMapSet.Clone();
 
             // 先頭のMidiMapGroupを選択
-            _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count > 0 ? 0 : -1 ;
+            _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count > 0 ? 0 : -1;
 
             ReloadMidiMapGroup();
         }
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
     /// <summary>
     /// MidiMapGroupの再読み込み
@@ -120,7 +118,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     public void ReloadMidiMapGroup()
     {
         try
-		{
+        {
             // 再読み込み前に先頭の行を選択していた場合、通知が無視されるので
             // 未選択状態でリセットしておく
             var tmp = _MidiMapGroupSelectIndex;
@@ -132,7 +130,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             _TmpMidiMapGroupList.Clear();
 
             _TmpMidiMapSet.MidiMapGroups
-                .ForEach( midiMapGroup => _TmpMidiMapGroupList.Add( midiMapGroup ) );
+                .ForEach( _TmpMidiMapGroupList.Add );
 
             OnPropertyChanged( "_TmpMidiMapGroupList" );
 
@@ -140,10 +138,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             OnPropertyChanged( "_MidiMapGroupSelectIndex" );
         }
         catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
     /// <summary>
     /// MidiMapの再読み込み
@@ -152,28 +150,28 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     public void ReloadMidiMap()
     {
         try
-		{
+        {
             _TmpMidiMapList.Clear();
 
-            if (   _MidiMapGroupSelectIndex != -1
-    		    && _MidiMapGroupSelectIndex < _TmpMidiMapSet.MidiMapGroups.Count )
-    	    {
-                _TmpMidiMapSet.MidiMapGroups[ _MidiMapGroupSelectIndex ].MidiMaps
-                    .ForEach( midiMap => _TmpMidiMapList.Add( midiMap ) );
-    	    }
+            if ( _MidiMapGroupSelectIndex != -1
+                && _MidiMapGroupSelectIndex < _TmpMidiMapSet.MidiMapGroups.Count )
+            {
+                _TmpMidiMapSet.MidiMapGroups [ _MidiMapGroupSelectIndex ].MidiMaps
+                    .ForEach( _TmpMidiMapList.Add );
+            }
 
             OnPropertyChanged( "_TmpMidiMapList" );
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
-	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 
@@ -188,7 +186,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-            lock (Score.LockObj )
+            lock ( Score.LockObj )
             {
                 Score.EditMidiMapSet = CreateMidiMapSet();
                 Score.EditMidiMapSet.ClearSelect();
@@ -212,17 +210,17 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-			XamlHelper.OpenDialogAsync
-				(
-					ControlAccess.MainWindow,
+            XamlHelper.OpenDialogAsync
+                (
+                    ControlAccess.MainWindow,
                     ConfigSystem.SupportMidiMapSet,
-					PickerLocationId.DocumentsLibrary,
+                    PickerLocationId.DocumentsLibrary,
                     ConfigSystem.FolderMidiMapSet,
-					( filepath ) =>
+                    ( filepath ) =>
                     {
                         if ( !FileIO.LoadMidiMapSet( filepath, out var midiMapSet ) )
                         {
-            	            return;
+                            return;
                         }
 
                         var page = new PageImportMidiMap();
@@ -237,17 +235,17 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                 {
                                     var keyChangeDic = page.GetChangeKeys();
 
-                                    lock (Score.LockObj )
-                                    { 
-			                            foreach ( var item in keyChangeDic )
+                                    lock ( Score.LockObj )
+                                    {
+                                        foreach ( var item in keyChangeDic )
                                         {
                                             Score.EditChannel.KeyChange( item.Key, -item.Value );
-			                            }
+                                        }
 
-			                            foreach ( var item in keyChangeDic )
-			                            {
+                                        foreach ( var item in keyChangeDic )
+                                        {
                                             Score.EditChannel.KeyChange( -item.Value, item.Value );
-			                            }
+                                        }
 
                                         Score.EditMidiMapSet = midiMapSet;
                                         Score.EditMidiMapSet.UpdateInfo();
@@ -256,8 +254,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                     EventManage.EventReloadMidiMapSet();
                                 }
                             );
-					}
-				);
+                    }
+                );
         }
         catch ( Exception e )
         {
@@ -274,25 +272,25 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-			XamlHelper.SaveDialogAsync
-				(
-					ControlAccess.MainWindow,
+            XamlHelper.SaveDialogAsync
+                (
+                    ControlAccess.MainWindow,
                     ConfigSystem.SupportMidiMapSet,
-					"",
-					PickerLocationId.DocumentsLibrary,
+                    "",
+                    PickerLocationId.DocumentsLibrary,
                     ConfigSystem.FolderMidiMapSet,
-					( filepath ) =>
+                    ( filepath ) =>
                     {
-						filepath.Extension = ConfigSystem.ExtentionDms;
+                        filepath.Extension = ConfigSystem.ExtentionDms;
 
                         var midiMapSet = CreateMidiMapSet();
 
-						if ( !FileIO.SaveMidiMapSet( filepath, midiMapSet ) )
-						{
-							return;
-						}
-					}
-				);
+                        if ( !FileIO.SaveMidiMapSet( filepath, midiMapSet ) )
+                        {
+                            return;
+                        }
+                    }
+                );
         }
         catch ( Exception e )
         {
@@ -349,17 +347,17 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         {
             var new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
 
-    		if ( new_key == ConfigSystem.MidiMapGroupKeyNotSelect )
-    		{
-    			return;
-    		}
+            if ( new_key == ConfigSystem.MidiMapGroupKeyNotSelect )
+            {
+                return;
+            }
 
-    		var group = new MidiMapGroup
-    		{
-    			GroupKey = new_key
-    		};
-    		_TmpMidiMapSet.AddMidiMapGroup( group );
-    		_TmpMidiMapSet.UpdateInfo();
+            var group = new MidiMapGroup
+            {
+                GroupKey = new_key
+            };
+            _TmpMidiMapSet.AddMidiMapGroup( group );
+            _TmpMidiMapSet.UpdateInfo();
 
             // 新規追加したアイテムを選択
             _MidiMapGroupSelectIndex = _TmpMidiMapSet.MidiMapGroups.Count - 1;
@@ -386,13 +384,13 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-    		if ( _MidiMapGroupSelectIndex == -1 )
-    		{
-    			return;
-    		}
+            if ( _MidiMapGroupSelectIndex == -1 )
+            {
+                return;
+            }
 
-    		_TmpMidiMapSet.RemoveMidiMapGroup( _MidiMapGroupSelectIndex );
-    		_TmpMidiMapSet.UpdateInfo();
+            _TmpMidiMapSet.RemoveMidiMapGroup( _MidiMapGroupSelectIndex );
+            _TmpMidiMapSet.UpdateInfo();
 
             // 同じ行にあるアイテムを選択
             if ( _TmpMidiMapSet.MidiMapGroups.Count == 0 )
@@ -419,14 +417,14 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void MidiMapGroupGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( args.Items.Count != 1 )
             {
                 return;
             }
 
-            if ( args.Items[ 0 ] is not MidiMapGroup group )
+            if ( args.Items [ 0 ] is not MidiMapGroup group )
             {
                 return;
             }
@@ -434,8 +432,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             _BeforeMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
 
             args.Data.RequestedOperation = DataPackageOperation.Move;
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -448,8 +446,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void MidiMapGroupGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
     {
-		try
-		{
+        try
+        {
             switch ( args.DropResult )
             {
                 case DataPackageOperation.Move:
@@ -459,7 +457,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                             return;
                         }
 
-                        if ( args.Items[ 0 ] is not MidiMapGroup group )
+                        if ( args.Items [ 0 ] is not MidiMapGroup group )
                         {
                             return;
                         }
@@ -467,7 +465,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                         var afterMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
 
                         if ( afterMoveIndex == -1 )
-                        { 
+                        {
                             return;
                         }
 
@@ -479,14 +477,14 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                         // 移動前の情報が読み込まれてしまうので
                         // ここでも再読み込みしておく
                         if ( _MidiMapGroupSelectIndex == afterMoveIndex )
-                        { 
+                        {
                             ReloadMidiMap();
                         }
                     }
                     break;
             }
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -505,23 +503,23 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-    		if ( _MidiMapGroupSelectIndex == -1 )
-    		{
-    			return;
-    		}
+            if ( _MidiMapGroupSelectIndex == -1 )
+            {
+                return;
+            }
 
-    		var new_key = _TmpMidiMapSet.GetMidiMapNewKey();
+            var new_key = _TmpMidiMapSet.GetMidiMapNewKey();
 
-    		if ( new_key == ConfigSystem.MidiMapKeyNotSelect )
-    		{
-    			return;
-    		}
+            if ( new_key == ConfigSystem.MidiMapKeyNotSelect )
+            {
+                return;
+            }
 
-    		var midiMap = new MidiMap
-    		{
-    			MidiMapKey = new_key
-    		};
-    		_TmpMidiMapSet.AddMidiMap( _MidiMapGroupSelectIndex, midiMap );
+            var midiMap = new MidiMap
+            {
+                MidiMapKey = new_key
+            };
+            _TmpMidiMapSet.AddMidiMap( _MidiMapGroupSelectIndex, midiMap );
             _TmpMidiMapSet.UpdateInfo();
 
             ReloadMidiMap();
@@ -544,10 +542,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-    		if ( _MidiMapGroupSelectIndex == -1 || _MidiMapGridView.SelectedIndex == -1 )
-    		{
-    			return;
-    		}
+            if ( _MidiMapGroupSelectIndex == -1 || _MidiMapGridView.SelectedIndex == -1 )
+            {
+                return;
+            }
 
             var index = _MidiMapGridView.SelectedIndex;
 
@@ -563,7 +561,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
             else if ( _MidiMapGridView.Items.Count <= index )
-            { 
+            {
                 index = _MidiMapGridView.Items.Count - 1;
             }
 
@@ -582,14 +580,14 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void MidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( args.Items.Count != 1 )
             {
                 return;
             }
 
-            if ( args.Items[ 0 ] is not MidiMap midiMap )
+            if ( args.Items [ 0 ] is not MidiMap midiMap )
             {
                 return;
             }
@@ -598,7 +596,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 
             args.Data.RequestedOperation = DataPackageOperation.Move;
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -611,8 +609,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void MidiMapGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
     {
-		try
-		{
+        try
+        {
             switch ( args.DropResult )
             {
                 case DataPackageOperation.Move:
@@ -622,7 +620,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                             return;
                         }
 
-                        if ( args.Items[ 0 ] is not MidiMap midiMap )
+                        if ( args.Items [ 0 ] is not MidiMap midiMap )
                         {
                             return;
                         }
@@ -630,7 +628,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                         var afterMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
 
                         if ( afterMoveIndex == -1 )
-                        { 
+                        {
                             return;
                         }
 
@@ -640,7 +638,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                     break;
             }
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -657,17 +655,17 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void VolumeAddNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
             sender.Value = ConfigMedia.CheckMidiAddVolume( (int)args.NewValue );
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -680,17 +678,17 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void MidiNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
             sender.Value = MidiNet.CheckMidiNote( (int)args.NewValue );
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -703,8 +701,8 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <param name="args"></param>
     private void ColorButton_Click( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( sender is not Button item )
             {
                 return;
@@ -720,7 +718,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                     }
                 );
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }

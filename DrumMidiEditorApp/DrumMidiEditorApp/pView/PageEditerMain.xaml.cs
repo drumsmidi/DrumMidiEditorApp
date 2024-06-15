@@ -1,13 +1,11 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using DrumMidiClassLibrary.pLog;
-
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -28,22 +26,19 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
         ControlAccess.PageEditerMain = this;
     }
 
-	#region INotifyPropertyChanged
+    #region INotifyPropertyChanged
 
-	/// <summary>
-	/// x:Bind OneWay/TwoWay 再読み込み
-	/// </summary>
-	public void ReloadPlayer()
-    {
-		OnPropertyChanged( "ConfigPlayer" );
-	}
+    /// <summary>
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadPlayer() => OnPropertyChanged( "ConfigPlayer" );
 
-	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
-	#endregion
+    #endregion
 
     /// <summary>
     /// リサイズイベント
@@ -55,10 +50,10 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
         try
         {
             EventManage.EventResizeWindow();
-		}
-		catch ( Exception e )
-		{
+        }
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 }

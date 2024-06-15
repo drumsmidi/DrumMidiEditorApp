@@ -152,8 +152,8 @@ public class ConfigMedia
     /// MP4出力コーデック一覧
     /// </summary>
     [JsonIgnore]
-    public List<string> OutputVideoCodecList = new()
-    {
+    public List<string> OutputVideoCodecList =
+    [
         "AVC",
         "CVID",
         "DIB",
@@ -197,7 +197,7 @@ public class ConfigMedia
         "WVC1",
         "X264",
         "XVID",
-    };
+    ];
 
     #endregion
 
@@ -232,7 +232,7 @@ public class ConfigMedia
         {
             return MidiAddMinVolume;
         }
-        else if ( aVolume > MidiAddMaxVolume)
+        else if ( aVolume > MidiAddMaxVolume )
         {
             return MidiAddMaxVolume;
         }

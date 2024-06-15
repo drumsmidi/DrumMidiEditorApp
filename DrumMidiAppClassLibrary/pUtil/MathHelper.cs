@@ -21,10 +21,10 @@ public static class MathHelper
     /// <returns>ベジェ曲線曲線 位置</returns>
     public static float GetBezierCurvePosition( float aStartXorY, float aCtrl1XorY, float aCtrl2XorY, float aEndXorY, float aWeight )
     {
-        return MathF.Pow( 1 - aWeight, 3 ) * aStartXorY
-            + 3 * MathF.Pow( 1 - aWeight, 2 ) * aWeight * aCtrl1XorY
-            + 3 * ( 1 - aWeight ) * MathF.Pow( aWeight, 2 ) * aCtrl2XorY
-            + MathF.Pow( aWeight, 3 ) * aEndXorY;
+        return ( MathF.Pow( 1 - aWeight, 3 ) * aStartXorY )
+            + ( 3 * MathF.Pow( 1 - aWeight, 2 ) * aWeight * aCtrl1XorY )
+            + ( 3 * ( 1 - aWeight ) * MathF.Pow( aWeight, 2 ) * aCtrl2XorY )
+            + ( MathF.Pow( aWeight, 3 ) * aEndXorY );
     }
 
     #endregion

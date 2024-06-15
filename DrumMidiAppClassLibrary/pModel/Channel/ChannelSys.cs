@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using DrumMidiClassLibrary.pUtil;
 
 namespace DrumMidiClassLibrary.pModel;
@@ -15,12 +14,12 @@ public class ChannelSys : DisposeBaseClass
     /// <summary>
     /// BPM情報リスト
     /// </summary>
-    public Dictionary<int,InfoBpm> BpmInfoList { get; private set; } = new();
+    public Dictionary<int, InfoBpm> BpmInfoList { get; private set; } = [];
 
     /// <summary>
     /// 小節リスト
     /// </summary>
-    public Dictionary<int,MeasureSys> MeasureList { get; private set; } = new();
+    public Dictionary<int, MeasureSys> MeasureList { get; private set; } = [];
 
     /// <summary>
     /// システム情報が存在する小節番号最大値
@@ -30,23 +29,23 @@ public class ChannelSys : DisposeBaseClass
     #endregion
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 ClearAll();
-			}
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     #region Measure
@@ -56,14 +55,7 @@ public class ChannelSys : DisposeBaseClass
     /// </summary>
     /// <param name="aMeasureNo">小節番号</param>
     /// <returns>取得：小節情報、未取得：null</returns>
-    public MeasureSys? GetMeasure( int aMeasureNo )
-    {
-        if ( !MeasureList.TryGetValue( aMeasureNo, out var measure ) )
-        {
-            return null;
-        }
-        return measure;
-    }
+    public MeasureSys? GetMeasure( int aMeasureNo ) => !MeasureList.TryGetValue( aMeasureNo, out var measure ) ? null : measure;
 
     #endregion
 
@@ -76,7 +68,7 @@ public class ChannelSys : DisposeBaseClass
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>True：あり、False：なし</returns>
     public bool IsBpm( int aMeasureNo, int aNotePos )
-        => GetMeasure( aMeasureNo )?.IsBpm( aNotePos ) ?? false ;
+        => GetMeasure( aMeasureNo )?.IsBpm( aNotePos ) ?? false;
 
     /// <summary>
     /// BPM情報取得
@@ -85,7 +77,7 @@ public class ChannelSys : DisposeBaseClass
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>取得：BPM情報、未取得：null</returns>
     public InfoBpm? GetBpm( int aMeasureNo, int aNotePos )
-        => GetMeasure( aMeasureNo )?.GetBpm( aNotePos ) ;
+        => GetMeasure( aMeasureNo )?.GetBpm( aNotePos );
 
     /// <summary>
     /// BPM情報追加
@@ -103,13 +95,13 @@ public class ChannelSys : DisposeBaseClass
     /// <param name="aInfo">BPM情報</param>
     public void AddBpm( InfoBpm aInfo )
     {
-        BpmInfoList[ aInfo.SearchKey ] = aInfo;
+        BpmInfoList [ aInfo.SearchKey ] = aInfo;
 
         var measure = GetMeasure( aInfo.MeasureNo ) ?? new() ;
 
         measure.AddBpm( aInfo );
 
-        MeasureList[ aInfo.MeasureNo ] = measure;
+        MeasureList [ aInfo.MeasureNo ] = measure;
 
         if ( MaxMeasureNo < aInfo.MeasureNo )
         {
@@ -135,7 +127,7 @@ public class ChannelSys : DisposeBaseClass
     /// <returns>True：削除後 システム情報が0件、False：削除後 システム情報が1件以上</returns>
     public bool RemoveBpm( InfoBpm aBpmInfo )
     {
-        BpmInfoList.Remove( aBpmInfo.SearchKey );
+        _ = BpmInfoList.Remove( aBpmInfo.SearchKey );
 
         var measure = GetMeasure( aBpmInfo.MeasureNo );
 
@@ -143,7 +135,7 @@ public class ChannelSys : DisposeBaseClass
         {
             if ( measure.RemoveBpm( aBpmInfo.NotePos ) )
             {
-                MeasureList.Remove( aBpmInfo.MeasureNo );
+                _ = MeasureList.Remove( aBpmInfo.MeasureNo );
             }
         }
 
@@ -187,16 +179,16 @@ public class ChannelSys : DisposeBaseClass
     /// データクリア（小節/BPM情報）
     /// </summary>
     public void ClearAll()
-	{
-		foreach ( var de in BpmInfoList )
-		{
-			de.Value.Dispose();
-		}
-		BpmInfoList.Clear();
+    {
+        foreach ( var de in BpmInfoList )
+        {
+            de.Value.Dispose();
+        }
+        BpmInfoList.Clear();
 
         foreach ( var obj in MeasureList )
-	    {
-		    obj.Value.Dispose();
+        {
+            obj.Value.Dispose();
         }
         MeasureList.Clear();
 

@@ -1,24 +1,23 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using DrumMidiClassLibrary.pLog;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfig : Page
 {
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageConfig()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfig()
     {
-		// 初期化
-		InitializeComponent();
-	}
+        // 初期化
+        InitializeComponent();
+    }
 
     /// <summary>
     /// ページロード完了
@@ -43,8 +42,8 @@ public sealed partial class PageConfig : Page
     /// <summary>
     /// ページ一覧
     /// </summary>
-    private readonly List<(string Tag, Type Page)> _Pages = new()
-        {
+    private readonly List<(string Tag, Type Page)> _Pages =
+        [
             ( "PageConfigDevice"    , typeof( PageConfigDevice )    ),
             ( "PageConfigVideo"     , typeof( PageConfigVideo )     ),
             ( "PageConfigEditer"    , typeof( PageConfigEditer )    ),
@@ -52,18 +51,18 @@ public sealed partial class PageConfig : Page
             ( "PageConfigPlayerA"   , typeof( PageConfigPlayerSequence )            ),
             ( "PageConfigPlayerC"   , typeof( PageConfigPlayerScore )               ),
             ( "PageConfigPlayerD"   , typeof( PageConfigPlayerSimuration )          ),
-        };
+        ];
 
-	/// <summary>
-	/// ナビゲーション 変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// ナビゲーション 変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void NaviLinkListView_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
         try
         {
-            var tag = ( ( sender as ListView )?.SelectedItem as FrameworkElement )?.Tag.ToString() ?? String.Empty ;
+            var tag = ( ( sender as ListView )?.SelectedItem as FrameworkElement )?.Tag.ToString() ?? string.Empty ;
 
             NaviLinkListView_Navigate( tag );
         }
@@ -73,10 +72,10 @@ public sealed partial class PageConfig : Page
         }
     }
 
-	/// <summary>
-	/// ナビゲーション ページ切替
-	/// </summary>
-	/// <param name="aNaviTagName"></param>
+    /// <summary>
+    /// ナビゲーション ページ切替
+    /// </summary>
+    /// <param name="aNaviTagName"></param>
     private void NaviLinkListView_Navigate( string aNaviTagName )
     {
         var pageItem    = _Pages.FirstOrDefault( item => item.Tag.Equals( aNaviTagName ) );
@@ -92,7 +91,7 @@ public sealed partial class PageConfig : Page
 
             // 対象NaviItemが選択されていない場合、SelectionChangedイベントを発生させる
             // （プログラム上から変更する場合、NaviItemが選択状態にならない）
-            if ( !Object.Equals( _NaviLinkListView.SelectedItem, item ) )
+            if ( !object.Equals( _NaviLinkListView.SelectedItem, item ) )
             {
                 _NaviLinkListView.SelectedItem = item;
             }
@@ -104,7 +103,7 @@ public sealed partial class PageConfig : Page
                 //      他の NavigationTransitionInfo サブタイプの代わりに使用します。
                 // https://docs.microsoft.com/ja-jp/windows/apps/design/motion/page-transitions
 
-                _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
+                _ = _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
             }
         }
     }

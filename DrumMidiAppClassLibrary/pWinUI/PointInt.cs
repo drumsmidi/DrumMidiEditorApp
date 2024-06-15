@@ -28,13 +28,7 @@ public struct PointInt
         return !( a == b );
     }
 
-    public override bool Equals( object? obj )
-    {
-        throw new NotImplementedException();
-    }
+    public readonly override bool Equals( object? obj ) => throw new NotImplementedException();
 
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
+    public readonly override int GetHashCode() => throw new NotImplementedException();
 }

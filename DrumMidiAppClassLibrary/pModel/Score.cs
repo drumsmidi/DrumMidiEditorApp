@@ -54,7 +54,7 @@ public class Score : DisposeBaseClass
     /// <summary>
     /// チャンネルリスト（チャンネル番号(0-15)、チャンネル情報）
     /// </summary>
-    public Dictionary<byte, Channel> Channels { get; private set; } = new();
+    public Dictionary<byte, Channel> Channels { get; private set; } = [];
 
     /// <summary>
     /// 編集中のチャンネル番号
@@ -64,15 +64,15 @@ public class Score : DisposeBaseClass
     /// <summary>
     /// 編集中のチャンネル情報
     /// </summary>
-    public Channel EditChannel => Channels[ EditChannelNo ];
+    public Channel EditChannel => Channels [ EditChannelNo ];
 
     /// <summary>
     /// 編集中のチャンネル情報のMidiMapSet
     /// </summary>
     public MidiMapSet EditMidiMapSet
     {
-        get => Channels[ EditChannelNo ].MidiMapSet;
-        set => Channels[ EditChannelNo ].MidiMapSet = value;  
+        get => Channels [ EditChannelNo ].MidiMapSet;
+        set => Channels [ EditChannelNo ].MidiMapSet = value;
     }
 
     /// <summary>
@@ -86,35 +86,35 @@ public class Score : DisposeBaseClass
         }
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 ClearChannel();
-			}
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     #region Function
 
-	/// <summary>
-	/// MidiMapSetを複製
-	/// </summary>
-	/// <returns>MidiMapSet</returns>
-	public Score Clone()
-	{
-		var score = new Score()
+    /// <summary>
+    /// MidiMapSetを複製
+    /// </summary>
+    /// <returns>MidiMapSet</returns>
+    public Score Clone()
+    {
+        var score = new Score()
         {
             FilePath                    = FilePath,
             Info                        = Info,
@@ -128,23 +128,23 @@ public class Score : DisposeBaseClass
 
         foreach ( var item in Channels )
         {
-            score.Channels[ item.Key ] = item.Value.Clone();
+            score.Channels [ item.Key ] = item.Value.Clone();
         }
 
         return score;
-	}
+    }
 
     /// <summary>
     /// データクリア（チャンネル情報）
     /// </summary>
     public void ClearChannel()
-	{
+    {
         SysChannel.ClearAll();
 
-		foreach ( var channel in Channels.Values )
-		{
+        foreach ( var channel in Channels.Values )
+        {
             channel.ClearAll();
-		}
+        }
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public class Score : DisposeBaseClass
             }
         }
 
-        return max; 
+        return max;
     }
 
     /// <summary>

@@ -8,5 +8,7 @@ internal class AudioNull : AudioBase
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public AudioNull() { }
+    public AudioNull()
+    {
+    }
 }

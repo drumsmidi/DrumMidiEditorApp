@@ -1,6 +1,5 @@
 ﻿using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pResume;
@@ -8,40 +7,35 @@ namespace DrumMidiEditorApp.pResume;
 /// <summary>
 /// レジューム：BPM削除
 /// </summary>
-internal class ResumeEditRemoveBpm : DisposeBaseClass, IResume
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aInfoBef">変更前 BPM情報</param>
+internal class ResumeEditRemoveBpm( InfoBpm aInfoBef ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 変更前 BPM情報
     /// </summary>
-    private InfoBpm? _InfoBef;
+    private InfoBpm? _InfoBef = aInfoBef;
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aInfoBef">変更前 BPM情報</param>
-    public ResumeEditRemoveBpm( InfoBpm aInfoBef )
+    protected override void Dispose( bool aDisposing )
     {
-        _InfoBef = aInfoBef;
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _InfoBef = null;
+            }
+
+            // Dispose unmanaged resources.
+
+            _Disposed = true;
+
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
     }
-
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_InfoBef = null;
-			}
-
-			// Dispose unmanaged resources.
-
-			_Disposed = true;
-
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
     private bool _Disposed = false;
 
     public void Undo()
@@ -51,7 +45,7 @@ internal class ResumeEditRemoveBpm : DisposeBaseClass, IResume
             return;
         }
 
-		DMS.SCORE.SysChannel.AddBpm( _InfoBef );
+        DMS.SCORE.SysChannel.AddBpm( _InfoBef );
 
         Update( _InfoBef.MeasureNo );
     }
@@ -62,8 +56,8 @@ internal class ResumeEditRemoveBpm : DisposeBaseClass, IResume
         {
             return;
         }
-			
-        DMS.SCORE.SysChannel.RemoveBpm( _InfoBef );
+
+        _ = DMS.SCORE.SysChannel.RemoveBpm( _InfoBef );
 
         Update( _InfoBef.MeasureNo );
     }
@@ -72,8 +66,5 @@ internal class ResumeEditRemoveBpm : DisposeBaseClass, IResume
     /// Undo/Redo共通処理
     /// </summary>
     /// <param name="aMeasureNo">小節番号</param>
-    private static void Update( int aMeasureNo )
-    {
-        EventManage.EventEditBpm( aMeasureNo );
-    }
+    private static void Update( int aMeasureNo ) => EventManage.EventEditBpm( aMeasureNo );
 }

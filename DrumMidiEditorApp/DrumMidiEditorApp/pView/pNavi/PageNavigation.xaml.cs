@@ -1,18 +1,16 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using DrumMidiClassLibrary.pLog;
-
 using DrumMidiEditorApp.pView.pConfig;
 using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pMusic;
 using DrumMidiEditorApp.pView.pScore;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace DrumMidiEditorApp.pView.pNavi;
 
@@ -35,7 +33,7 @@ public sealed partial class PageNavigation : Page
     {
         try
         {
-			// 初期ページへ移動
+            // 初期ページへ移動
             NavigationView_Navigate( "PageMusic" );
         }
         catch ( Exception e )
@@ -49,21 +47,21 @@ public sealed partial class PageNavigation : Page
     /// <summary>
     /// ページ一覧
     /// </summary>
-    private readonly List<(string Tag, Type Page)> _Pages = new()
-        {
+    private readonly List<(string Tag, Type Page)> _Pages =
+        [
             ( "PageMusic"    , typeof( PageMusic )   ),
             ( "PageMidiMap"  , typeof( PageMidiMap ) ),
             ( "PageEdit"     , typeof( PageEdit )    ),
             ( "PageScore"    , typeof( PageScore )   ),
             ( "PageConfig"   , typeof( PageConfig )  ),
             ( "PageDebug"    , typeof( PageDebug )  ),
-        };
+        ];
 
-	/// <summary>
-	/// ナビゲーション 変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// ナビゲーション 変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void NaviControl_SelectionChanged( NavigationView sender, NavigationViewSelectionChangedEventArgs args )
     {
         try
@@ -77,7 +75,7 @@ public sealed partial class PageNavigation : Page
             }
             else if ( args.SelectedItemContainer != null )
             {
-                navItemTag = args.SelectedItemContainer.Tag.ToString() ?? string.Empty ;
+                navItemTag = args.SelectedItemContainer.Tag.ToString() ?? string.Empty;
             }
 
             NavigationView_Navigate( navItemTag );
@@ -88,10 +86,10 @@ public sealed partial class PageNavigation : Page
         }
     }
 
-	/// <summary>
-	/// ナビゲーション ページ切替
-	/// </summary>
-	/// <param name="aNaviTagName"></param>
+    /// <summary>
+    /// ナビゲーション ページ切替
+    /// </summary>
+    /// <param name="aNaviTagName"></param>
     private void NavigationView_Navigate( string aNaviTagName )
     {
         var pageItem    = _Pages.FirstOrDefault( item => item.Tag.Equals( aNaviTagName ) );
@@ -107,8 +105,8 @@ public sealed partial class PageNavigation : Page
 
             // 対象NaviItemが選択されていない場合、SelectionChangedイベントを発生させる
             // （プログラム上から変更する場合、NaviItemが選択状態にならない）
-            if ( !Object.Equals( _NaviControl.SelectedItem, item ) )
-            { 
+            if ( !object.Equals( _NaviControl.SelectedItem, item ) )
+            {
                 _NaviControl.SelectedItem = item;
             }
             // ページ切替実施
@@ -120,7 +118,7 @@ public sealed partial class PageNavigation : Page
                 //   横方向スライド：SlideNavigationTransitionInfo
                 //   無効化    　　：SuppressNavigationTransitionInfo
 
-                _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
+                _ = _ContentFrame.Navigate( page_after, null, new SuppressNavigationTransitionInfo() );
             }
         }
     }

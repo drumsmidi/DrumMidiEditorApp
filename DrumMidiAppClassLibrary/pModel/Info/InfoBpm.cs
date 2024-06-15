@@ -1,5 +1,4 @@
 ﻿using System;
-
 using DrumMidiClassLibrary.pConfig;
 
 namespace DrumMidiClassLibrary.pModel;
@@ -20,16 +19,16 @@ public class InfoBpm : InfoBase
     /// 検索キー（小節番号✕1,000＋小節内ノート位置）
     /// </summary>
     public override int SearchKey
-        => base.MeasureNo * 1000 + base.NotePos;
+        => ( MeasureNo * 1000 ) + NotePos;
 
     #endregion
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    private InfoBpm() 
-        : base( 0, 0, false ) 
-    { 
+    private InfoBpm()
+        : base( 0, 0, false )
+    {
     }
 
     /// <summary>
@@ -76,7 +75,7 @@ public class InfoBpm : InfoBase
         base.Set( aInfo );
 
         if ( aInfo is not InfoBpm info )
-        { 
+        {
             throw new InvalidCastException();
         }
 
@@ -90,11 +89,11 @@ public class InfoBpm : InfoBase
     public override object Clone()
     {
         return new InfoBpm()
-            {
-                MeasureNo   = base.MeasureNo,
-                NotePos     = base.NotePos,
-                Selected    = base.Selected,
-                Bpm         = Bpm,
-            };
+        {
+            MeasureNo = MeasureNo,
+            NotePos = NotePos,
+            Selected = Selected,
+            Bpm = Bpm,
+        };
     }
 }

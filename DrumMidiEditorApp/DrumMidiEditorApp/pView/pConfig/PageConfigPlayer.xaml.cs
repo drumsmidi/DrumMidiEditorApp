@@ -1,15 +1,12 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
-using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -22,20 +19,25 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     private ConfigPlayer DrawSet => ConfigLocal.Player;
 
-	/// <summary>
-	/// Media設定
-	/// </summary>
-	//private ConfigMedia ConfigMedia => Config.Media;
+    /// <summary>
+    /// Media設定
+    /// </summary>
+    //private ConfigMedia ConfigMedia => Config.Media;
 
-	/// <summary>
-	/// プレイヤー描画モードリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
+    /// <summary>
+    /// プレイヤー描画モードリスト
+    /// </summary>
+    private readonly ObservableCollection<string> _PlayerSurfaceModeList = [];
 
-	/// <summary>
-	/// スクリーンサイズリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _PlayerScreenSizeList = new();
+    /// <summary>
+    /// プレイヤー描画エフェクトモードリスト
+    /// </summary>
+    private readonly ObservableCollection<string> _PlayerSurfaceEffectModeList = [];
+
+    /// <summary>
+    /// スクリーンサイズリスト
+    /// </summary>
+    private readonly ObservableCollection<string> _PlayerScreenSizeList = [];
 
     #endregion
 
@@ -44,24 +46,33 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     public PageConfigPlayer()
     {
-		// 初期化
-		InitializeComponent();
+        // 初期化
+        InitializeComponent();
 
-		#region プレイヤー描画モードリスト作成
+        #region プレイヤー描画モードリスト作成
 
-		foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceMode>() )
-		{
-			_PlayerSurfaceModeList.Add( name );
-		}
+        foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceMode>() )
+        {
+            _PlayerSurfaceModeList.Add( name );
+        }
+
+        #endregion
+
+        #region プレイヤー描画エフェクトモードリスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceEffectMode>() )
+        {
+            _PlayerSurfaceEffectModeList.Add( name );
+        }
 
         #endregion
 
         #region スクリーンサイズ作成
 
         foreach ( var size in DrawSet.ResolutionScreenList )
-		{
-			_PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
-		}
+        {
+            _PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
+        }
 
         #endregion
     }
@@ -73,20 +84,43 @@ public sealed partial class PageConfigPlayer : Page
     /// <param name="args"></param>
     private void PlayerSurfaceModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
-		try
-		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
+        try
+        {
+            // 初回表示時は処理しない
+            if ( !IsLoaded )
             {
-				return;
+                return;
             }
 
-			EventManage.EventPlayerUpdateSufaceMode();
-		}
-		catch ( Exception e )
-		{
+            EventManage.EventPlayerUpdateSufaceMode();
+        }
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
+    }
+
+    /// <summary>
+    /// プレイヤー描画エフェクトモード変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void PlayerSurfaceEffectModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+        try
+        {
+            // 初回表示時は処理しない
+            if ( !IsLoaded )
+            {
+                return;
+            }
+
+            EventManage.EventPlayerUpdateSufaceMode();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
     /// <summary>
@@ -96,20 +130,20 @@ public sealed partial class PageConfigPlayer : Page
     /// <param name="args"></param>
     private void PlayerScreenSizeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
-		try
-		{
-			// 初回表示時は処理しない
-			if ( !IsLoaded )
+        try
+        {
+            // 初回表示時は処理しない
+            if ( !IsLoaded )
             {
-				return;
+                return;
             }
 
-			EventManage.EventPlayerUpdateScreenSize();
-		}
-		catch ( Exception e )
-		{
+            EventManage.EventPlayerUpdateScreenSize();
+        }
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 
     /// <summary>
@@ -119,8 +153,8 @@ public sealed partial class PageConfigPlayer : Page
     /// <param name="args"></param>
     private void ColorButton_Click( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( sender is not Button item )
             {
                 return;
@@ -132,7 +166,7 @@ public sealed partial class PageConfigPlayer : Page
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
                     ( color ) =>
                     {
-                        item.Background = new SolidColorBrush(color);
+                        item.Background = new SolidColorBrush( color );
                     }
                 );
         }

@@ -1,12 +1,11 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Windows.Foundation;
-using Windows.UI;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas.Text;
+using Windows.Foundation;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -92,17 +91,17 @@ public class ConfigEditer
     /// <summary>
     /// 更新対象の小節番号リスト：BPM
     /// </summary>
-    public List<int> UpdateScoreBpmMeasureNoList { get; private set; } = new();
+    public List<int> UpdateScoreBpmMeasureNoList { get; private set; } = [];
 
     /// <summary>
     /// 更新対象の小節番号リスト：NOTE
     /// </summary>
-    public List<int> UpdateScoreNoteMeasureNoList { get; private set; } = new();
+    public List<int> UpdateScoreNoteMeasureNoList { get; private set; } = [];
 
     /// <summary>
     /// 更新対象の小節番号リスト：NOTE音量
     /// </summary>
-    public List<int> UpdateScoreNoteVolumeMeasureNoList { get; private set; } = new();
+    public List<int> UpdateScoreNoteVolumeMeasureNoList { get; private set; } = [];
 
     #endregion
 
@@ -152,17 +151,20 @@ public class ConfigEditer
     /// 情報ヘッダ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect InfoHeaderRect { get; set; } = new()
+    public FormatRect InfoHeaderRect
     {
-        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -180,17 +182,20 @@ public class ConfigEditer
     /// BPMヘッダ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmHeadRect { get; set; } = new()
+    public FormatRect BpmHeadRect
     {
-        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -198,17 +203,20 @@ public class ConfigEditer
     /// BPMボディ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmBodyRect { get; set; } = new()
+    public FormatRect BpmBodyRect
     {
-        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -216,17 +224,20 @@ public class ConfigEditer
     /// BPM非選択時の背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNonSelectRect { get; set; } = new()
+    public FormatRect BpmNonSelectRect
     {
-        Background  = new( Color.FromArgb( 255,   0, 200,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  90,  90,  90 ), _BassLineSize ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 200, 0 ) ),
+        Line = new( Color.FromArgb( 255, 90, 90, 90 ), _BassLineSize ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -234,17 +245,20 @@ public class ConfigEditer
     /// BPM選択時の背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmSelectRect { get; set; } = new()
+    public FormatRect BpmSelectRect
     {
-        Background  = new( Color.FromArgb( 255, 200,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  90,  90,  90 ), _BassLineSize ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 200, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 90, 90, 90 ), _BassLineSize ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -262,17 +276,20 @@ public class ConfigEditer
     /// 小節番号ヘッダ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoHeadRect { get; set; } = new()
+    public FormatRect MeasureNoHeadRect
     {
-        Background  = new( Color.FromArgb( 255,  60,  60,  60 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -280,17 +297,20 @@ public class ConfigEditer
     /// 小節番号ボディ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoBodyRect { get; set; } = new()
+    public FormatRect MeasureNoBodyRect
     {
-        Background  = new( Color.FromArgb( 255,  60,  60,  60 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -308,17 +328,20 @@ public class ConfigEditer
     /// ヘッダー非選択時の書式
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderNonSelectRect { get; set; } = new()
+    public FormatRect HeaderNonSelectRect
     {
-        Background  = new( Color.FromArgb( 255,  20,  20,  20 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -326,24 +349,27 @@ public class ConfigEditer
     /// ヘッダー選択時の書式
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderSelectRect { get; set; } = new()
+    public FormatRect HeaderSelectRect
     {
-        Background  = new( Color.FromArgb( 255,  80,  40,  40 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 80, 40, 40 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
     #endregion
 
     #region Note
-        
+
     /// <summary>
     /// シートノート位置
     /// </summary>
@@ -354,39 +380,51 @@ public class ConfigEditer
     /// ノートOFFペン
     /// </summary>
     [JsonInclude]
-    public FormatLine NoteOffLine { get; set; } = new()
+    public FormatLine NoteOffLine
     {
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// ノート選択時の外枠ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine NoteSelectLine { get; set; } = new()
+    public FormatLine NoteSelectLine
     {
-        LineColor   = new( Color.FromArgb( 255, 150, 20, 20 ) ),
-        LineSize    = _BassLineSize * 2,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 150, 20, 20 ) ),
+        LineSize = _BassLineSize * 2,
     };
 
     /// <summary>
     /// ノート非選択時の外枠ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine NoteNonSelectLine { get; set; } = new()
+    public FormatLine NoteNonSelectLine
     {
-        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 機械学習 予測結果用のノート外枠ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine NotePredictLine { get; set; } = new()
+    public FormatLine NotePredictLine
     {
-        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
@@ -416,12 +454,15 @@ public class ConfigEditer
     /// 音量ヘッダ背景色
     /// </summary>
     [JsonInclude]
-    public List<int> NoteSelectVolumeList { get; set; } = new()
+    public List<int> NoteSelectVolumeList
     {
+        get; set;
+    } =
+    [
         0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
         55, 60, 65, 70, 75, 80, 85, 90, 95, 100,
         105, 110, 115, 120, 125, 127,
-    };
+    ];
 
     /// <summary>
     /// ノート入力音量
@@ -436,7 +477,7 @@ public class ConfigEditer
     public int NoteSelectVolumeIndex
     {
         get => NoteSelectVolumeList.IndexOf( NoteSelectVolume );
-        set => NoteSelectVolume = NoteSelectVolumeList[ value ];
+        set => NoteSelectVolume = NoteSelectVolumeList [ value ];
     }
 
     /// <summary>
@@ -449,17 +490,20 @@ public class ConfigEditer
     /// 音量ヘッダ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect VolumeHeadRect { get; set; } = new()
+    public FormatRect VolumeHeadRect
     {
-        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -467,17 +511,20 @@ public class ConfigEditer
     /// 音量ボディ背景色
     /// </summary>
     [JsonInclude]
-    public FormatRect VolumeBodyRect { get; set; } = new()
+    public FormatRect VolumeBodyRect
     {
-        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line = new( _BassLineColor, _BassLineSize ),
+        Text = new( _BassTextColor,
                             new()
                             {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
+                                FontFamily = _BassFontFamily,
+                                FontSize = _BassFontSize,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -485,10 +532,13 @@ public class ConfigEditer
     /// 音量入力ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine VolumeInputLine { get; set; } = new()
+    public FormatLine VolumeInputLine
     {
-        LineColor   = new( Color.FromArgb( 255, 255, 0, 0 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 255, 0, 0 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
@@ -524,8 +574,8 @@ public class ConfigEditer
     /// 音量入力タイプ
     /// </summary>
     [JsonIgnore]
-    public int VolumeEditSelectIndex 
-    { 
+    public int VolumeEditSelectIndex
+    {
         get => (int)VolumeEditSelect;
         set => VolumeEditSelect = (VolumeEditType)value;
     }
@@ -556,7 +606,10 @@ public class ConfigEditer
     /// シート背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor { get; set; } = new()
+    public FormatColor SheetColor
+    {
+        get; set;
+    } = new()
     {
         Color = Color.FromArgb( 255, 0, 0, 0 ),
     };
@@ -565,17 +618,23 @@ public class ConfigEditer
     /// シートカーソル縦線
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetCursorVerticleLine { get; set; } = new()
+    public FormatLine SheetCursorVerticleLine
     {
-        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// シートカーソル横線
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetCursorHorizonLine { get; set; } = new()
+    public FormatColor SheetCursorHorizonLine
+    {
+        get; set;
+    } = new()
     {
         Color = Color.FromArgb( 255, 30, 30, 30 ),
     };
@@ -584,90 +643,117 @@ public class ConfigEditer
     /// 小節128分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure128Line { get; set; } = new()
+    public FormatLine SheetMeasure128Line
     {
-        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 小節64分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure064Line { get; set; } = new()
+    public FormatLine SheetMeasure064Line
     {
-        LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 70, 70, 70 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 小節32分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure032Line { get; set; } = new()
+    public FormatLine SheetMeasure032Line
     {
-        LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 小節16分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure016Line { get; set; } = new()
+    public FormatLine SheetMeasure016Line
     {
-        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 小節8分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure008Line { get; set; } = new()
+    public FormatLine SheetMeasure008Line
     {
-        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// 小節4分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure004Line { get; set; } = new()
+    public FormatLine SheetMeasure004Line
     {
-        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize = 0.0F,
     };
 
     /// <summary>
     /// 小節1分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure001Line { get; set; } = new()
+    public FormatLine SheetMeasure001Line
     {
-        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        LineSize = 0.0F,
     };
 
     /// <summary>
     /// MidiMapGroup横線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetStaffGroupLine { get; set; } = new()
+    public FormatLine SheetStaffGroupLine
     {
-        LineColor   = new( Color.FromArgb( 255, 120, 120, 120 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 120, 120, 120 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
     /// MidiMap横線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetStaffMidiMapLine { get; set; } = new()
+    public FormatLine SheetStaffMidiMapLine
     {
-        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize = _BassLineSize,
     };
 
 
@@ -675,17 +761,20 @@ public class ConfigEditer
     /// １小節辺りのノート区切り数リスト
     /// </summary>
     [JsonInclude]
-    public List<int> SheetDivisionLineList { get; set; } = new()
+    public List<int> SheetDivisionLineList
     {
+        get; set;
+    } =
+    [
         128, 64, 32, 16, 8, 4, 2, 1,
-    };
+    ];
 
     /// <summary>
     /// １小節辺りのノート区切り数
     /// （全音入力、４分音符入力 的な）
     /// </summary>
     [JsonIgnore]
-    public int SheetDivisionLine { get; set; } = 128;
+    public int SheetDivisionLine { get; set; } = 16;
 
     /// <summary>
     /// １小節辺りのノート区切り数（インデックス）
@@ -694,7 +783,7 @@ public class ConfigEditer
     public int SheetDivisionLineIndex
     {
         get => SheetDivisionLineList.IndexOf( SheetDivisionLine );
-        set => SheetDivisionLine = SheetDivisionLineList[ value ];
+        set => SheetDivisionLine = SheetDivisionLineList [ value ];
     }
 
 
@@ -706,10 +795,13 @@ public class ConfigEditer
     /// サポート線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetSupportLine { get; set; } = new()
+    public FormatLine SheetSupportLine
     {
-        LineColor   = new( Color.FromArgb( 255, 80, 100, 255 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 80, 100, 255 ) ),
+        LineSize = _BassLineSize,
     };
 
     #endregion
@@ -720,10 +812,13 @@ public class ConfigEditer
     /// ノート範囲選択ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine NoteRangeLine { get; set; } = new()
+    public FormatLine NoteRangeLine
     {
-        LineColor   = new( Color.FromArgb( 255, 255, 0, 0 ) ),
-        LineSize    = _BassLineSize,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 255, 0, 0 ) ),
+        LineSize = _BassLineSize,
     };
 
     /// <summary>
@@ -775,18 +870,18 @@ public class ConfigEditer
     /// <summary>
     /// スコア高さ
     /// </summary>
-	public float ScoreMaxHeight 
-        => NoteHeightSize * DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount; 
+	public float ScoreMaxHeight
+        => NoteHeightSize * DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount;
 
     /// <summary>
     /// １小節の横幅
     /// </summary>
-	public float MeasureSize 
+    public float MeasureSize
         => NoteWidthSize * Config.System.MeasureNoteNumber;
 
     /// <summary>
     /// １小節辺りのノート区切り数
     /// </summary>
-    public int DivisionLineCount 
+    public int DivisionLineCount
         => Config.System.MeasureNoteNumber / SheetDivisionLine;
 }

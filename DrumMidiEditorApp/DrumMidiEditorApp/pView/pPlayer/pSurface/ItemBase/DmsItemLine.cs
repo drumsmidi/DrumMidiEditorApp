@@ -1,8 +1,7 @@
-﻿using Microsoft.Graphics.Canvas;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pUtil;
+﻿using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -31,32 +30,32 @@ internal class DmsItemLine : DisposeBaseClass
 	/// <param name="aFormatLine">描画書式</param>
     public DmsItemLine( float aX, float aY, float aWidth, float aHeight, FormatLine aFormatLine )
     {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
-        _FormatLine         = aFormatLine;
+        _DrawRect.X = aX;
+        _DrawRect.Y = aY;
+        _DrawRect.Width = aWidth;
+        _DrawRect.Height = aHeight;
+        _FormatLine = aFormatLine;
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
                 _FormatLine = null;
-			}
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
-	private bool _Disposed = false;
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
+    private bool _Disposed = false;
 
     /// <summary>
     /// 描画
@@ -72,8 +71,8 @@ internal class DmsItemLine : DisposeBaseClass
         }
 
         var rect = _DrawRect;
-        rect.X  += aDiffX;
-        rect.Y  += aDiffY;
+        rect.X += aDiffX;
+        rect.Y += aDiffY;
 
         aGraphics.DrawLine
             (

@@ -1,9 +1,8 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Windows.UI;
-
-using DrumMidiClassLibrary.pConfig;
+﻿using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.UI.Xaml.Media;
+using Windows.UI;
 
 namespace DrumMidiClassLibrary.pModel;
 
@@ -50,8 +49,8 @@ public class MidiMap : DisposeBaseClass
     /// <summary>
     /// ノートの色
     /// </summary>
-    public string ColorText 
-    { 
+    public string ColorText
+    {
         get => ColorHelper.GetColor( Color );
         set => Color = ColorHelper.GetColor( value );
     }
@@ -62,7 +61,7 @@ public class MidiMap : DisposeBaseClass
     public Brush ColorBrush
     {
         get => new SolidColorBrush( Color );
-        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor ;
+        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor;
     }
 
     /// <summary>
@@ -76,23 +75,23 @@ public class MidiMap : DisposeBaseClass
     public string Scale { get; set; } = Config.System.DefaultMidiMapScale;
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				Group = null;
-			}
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                Group = null;
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -110,15 +109,15 @@ public class MidiMap : DisposeBaseClass
     {
         return new()
         {
-        //  Group       = Group,
-            Display     = Display,
-            MidiMapKey  = MidiMapKey,
+            //  Group       = Group,
+            Display = Display,
+            MidiMapKey = MidiMapKey,
             MidiMapName = MidiMapName,
-            VolumeAdd   = VolumeAdd,
-            Midi        = Midi,
-            Color       = Color,
-        //  Selected    = Selected,
-            Scale       = Scale,
+            VolumeAdd = VolumeAdd,
+            Midi = Midi,
+            Color = Color,
+            //  Selected    = Selected,
+            Scale = Scale,
         };
     }
 }

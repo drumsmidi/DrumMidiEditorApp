@@ -15,6 +15,11 @@
                 SelectedIndex="{x:Bind DrawSet.PlayerSurfaceModeSelectIndex, Mode=TwoWay}"
                 SelectionChanged="PlayerSurfaceModeComboBox_SelectionChanged" />
 
+            <ComboBox x:Uid="InputPlayerSurfaceEffectMode"
+                ItemsSource="{x:Bind _PlayerSurfaceEffectModeList, Mode=OneTime}"
+                SelectedIndex="{x:Bind DrawSet.PlayerSurfaceEffectModeSelectIndex, Mode=TwoWay}"
+                SelectionChanged="PlayerSurfaceEffectModeComboBox_SelectionChanged" />
+
             <ToggleSwitch x:Uid="InputPlayerEditMode"
                 IsOn="{x:Bind DrawSet.EditModeOn, Mode=TwoWay}" />
 

@@ -1,11 +1,9 @@
-﻿using Microsoft.Graphics.Canvas;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pModel;
+﻿using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -59,25 +57,25 @@ public class DmsItemMidiMap : DisposeBaseClass
         SetValue( aX, aY, aWidth, aHeight );
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_MidiMapGroup  = null;
-                _MidiMap       = null;
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _MidiMapGroup = null;
+                _MidiMap = null;
             }
 
             // Dispose unmanaged resources.
 
             _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -89,9 +87,9 @@ public class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aHeight">高さ</param>
     private void SetValue( float aX, float aY, float aWidth, float aHeight )
     {
-        _DrawRect.X		    = aX;
-        _DrawRect.Y		    = aY;
-        _DrawRect.Width	    = aWidth;
+        _DrawRect.X         = aX;
+        _DrawRect.Y         = aY;
+        _DrawRect.Width     = aWidth;
         _DrawRect.Height    = aHeight;
     }
 

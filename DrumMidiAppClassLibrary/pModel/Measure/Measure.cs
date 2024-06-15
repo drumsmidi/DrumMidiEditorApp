@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 using DrumMidiClassLibrary.pUtil;
 
 namespace DrumMidiClassLibrary.pModel;
@@ -14,32 +13,32 @@ public class Measure : DisposeBaseClass
     /// <summary>
     /// 小節ライン（NOTE）（MidiMapキー、小節ライン）
     /// </summary>
-    public Dictionary<int,MeasureLine<InfoNote>> NoteLines { get; private set; } = new();
+    public Dictionary<int, MeasureLine<InfoNote>> NoteLines { get; private set; } = [];
 
     #endregion
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				foreach ( var de in NoteLines )
-				{
-					de.Value.Dispose();
-				}
-				NoteLines.Clear();
-			}
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                foreach ( var de in NoteLines )
+                {
+                    de.Value.Dispose();
+                }
+                NoteLines.Clear();
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -47,14 +46,7 @@ public class Measure : DisposeBaseClass
     /// </summary>
     /// <param name="aMidiMapKey">MidiMapキー</param>
     /// <returns>取得：小節ライン（NOTE）、未取得：null</returns>
-    public MeasureLine<InfoNote>? NoteLine( int aMidiMapKey )
-    {
-        if ( !NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) )
-        {
-            return null;
-        }
-        return measure_line;
-    }
+    public MeasureLine<InfoNote>? NoteLine( int aMidiMapKey ) => !NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) ? null : measure_line;
 
     /// <summary>
     /// NOTE情報有無判定
@@ -62,14 +54,7 @@ public class Measure : DisposeBaseClass
     /// <param name="aMidiMapKey">MidiMapキー</param>
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>True：あり、False：なし</returns>
-    public bool IsNote( int aMidiMapKey, int aNotePos )
-    {
-        if ( !NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) )
-        {
-            return false;
-        }
-        return measure_line.IsInfo( aNotePos );
-    }
+    public bool IsNote( int aMidiMapKey, int aNotePos ) => NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) && measure_line.IsInfo( aNotePos );
 
     /// <summary>
     /// NOTE情報取得
@@ -77,14 +62,7 @@ public class Measure : DisposeBaseClass
     /// <param name="aMidiMapKey">MidiMapキー</param>
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>取得：NOTE情報、未取得：null</returns>
-    public InfoNote? GetNote( int aMidiMapKey, int aNotePos )
-    {
-        if ( !NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) )
-        {
-            return null;
-        }
-        return measure_line.GetInfo( aNotePos );
-    }
+    public InfoNote? GetNote( int aMidiMapKey, int aNotePos ) => !NoteLines.TryGetValue( aMidiMapKey, out var measure_line ) ? null : measure_line.GetInfo( aNotePos );
 
     /// <summary>
     /// NOTE情報追加
@@ -99,7 +77,7 @@ public class Measure : DisposeBaseClass
 
         measure_line.AddInfo( aInfo );
 
-        NoteLines[ aInfo.MidiMapKey ] = measure_line;
+        NoteLines [ aInfo.MidiMapKey ] = measure_line;
     }
 
     /// <summary>
@@ -114,10 +92,10 @@ public class Measure : DisposeBaseClass
         {
             if ( measure_line.RemoveInfo( aNotePos ) )
             {
-                NoteLines.Remove( aMidiMapKey );
+                _ = NoteLines.Remove( aMidiMapKey );
             }
         }
-        return NoteLines.Count == 0 ;
+        return NoteLines.Count == 0;
     }
 
     /// <summary>

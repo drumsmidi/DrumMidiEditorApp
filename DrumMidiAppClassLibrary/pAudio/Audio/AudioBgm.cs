@@ -5,41 +5,36 @@ namespace DrumMidiClassLibrary.pAudio;
 /// <summary>
 /// Audio BGM
 /// </summary>
-internal class AudioBgm : AudioBase
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aFilepath">Audioファイルパス</param>
+internal class AudioBgm( GeneralPath aFilepath ) : AudioBase
 {
     /// <summary>
     /// AudioData
     /// </summary>
-	private readonly NAudioData? _AudioData = null;
+	private readonly NAudioData? _AudioData = new( aFilepath );
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aFilepath">Audioファイルパス</param>
-    public AudioBgm( GeneralPath aFilepath )
+    protected override void Dispose( bool aDisposing )
     {
-        _AudioData = new NAudioData( aFilepath );
-    }
-
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				Stop();
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                Stop();
                 _AudioData?.Dispose();
             }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     public override object? GetAudioData() => _AudioData;

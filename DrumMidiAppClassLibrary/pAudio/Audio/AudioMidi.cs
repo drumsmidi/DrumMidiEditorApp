@@ -3,33 +3,27 @@
 /// <summary>
 /// Audio Midi
 /// </summary>
-internal class AudioMidi : AudioBase
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aChannel">MIDIチャンネル(0-15)</param>
+/// <param name="aMidi">MIDIノート番号</param>
+internal class AudioMidi( byte aChannel, byte aMidi ) : AudioBase
 {
     /// <summary>
     /// MIDIチャンネル(0-15)
     /// </summary>
-	private readonly byte _Channel = 0;
+	private readonly byte _Channel    = aChannel;
 
     /// <summary>
     /// MIDIノート番号
     /// </summary>
-	private readonly byte _Midi = 0;
+	private readonly byte _Midi       = aMidi;
 
     /// <summary>
     /// 音量（127基準）
     /// </summary>
 	private byte _Volume = 0;
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aChannel">MIDIチャンネル(0-15)</param>
-    /// <param name="aMidi">MIDIノート番号</param>
-    public AudioMidi( byte aChannel, byte aMidi )
-    {
-        _Channel   = aChannel;
-        _Midi      = aMidi;
-    }
 
     /// <summary>
     /// 音量取得

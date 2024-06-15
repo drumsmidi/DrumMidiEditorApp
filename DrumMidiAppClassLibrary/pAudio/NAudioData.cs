@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Foundation;
-
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pUtil;
 using NAudio.Dsp;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pUtil;
+using Windows.Foundation;
 
 namespace DrumMidiClassLibrary.pAudio;
 
@@ -55,7 +53,7 @@ public class NAudioData : DisposeBaseClass
     /// <summary>
     /// イコライザ設定
     /// </summary>
-    private readonly Dictionary<int, EqualizerBand> _EqualizerBand = new();
+    private readonly Dictionary<int, EqualizerBand> _EqualizerBand = [];
 
     /// <summary>
     /// Mixer
@@ -121,7 +119,7 @@ public class NAudioData : DisposeBaseClass
         {
             _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
-            _Wave   = new WaveOutEvent();
+            _Wave = new WaveOutEvent();
 
             _Mixer.AddMixerInput( _Sample );
             _IsMixerAdd = true;
@@ -142,7 +140,7 @@ public class NAudioData : DisposeBaseClass
         {
             _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
-            _Wave   = new WaveOutEvent();
+            _Wave = new WaveOutEvent();
 
             _Wave.Init( _Sample );
 
@@ -294,12 +292,7 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            if ( _Wave == null )
-            {
-                return false;
-            }
-
-            return _Wave.PlaybackState == PlaybackState.Playing;
+            return _Wave != null && _Wave.PlaybackState == PlaybackState.Playing;
         }
     }
 
@@ -400,12 +393,9 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            if ( _Reader == null )
-            {
-                return 0;
-            }
-
-            return GetDuration().TotalSeconds
+            return _Reader == null
+                ? 0
+                : GetDuration().TotalSeconds
                 * aFFTOfsetPositionX * FFTBufferLength1
                 / ( _Reader.Length / _Reader.BlockAlign );
         }
@@ -434,7 +424,7 @@ public class NAudioData : DisposeBaseClass
         {
             for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
             {
-                list.Add( _FFTBuffer[ aOffset, k ] );
+                list.Add( _FFTBuffer [ aOffset, k ] );
             }
         }
 
@@ -496,7 +486,7 @@ public class NAudioData : DisposeBaseClass
             {
                 for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
                 {
-                    list.Add( _FFTBuffer[ offset, k ] );
+                    list.Add( _FFTBuffer [ offset, k ] );
                 }
             }
         }
@@ -540,7 +530,7 @@ public class NAudioData : DisposeBaseClass
 
         var hzPerOne = (float)GetSampleRate() / ( fftLength / 2 * Channels );
 
-        _FFTBuffer = new float[ sampleNum / fftLength, fftLength / 2 ];
+        _FFTBuffer = new float [ sampleNum / fftLength, fftLength / 2 ];
 
         var buffer = new Complex[ fftLength ];
 
@@ -550,10 +540,10 @@ public class NAudioData : DisposeBaseClass
                 {
                     for ( var i = 0; i < sampleNum; i++ )
                     {
-                    //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
-                        buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
-                    //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
-                        buffer[ fftPos ].Y = 0.0f;
+                        //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
+                        buffer [ fftPos ].X = (float)( samples [ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
+                        //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
+                        buffer [ fftPos ].Y = 0.0f;
 
                         fftPos++;
 
@@ -564,19 +554,19 @@ public class NAudioData : DisposeBaseClass
                             // 高速フーリエ変換
                             FastFourierTransform.FFT( true, (int)Math.Log( fftLength, 2.0d ), buffer );
 
-                            for ( var k = 0; k < _FFTBuffer.GetLength(1); k++ )
+                            for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
                             {
                                 var c = buffer[ k ];
 
-                                var diagonal    = Math.Sqrt( c.X * c.X + c.Y * c.Y );
+                                var diagonal    = Math.Sqrt( (c.X * c.X) + (c.Y * c.Y) );
                                 var intensityDB = 10d * Math.Log10( diagonal );
 
                                 var minDB = -90.0d;
 
                                 var percent = intensityDB < minDB ? 1d : intensityDB / minDB;
 
-                                _FFTBuffer[ i / fftLength, k ] = (float)( 1d - percent );
-                            //  _FFTBuffer[ i / fftLength, k ] = (float)percent;
+                                _FFTBuffer [ i / fftLength, k ] = (float)( 1d - percent );
+                                //  _FFTBuffer[ i / fftLength, k ] = (float)percent;
                             }
                         }
                     }
@@ -615,10 +605,10 @@ public class NAudioData : DisposeBaseClass
             {
                 item = new();
             }
-            item.Hz     = aHz;
-            item.Gain   = aGain;
+            item.Hz = aHz;
+            item.Gain = aGain;
 
-            _EqualizerBand[ aKey ] = item;
+            _EqualizerBand [ aKey ] = item;
         }
     }
 
@@ -640,12 +630,16 @@ public class NAudioData : DisposeBaseClass
     /// <summary>
     /// サンプリング
     /// </summary>
-    private class Sampling : DisposeBaseClass, ISampleProvider
+    /// <remarks>
+    /// コンストラクタ
+    /// </remarks>
+    /// <param name="aSourceProvider"></param>
+    private class Sampling( ISampleProvider aSourceProvider ) : DisposeBaseClass, ISampleProvider
     {
         /// <summary>
         /// サンプリングプロバイダー
         /// </summary>
-        private ISampleProvider? _SampleProvider;
+        private ISampleProvider? _SampleProvider = aSourceProvider;
 
         /// <summary>
         /// イコライザーフィルター
@@ -660,16 +654,7 @@ public class NAudioData : DisposeBaseClass
         /// <summary>
         /// イコライザ設定
         /// </summary>
-        private readonly List<EqualizerBand> _EqualizerBandList = new();
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="aSourceProvider"></param>
-        public Sampling( ISampleProvider aSourceProvider )
-        {
-            _SampleProvider = aSourceProvider;
-        }
+        private readonly List<EqualizerBand> _EqualizerBandList = [];
 
         protected override void Dispose( bool aDisposing )
         {
@@ -678,8 +663,8 @@ public class NAudioData : DisposeBaseClass
                 if ( aDisposing )
                 {
                     // Dispose managed resources.
-                    _SampleProvider     = null;
-                    _EqualizerFilter    = null;
+                    _SampleProvider = null;
+                    _EqualizerFilter = null;
                     _EqualizerBandList.Clear();
                 }
 
@@ -705,7 +690,11 @@ public class NAudioData : DisposeBaseClass
 
                 foreach ( var band in aEqualizer.Values )
                 {
-                    _EqualizerBandList.Add( new() { Hz = band.Hz, Gain = band.Gain } );
+                    _EqualizerBandList.Add( new()
+                    {
+                        Hz = band.Hz,
+                        Gain = band.Gain
+                    } );
                 }
             }
 
@@ -724,7 +713,7 @@ public class NAudioData : DisposeBaseClass
         /// <param name="aOffset">オフセット</param>
         /// <param name="aCount">読込数</param>
         /// <returns>読込サンプル数</returns>
-        public int Read( float[] aBuffer, int aOffset, int aCount )
+        public int Read( float [] aBuffer, int aOffset, int aCount )
         {
             if ( _SampleProvider == null )
             {
@@ -743,7 +732,7 @@ public class NAudioData : DisposeBaseClass
                 {
                     var ch = _SampleProvider.WaveFormat.Channels;
 
-                    _EqualizerFilter = new BiQuadFilter[ ch, bandCnt ];
+                    _EqualizerFilter = new BiQuadFilter [ ch, bandCnt ];
 
                     for ( var b = 0; b < bandCnt; b++ )
                     {
@@ -751,7 +740,7 @@ public class NAudioData : DisposeBaseClass
 
                         for ( var c = 0; c < ch; c++ )
                         {
-                            _EqualizerFilter[ c, b ] = BiQuadFilter.PeakingEQ
+                            _EqualizerFilter [ c, b ] = BiQuadFilter.PeakingEQ
                                 (
                                     _SampleProvider.WaveFormat.SampleRate,
                                     band.Hz,
@@ -781,7 +770,7 @@ public class NAudioData : DisposeBaseClass
 
                         for ( var band = 0; band < bandCnt; band++ )
                         {
-                            aBuffer[ aOffset + sample ] = _EqualizerFilter[ ch, band ].Transform( aBuffer[ aOffset + sample ] );
+                            aBuffer [ aOffset + sample ] = _EqualizerFilter [ ch, band ].Transform( aBuffer [ aOffset + sample ] );
                         }
                     }
                 }

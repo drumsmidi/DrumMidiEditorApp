@@ -24,12 +24,12 @@ public class LogBlock : DisposeBaseClass
         Log.BeginInfo( _BlockName );
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 Log.EndInfo( _BlockName );
             }
@@ -38,9 +38,9 @@ public class LogBlock : DisposeBaseClass
 
             _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 }

@@ -1,13 +1,12 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Windows.ApplicationModel.DataTransfer;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -20,20 +19,20 @@ public sealed partial class PageImportMidiMap : Page
     /// </summary>
     private ConfigSystem ConfigSystem => Config.System;
 
-	/// <summary>
-	/// Score情報
-	/// </summary>
-	private Score Score => DMS.SCORE;
+    /// <summary>
+    /// Score情報
+    /// </summary>
+    private Score Score => DMS.SCORE;
 
-	/// <summary>
-	/// 既存のMidiMapSetで、ノート登録があるMidiMapリスト
-	/// </summary>
-	private readonly ObservableCollection<ImportMidiMapData> _ChangeKeyDataList = new();
+    /// <summary>
+    /// 既存のMidiMapSetで、ノート登録があるMidiMapリスト
+    /// </summary>
+    private readonly ObservableCollection<ImportMidiMapData> _ChangeKeyDataList = [];
 
-	/// <summary>
-	/// インポート対象のMidiMapSet
-	/// </summary>
-	private readonly ObservableCollection<ImportMidiMapData> _ImportDataList = new();
+    /// <summary>
+    /// インポート対象のMidiMapSet
+    /// </summary>
+    private readonly ObservableCollection<ImportMidiMapData> _ImportDataList = [];
 
     #endregion
 
@@ -42,187 +41,187 @@ public sealed partial class PageImportMidiMap : Page
     /// </summary>
     public PageImportMidiMap()
     {
-		InitializeComponent();
-	}
+        InitializeComponent();
+    }
 
-	/// <summary>
-	/// MidiMapリスト読込
-	/// </summary>
-	public void LoadMidiMap( MidiMapSet aMidiMapSet )
+    /// <summary>
+    /// MidiMapリスト読込
+    /// </summary>
+    public void LoadMidiMap( MidiMapSet aMidiMapSet )
     {
-		try
-		{ 
-			#region 既存のMidiMapSetで、ノート登録があるMidiMap
-			{
-				var items = Score.EditChannel.GetNumberOfNoteUsingMidiMap();
+        try
+        {
+            #region 既存のMidiMapSetで、ノート登録があるMidiMap
+            {
+                var items = Score.EditChannel.GetNumberOfNoteUsingMidiMap();
 
-				foreach ( var midiMap in Score.EditMidiMapSet.MidiMaps )
-				{
-					if ( !items.TryGetValue( midiMap.MidiMapKey, out var cnt ) )
-					{
-						continue;
-					}
+                foreach ( var midiMap in Score.EditMidiMapSet.MidiMaps )
+                {
+                    if ( !items.TryGetValue( midiMap.MidiMapKey, out var cnt ) )
+                    {
+                        continue;
+                    }
 
-					var before = $"{midiMap.MidiMapKey,-3} {Score.EditMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey ),-30} [{cnt,4}]";
-					var after  = String.Empty;
+                    var before = $"{midiMap.MidiMapKey,-3} {Score.EditMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey ),-30} [{cnt,4}]";
+                    var after  = string.Empty;
 
                     var midiMapKey_new = aMidiMapSet.GetMidiMapKeyForMatchMidi( midiMap.Midi );
 
-					if ( midiMapKey_new != ConfigSystem.MidiMapKeyNotSelect )
+                    if ( midiMapKey_new != ConfigSystem.MidiMapKeyNotSelect )
                     {
-						after = $"{midiMapKey_new,-3} {aMidiMapSet.GetGroupAndMidiMapName( midiMapKey_new ),-30}";
-					}
+                        after = $"{midiMapKey_new,-3} {aMidiMapSet.GetGroupAndMidiMapName( midiMapKey_new ),-30}";
+                    }
 
-					_ChangeKeyDataList.Add
-						(
-							new()
-							{
-								BeforeName	= before,
-								AfterName	= after,
-							}
-						);
-				}
+                    _ChangeKeyDataList.Add
+                        (
+                            new()
+                            {
+                                BeforeName = before,
+                                AfterName = after,
+                            }
+                        );
+                }
 
-				items.Clear();
-			}
-			#endregion
-
-			#region インポート対象のMidiMapSet
-			{
-				foreach ( var group in aMidiMapSet.MidiMapGroups )
-				{
-					foreach ( var midiMap in group.MidiMaps )
-					{
-						var name = aMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey );
-
-						_ImportDataList.Add
-							( 
-								new()
-								{
-									AfterName  = $"{midiMap.MidiMapKey,-3} {name}",
-								}
-							);
-					}
-				}
-			}
-			#endregion
-		}
-		catch ( Exception e )
-		{
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-    }
-
-	/// <summary>
-	/// キー変換リスト
-	/// </summary>
-	/// <returns>変換前MidiMapKey, 変換後MidiMapKey</returns>
-	public Dictionary<int, int> GetChangeKeys()
-	{
-		var changeKeyDic = new Dictionary<int, int>();
-
-		foreach ( var item in _ChangeKeyDataList )
-		{
-			var midiMapKeyBef = item.BeforeName.Split( ' ' )[ 0 ];
-			var midiMapKeyAft = item.AfterName.Split( ' ' )[ 0 ];
-
-			if ( int.TryParse( midiMapKeyAft, out _ ) )
-			{
-				changeKeyDic.Add( Convert.ToInt32( midiMapKeyBef ), Convert.ToInt32( midiMapKeyAft ) );
-			}
-		}
-		return changeKeyDic;
-	}
-
-	/// <summary>
-	/// ドラッグ
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-    private void ImportMidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
-    {
-		try
-		{
-			if ( args.Items[ 0 ] is not ImportMidiMapData data )
-            {
-				return;
+                items.Clear();
             }
+            #endregion
 
-			args.Data.SetData( "midimapdata", data.AfterName );
-            args.Data.RequestedOperation = DataPackageOperation.Copy;
-		}
-		catch ( Exception e )
+            #region インポート対象のMidiMapSet
+            {
+                foreach ( var group in aMidiMapSet.MidiMapGroups )
+                {
+                    foreach ( var midiMap in group.MidiMaps )
+                    {
+                        var name = aMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey );
+
+                        _ImportDataList.Add
+                            (
+                                new()
+                                {
+                                    AfterName = $"{midiMap.MidiMapKey,-3} {name}",
+                                }
+                            );
+                    }
+                }
+            }
+            #endregion
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 
-	/// <summary>
-	/// ドロップ
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// キー変換リスト
+    /// </summary>
+    /// <returns>変換前MidiMapKey, 変換後MidiMapKey</returns>
+    public Dictionary<int, int> GetChangeKeys()
+    {
+        var changeKeyDic = new Dictionary<int, int>();
+
+        foreach ( var item in _ChangeKeyDataList )
+        {
+            var midiMapKeyBef = item.BeforeName.Split( ' ' )[ 0 ];
+            var midiMapKeyAft = item.AfterName.Split( ' ' )[ 0 ];
+
+            if ( int.TryParse( midiMapKeyAft, out _ ) )
+            {
+                changeKeyDic.Add( Convert.ToInt32( midiMapKeyBef ), Convert.ToInt32( midiMapKeyAft ) );
+            }
+        }
+        return changeKeyDic;
+    }
+
+    /// <summary>
+    /// ドラッグ
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ImportMidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    {
+        try
+        {
+            if ( args.Items [ 0 ] is not ImportMidiMapData data )
+            {
+                return;
+            }
+
+            args.Data.SetData( "midimapdata", data.AfterName );
+            args.Data.RequestedOperation = DataPackageOperation.Copy;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ドロップ
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private async void TextBlock_Drop( object sender, DragEventArgs args )
     {
-		try
-		{
+        try
+        {
             switch ( args.AcceptedOperation )
             {
                 case DataPackageOperation.Copy:
                     {
-						var def = args.GetDeferral();
+                        var def = args.GetDeferral();
 
-						var obj = await args.Data.GetView().GetDataAsync( "midimapdata" );
+                        var obj = await args.Data.GetView().GetDataAsync( "midimapdata" );
 
-						var name = ( obj as string ) ?? string.Empty;
+                        var name = ( obj as string ) ?? string.Empty;
 
-						def.Complete();
+                        def.Complete();
 
-						if ( sender is not TextBlock textblock )
+                        if ( sender is not TextBlock textblock )
                         {
                             return;
                         }
 
-						textblock.Text = name;
-					}
+                        textblock.Text = name;
+                    }
                     break;
             }
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 
-	/// <summary>
-	/// ドラッグ範囲内に入った
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void TextBlock_DragEnter( object sender, DragEventArgs args )
+    /// <summary>
+    /// ドラッグ範囲内に入った
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void TextBlock_DragEnter( object sender, DragEventArgs args )
     {
-		try
-		{
-			args.AcceptedOperation = DataPackageOperation.Copy;
-		}
-		catch ( Exception e )
+        try
+        {
+            args.AcceptedOperation = DataPackageOperation.Copy;
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 
-	/// <summary>
-	/// ドラッグ範囲外に外れた
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// ドラッグ範囲外に外れた
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void TextBlock_DragLeave( object sender, DragEventArgs args )
     {
-		try
-		{
-			args.AcceptedOperation = DataPackageOperation.None;
-		}
-		catch ( Exception e )
+        try
+        {
+            args.AcceptedOperation = DataPackageOperation.None;
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -231,6 +230,6 @@ public sealed partial class PageImportMidiMap : Page
 
 internal class ImportMidiMapData
 {
-	public string BeforeName { get; set; } = string.Empty;
-	public string AfterName { get; set; } = string.Empty;
+    public string BeforeName { get; set; } = string.Empty;
+    public string AfterName { get; set; } = string.Empty;
 }

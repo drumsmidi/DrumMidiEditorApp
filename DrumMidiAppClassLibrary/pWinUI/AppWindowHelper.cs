@@ -1,7 +1,7 @@
-﻿using Microsoft.UI;
+﻿using System;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using System;
 using WinRT.Interop;
 
 namespace DrumMidiClassLibrary.pWinUI;
@@ -19,11 +19,11 @@ public static class AppWindowHelper
     public static AppWindow CreateAppWindow( Window aWindow )
     {
         var op = OverlappedPresenter.Create();
-        op.IsMaximizable    = true;
-        op.IsMinimizable    = true;
-        op.IsResizable      = true;
-        op.IsAlwaysOnTop    = true;
-        op.IsModal          = true;
+        op.IsMaximizable = true;
+        op.IsMinimizable = true;
+        op.IsResizable = true;
+        op.IsAlwaysOnTop = true;
+        op.IsModal = true;
         op.SetBorderAndTitleBar( true, true );
 
         var hwnd = WindowNative.GetWindowHandle( aWindow );
@@ -128,11 +128,11 @@ public static class AppWindowHelper
         // https://tera1707.com/entry/2022/04/24/220519
 
         var op = OverlappedPresenter.Create();
-        op.IsMaximizable    = aMaximizable;
-        op.IsMinimizable    = aMinimizable;
-        op.IsResizable      = aResizable;
-        op.IsAlwaysOnTop    = aAlwaysOnTop;
-        op.IsModal          = aModal;
+        op.IsMaximizable = aMaximizable;
+        op.IsMinimizable = aMinimizable;
+        op.IsResizable = aResizable;
+        op.IsAlwaysOnTop = aAlwaysOnTop;
+        op.IsModal = aModal;
         op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
 
         aAppWindow.SetPresenter( op );

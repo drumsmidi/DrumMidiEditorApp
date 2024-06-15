@@ -1,17 +1,14 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Windowing;
-using System;
-
+﻿using System;
 using DrumMidiClassLibrary.pAudio;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pControl;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
-
-using DrumMidiEditerApp.pIO;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiClassLibrary.pModel;
+using DrumMidiEditorApp.pIO;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -24,10 +21,10 @@ public sealed partial class WindowEditer : Window
     /// </summary>
     private static ConfigSystem ConfigSystem => Config.System;
 
-	/// <summary>
-	/// 本ウィンドウへのアクセス
-	/// </summary>
-	private readonly AppWindow _AppWindow;
+    /// <summary>
+    /// 本ウィンドウへのアクセス
+    /// </summary>
+    private readonly AppWindow _AppWindow;
 
     #endregion
 
@@ -37,45 +34,45 @@ public sealed partial class WindowEditer : Window
     public WindowEditer()
     {
 #if !DEBUG_DEFAULT
-		// Configファイル読込
-		FileIO.LoadConfig();
+        // Configファイル読込
+        FileIO.LoadConfig();
 #endif
 
-		// Midiデバイス初期化
-		MidiNet.InitDevice( Config.Media.MidiOutDeviceName );
+        // Midiデバイス初期化
+        MidiNet.InitDevice( Config.Media.MidiOutDeviceName );
 
-		// ウィンドウ構築
-		InitializeComponent();
+        // ウィンドウ構築
+        InitializeComponent();
 
-		// 自身のウィンドウ情報取得
-		_AppWindow = AppWindowHelper.GetAppWindow( this );
+        // 自身のウィンドウ情報取得
+        _AppWindow = AppWindowHelper.GetAppWindow( this );
 
-		// タイトル初期設定
-		Title = $"{ConfigSystem.AppName}";
+        // タイトル初期設定
+        Title = $"{ConfigSystem.AppName}";
 
-		// 独自のタイトルバー設定
-		ExtendsContentIntoTitleBar = true;
-		SetTitleBar( _AppTitleBar );
-		SetSubTitle( "[]" );
+        // 独自のタイトルバー設定
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar( _AppTitleBar );
+        SetSubTitle( "[]" );
 
-		// ウィンドウ初期サイズ変更
-		if (ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
-		{ 
-			AppWindowHelper.ResizeWindow
-				(
-					_AppWindow,
+        // ウィンドウ初期サイズ変更
+        if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
+        {
+            AppWindowHelper.ResizeWindow
+                (
+                    _AppWindow,
                     ConfigSystem.WindowSizeWidth,
-                    ConfigSystem.WindowSizeHeight 
-				);
-		}
+                    ConfigSystem.WindowSizeHeight
+                );
+        }
 
-		// 通常ウィンドウのプレゼンター設定
-		//AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
+        // 通常ウィンドウのプレゼンター設定
+        //AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
 
-		ControlAccess.MainWindow = this;
+        ControlAccess.MainWindow = this;
 
-		// 再生コントロール開始
-		DmsControl.Start();
+        // 再生コントロール開始
+        DmsControl.Start();
 
         // プレイヤーリクエスト通知
         DmsControl.SetPlayerRequestCallback = ( request ) => ConfigLocal.Player.PlayReq = request;
@@ -88,15 +85,15 @@ public sealed partial class WindowEditer : Window
     /// <param name="args"></param>
     private void Window_Activated( object sender, WindowActivatedEventArgs args )
     {
-		try
-		{
+        try
+        {
             // タイトルバーが非アクティブ状態による前景色の変更
             var key = ( args.WindowActivationState == WindowActivationState.Deactivated )
                 ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
-            _AppTitleTextBlock.Foreground = (SolidColorBrush)App.Current.Resources[ key ];
+            _AppTitleTextBlock.Foreground = (SolidColorBrush)App.Current.Resources [ key ];
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -109,35 +106,35 @@ public sealed partial class WindowEditer : Window
     /// <param name="args"></param>
     private void Window_Closed( object sender, WindowEventArgs args )
     {
-		try
-		{
-			// 再生コントロール停止
-			DmsControl.StopPreSequence();
-			DmsControl.End();
+        try
+        {
+            // 再生コントロール停止
+            DmsControl.StopPreSequence();
+            DmsControl.End();
 
-			// プレイヤー停止
-			ControlAccess.UCPlayerPanel?.DrawTaskStop();
+            // プレイヤー停止
+            ControlAccess.UCPlayerPanel?.DrawTaskStop();
 
-			// 設定ファイル保存
-			FileIO.SaveConfig();
-		}
-		catch ( Exception )
+            // 設定ファイル保存
+            _ = FileIO.SaveConfig();
+        }
+        catch ( Exception )
         {
             //Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-	}
+    }
 
-	/// <summary>
-	/// タイトルバーのサブタイトルを設定
-	/// </summary>
-	/// <param name="aSubTitle">サブタイトル</param>
-	public void SetSubTitle( string aSubTitle )
+    /// <summary>
+    /// タイトルバーのサブタイトルを設定
+    /// </summary>
+    /// <param name="aSubTitle">サブタイトル</param>
+    public void SetSubTitle( string aSubTitle )
     {
         try
         {
-			_AppTitleTextBlock.Text = $"{ConfigSystem.AppName} - {aSubTitle}";
-		}
-		catch ( Exception e )
+            _AppTitleTextBlock.Text = $"{ConfigSystem.AppName} - {aSubTitle}";
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }

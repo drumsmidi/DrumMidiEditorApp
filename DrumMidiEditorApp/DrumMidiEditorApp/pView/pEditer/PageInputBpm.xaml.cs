@@ -1,54 +1,53 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System;
-
+﻿using System;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
 public sealed partial class PageInputBpm : Page
 {
-	/// <summary>
-	/// メディア設定
-	/// </summary>
-	private ConfigMedia ConfigMedia => Config.Media;
+    /// <summary>
+    /// メディア設定
+    /// </summary>
+    private ConfigMedia ConfigMedia => Config.Media;
 
-	/// <summary>
-	/// BPM入力値
-	/// </summary>
-	public double Bpm { get; set; } = Config.System.DefaultBpm;
+    /// <summary>
+    /// BPM入力値
+    /// </summary>
+    public double Bpm { get; set; } = Config.System.DefaultBpm;
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public PageInputBpm()
     {
         InitializeComponent();
 
-		// NumberBox の入力書式設定
-		_BpmNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 2, 1 );
-	}
+        // NumberBox の入力書式設定
+        _BpmNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 2, 1 );
+    }
 
-	/// <summary>
-	/// ＢＰＭ変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void BpmNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <summary>
+    /// ＢＰＭ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void BpmNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
-		}
-		catch ( Exception e )
-		{
+        }
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 }

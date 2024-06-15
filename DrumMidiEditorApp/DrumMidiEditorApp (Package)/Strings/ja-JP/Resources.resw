@@ -379,6 +379,9 @@ BPMノートを含める</value>
   <data name="InputPlayerScreenSize.Header" xml:space="preserve">
     <value>プレイヤーサイズ（横 x 縦）</value>
   </data>
+  <data name="InputPlayerSurfaceEffectMode" xml:space="preserve">
+    <value>エフェクトモード</value>
+  </data>
   <data name="InputPlayerSurfaceMode.Header" xml:space="preserve">
     <value>プレイヤー描画モード</value>
   </data>

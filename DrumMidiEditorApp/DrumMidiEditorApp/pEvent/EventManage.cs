@@ -18,11 +18,9 @@ public static class EventManage
     /// <summary>
     /// MIDI-OUT 遅延時間更新通知
     /// </summary>
-    public static void EventUpdateMidiOutLatency()
-    {
+    public static void EventUpdateMidiOutLatency() =>
         // Musicスレッドで更新
         Config.Media.UpdateDmsControlScore = true;
-    }
 
     #endregion
 
@@ -49,11 +47,9 @@ public static class EventManage
     /// <summary>
     /// チャンネル切替通知
     /// </summary>
-    public static void EventChangeChannel()
-    {
+    public static void EventChangeChannel() =>
         // MidiMap再読み込みリクエスト
         EventReloadMidiMapSet();
-    }
 
     #endregion
 
@@ -68,8 +64,8 @@ public static class EventManage
         Config.Media.UpdateDmsControlBgm = true;
 
         // BGMの再読み込み後、波形を読み込む
-        ConfigLocal.Editer.UpdateScoreBgmFlag        = true;
-        ConfigLocal.Editer.UpdateScoreBgmScaleFlag   = false;
+        ConfigLocal.Editer.UpdateScoreBgmFlag = true;
+        ConfigLocal.Editer.UpdateScoreBgmScaleFlag = false;
     }
 
     /// <summary>
@@ -87,11 +83,9 @@ public static class EventManage
     /// <summary>
     /// BGM再生開始位置更新通知
     /// </summary>
-    public static void EventEditBgmPlaybackStartPosition()
-    {
+    public static void EventEditBgmPlaybackStartPosition() =>
         // スコア更新リクエスト（専用のフラグを用意していない為）
         Config.Media.UpdateDmsControlScore = true;
-    }
 
     #endregion
 
@@ -102,8 +96,8 @@ public static class EventManage
     /// </summary>
     public static void EventReloadMidiMapSet()
     {
-        Config.Media.UpdateDmsControlScore      = true;
-        Config.Media.UpdateDmsControlMidiMap    = true;
+        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.UpdateDmsControlMidiMap = true;
 
         // MidiMapSet再読み込み
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
@@ -157,12 +151,12 @@ public static class EventManage
         // 範囲選択解除
         EventEditClearRangeSelect();
 
-        ConfigLocal.Editer.UpdateScoreLayoutFlag     = true;
-        ConfigLocal.Editer.UpdateCameraFlag          = true;
-        ConfigLocal.Editer.UpdateScoreLineFlag       = true;
-        ConfigLocal.Editer.UpdateScoreHeaderFlag     = true;
-        ConfigLocal.Editer.UpdateScoreFlag           = true;
-        ConfigLocal.Editer.UpdateScoreBgmScaleFlag   = true;
+        ConfigLocal.Editer.UpdateScoreLayoutFlag = true;
+        ConfigLocal.Editer.UpdateCameraFlag = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag = true;
+        ConfigLocal.Editer.UpdateScoreHeaderFlag = true;
+        ConfigLocal.Editer.UpdateScoreFlag = true;
+        ConfigLocal.Editer.UpdateScoreBgmScaleFlag = true;
 
         //ConfigLocal.Editer.UpdateScoreNoteFlag         = true;
         //ConfigLocal.Editer.UpdateScoreNotePredictFlag  = true;
@@ -179,8 +173,8 @@ public static class EventManage
     private static void EventEditPanelResize()
     {
         ConfigLocal.Editer.UpdateScoreLayoutFlag = true;
-        ConfigLocal.Editer.UpdateCameraFlag      = true;
-        ConfigLocal.Editer.UpdateScoreLineFlag   = true;
+        ConfigLocal.Editer.UpdateCameraFlag = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag = true;
         ConfigLocal.Editer.UpdateScoreHeaderFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
@@ -192,10 +186,10 @@ public static class EventManage
     public static void EventEditItemResize()
     {
         ConfigLocal.Editer.UpdateScoreLayoutFlag = true;
-        ConfigLocal.Editer.UpdateCameraFlag      = true;
-        ConfigLocal.Editer.UpdateScoreLineFlag   = true;
+        ConfigLocal.Editer.UpdateCameraFlag = true;
+        ConfigLocal.Editer.UpdateScoreLineFlag = true;
         ConfigLocal.Editer.UpdateScoreHeaderFlag = true;
-        ConfigLocal.Editer.UpdateScoreFlag       = true;
+        ConfigLocal.Editer.UpdateScoreFlag = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -378,10 +372,7 @@ public static class EventManage
     /// <summary>
     /// Resumeクリアリクエスト
     /// </summary>
-    public static void EventEditClearResume()
-    {
-        ResumeRequestQueue.Enqueue( EResumeAction.Clear );
-    }
+    public static void EventEditClearResume() => ResumeRequestQueue.Enqueue( EResumeAction.Clear );
 
     #endregion
 
@@ -405,11 +396,9 @@ public static class EventManage
     /// <summary>
     /// プレイヤー描画モード更新リクエスト
     /// </summary>
-    public static void EventPlayerUpdateSufaceMode()
-    {
+    public static void EventPlayerUpdateSufaceMode() =>
         // 描画ループ処理内で更新フラグを見て更新
         ConfigLocal.Player.UpdateSurfaceModoFlag = true;
-    }
 
     /// <summary>
     /// プレイヤースクリーンサイズ更新通知
@@ -429,10 +418,7 @@ public static class EventManage
     /// <summary>
     /// Playerスコア更新リクエスト
     /// </summary>
-    public static void EventPlayerUpdateScore()
-    {
-        ConfigLocal.Player.UpdateScoreFlag = true;
-    }
+    public static void EventPlayerUpdateScore() => ConfigLocal.Player.UpdateScoreFlag = true;
 
     /// <summary>
     /// Player表示切替リクエスト

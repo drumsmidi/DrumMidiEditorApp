@@ -1,20 +1,17 @@
-﻿using Microsoft.UI.Dispatching;
+﻿using System;
+using System.Collections.Generic;
+using DrumMidiClassLibrary.pLog;
+using DrumMidiClassLibrary.pUtil;
+using Microsoft.Graphics.Canvas;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage.Pickers;
 using Windows.UI;
 using WinRT.Interop;
-
-using Microsoft.Graphics.Canvas;
-
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pUtil;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using DrumMidiClassLibrary.pUserControl;
 
 namespace DrumMidiClassLibrary.pWinUI;
 
@@ -34,7 +31,7 @@ public static class XamlHelper
         };
 
         var result = await cd.ShowAsync();
-            
+
         if ( result == ContentDialogResult.None )
         {
             aAction();
@@ -53,7 +50,7 @@ public static class XamlHelper
         };
 
         var result = await cd.ShowAsync();
-            
+
         if ( result == ContentDialogResult.Primary )
         {
             aAction();
@@ -83,7 +80,7 @@ public static class XamlHelper
         };
 
         var result = await cd.ShowAsync();
-            
+
         if ( result == ContentDialogResult.Primary )
         {
             aAction();
@@ -135,8 +132,8 @@ public static class XamlHelper
         };
 
         // 適用ボタン押下時の処理
-        apply_button.Click += ( sender, args ) => 
-        { 
+        apply_button.Click += ( sender, args ) =>
+        {
             aAction( color_picker.Color );
             flyout.Hide();
 
@@ -226,7 +223,7 @@ public static class XamlHelper
             };
 
             // ファイルタイプのフィルタ設定
-            aFileTypeFilters.ForEach( item => picker.FileTypeFilter.Add( item ) );
+            aFileTypeFilters.ForEach( picker.FileTypeFilter.Add );
 
             if ( picker.FileTypeFilter.Count == 0 )
             {
@@ -241,7 +238,7 @@ public static class XamlHelper
 
             // ファイル選択
             var file = await picker.PickSingleFileAsync();
-            
+
             if ( file != null )
             {
                 aAction( new( file.Path ) );
@@ -288,19 +285,19 @@ public static class XamlHelper
 
             // ファイルタイプのフィルタ設定
             if ( aFileTypeChoices.Count > 0 )
-            { 
+            {
                 picker.FileTypeChoices.Add( "", aFileTypeChoices );
             }
             else
             {
-                picker.FileTypeChoices.Add( "", new List<string>(){ "*" } );
+                picker.FileTypeChoices.Add( "", ["*"] );
             }
 
             InitializeWithWindow.Initialize( picker, WindowNative.GetWindowHandle( aOwnerWindow ) );
 
             // ファイル選択
             var file = await picker.PickSaveFileAsync();
-            
+
             if ( file != null )
             {
                 aAction( new( file.Path ) );
@@ -344,7 +341,7 @@ public static class XamlHelper
 
         // 外枠
         if ( aFormatRect.Line.LineSize > 0 )
-        { 
+        {
             aGraphics.DrawRectangle
                 (
                     aDrawRect,
@@ -366,9 +363,9 @@ public static class XamlHelper
     /// <returns>True:スレッドアクセスあり、False:スレッドアクセスなし</returns>
     public static bool DispatcherQueueHasThreadAccess( UserControl aUserControl, Action aAction )
     {
-		if ( !aUserControl.DispatcherQueue.HasThreadAccess )
+        if ( !aUserControl.DispatcherQueue.HasThreadAccess )
         {
-            aUserControl.DispatcherQueue.TryEnqueue( DispatcherQueuePriority.Normal, () => aAction() );
+            _ = aUserControl.DispatcherQueue.TryEnqueue( DispatcherQueuePriority.Normal, () => aAction() );
             return false;
         }
         return true;
@@ -383,17 +380,17 @@ public static class XamlHelper
         // NumberBox の入力書式設定
 
         return new DecimalFormatter
+        {
+            IntegerDigits = aIntegerDigits,
+            FractionDigits = aFractionDigits,
+            NumberRounder = new IncrementNumberRounder
             {
-                IntegerDigits   = aIntegerDigits,
-                FractionDigits  = aFractionDigits,
-                NumberRounder   = new IncrementNumberRounder
-                {
-                    Increment           = aIncrement,
-                    RoundingAlgorithm   = RoundingAlgorithm.RoundHalfAwayFromZero,
-                },
-                IsGrouped       = true,
-                IsZeroSigned    = true,
-            };
+                Increment = aIncrement,
+                RoundingAlgorithm = RoundingAlgorithm.RoundHalfAwayFromZero,
+            },
+            IsGrouped = true,
+            IsZeroSigned = true,
+        };
     }
 
     /// <summary>
@@ -404,11 +401,11 @@ public static class XamlHelper
     /// <param name="args"></param>
     public static bool NumberBox_RequiredInputValidation( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		if ( double.IsNaN( args.NewValue ) )
-		{
-			sender.Value = args.OldValue;
+        if ( double.IsNaN( args.NewValue ) )
+        {
+            sender.Value = args.OldValue;
             return false;
-		}
+        }
         return true;
     }
 
@@ -422,8 +419,8 @@ public static class XamlHelper
     /// <returns>True:範囲内にある、False:範囲外にある</returns>
     public static bool CheckRange( in Point aMousePos, in Rect aRange )
     {
-        return (    aRange.Left <= aMousePos.X && aMousePos.X <= aRange.Right
-                 && aRange.Top  <= aMousePos.Y && aMousePos.Y <= aRange.Bottom );
+        return aRange.Left <= aMousePos.X && aMousePos.X <= aRange.Right
+                 && aRange.Top <= aMousePos.Y && aMousePos.Y <= aRange.Bottom;
     }
 
     /// <summary>

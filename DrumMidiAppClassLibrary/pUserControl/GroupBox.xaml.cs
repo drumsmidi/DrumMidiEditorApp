@@ -21,9 +21,9 @@ public sealed partial class GroupBox : UserControl
     public static readonly DependencyProperty HeaderProperty =
         DependencyProperty.Register
             (
-                "Header", 
-                typeof( string ), 
-                typeof( HGroup ), 
+                "Header",
+                typeof( string ),
+                typeof( HGroup ),
                 new PropertyMetadata( "Your Header", HeaderPropertyChangedCallback )
             );
 
@@ -43,17 +43,17 @@ public sealed partial class GroupBox : UserControl
 
     public object CustomContent
     {
-        get => (object)GetValue( CustomContentProperty );
+        get => GetValue( CustomContentProperty );
         set => SetValue( CustomContentProperty, value );
     }
 
     public static readonly DependencyProperty CustomContentProperty =
         DependencyProperty.Register
             (
-                "CustomContent", 
-                typeof( object ), 
-                typeof( HGroup ), 
-                new PropertyMetadata( null, PropertyChangedCallback ) 
+                "CustomContent",
+                typeof( object ),
+                typeof( HGroup ),
+                new PropertyMetadata( null, PropertyChangedCallback )
             );
 
     public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
@@ -68,8 +68,6 @@ public sealed partial class GroupBox : UserControl
 
     #endregion
 
-    private void HeaderTitle_LayoutUpdated( object sender, object ev )
-    {
-        _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
-    }
+    private void HeaderTitle_LayoutUpdated( object sender, object ev ) 
+        => _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
 }

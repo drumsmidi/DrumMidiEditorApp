@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pUtil;
 
@@ -10,14 +9,18 @@ namespace DrumMidiClassLibrary.pModel;
 /// <summary>
 /// チャンネル情報
 /// </summary>
-public class Channel : DisposeBaseClass
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aChannelNo">チャンネル番号(0-15)</param>
+public class Channel( byte aChannelNo ) : DisposeBaseClass
 {
     #region Member
 
     /// <summary>
     /// MIDIチャンネル番号(0-15)
     /// </summary>
-    public byte ChannelNo { get; private set; } = 0;
+    public byte ChannelNo { get; private set; } = aChannelNo;
 
     /// <summary>
     /// MidiMapSet
@@ -27,12 +30,12 @@ public class Channel : DisposeBaseClass
     /// <summary>
     /// NOTE情報リスト（検索キー、NOTE情報）
     /// </summary>
-    public SortedDictionary<int,InfoNote> NoteInfoList { get; private set; } = new();
+    public SortedDictionary<int, InfoNote> NoteInfoList { get; private set; } = [];
 
     /// <summary>
     /// 小節リスト（小節番号、小節情報）
     /// </summary>
-    public Dictionary<int,Measure> MeasureList { get; private set; } = new();
+    public Dictionary<int, Measure> MeasureList { get; private set; } = [];
 
     /// <summary>
     /// NOTEが存在する小節番号最大値
@@ -41,33 +44,24 @@ public class Channel : DisposeBaseClass
 
     #endregion
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aChannelNo">チャンネル番号(0-15)</param>
-    public Channel( byte aChannelNo )
-    {
-        ChannelNo = aChannelNo;
-    }
-
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 ClearAll();
-			}
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     #region Measure
@@ -77,14 +71,7 @@ public class Channel : DisposeBaseClass
     /// </summary>
     /// <param name="aMeasureNo">小節番号</param>
     /// <returns>取得：小節情報、未取得：null</returns>
-    public Measure? GetMeasure( int aMeasureNo )
-    {
-        if ( !MeasureList.TryGetValue( aMeasureNo, out var measure ) )
-        {
-            return null;
-        }
-        return measure;
-    }
+    public Measure? GetMeasure( int aMeasureNo ) => !MeasureList.TryGetValue( aMeasureNo, out var measure ) ? null : measure;
 
     #endregion
 
@@ -98,7 +85,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>True：あり、False：なし</returns>
     public bool IsNote( int aMidiMapKey, int aMeasureNo, int aNotePos )
-        => GetMeasure( aMeasureNo )?.IsNote( aMidiMapKey, aNotePos ) ?? false ;
+        => GetMeasure( aMeasureNo )?.IsNote( aMidiMapKey, aNotePos ) ?? false;
 
     /// <summary>
     /// NOTE情報取得
@@ -119,7 +106,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aVolume">音量（127基準）</param>
     /// <param name="aSelected">選択状態</param>
     public void AddNoteOn( int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aSelected )
-		=> AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, true, false, aSelected ) );
+        => AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, true, false, aSelected ) );
 
     /// <summary>
     /// NOTE情報追加
@@ -130,7 +117,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aVolume">音量（127基準）</param>
     /// <param name="aSelected">選択状態</param>
     public void AddNoteOff( int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aSelected )
-		=> AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, false, true, aSelected ) );
+        => AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, false, true, aSelected ) );
 
     /// <summary>
     /// NOTE情報追加
@@ -141,7 +128,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aVolume">音量（127基準）</param>
     /// <param name="aSelected">選択状態</param>
     public void AddNoteOffOn( int aMidiMapKey, int aMeasureNo, int aNoteNo, int aVolume, bool aSelected )
-		=> AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNoteNo, aVolume, true, true, aSelected ) );
+        => AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNoteNo, aVolume, true, true, aSelected ) );
 
     /// <summary>
     /// NOTE情報追加
@@ -154,7 +141,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aNoteOff">ノートOFF有無</param>
     /// <param name="aSelected">選択状態</param>
     public void AddNote( int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aNoteOn, bool aNoteOff, bool aSelected )
-		=> AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, aNoteOn, aNoteOff, aSelected ) );
+        => AddNote( new( ChannelNo, aMidiMapKey, aMeasureNo, aNotePos, aVolume, aNoteOn, aNoteOff, aSelected ) );
 
     /// <summary>
     /// NOTE情報追加
@@ -166,8 +153,8 @@ public class Channel : DisposeBaseClass
     /// <param name="aNoteOff">ノートOFF有無</param>
     /// <param name="aSelected">選択状態</param>
     public void AddNote( int aMidiMapKey, int aAbsoultNotePos, int aVolume, bool aNoteOn, bool aNoteOff, bool aSelected )
-		=> AddNote
-            ( 
+        => AddNote
+            (
                 new
                 (
                     ChannelNo,
@@ -177,8 +164,8 @@ public class Channel : DisposeBaseClass
                     aVolume,
                     aNoteOn,
                     aNoteOff,
-                    aSelected 
-                ) 
+                    aSelected
+                )
             );
 
     /// <summary>
@@ -187,13 +174,13 @@ public class Channel : DisposeBaseClass
     /// <param name="aInfo">NOTE情報</param>
     public void AddNote( InfoNote aInfo )
     {
-        NoteInfoList[ aInfo.SearchKey ] = aInfo;
+        NoteInfoList [ aInfo.SearchKey ] = aInfo;
 
         var measure = GetMeasure( aInfo.MeasureNo ) ?? new() ;
 
         measure.AddNote( aInfo );
 
-        MeasureList[ aInfo.MeasureNo ] = measure;
+        MeasureList [ aInfo.MeasureNo ] = measure;
 
         if ( MaxMeasureNo < aInfo.MeasureNo )
         {
@@ -220,7 +207,7 @@ public class Channel : DisposeBaseClass
     /// <returns>True：削除後 NOTE情報が0件、False：削除後 NOTE情報が1件以上</returns>
     public bool RemoveNote( InfoNote aInfo )
     {
-        NoteInfoList.Remove( aInfo.SearchKey );
+        _ = NoteInfoList.Remove( aInfo.SearchKey );
 
         var measure = GetMeasure( aInfo.MeasureNo );
 
@@ -228,7 +215,7 @@ public class Channel : DisposeBaseClass
         {
             if ( measure.RemoveNote( aInfo.MidiMapKey, aInfo.NotePos ) )
             {
-                MeasureList.Remove( aInfo.MeasureNo );
+                _ = MeasureList.Remove( aInfo.MeasureNo );
             }
         }
         return NoteInfoList.Count == 0;
@@ -272,16 +259,16 @@ public class Channel : DisposeBaseClass
     /// データクリア（小節/NOTE情報）
     /// </summary>
     public void ClearAll()
-	{
-		foreach ( var de in NoteInfoList )
-		{
-			de.Value.Dispose();
-		}
-		NoteInfoList.Clear();
+    {
+        foreach ( var de in NoteInfoList )
+        {
+            de.Value.Dispose();
+        }
+        NoteInfoList.Clear();
 
         foreach ( var obj in MeasureList )
-	    {
-		    obj.Value.Dispose();
+        {
+            obj.Value.Dispose();
         }
         MeasureList.Clear();
 
@@ -298,12 +285,13 @@ public class Channel : DisposeBaseClass
 
         foreach ( var info in NoteInfoList.Values )
         {
-            if ( !items.ContainsKey( info.MidiMapKey ) )
+            if ( !items.TryGetValue( info.MidiMapKey, out var value ) )
             {
-                items[ info.MidiMapKey ] = 0;
+                value = 0;
+                items [ info.MidiMapKey ] = value;
             }
 
-            items[ info.MidiMapKey ]++;
+            items [ info.MidiMapKey ] = ++value;
         }
 
         return items;
@@ -315,7 +303,7 @@ public class Channel : DisposeBaseClass
     /// <param name="aMidiMapKeyBef">変更前MidiMapキー</param>
     /// <param name="aMidiMapKeyAft">変更後MidiMapキー</param>
     public void KeyChange( int aMidiMapKeyBef, int aMidiMapKeyAft )
-	{
+    {
         if ( aMidiMapKeyBef == aMidiMapKeyAft )
         {
             return;
@@ -323,28 +311,28 @@ public class Channel : DisposeBaseClass
 
         for ( var measure_no = 0; measure_no <= MaxMeasureNo; measure_no++ )
         {
-			var measure = GetMeasure( measure_no );
+            var measure = GetMeasure( measure_no );
 
             if ( measure == null )
-			{
-				continue;
-			}
+            {
+                continue;
+            }
 
             var measure_line = measure.NoteLine( aMidiMapKeyBef );
 
-			if ( measure_line != null )
-			{
+            if ( measure_line != null )
+            {
                 var del = new List<int>();
 
-				foreach ( var info in measure_line.InfoStates )
-				{
-					AddNote( aMidiMapKeyAft, measure_no, info.Key, info.Value.Volume, info.Value.NoteOn, info.Value.NoteOff, false );
+                foreach ( var info in measure_line.InfoStates )
+                {
+                    AddNote( aMidiMapKeyAft, measure_no, info.Key, info.Value.Volume, info.Value.NoteOn, info.Value.NoteOff, false );
                     del.Add( info.Value.NotePos );
-				}
+                }
 
                 foreach ( var note_pos in del )
                 {
-                    RemoveNote( aMidiMapKeyBef, measure_no, note_pos );
+                    _ = RemoveNote( aMidiMapKeyBef, measure_no, note_pos );
                 }
             }
         }
@@ -381,7 +369,7 @@ public class Channel : DisposeBaseClass
             data += $"{info.MidiMapKey}:";
         }
 
-        return data.Length == 0 ? "NONE" : data.Remove( data.Length - 1 ) ;
+        return data.Length == 0 ? "NONE" : data.Remove( data.Length - 1 );
     }
 
     /// <summary>
@@ -395,7 +383,7 @@ public class Channel : DisposeBaseClass
 
         var nextInfo = NoteInfoList.FirstOrDefault( item => item.Key > aInfo.SearchKey ).Value;
 
-        if ( nextInfo?.NoteOff ?? false && aInfo.MidiMapKey == nextInfo.MidiMapKey )
+        if ( nextInfo?.NoteOff ?? ( false && aInfo.MidiMapKey == nextInfo.MidiMapKey ) )
         {
             distance = nextInfo.AbsoluteNotePos - aInfo.AbsoluteNotePos;
         }

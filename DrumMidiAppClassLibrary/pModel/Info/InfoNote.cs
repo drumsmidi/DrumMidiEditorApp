@@ -1,5 +1,4 @@
 ﻿using System;
-
 using DrumMidiClassLibrary.pConfig;
 
 namespace DrumMidiClassLibrary.pModel;
@@ -40,16 +39,16 @@ public class InfoNote : InfoBase
     /// 検索キー（MidiMapキー✕1,000,000＋小節番号✕1,000＋小節内ノート位置）
     /// </summary>
     public override int SearchKey
-        => MidiMapKey * 1000000 + base.MeasureNo * 1000 + base.NotePos;
+        => ( MidiMapKey * 1000000 ) + ( MeasureNo * 1000 ) + NotePos;
 
     #endregion
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    private InfoNote() 
-        : base( 0, 0, false ) 
-    { 
+    private InfoNote()
+        : base( 0, 0, false )
+    {
     }
 
     /// <summary>
@@ -64,10 +63,10 @@ public class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, bool aNoteOn, bool aNoteOff )
         : base( aMeasureNo, aNotePos, false )
     {
-        ChannelNo  = aChannelNo;
+        ChannelNo = aChannelNo;
         MidiMapKey = aMidiMapKey;
-        NoteOn     = aNoteOn;
-        NoteOff    = aNoteOff;
+        NoteOn = aNoteOn;
+        NoteOff = aNoteOff;
     }
 
     /// <summary>
@@ -83,11 +82,11 @@ public class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aNoteOn, bool aNoteOff )
         : base( aMeasureNo, aNotePos, false )
     {
-        ChannelNo  = aChannelNo;
+        ChannelNo = aChannelNo;
         MidiMapKey = aMidiMapKey;
-        Volume     = aVolume;
-        NoteOn     = aNoteOn;
-        NoteOff    = aNoteOff;
+        Volume = aVolume;
+        NoteOn = aNoteOn;
+        NoteOff = aNoteOff;
     }
 
     /// <summary>
@@ -104,11 +103,11 @@ public class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aNoteOn, bool aNoteOff, bool aSelected )
         : base( aMeasureNo, aNotePos, aSelected )
     {
-        ChannelNo  = aChannelNo;
+        ChannelNo = aChannelNo;
         MidiMapKey = aMidiMapKey;
-        Volume     = aVolume;
-        NoteOn     = aNoteOn;
-        NoteOff    = aNoteOff;
+        Volume = aVolume;
+        NoteOn = aNoteOn;
+        NoteOff = aNoteOff;
     }
 
     /// <summary>
@@ -120,15 +119,15 @@ public class InfoNote : InfoBase
         base.Set( aInfo );
 
         if ( aInfo is not InfoNote info )
-        { 
+        {
             throw new InvalidCastException();
         }
 
-        ChannelNo  = info.ChannelNo;
+        ChannelNo = info.ChannelNo;
         MidiMapKey = info.MidiMapKey;
-        Volume     = info.Volume;
-        NoteOn     = info.NoteOn;
-        NoteOff    = info.NoteOff;
+        Volume = info.Volume;
+        NoteOn = info.NoteOn;
+        NoteOff = info.NoteOff;
     }
 
     /// <summary>
@@ -139,14 +138,14 @@ public class InfoNote : InfoBase
     {
         return new InfoNote()
         {
-            MeasureNo   = base.MeasureNo,
-            NotePos     = base.NotePos,
-            Selected    = base.Selected,
-            ChannelNo   = ChannelNo,
-            MidiMapKey  = MidiMapKey,
-            Volume      = Volume,
-            NoteOn      = NoteOn,
-            NoteOff     = NoteOff,
+            MeasureNo = MeasureNo,
+            NotePos = NotePos,
+            Selected = Selected,
+            ChannelNo = ChannelNo,
+            MidiMapKey = MidiMapKey,
+            Volume = Volume,
+            NoteOn = NoteOn,
+            NoteOff = NoteOff,
         };
     }
 }

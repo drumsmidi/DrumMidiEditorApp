@@ -1,10 +1,9 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System.Text.Json.Serialization;
-using Windows.UI;
-
+﻿using System.Text.Json.Serialization;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas.Text;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -31,17 +30,20 @@ public class ConfigPlayerScore
     /// BPM描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmRect { get; set; } = new()
+    public FormatRect BpmRect
     {
-        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 14F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 14F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
+                                FontFamily = "system-ui",
+                                FontSize = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -55,17 +57,20 @@ public class ConfigPlayerScore
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowRect { get; set; } = new()
+    public FormatRect BpmNowRect
     {
-        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
+                                FontFamily = "system-ui",
+                                FontSize = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -83,17 +88,20 @@ public class ConfigPlayerScore
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoRect { get; set; } = new()
+    public FormatRect MeasureNoRect
     {
-        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
+                                FontFamily = "system-ui",
+                                FontSize = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -117,10 +125,13 @@ public class ConfigPlayerScore
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatLine HeaderLine { get; set; } = new()
+    public FormatLine HeaderLine
     {
-        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize    = 1.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+        LineSize = 1.0F,
     };
 
     #endregion
@@ -171,80 +182,104 @@ public class ConfigPlayerScore
     /// カーソルペン
     /// </summary>
     [JsonInclude]
-    public FormatLine CursolLine { get; set; } = new()
+    public FormatLine CursolLine
     {
-        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
-        LineSize    = 1.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize = 1.0F,
     };
 
     /// <summary>
     /// 小節128分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure128Line { get; set; } = new()
+    public FormatLine SheetMeasure128Line
     {
-        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize    = 1.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+        LineSize = 1.0F,
     };
 
     /// <summary>
     /// 小節64分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure064Line { get; set; } = new()
+    public FormatLine SheetMeasure064Line
     {
-        LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
-        LineSize    = 0.5F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 70, 70, 70 ) ),
+        LineSize = 0.5F,
     };
 
     /// <summary>
     /// 小節32分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure032Line { get; set; } = new()
+    public FormatLine SheetMeasure032Line
     {
-        LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-        LineSize    = 0.3F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+        LineSize = 0.3F,
     };
 
     /// <summary>
     /// 小節16分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure016Line { get; set; } = new()
+    public FormatLine SheetMeasure016Line
     {
-        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+        LineSize = 0.0F,
     };
 
     /// <summary>
     /// 小節8分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure008Line { get; set; } = new()
+    public FormatLine SheetMeasure008Line
     {
-        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+        LineSize = 0.0F,
     };
 
     /// <summary>
     /// 小節4分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure004Line { get; set; } = new()
+    public FormatLine SheetMeasure004Line
     {
-        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize = 0.0F,
     };
 
     /// <summary>
     /// 小節1分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure001Line { get; set; } = new()
+    public FormatLine SheetMeasure001Line
     {
-        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-        LineSize    = 0.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        LineSize = 0.0F,
     };
 
     #endregion

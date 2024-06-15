@@ -1,7 +1,7 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System;
+﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace DrumMidiClassLibrary.pIO.pJson;
 
@@ -10,7 +10,7 @@ namespace DrumMidiClassLibrary.pIO.pJson;
 /// </summary>
 internal class CanvasTextFormatConverter : JsonConverter<CanvasTextFormat>
 {
-    public override bool CanConvert( Type aTypeToConvert ) 
+    public override bool CanConvert( Type aTypeToConvert )
         => typeof( CanvasTextFormat ).IsAssignableFrom( aTypeToConvert );
 
     public override CanvasTextFormat Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
@@ -23,7 +23,7 @@ internal class CanvasTextFormatConverter : JsonConverter<CanvasTextFormat>
             {
                 var prop = aReader.GetString();
 
-                aReader.Read();
+                _ = aReader.Read();
 
                 switch ( prop )
                 {

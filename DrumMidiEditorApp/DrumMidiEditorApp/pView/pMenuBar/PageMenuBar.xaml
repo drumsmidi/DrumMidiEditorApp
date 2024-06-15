@@ -77,6 +77,7 @@
         <Grid Grid.Row="0" Grid.Column="1">
             
             <ComboBox x:Name="_ChannelNoComboBox" x:Uid="InputChannelNo"
+                IsEnabled="False"
                 ItemsSource="{x:Bind ChannelNoList, Mode=OneTime}"
                 SelectedValue="{x:Bind ChannelDrum, Mode=OneTime}"
                 SelectionChanged="ChannelNoComboBox_SelectionChanged" />

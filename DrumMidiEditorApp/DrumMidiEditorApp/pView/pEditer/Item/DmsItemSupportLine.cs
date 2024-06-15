@@ -1,11 +1,9 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
-using Windows.Foundation;
-
+﻿using System;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -53,10 +51,10 @@ public class DmsItemSupportLine : DisposeBaseClass
     /// <param name="aHeight">サポート線の高さ</param>
     public void SetNoteRect( float aX, float aY, float aWidth, float aHeight )
     {
-        _NoteColumnRect.X		= aX;
-        _NoteColumnRect.Y		= aY;
-        _NoteColumnRect.Width	= aWidth;
-        _NoteColumnRect.Height	= aHeight;
+        _NoteColumnRect.X       = aX;
+        _NoteColumnRect.Y       = aY;
+        _NoteColumnRect.Width   = aWidth;
+        _NoteColumnRect.Height  = aHeight;
     }
 
     /// <summary>
@@ -65,8 +63,8 @@ public class DmsItemSupportLine : DisposeBaseClass
     /// <param name="aNotePosX">ノート位置（絶対値）</param>
     public void SetStartPos( int aNotePosX )
     {
-        _NotePosXStart     = aNotePosX;
-        _NotePosXEnd       = aNotePosX;
+        _NotePosXStart  = aNotePosX;
+        _NotePosXEnd    = aNotePosX;
 
         _Display = true;
     }
@@ -75,10 +73,7 @@ public class DmsItemSupportLine : DisposeBaseClass
     /// サポート線終了位置
     /// </summary>
     /// <param name="aNotePosX">ノート位置（絶対値）</param>
-    public void SetEndPos( int aNotePosX )
-    {
-        _NotePosXEnd = aNotePosX;
-    }
+    public void SetEndPos( int aNotePosX ) => _NotePosXEnd = aNotePosX;
 
     /// <summary>
     /// サポート線表示OFF
@@ -106,7 +101,7 @@ public class DmsItemSupportLine : DisposeBaseClass
 
         if ( interval_x == 0 )
         {
-            var x = _NoteColumnRect._x + ( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width;
+            var x = _NoteColumnRect._x + (( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width);
 
             aGraphics.DrawLine
                 (
@@ -129,7 +124,7 @@ public class DmsItemSupportLine : DisposeBaseClass
 
             for ( var i = s_note; i <= e_note; i += interval_x )
             {
-                x = _NoteColumnRect._x + ( i - aNotePosX ) * _NoteColumnRect._width;
+                x = _NoteColumnRect._x + ( ( i - aNotePosX ) * _NoteColumnRect._width );
 
                 aGraphics.DrawLine
                     (
@@ -143,4 +138,4 @@ public class DmsItemSupportLine : DisposeBaseClass
             }
         }
     }
-} 
+}

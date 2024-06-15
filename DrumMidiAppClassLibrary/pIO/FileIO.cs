@@ -47,7 +47,7 @@ public static class FileIO
             }
 
             // フォルダ作成
-            targetFolderList.ForEach( folder => CreateFolder( folder ) );
+            targetFolderList.ForEach( CreateFolder );
         }
         catch ( Exception e )
         {
@@ -68,7 +68,7 @@ public static class FileIO
                 return;
             }
 
-            aFolderPath.CreateDirectory();
+            _ = aFolderPath.CreateDirectory();
 
             Log.Info( $"Folder creation successful [{aFolderPath.AbsoulteFolderPath}]" );
         }
@@ -138,7 +138,7 @@ public static class FileIO
     /// <returns>True:読込成功、False:読込失敗</returns>
     public static bool LoadScore( GeneralPath aFilePath, out Score aScore )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         aScore = new();
 
@@ -183,7 +183,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveScore( GeneralPath aFilePath, Score aScore )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
@@ -208,7 +208,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveMidi( GeneralPath aFilePath, Score aScore )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
@@ -335,7 +335,7 @@ public static class FileIO
     /// <returns>True:読込成功、False:読込失敗</returns>
     public static bool LoadMidiMapSet( GeneralPath aFilePath, out MidiMapSet aMidiMapSet )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
@@ -362,7 +362,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveMidiMapSet( GeneralPath aFilePath, MidiMapSet aMidiMapSet )
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
@@ -388,7 +388,7 @@ public static class FileIO
     {
         // TODO: この辺は改良の余地あり。
 
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {

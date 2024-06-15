@@ -1,9 +1,7 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppLifecycle;
-
-using DrumMidiClassLibrary.pLog;
-
+﻿using DrumMidiClassLibrary.pLog;
 using DrumMidiEditorApp.pView;
+using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 
 namespace DrumMidiEditorApp;
 

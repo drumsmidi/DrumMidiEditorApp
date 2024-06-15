@@ -1,5 +1,4 @@
 ﻿using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pView.pEditer;
 
@@ -37,12 +36,12 @@ internal class ResumeEditNoteRange : DisposeBaseClass, IResume
         _RangeBef = aRangeBef.Clone();
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 _RangeRef = null;
                 _RangeAft = null;
@@ -53,10 +52,10 @@ internal class ResumeEditNoteRange : DisposeBaseClass, IResume
 
             _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     public void Undo()
@@ -86,8 +85,5 @@ internal class ResumeEditNoteRange : DisposeBaseClass, IResume
     /// <summary>
     /// Undo/Redo共通処理
     /// </summary>
-    private void Update()
-    {
-        EventManage.EventEditUpdateRangeSelect( _RangeRef?.Selected ?? false );
-    }
+    private void Update() => EventManage.EventEditUpdateRangeSelect( _RangeRef?.Selected ?? false );
 }

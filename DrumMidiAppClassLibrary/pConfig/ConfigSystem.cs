@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Windows.UI;
-
 using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Windows.UI;
 
 namespace DrumMidiClassLibrary.pConfig;
 
@@ -219,7 +218,7 @@ public class ConfigSystem
     /// ドキュメントベースフォルダパス
     /// </summary>
     [JsonInclude]
-    public GeneralPath FolderDocBase { get; private set; } = new( $"{AppDirectory.AppBaseDirectory}\\");
+    public GeneralPath FolderDocBase { get; private set; } = new( $"{AppDirectory.AppBaseDirectory}\\" );
 
     /// <summary>
     /// Configフォルダ（アプリの設定ファイル格納）
@@ -233,7 +232,7 @@ public class ConfigSystem
     /// </summary>
     [JsonIgnore]
     public GeneralPath FolderModel
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder("Model\\") );
+        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model\\" ) );
 
     /// <summary>
     /// Bgmフォルダ（BGM格納）
@@ -337,58 +336,76 @@ public class ConfigSystem
     /// Bgm開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportBgm { get; private set; } = new()
+    public List<string> SupportBgm
     {
+        get; private set;
+    } =
+    [
         ".mp3",
         ".wav",
-    };
+    ];
 
     /// <summary>
     /// Dms保存フィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportDmsSave { get; private set; } = new()
+    public List<string> SupportDmsSave
     {
+        get; private set;
+    } =
+    [
         ".dms",
-    };
+    ];
 
     /// <summary>
     /// Dms開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportDmsOpen { get; private set; } = new()
+    public List<string> SupportDmsOpen
     {
+        get; private set;
+    } =
+    [
         ".dms",
         ".mid",
         ".dtx",
-    };
+    ];
 
     /// <summary>
     /// MidiMapSetフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportMidiMapSet { get; private set; } = new()
+    public List<string> SupportMidiMapSet
     {
+        get; private set;
+    } =
+    [
         ".dms",
-    };
+    ];
 
     /// <summary>
     /// Midi開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportMidi { get; private set; } = new()
+    public List<string> SupportMidi
     {
+        get; private set;
+    } =
+    [
         ".mid",
-    };
+    ];
 
     /// <summary>
     /// Video保存フィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportVideo { get; private set; } = new()
+    public List<string> SupportVideo
     {
+        get; private set;
+    } =
+    [
         ".mp4",
-    };
+    ];
 
     #endregion
 }

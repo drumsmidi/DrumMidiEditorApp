@@ -8,11 +8,10 @@ using DrumMidiClassLibrary.pIO.pVideo;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pView;
 
-namespace DrumMidiEditerApp.pIO;
+namespace DrumMidiEditorApp.pIO;
 
 /// <summary>
 /// ファイル入出力
@@ -25,36 +24,36 @@ public static class FileIO
     /// 設定ファイル読込
     /// </summary>
     /// <returns>Trueのみ</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>" )]
     public static bool LoadConfig()
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         var path = new GeneralPath( Config.System.FolderConfig );
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
-        Config.System = LoadConfig<ConfigSystem>( path ) ?? Config.System ;
+        Config.System = LoadConfig<ConfigSystem>( path ) ?? Config.System;
 
         // ConfigMedia
         path.FileName = Config.System.FileNameConfigMedia;
-        Config.Media = LoadConfig<ConfigMedia>( path ) ?? Config.Media ;
+        Config.Media = LoadConfig<ConfigMedia>( path ) ?? Config.Media;
 
         // ConfigEditer
         path.FileName = Config.System.FileNameConfigEditer;
-        ConfigLocal.Editer = LoadConfig<ConfigEditer>( path ) ?? ConfigLocal.Editer ;
+        ConfigLocal.Editer = LoadConfig<ConfigEditer>( path ) ?? ConfigLocal.Editer;
 
         // ConfigPlayer
         path.FileName = Config.System.FileNameConfigPlayer;
-        ConfigLocal.Player = LoadConfig<ConfigPlayer>( path ) ?? ConfigLocal.Player ;
+        ConfigLocal.Player = LoadConfig<ConfigPlayer>( path ) ?? ConfigLocal.Player;
 
         // ConfigScore
         path.FileName = Config.System.FileNameConfigScore;
-        ConfigLocal.Score = LoadConfig<ConfigScore>( path ) ?? ConfigLocal.Score ;
+        ConfigLocal.Score = LoadConfig<ConfigScore>( path ) ?? ConfigLocal.Score;
 
         // ConfigEqualizer
         path.FileName = Config.System.FileNameConfigEqualizer;
-        ConfigLocal.Equalizer = LoadConfig<ConfigEqualizer>( path ) ?? ConfigLocal.Equalizer ;
+        ConfigLocal.Equalizer = LoadConfig<ConfigEqualizer>( path ) ?? ConfigLocal.Equalizer;
 
         // ConfigScale
         path.FileName = Config.System.FileNameConfigScale;
@@ -76,10 +75,10 @@ public static class FileIO
     /// 設定ファイル保存
     /// </summary>
     /// <returns>Trueのみ</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>" )]
     public static bool SaveConfig()
     {
-		using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( Log.GetThisMethodName );
 
         // サブフォルダ作成
         DrumMidiClassLibrary.pIO.FileIO.DocumentFolderStructure();
@@ -88,31 +87,31 @@ public static class FileIO
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
-        SaveConfig<ConfigSystem>( path, Config.System );
+        SaveConfig( path, Config.System );
 
         // ConfigMedia
         path.FileName = Config.System.FileNameConfigMedia;
-        SaveConfig<ConfigMedia>( path, Config.Media );
+        SaveConfig( path, Config.Media );
 
         // ConfigEditer
         path.FileName = Config.System.FileNameConfigEditer;
-        SaveConfig<ConfigEditer>( path, ConfigLocal.Editer );
+        SaveConfig( path, ConfigLocal.Editer );
 
         // ConfigPlayer
         path.FileName = Config.System.FileNameConfigPlayer;
-        SaveConfig<ConfigPlayer>( path, ConfigLocal.Player );
+        SaveConfig( path, ConfigLocal.Player );
 
         // ConfigScore
         path.FileName = Config.System.FileNameConfigScore;
-        SaveConfig<ConfigScore>( path, ConfigLocal.Score );
+        SaveConfig( path, ConfigLocal.Score );
 
         // ConfigEqualizer
         path.FileName = Config.System.FileNameConfigEqualizer;
-        SaveConfig<ConfigEqualizer>( path, ConfigLocal.Equalizer );
+        SaveConfig( path, ConfigLocal.Equalizer );
 
         // ConfigScale
         path.FileName = Config.System.FileNameConfigScale;
-        SaveConfig<ConfigScale>( path, ConfigLocal.Scale );
+        SaveConfig( path, ConfigLocal.Scale );
 
         return true;
     }
@@ -124,7 +123,7 @@ public static class FileIO
     /// <param name="aGeneralPath">出力ファイルパス</param>
     /// <param name="aGeneralPath">出力Configオブジェクト</param>
     private static void SaveConfig<T>( GeneralPath aGeneralPath, T aConfig ) where T : class
-        => DrumMidiClassLibrary.pIO.FileIO.SaveConfig<T>( aGeneralPath, aConfig );
+        => DrumMidiClassLibrary.pIO.FileIO.SaveConfig( aGeneralPath, aConfig );
 
     #endregion
 
@@ -162,7 +161,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static async void SaveVideoAsync( GeneralPath aFilePath )
     {
-	    using var _ = new LogBlock( Log.GetThisMethodName );
+        _ = new LogBlock( Log.GetThisMethodName );
 
         try
         {
@@ -182,10 +181,10 @@ public static class FileIO
             using var mp4 = new Mp4IO();
 
             var bmp = mp4.Open
-                ( 
-                    aFilePath, 
-                    mp4_codec, 
-                    fps, 
+                (
+                    aFilePath,
+                    mp4_codec,
+                    fps,
                     (int)frameSize.Size.Width,
                     (int)frameSize.Size.Height
                 );
@@ -202,14 +201,14 @@ public static class FileIO
 
             await Task.Run
                 (
-                    () => 
-                    { 
+                    () =>
+                    {
                         for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
                         {
                             if ( log_cnt++ % fps == 0 )
-                            { 
+                            {
                                 ControlAccess.PageStatusBar?.ReloadProgressBar( time * 100 / DmsControl.EndPlayTime );
-                                Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time*100/DmsControl.EndPlayTime, 2 )}%)", true );
+                                Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time * 100 / DmsControl.EndPlayTime, 2 )}%)", true );
                             }
 
                             using var frame = ControlAccess.UCPlayerPanel?.GetFrame( time );
@@ -233,7 +232,7 @@ public static class FileIO
 
                             bmp.UnlockBits( bmpData );
 
-                            mp4.AddFrame();
+                            _ = mp4.AddFrame();
                         }
 
                         Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );

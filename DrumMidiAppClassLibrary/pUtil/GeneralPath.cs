@@ -36,7 +36,9 @@ public class GeneralPath
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public GeneralPath() {}
+    public GeneralPath()
+    {
+    }
 
     /// <summary>
     /// コンストラクタ
@@ -73,7 +75,7 @@ public class GeneralPath
     /// ファイル絶対パスの長さ
     /// </summary>
     [JsonIgnore]
-    public int Length => _FullPath?.Length ?? 0 ;
+    public int Length => _FullPath?.Length ?? 0;
 
     /// <summary>
     /// アプレケーション起動ディレクトリパス
@@ -92,7 +94,7 @@ public class GeneralPath
     /// </summary>
     [JsonInclude]
     public string AbsoulteFilePath
-    { 
+    {
         get => _FullPath;
         set => _FullPath = Path.GetFullPath( ConvertPath( value ), _BasePath );
     }
@@ -101,30 +103,30 @@ public class GeneralPath
     /// ファイル相対パス
     /// </summary>
     [JsonIgnore]
-    public string RelativeFilePath 
+    public string RelativeFilePath
         => _FullPath.Equals( string.Empty ) ? string.Empty : Path.GetRelativePath( _BasePath, _FullPath );
 
     /// <summary>
     /// ディレクトリ絶対パス
     /// </summary>
     [JsonIgnore]
-    public string AbsoulteFolderPath 
-        => Path.GetDirectoryName( AbsoulteFilePath ) ?? string.Empty ;
+    public string AbsoulteFolderPath
+        => Path.GetDirectoryName( AbsoulteFilePath ) ?? string.Empty;
 
     /// <summary>
     /// ディレクトリ相対パス
     /// </summary>
     [JsonIgnore]
-    public string RelativeFolderPath 
-        => Path.GetDirectoryName( RelativeFilePath ) ?? string.Empty ;
+    public string RelativeFolderPath
+        => Path.GetDirectoryName( RelativeFilePath ) ?? string.Empty;
 
     /// <summary>
     /// 拡張子ありファイル名
     /// </summary>
     [JsonIgnore]
-    public string FileName 
+    public string FileName
     {
-        get => Path.GetFileName( _FullPath ) ?? string.Empty ;
+        get => Path.GetFileName( _FullPath ) ?? string.Empty;
         set => _FullPath = $"{AbsoulteFolderPath}{_ConvertAft}{ConvertPath( value )}";
     }
 
@@ -132,18 +134,18 @@ public class GeneralPath
     /// 拡張子なしファイル名
     /// </summary>
     [JsonIgnore]
-    public string FileNameWithoutExtension 
+    public string FileNameWithoutExtension
         => _FullPath.Equals( string.Empty ) ? string.Empty : Path.GetFileNameWithoutExtension( _FullPath );
 
     /// <summary>
     /// ドット含む拡張子
     /// </summary>
     [JsonIgnore]
-    public string Extension 
-	{
-		get => Path.GetExtension( _FullPath ) ?? string.Empty ;
-		set => _FullPath = $"{AbsoulteFolderPath}{_ConvertAft}{FileNameWithoutExtension}{ConvertPath( value )}";
-	}
+    public string Extension
+    {
+        get => Path.GetExtension( _FullPath ) ?? string.Empty;
+        set => _FullPath = $"{AbsoulteFolderPath}{_ConvertAft}{FileNameWithoutExtension}{ConvertPath( value )}";
+    }
 
     /// <summary>
     /// ファイル存在チェック

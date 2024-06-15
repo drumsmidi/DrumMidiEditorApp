@@ -1,12 +1,10 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using System;
-
+﻿using System;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -19,15 +17,15 @@ public sealed partial class PageConfigEditer : Page
     /// </summary>
     private ConfigEditer DrawSet => ConfigLocal.Editer;
 
-	/// <summary>
-	/// Media設定
-	/// </summary>
-	//private ConfigMedia ConfigMedia => Config.Media;
+    /// <summary>
+    /// Media設定
+    /// </summary>
+    //private ConfigMedia ConfigMedia => Config.Media;
 
-	/// <summary>
-	/// プレイヤー描画モードリスト
-	/// </summary>
-	//private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
+    /// <summary>
+    /// プレイヤー描画モードリスト
+    /// </summary>
+    //private readonly ObservableCollection<string> _PlayerSurfaceModeList = new();
 
     #endregion
 
@@ -36,40 +34,40 @@ public sealed partial class PageConfigEditer : Page
     /// </summary>
     public PageConfigEditer()
     {
-		// 初期化
-		InitializeComponent();
+        // 初期化
+        InitializeComponent();
 
         #region NumberBox の入力書式設定
 
-		_Line128NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line064NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line032NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line016NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line008NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line004NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_Line001NumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line128NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line064NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line032NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line016NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line008NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line004NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line001NumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 
-		#endregion
+        #endregion
     }
 
-	/// <summary>
-	/// 共通：トグル切替
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <summary>
+    /// 共通：トグル切替
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
     {
-		try
-		{
-		}
-		catch ( Exception e )
+        try
+        {
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -82,15 +80,15 @@ public sealed partial class PageConfigEditer : Page
     /// <param name="args"></param>
     private void SizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
@@ -103,8 +101,8 @@ public sealed partial class PageConfigEditer : Page
     /// <param name="args"></param>
     private void ColorButton_Click( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( sender is not Button item )
             {
                 return;
@@ -120,7 +118,7 @@ public sealed partial class PageConfigEditer : Page
                     }
                 );
         }
-		catch ( Exception e )
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-
 using DrumMidiClassLibrary.pModel;
-
 using DrumMidiEditorApp.pView.pEditer;
 
 namespace DrumMidiEditorApp.pResume;
@@ -14,7 +12,7 @@ public class ResumeMultiple : IResume
     /// <summary>
     /// レジュームリスト
     /// </summary>
-    private readonly List<IResume> _ResumeList = new();
+    private readonly List<IResume> _ResumeList = [];
 
     /// <summary>
     /// レジューム数
@@ -101,7 +99,7 @@ public class ResumeMultiple : IResume
     {
         for ( var index = _ResumeList.Count - 1; index >= 0; index-- )
         {
-            _ResumeList[ index ].Undo();
+            _ResumeList [ index ].Undo();
         }
     }
 

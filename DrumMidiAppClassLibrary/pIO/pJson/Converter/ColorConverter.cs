@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Windows.UI;
-
 using DrumMidiClassLibrary.pWinUI;
+using Windows.UI;
 
 namespace DrumMidiClassLibrary.pIO.pJson;
 
@@ -12,7 +11,7 @@ namespace DrumMidiClassLibrary.pIO.pJson;
 /// </summary>
 internal class ColorConverter : JsonConverter<Color>
 {
-    public override bool CanConvert( Type aTypeToConvert ) 
+    public override bool CanConvert( Type aTypeToConvert )
         => typeof( Color ).IsAssignableFrom( aTypeToConvert );
 
     public override Color Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
@@ -25,7 +24,7 @@ internal class ColorConverter : JsonConverter<Color>
             {
                 var prop = aReader.GetString();
 
-                aReader.Read();
+                _ = aReader.Read();
 
                 switch ( prop )
                 {

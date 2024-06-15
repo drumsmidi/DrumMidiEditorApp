@@ -1,5 +1,4 @@
 ﻿using System;
-
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pUtil;
 
@@ -67,7 +66,7 @@ public class AudioFactory
     {
         try
         {
-			( aAudio as AudioBase )?.Dispose();
+            ( aAudio as AudioBase )?.Dispose();
         }
         catch ( Exception e )
         {
@@ -83,14 +82,14 @@ public class AudioFactory
     /// <param name="aVolume">音量（127基準）</param>
     public static void SinglePlay( byte aChannel, byte aMidi, int aVolume )
     {
-		try
-		{
-			using var audio = CreateMidi( aChannel, aMidi, aVolume ) as AudioBase;
+        try
+        {
+            using var audio = CreateMidi( aChannel, aMidi, aVolume ) as AudioBase;
 
-			audio?.Play();
-		}
-		catch ( Exception e )
-		{
+            audio?.Play();
+        }
+        catch ( Exception e )
+        {
             Log.Warning( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }

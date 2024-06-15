@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
-using Windows.UI;
-
 using DrumMidiClassLibrary.pWinUI;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -26,7 +25,10 @@ public class ConfigScore
     /// シート背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor { get; set; } = new()
+    public FormatColor SheetColor
+    {
+        get; set;
+    } = new()
     {
         Color = Color.FromArgb( 255, 0, 0, 0 ),
     };
@@ -39,10 +41,13 @@ public class ConfigScore
     /// 小節囲い線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine MeasureLine { get; set; } = new()
+    public FormatLine MeasureLine
     {
-        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
-        LineSize    = 1.0F,
+        get; set;
+    } = new()
+    {
+        LineColor = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+        LineSize = 1.0F,
     };
 
     #endregion

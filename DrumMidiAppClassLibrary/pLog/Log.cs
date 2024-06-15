@@ -79,7 +79,7 @@ public static class Log
     /// エラーログ
     /// </summary>
     /// <param name="aText">出力内容</param>
-    [Conditional("DEBUG")]
+    [Conditional( "DEBUG" )]
     public static void Error( Exception aException ) => SetLog( $"{aException.StackTrace}" );
 
     /// <summary>
@@ -121,7 +121,7 @@ public static class Log
     public static void EndInfo( string aBlockName )
     {
         if ( _BlockTime.TryPop( out var startTime ) )
-        { 
+        {
             var ms = ( DateTime.Now - startTime ).TotalMilliseconds;
 
             SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aBlockName} ===  End  === {ms}ms " );
@@ -136,10 +136,7 @@ public static class Log
     /// ログ出力
     /// </summary>
     /// <param name="aText">出力内容</param>
-    private static void SetLog( string aText )
-    {
-        Trace.WriteLine( aText );
-    }
+    private static void SetLog( string aText ) => Trace.WriteLine( aText );
 
     /// <summary>
     /// 現在実行中のメソッド名を取得
@@ -204,7 +201,7 @@ public static class Log
     {
         var log_file = File.Create( aLogPath.AbsoulteFilePath );
 
-        Trace.Listeners.Add( new TextWriterTraceListener( log_file ) );
+        _ = Trace.Listeners.Add( new TextWriterTraceListener( log_file ) );
         Trace.AutoFlush = true;
     }
 

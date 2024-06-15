@@ -1,6 +1,5 @@
 ﻿using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pResume;
@@ -8,40 +7,35 @@ namespace DrumMidiEditorApp.pResume;
 /// <summary>
 /// レジューム：ノート削除
 /// </summary>
-internal class ResumeEditRemoveNote : DisposeBaseClass, IResume
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aInfoBef">変更前 NOTE情報</param>
+internal class ResumeEditRemoveNote( InfoNote aInfoBef ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 変更前 NOTE情報
     /// </summary>
-    private InfoNote? _InfoBef;
+    private InfoNote? _InfoBef = aInfoBef;
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aInfoBef">変更前 NOTE情報</param>
-    public ResumeEditRemoveNote( InfoNote aInfoBef )
+    protected override void Dispose( bool aDisposing )
     {
-        _InfoBef = aInfoBef;
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _InfoBef = null;
+            }
+
+            // Dispose unmanaged resources.
+
+            _Disposed = true;
+
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
     }
-
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_InfoBef = null;
-			}
-
-			// Dispose unmanaged resources.
-
-			_Disposed = true;
-
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
     private bool _Disposed = false;
 
     public void Undo()
@@ -51,7 +45,7 @@ internal class ResumeEditRemoveNote : DisposeBaseClass, IResume
             return;
         }
 
-		DMS.SCORE.Channels[ _InfoBef.ChannelNo ].AddNote( _InfoBef );
+        DMS.SCORE.Channels [ _InfoBef.ChannelNo ].AddNote( _InfoBef );
 
         Update( _InfoBef.MeasureNo );
     }
@@ -63,7 +57,7 @@ internal class ResumeEditRemoveNote : DisposeBaseClass, IResume
             return;
         }
 
-		DMS.SCORE.Channels[ _InfoBef.ChannelNo ].RemoveNote( _InfoBef );
+        _ = DMS.SCORE.Channels [ _InfoBef.ChannelNo ].RemoveNote( _InfoBef );
 
         Update( _InfoBef.MeasureNo );
     }
@@ -72,8 +66,5 @@ internal class ResumeEditRemoveNote : DisposeBaseClass, IResume
     /// Undo/Redo共通処理
     /// </summary>
     /// <param name="aMeasureNo">小節番号</param>
-    private static void Update( int aMeasureNo )
-    {
-        EventManage.EventEditNote( aMeasureNo );
-    }
+    private static void Update( int aMeasureNo ) => EventManage.EventEditNote( aMeasureNo );
 }

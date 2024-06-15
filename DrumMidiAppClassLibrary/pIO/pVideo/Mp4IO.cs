@@ -1,9 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
-
-using OpenCvSharp;
-
 using DrumMidiClassLibrary.pUtil;
+using OpenCvSharp;
 
 namespace DrumMidiClassLibrary.pIO.pVideo;
 
@@ -44,8 +42,8 @@ public class Mp4IO : DisposeBaseClass
             (
                 aGeneralPath.AbsoulteFilePath,
                 string.IsNullOrEmpty( aCodec ) ? FourCC.Default : FourCC.FromString( aCodec ),
-                aFrameRate, 
-                new( aWidth, aHeight ) 
+                aFrameRate,
+                new( aWidth, aHeight )
             );
 
         _Bmp = new Bitmap( aWidth, aHeight, PixelFormat.Format32bppArgb );
@@ -53,25 +51,25 @@ public class Mp4IO : DisposeBaseClass
         return _Bmp;
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 Close();
             }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
-	private bool _Disposed = false;
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
+    private bool _Disposed = false;
 
     /// <summary>
     /// フレーム追加
@@ -86,7 +84,7 @@ public class Mp4IO : DisposeBaseClass
 
         var bmpData = _Bmp.LockBits
             (
-                new( 0, 0, _Bmp.Width, _Bmp.Height ), 
+                new( 0, 0, _Bmp.Width, _Bmp.Height ),
                 ImageLockMode.ReadOnly,
                 _Bmp.PixelFormat
             );
@@ -99,7 +97,7 @@ public class Mp4IO : DisposeBaseClass
         }
 
         using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
-//      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
+        //      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
         _Writer.Write( mat );
 

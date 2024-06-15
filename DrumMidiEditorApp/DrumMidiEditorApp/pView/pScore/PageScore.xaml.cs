@@ -1,12 +1,10 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
-
+﻿using System;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
@@ -24,56 +22,53 @@ public sealed partial class PageScore : Page
     {
         InitializeComponent();
 
-		// NumberBox の入力書式設定
-		_NoteHeightNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_NoteWidthNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-	}
+        // NumberBox の入力書式設定
+        _NoteHeightNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+    }
 
-	/// <summary>
-	/// スコア更新フラグ設定
-	/// </summary>
-	private static void UpdateScore()
-	{
-		EventManage.EventScoreUpdateTab();
-	}
+    /// <summary>
+    /// スコア更新フラグ設定
+    /// </summary>
+    private static void UpdateScore() => EventManage.EventScoreUpdateTab();
 
-	/// <summary>
-	/// 共通：トグル切替
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <summary>
+    /// 共通：トグル切替
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             UpdateScore();
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 
-	/// <summary>
-	/// 共通：数値変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
+    /// <summary>
+    /// 共通：数値変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void NumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
             UpdateScore();
-		}
-		catch ( Exception e )
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }

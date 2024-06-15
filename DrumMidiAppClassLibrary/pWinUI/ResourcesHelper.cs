@@ -22,6 +22,6 @@ public static class ResourcesHelper
     /// </summary>
     /// <param name="aKey"></param>
     /// <returns></returns>
-    public static string GetString( string aKey, params object[] aParams )
+    public static string GetString( string aKey, params object [] aParams )
         => string.Format( GetString( aKey ), aParams );
 }

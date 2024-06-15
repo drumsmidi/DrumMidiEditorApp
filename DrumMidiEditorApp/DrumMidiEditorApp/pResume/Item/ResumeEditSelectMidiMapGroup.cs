@@ -1,6 +1,5 @@
 ﻿using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pEvent;
 
 namespace DrumMidiEditorApp.pResume;
@@ -8,51 +7,40 @@ namespace DrumMidiEditorApp.pResume;
 /// <summary>
 /// レジューム：MidiMapGroup選択
 /// </summary>
-internal class ResumeEditSelectMidiMapGroup : DisposeBaseClass, IResume
+/// <remarks>
+/// コンストラクタ
+/// </remarks>
+/// <param name="aGroup">編集対象のMidiMapGroup</param>
+internal class ResumeEditSelectMidiMapGroup( MidiMapGroup aGroup ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 編集対象のMidiMapGroup
     /// </summary>
-    private MidiMapGroup? _MidiMapGroup;
+    private MidiMapGroup? _MidiMapGroup = aGroup;
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aGroup">編集対象のMidiMapGroup</param>
-    public ResumeEditSelectMidiMapGroup( MidiMapGroup aGroup )
+    protected override void Dispose( bool aDisposing )
     {
-        _MidiMapGroup = aGroup;
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _MidiMapGroup = null;
+            }
+
+            // Dispose unmanaged resources.
+
+            _Disposed = true;
+
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
     }
-
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_MidiMapGroup = null;
-			}
-
-			// Dispose unmanaged resources.
-
-			_Disposed = true;
-
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
     private bool _Disposed = false;
 
-    public void Undo()
-    {
-        Update();
-    }
+    public void Undo() => Update();
 
-    public void Redo()
-    {
-        Update();
-    }
+    public void Redo() => Update();
 
     /// <summary>
     /// Undo/Redo共通処理
@@ -60,7 +48,7 @@ internal class ResumeEditSelectMidiMapGroup : DisposeBaseClass, IResume
     private void Update()
     {
         if ( _MidiMapGroup == null )
-        { 
+        {
             return;
         }
         _MidiMapGroup.Selected = !_MidiMapGroup.Selected;

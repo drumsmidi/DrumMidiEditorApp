@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Windows.UI;
 
 namespace DrumMidiClassLibrary.pWinUI;
 
@@ -41,5 +40,7 @@ public class FormatRect
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public FormatRect() { }
+    public FormatRect()
+    {
+    }
 }

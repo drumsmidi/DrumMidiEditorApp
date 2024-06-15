@@ -1,9 +1,7 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pUtil;
+﻿using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -38,21 +36,21 @@ internal class DmsItemLabel : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemLabel( float aX, float aY, float aWidth, float aHeight, string aText, FormatRect aFormatRect )
     {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
-        Text		        = aText;
-		_FormatRect			= aFormatRect;
+        _DrawRect.X = aX;
+        _DrawRect.Y = aY;
+        _DrawRect.Width = aWidth;
+        _DrawRect.Height = aHeight;
+        Text = aText;
+        _FormatRect = aFormatRect;
     }
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
                 _FormatRect = null;
             }
 
@@ -60,10 +58,10 @@ internal class DmsItemLabel : DisposeBaseClass
 
             _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>

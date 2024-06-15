@@ -1,12 +1,10 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Windows.Foundation;
-
 using DrumMidiClassLibrary.pAudio;
 using DrumMidiClassLibrary.pUtil;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -36,11 +34,6 @@ public class DmsItemVolumeRange : DisposeBaseClass
     private int _EndNotePosX = 0;
 
     /// <summary>
-    /// 音量入力 開始音量
-    /// </summary>
-    private int _StartVolume = 0;
-
-    /// <summary>
     /// 音量入力 終了音量
     /// </summary>
     private int _EndVolume = 0;
@@ -48,7 +41,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <summary>
     /// 音量入力リスト
     /// </summary>
-    private readonly List<int> _VolumeList = new();
+    private readonly List<int> _VolumeList = [];
 
     /// <summary>
     /// シート左下表示位置
@@ -58,39 +51,41 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <summary>
     /// 音量入力タイプ
     /// </summary>
-    public ConfigEditer.VolumeEditType EditType 
-        { get; private set; } = ConfigEditer.VolumeEditType.FreeHand;
+    public ConfigEditer.VolumeEditType EditType
+    {
+        get; private set;
+    } = ConfigEditer.VolumeEditType.FreeHand;
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_VolumeList.Clear();
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _VolumeList.Clear();
             }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
     /// 音量入力 開始音量
     /// </summary>
-    public int StartVolume => _StartVolume;
+    public int StartVolume { get; private set; } = 0;
 
     /// <summary>
     /// 左から右順の入力音量リスト。
     /// 音量増減系の入力の場合、音量増減値を出力します。
     /// </summary>
-    public List<int> VolumeList 
+    public List<int> VolumeList
     {
         get
         {
@@ -114,7 +109,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
                         {
                             for ( var i = _VolumeList.Count - 1; i >= 0; i-- )
                             {
-                                lst.Add( _EndVolume - _VolumeList[ i ] );
+                                lst.Add( _EndVolume - _VolumeList [ i ] );
                             }
                         }
                     }
@@ -132,7 +127,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
                         {
                             for ( var i = _VolumeList.Count - 1; i >= 0; i-- )
                             {
-                                lst.Add( _VolumeList[ i ] );
+                                lst.Add( _VolumeList [ i ] );
                             }
                         }
                     }
@@ -145,19 +140,19 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <summary>
     /// 音量入力開始から終了間のノート数
     /// </summary>
-    public int TermNotePosX 
+    public int TermNotePosX
         => Math.Abs( _StartNotePosX - _EndNotePosX );
 
     /// <summary>
     /// 音量入力左端ノート位置（絶対値）
     /// </summary>
-    public int StartNotePosX 
+    public int StartNotePosX
         => Math.Min( _StartNotePosX, _EndNotePosX );
 
     /// <summary>
     /// 音量入力右端ノート位置（絶対値）
     /// </summary>
-    public int EndNotePosX 
+    public int EndNotePosX
         => Math.Max( _StartNotePosX, _EndNotePosX );
 
     /// <summary>
@@ -167,8 +162,8 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <param name="aY">表示位置Y座標</param>
     public void SetBottomPosition( float aX, float aY )
     {
-        _BottomPoint.X	= aX;
-        _BottomPoint.Y	= aY;
+        _BottomPoint.X = aX;
+        _BottomPoint.Y = aY;
     }
 
     /// <summary>
@@ -179,16 +174,16 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <param name="aType">音量入力タイプ</param>
     public void SetStartPos( int aNotePosX, int aVolume, ConfigEditer.VolumeEditType aType )
     {
-        _StartNotePosX = aNotePosX;
-        _EndNotePosX   = aNotePosX;
-        _StartVolume   = MidiNet.CheckMidiVolume( aVolume );
-        EditType       = aType;
+        _StartNotePosX  = aNotePosX;
+        _EndNotePosX    = aNotePosX;
+        StartVolume     = MidiNet.CheckMidiVolume( aVolume );
+        EditType        = aType;
 
         _VolumeList.Clear();
         _VolumeList.Add( aVolume );
 
-        _Display   = true;
-        _Direct    = true;
+        _Display    = true;
+        _Direct     = true;
     }
 
     /// <summary>
@@ -198,8 +193,8 @@ public class DmsItemVolumeRange : DisposeBaseClass
     /// <param name="aVolume">音量</param>
     public void SetEndPos( int aNotePosX, int aVolume )
     {
-        _EndNotePosX  = aNotePosX;
-        _EndVolume    = MidiNet.CheckMidiVolume( aVolume );
+        _EndNotePosX    = aNotePosX;
+        _EndVolume      = MidiNet.CheckMidiVolume( aVolume );
 
         CalcRange();
     }
@@ -218,12 +213,12 @@ public class DmsItemVolumeRange : DisposeBaseClass
         var e  = _EndNotePosX;
         var sa = TermNotePosX;
 
-        var dir = ( e - s > 0 );
+        var dir =  e - s > 0 ;
 
         if ( sa == 0 )
         {
             _VolumeList.Clear();
-            _VolumeList.Add( _StartVolume );
+            _VolumeList.Add( StartVolume );
         }
         else if ( dir == _Direct && EditType == ConfigEditer.VolumeEditType.FreeHand )
         {
@@ -231,64 +226,64 @@ public class DmsItemVolumeRange : DisposeBaseClass
 
             if ( cnt >= sa )
             {
-                _VolumeList.RemoveRange( sa,  cnt - sa );
+                _VolumeList.RemoveRange( sa, cnt - sa );
                 _VolumeList.Add( _EndVolume );
             }
             else
             {
-                var volume = ( cnt == 0 ? StartVolume : _VolumeList[ cnt - 1 ] );
+                var volume =  cnt == 0 ? StartVolume : _VolumeList[ cnt - 1 ] ;
 
                 for ( var i = cnt; i <= sa; i++ )
                 {
-                    _VolumeList.Add( (int)( volume + ( _EndVolume - volume ) * ( i - cnt ) / ( sa - cnt ) ) );
+                    _VolumeList.Add( volume + ( ( _EndVolume - volume ) * ( i - cnt ) / ( sa - cnt ) ) );
                 }
             }
         }
-        else if (   EditType == ConfigEditer.VolumeEditType.UpDown
-                ||  EditType == ConfigEditer.VolumeEditType.IntonationHL
-                ||  EditType == ConfigEditer.VolumeEditType.IntonationH
-                ||  EditType == ConfigEditer.VolumeEditType.IntonationL )
+        else if ( EditType is ConfigEditer.VolumeEditType.UpDown
+                or ConfigEditer.VolumeEditType.IntonationHL
+                or ConfigEditer.VolumeEditType.IntonationH
+                or ConfigEditer.VolumeEditType.IntonationL )
         {
             _VolumeList.Clear();
 
             for ( var i = 0; i <= sa; i++ )
             {
-                _VolumeList.Add( (int)_StartVolume );
+                _VolumeList.Add( StartVolume );
             }
         }
-        else if (   EditType == ConfigEditer.VolumeEditType.FreeHand
-                ||  EditType == ConfigEditer.VolumeEditType.StraightLine )
+        else if ( EditType is ConfigEditer.VolumeEditType.FreeHand
+                or ConfigEditer.VolumeEditType.StraightLine )
         {
             _VolumeList.Clear();
 
             for ( var i = 0; i <= sa; i++ )
             {
-                _VolumeList.Add( (int)( _StartVolume + ( _EndVolume - _StartVolume ) * i / sa ) );
+                _VolumeList.Add( StartVolume + ( ( _EndVolume - StartVolume ) * i / sa ) );
             }
         }
         else
         {
             // ベジェ曲線
-            float c1 = _StartVolume;
+            float c1 = StartVolume;
             float c2 = _EndVolume;
 
             switch ( EditType )
             {
                 case ConfigEditer.VolumeEditType.Curve1:
-                    c1 = _StartVolume;
+                    c1 = StartVolume;
                     c2 = _EndVolume;
                     break;
                 case ConfigEditer.VolumeEditType.Curve2:
-                    c1 = _StartVolume;
-                    c2 = _StartVolume;
+                    c1 = StartVolume;
+                    c2 = StartVolume;
                     break;
                 case ConfigEditer.VolumeEditType.Curve3:
                     c1 = _EndVolume;
                     c2 = _EndVolume;
                     break;
                 case ConfigEditer.VolumeEditType.Curve4:
-                    c1 = _StartVolume + ( _EndVolume - _StartVolume ) / 3.0F;
-                    c2 = _EndVolume   + ( _EndVolume - _StartVolume ) / 3.0F * 2.0F;
+                    c1 = StartVolume + ( ( _EndVolume - StartVolume ) / 3.0F );
+                    c2 = _EndVolume + ( ( _EndVolume - StartVolume ) / 3.0F * 2.0F );
                     break;
             }
 
@@ -297,12 +292,12 @@ public class DmsItemVolumeRange : DisposeBaseClass
             for ( var i = 0; i <= sa; i++ )
             {
                 var vol = MathHelper.GetBezierCurvePosition
-                    ( 
-                        _StartVolume,
+                    (
+                        StartVolume,
                         c1,
-                        c2, 
-                        _EndVolume, 
-                        (float)i / sa 
+                        c2,
+                        _EndVolume,
+                        (float)i / sa
                     );
 
                 _VolumeList.Add( (int)vol );
@@ -328,7 +323,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
         var p2 = _BottomPoint;
 
         p1.X += ( _StartNotePosX - aStartNotePosX ) * ConfigLocal.Editer.NoteWidthSize;
-        p2.X  = p1.X;
+        p2.X = p1.X;
 
         var cnt = _VolumeList.Count - 1;
 
@@ -343,14 +338,14 @@ public class DmsItemVolumeRange : DisposeBaseClass
 
         for ( var i = 0; i < cnt; i++ )
         {
-            p1.X  = p2.X;
-            p2.X  = p1.X + term;
+            p1.X = p2.X;
+            p2.X = p1.X + term;
 
-            p1.Y  = _BottomPoint.Y - (int)_VolumeList[ i ];
-            p2.Y  = _BottomPoint.Y - (int)_VolumeList[ i + 1 ];
+            p1.Y = _BottomPoint.Y - _VolumeList [ i ];
+            p2.Y = _BottomPoint.Y - _VolumeList [ i + 1 ];
 
             aGraphics.DrawLine
-                ( 
+                (
                     p1._x,
                     p1._y,
                     p2._x,
@@ -367,11 +362,11 @@ public class DmsItemVolumeRange : DisposeBaseClass
                 case ConfigEditer.VolumeEditType.IntonationL:
                     {
                         // 開始／終了間の差分表示の場合
-                        p1.Y -= _EndVolume - _StartVolume;
-                        p2.Y -= _EndVolume - _StartVolume;
+                        p1.Y -= _EndVolume - StartVolume;
+                        p2.Y -= _EndVolume - StartVolume;
 
                         aGraphics.DrawLine
-                            ( 
+                            (
                                 p1._x,
                                 p1._y,
                                 p2._x,
@@ -384,4 +379,4 @@ public class DmsItemVolumeRange : DisposeBaseClass
             }
         }
     }
-} 
+}

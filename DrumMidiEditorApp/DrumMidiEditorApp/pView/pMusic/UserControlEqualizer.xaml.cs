@@ -1,17 +1,15 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Windows.Foundation;
-
 using DrumMidiClassLibrary.pControl;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 
@@ -37,7 +35,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザ入力（座標）
     /// </summary>
-    private readonly List<Point> _GainCenters = new();
+    private readonly List<Point> _GainCenters = [];
 
     /// <summary>
     /// 波形描画用のタイマー
@@ -66,8 +64,8 @@ public sealed partial class UserControlEqualizer : UserControl
     /// BGMへイコライザ入力内容を適用
     /// </summary>
     public void ApplyEqulizer()
-    { 
-        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ApplyEqulizer() ) )
+    {
+        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, ApplyEqulizer ) )
         {
             return;
         }
@@ -75,19 +73,19 @@ public sealed partial class UserControlEqualizer : UserControl
         UpdateEqualizerAudio();
     }
 
-	/// <summary>
-	/// イコライザの入力およびBGMのイコライザ設定をリセット
-	/// </summary>
-	public void ResetEqualizer() 
-	{
-        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ResetEqualizer() ) )
+    /// <summary>
+    /// イコライザの入力およびBGMのイコライザ設定をリセット
+    /// </summary>
+    public void ResetEqualizer()
+    {
+        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, ResetEqualizer ) )
         {
             return;
         }
 
-		ResetEqualizerAudio();
-		Refresh();
-	}
+        ResetEqualizerAudio();
+        Refresh();
+    }
 
     #region CommanBar Event
 
@@ -98,16 +96,16 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="args"></param>
     private void EqualizerResetAppBarButton_Click( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             ResetEqualizerAudio();
             Refresh();
-		}
-		catch ( Exception e )
-		{
+        }
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// イコライザON/OFFの切替
@@ -116,16 +114,16 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="args"></param>
     private void EqualizerAppBarToggleButton_CheckChanged( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             DrawSet.EqualizerOn = true;
             UpdateEqualizerAudio();
         }
-		catch ( Exception e )
-		{
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// イコライザON/OFFの切替
@@ -134,16 +132,16 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="args"></param>
     private void EqualizerAppBarToggleButton_UncheckChanged( object sender, RoutedEventArgs args )
     {
-		try
-		{
+        try
+        {
             DrawSet.EqualizerOn = false;
             UpdateEqualizerAudio();
         }
         catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// WaveForm ON/OFFの切替
@@ -151,9 +149,9 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="sender"></param>
     /// <param name="args"></param>
     private void EqualizerWaveFormAppBarToggleButton_CheckChanged( object sender, RoutedEventArgs args )
-	{
-		try
-		{
+    {
+        try
+        {
             if ( sender is not AppBarToggleButton item )
             {
                 return;
@@ -172,10 +170,10 @@ public sealed partial class UserControlEqualizer : UserControl
             }
         }
         catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// WaveForm描画開始
@@ -187,7 +185,7 @@ public sealed partial class UserControlEqualizer : UserControl
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds(DrawSet.WaveFormDrawInterval ) );
+        _Timer = new( TimeSpan.FromSeconds( DrawSet.WaveFormDrawInterval ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
@@ -232,7 +230,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="sender"></param>
     /// <param name="args"></param>
     private void EqualizerCanvas_PointerPressed( object sender, PointerRoutedEventArgs args )
-	{
+    {
         if ( _ActionState != EActionState.None )
         {
             return;
@@ -248,20 +246,13 @@ public sealed partial class UserControlEqualizer : UserControl
                 {
                     _GainMoveIndex = GetGainCentersIndex( p.Position );
 
-                    if ( _GainMoveIndex != -1 )
-                    {
-                        _ActionState = EActionState.MovePoint;
-                    }
-                    else
-                    {
-                        _ActionState = EActionState.AddPoint;
-                    }
+                    _ActionState = _GainMoveIndex != -1 ? EActionState.MovePoint : EActionState.AddPoint;
 
                     Refresh();
                 }
             }
             else if ( p.Properties.IsRightButtonPressed )
-            { 
+            {
                 if ( CheckEqulizerBodyArea( p.Position ) )
                 {
                     _GainMoveIndex = GetGainCentersIndex( p.Position );
@@ -286,7 +277,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="sender"></param>
     /// <param name="args"></param>
 	private void EqualizerCanvas_PointerMoved( object sender, PointerRoutedEventArgs args )
-	{
+    {
         if ( _ActionState == EActionState.None )
         {
             return;
@@ -320,7 +311,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="sender"></param>
     /// <param name="args"></param>
 	private void EqualizerCanvas_PointerReleased( object sender, PointerRoutedEventArgs args )
-	{
+    {
         if ( _ActionState == EActionState.None )
         {
             return;
@@ -406,16 +397,16 @@ public sealed partial class UserControlEqualizer : UserControl
         {
             var p = _GainCenters[ index ];
 
-            pointRect.X = p.X - pointRect.Width  / 2;
-            pointRect.Y = p.Y - pointRect.Height / 2;
+            pointRect.X = p.X - ( pointRect.Width / 2 );
+            pointRect.Y = p.Y - ( pointRect.Height / 2 );
 
             if ( XamlHelper.CheckRange( aMousePos, pointRect ) )
             {
                 return index;
             }
         }
-		return -1;
-	}
+        return -1;
+    }
 
     /// <summary>
     /// マウス位置の音量増減値取得
@@ -424,9 +415,9 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <returns>音量増減値</returns>
     private float CalcGain( double aMousePosY )
     {
-        return (float)(DrawSet.DbGainMax -
-                (DrawSet.DbGainMax - DrawSet.DbGainMin ) *
-                ( aMousePosY - _EqulizerBodyRange.Y ) / _EqulizerBodyRange.Height );
+        return (float)( DrawSet.DbGainMax -
+                ( ( DrawSet.DbGainMax - DrawSet.DbGainMin ) *
+                ( aMousePosY - _EqulizerBodyRange.Y ) / _EqulizerBodyRange.Height ) );
     }
 
     /// <summary>
@@ -448,7 +439,7 @@ public sealed partial class UserControlEqualizer : UserControl
             }
             else if ( x < item.Width )
             {
-                return hz + ( item.Hz - hz ) * ( x / item.Width );
+                return hz + ( ( item.Hz - hz ) * ( x / item.Width ) );
             }
 
             hz = item.Hz;
@@ -468,14 +459,14 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <param name="aAddFlag">True:追加、False:削除</param>
     private void EditPoint( Point aMousePos, bool aAddFlag )
-	{
+    {
         var idx = GetGainCentersIndex( aMousePos );
 
         if ( idx != -1 )
         {
             if ( aAddFlag )
             {
-                _GainCenters[ idx ] = aMousePos;
+                _GainCenters [ idx ] = aMousePos;
             }
             else
             {
@@ -512,7 +503,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
         var p = XamlHelper.AdjustRangeIn( aMousePos, _EqulizerBodyRange );
 
-        _GainCenters[ aGearIndex ] = p;
+        _GainCenters [ aGearIndex ] = p;
 
         SetEqualizerInfo( p );
 
@@ -523,31 +514,28 @@ public sealed partial class UserControlEqualizer : UserControl
     /// イコライザ入力情報ログ表示
     /// </summary>
     /// <param name="aPoint">イコライザ入力情報</param>
-    private void SetEqualizerInfo( Point aGainInfo )
-    {
-        _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )}   db={CalcGain( aGainInfo.Y )}";
-    }
+    private void SetEqualizerInfo( Point aGainInfo ) => _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )}   db={CalcGain( aGainInfo.Y )}";
 
     /// <summary>
     /// BGMイコライザ設定反映
     /// </summary>
     public void UpdateEqualizerAudio()
-	{
-		try
-		{
+    {
+        try
+        {
             if ( DrawSet.EqualizerOn )
-			{
-				for ( var index = 0; index < _GainCenters.Count; index++ )
-				{
+            {
+                for ( var index = 0; index < _GainCenters.Count; index++ )
+                {
                     var p = _GainCenters[ index ];
 
                     DmsControl.AudioData?.SetEqualizerGain( index, CalcHz( p.X ), CalcGain( p.Y ) );
                 }
             }
             else
-			{
+            {
                 for ( var index = 0; index < _GainCenters.Count; index++ )
-			    {
+                {
                     var p = _GainCenters[ index ];
 
                     DmsControl.AudioData?.SetEqualizerGain( index, CalcHz( p.X ), 0 );
@@ -556,11 +544,11 @@ public sealed partial class UserControlEqualizer : UserControl
 
             DmsControl.AudioData?.UpdateEqualizer();
         }
-		catch ( Exception e )
-		{
+        catch ( Exception e )
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// イコライザ設定リセット
@@ -570,7 +558,7 @@ public sealed partial class UserControlEqualizer : UserControl
         try
         {
             for ( var index = 0; index < _GainCenters.Count; index++ )
-			{
+            {
                 var p = _GainCenters[ index ];
 
                 DmsControl.AudioData?.SetEqualizerGain( index, (float)CalcHz( p.X ), 0 );
@@ -601,17 +589,17 @@ public sealed partial class UserControlEqualizer : UserControl
     /// 描画範囲更新
     /// </summary>
     private void UpdateRange()
-	{
+    {
         // Equlizer body
-        _EqulizerBodyRange.X		= DrawSet.EqulizerBodyMarginLeftTop.X;
-        _EqulizerBodyRange.Y		= DrawSet.EqulizerBodyMarginLeftTop.Y;
-        _EqulizerBodyRange.Width	= DrawSet.GetHzTotalWidth();
-        _EqulizerBodyRange.Height	= DrawSet.DbTotalHeight;
+        _EqulizerBodyRange.X = DrawSet.EqulizerBodyMarginLeftTop.X;
+        _EqulizerBodyRange.Y = DrawSet.EqulizerBodyMarginLeftTop.Y;
+        _EqulizerBodyRange.Width = DrawSet.GetHzTotalWidth();
+        _EqulizerBodyRange.Height = DrawSet.DbTotalHeight;
 
         // イコライザキャンバスのサイズ調整
-        _EqualizerCanvas.Width      = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width  + DrawSet.EqulizerBodyMarginRightBottom.X;
-        _EqualizerCanvas.Height     = DrawSet.EqulizerBodyMarginLeftTop.Y + _EqulizerBodyRange.Height + DrawSet.EqulizerBodyMarginRightBottom.Y;
-	}
+        _EqualizerCanvas.Width = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width + DrawSet.EqulizerBodyMarginRightBottom.X;
+        _EqualizerCanvas.Height = DrawSet.EqulizerBodyMarginLeftTop.Y + _EqulizerBodyRange.Height + DrawSet.EqulizerBodyMarginRightBottom.Y;
+    }
 
     #endregion
 
@@ -637,7 +625,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 背景色
             {
-                args.DrawingSession.Clear(DrawSet.BackGround.Color );
+                args.DrawingSession.Clear( DrawSet.BackGround.Color );
             }
             #endregion
 
@@ -652,7 +640,7 @@ public sealed partial class UserControlEqualizer : UserControl
                     args.DrawingSession.DrawText
                         (
                             item.LabelName,
-                            (float)( pos_x ),
+                            (float)pos_x,
                             (float)( body.Bottom + DrawSet.XLineTitlePaddingBottom ),
                             DrawSet.TextCenterRect.Text.TextColor.Color,
                             DrawSet.TextCenterRect.Text.TextFormat
@@ -660,9 +648,9 @@ public sealed partial class UserControlEqualizer : UserControl
 
                     args.DrawingSession.DrawLine
                         (
-                            (float)( pos_x ),
-                            (float)( body.Top ),
-                            (float)( pos_x ),
+                            (float)pos_x,
+                            (float)body.Top,
+                            (float)pos_x,
                             (float)( body.Bottom + DrawSet.XLineTitlePaddingBottom ),
                             DrawSet.Line.LineColor.Color,
                             DrawSet.Line.LineSize
@@ -677,13 +665,13 @@ public sealed partial class UserControlEqualizer : UserControl
 
                 for ( var y = 0; y <= DrawSet.DbGainSeparateHeightCount; y++ )
                 {
-                    var db = DrawSet.DbGainMax - DrawSet.DbGainSeparate * y;
+                    var db = DrawSet.DbGainMax - (DrawSet.DbGainSeparate * y);
 
                     args.DrawingSession.DrawText
                         (
                             $"{db}db",
                             (float)( body.Left - DrawSet.YLineTitlePaddingRight ),
-                            (float)( pos_y ),
+                            (float)pos_y,
                             DrawSet.TextRightRect.Text.TextColor.Color,
                             DrawSet.TextRightRect.Text.TextFormat
                         );
@@ -691,9 +679,9 @@ public sealed partial class UserControlEqualizer : UserControl
                     args.DrawingSession.DrawLine
                         (
                             (float)( body.Left - DrawSet.YLineTitlePaddingRight ),
-                            (float)( pos_y ),
-                            (float)( body.Right ),
-                            (float)( pos_y ),
+                            (float)pos_y,
+                            (float)body.Right,
+                            (float)pos_y,
                             DrawSet.Line.LineColor.Color,
                             DrawSet.Line.LineSize
                         );
@@ -705,17 +693,17 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 周波数解析
 
-            if (DrawSet.WaveFormOn )
+            if ( DrawSet.WaveFormOn )
             {
                 // TODO: 仮作成。MusicスレッドでBGMの再読み込み時にエラーになる場合があるので使う場合は改良が必要
                 try
-                { 
+                {
                     var bgm = DmsControl.AudioData;
 
                     if ( bgm?.IsEnableFFT() ?? false )
                     {
                         lock ( bgm )
-                        { 
+                        {
                             var fft = bgm.GetFFTPlaying();
 
                             var hzPerOne = (float)bgm.GetSampleRate() / ( fft.Count * bgm.Channels );
@@ -732,12 +720,12 @@ public sealed partial class UserControlEqualizer : UserControl
                             {
                                 var format = pen[ k % bgm.Channels ];
 
-                                r.X         = body.X - k % bgm.Channels * format.LineSize;
-                                r.Height    = fft[ k ] * body.Height;
-                                r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
+                                r.X = body.X - ( k % bgm.Channels * format.LineSize );
+                                r.Height = fft [ k ] * body.Height;
+                                r.Y = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
 
                                 var hz_b    = 0d;
-                                var hz      = hzPerOne * ( k + 1 - k % bgm.Channels );
+                                var hz      = hzPerOne * ( k + 1 - (k % bgm.Channels) );
 
                                 foreach ( var item in DrawSet.HzList )
                                 {
@@ -785,7 +773,7 @@ public sealed partial class UserControlEqualizer : UserControl
                         (
                             point._x,
                             point._y,
-                            (float)(DrawSet.PointSize / 2d ),
+                            (float)( DrawSet.PointSize / 2d ),
                             format.Line.LineColor.Color,
                             format.Line.LineSize
                         );
@@ -794,7 +782,7 @@ public sealed partial class UserControlEqualizer : UserControl
                         (
                             point._x,
                             point._y,
-                            (float)(DrawSet.PointSize / 2d ),
+                            (float)( DrawSet.PointSize / 2d ),
                             format.Background.Color
                         );
                 }

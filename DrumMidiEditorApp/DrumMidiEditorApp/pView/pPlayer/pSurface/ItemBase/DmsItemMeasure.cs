@@ -1,9 +1,7 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pUtil;
+﻿using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -32,32 +30,32 @@ internal class DmsItemMeasure : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemMeasure( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
     {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
-		_FormatRect			= aFormatRect;
+        _DrawRect.X = aX;
+        _DrawRect.Y = aY;
+        _DrawRect.Width = aWidth;
+        _DrawRect.Height = aHeight;
+        _FormatRect = aFormatRect;
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 _FormatRect = null;
-			}
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
-	private bool _Disposed = false;
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
+    private bool _Disposed = false;
 
     /// <summary>
     /// 描画
@@ -77,12 +75,12 @@ internal class DmsItemMeasure : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-		aGraphics.DrawText
-			(
-				string.Format( "{0:000}", aMeasureNo ),
-				rect,
-				_FormatRect.Text.TextColor.Color,
-				_FormatRect.Text.TextFormat
-			);
+        aGraphics.DrawText
+            (
+                string.Format( "{0:000}", aMeasureNo ),
+                rect,
+                _FormatRect.Text.TextColor.Color,
+                _FormatRect.Text.TextFormat
+            );
     }
 }

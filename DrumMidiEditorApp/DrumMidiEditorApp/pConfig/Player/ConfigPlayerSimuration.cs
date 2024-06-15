@@ -1,9 +1,8 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System.Text.Json.Serialization;
-using Windows.UI;
-
+﻿using System.Text.Json.Serialization;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas.Text;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
 
@@ -36,17 +35,20 @@ public class ConfigPlayerSimuration
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowRect { get; set; } = new()
+    public FormatRect BpmNowRect
     {
-        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 18F,
+                                FontFamily = "system-ui",
+                                FontSize = 18F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -76,17 +78,20 @@ public class ConfigPlayerSimuration
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoRect { get; set; } = new()
+    public FormatRect MeasureNoRect
     {
-        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 18F,
+                                FontFamily = "system-ui",
+                                FontSize = 18F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -116,17 +121,20 @@ public class ConfigPlayerSimuration
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderRect { get; set; } = new()
+    public FormatRect HeaderRect
     {
-        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
-        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
-        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+        get; set;
+    } = new()
+    {
+        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
+        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                             new()
                             {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
+                                FontFamily = "system-ui",
+                                FontSize = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                VerticalAlignment = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -144,7 +152,7 @@ public class ConfigPlayerSimuration
     /// １回の描画で描画する小節数
     /// </summary>
     [JsonInclude]
-    public int DrawMeasureCount { get; set; } = 10;
+    public int DrawMeasureCount { get; set; } = 300;
 
     #endregion
 

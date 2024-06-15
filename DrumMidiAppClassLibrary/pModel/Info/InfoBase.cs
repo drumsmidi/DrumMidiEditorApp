@@ -1,5 +1,4 @@
 ﻿using System;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pUtil;
 
@@ -31,7 +30,7 @@ public abstract class InfoBase : DisposeBaseClass
     /// ノート位置（絶対値）
     /// </summary>
     public int AbsoluteNotePos
-        => MeasureNo * Config.System.MeasureNoteNumber + NotePos;
+        => ( MeasureNo * Config.System.MeasureNoteNumber ) + NotePos;
 
     /// <summary>
     /// 検索キー
@@ -43,7 +42,9 @@ public abstract class InfoBase : DisposeBaseClass
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    private InfoBase() {}
+    private InfoBase()
+    {
+    }
 
     /// <summary>
     /// コンストラクタ
@@ -53,9 +54,9 @@ public abstract class InfoBase : DisposeBaseClass
     /// <param name="aSelected">選択状態</param>
     protected InfoBase( int aMeasureNo, int aNotePos, bool aSelected )
     {
-        MeasureNo  = aMeasureNo;
-        NotePos    = aNotePos;
-        Selected   = aSelected;
+        MeasureNo = aMeasureNo;
+        NotePos = aNotePos;
+        Selected = aSelected;
     }
 
     /// <summary>
@@ -65,18 +66,18 @@ public abstract class InfoBase : DisposeBaseClass
     public virtual void Set( object aInfo )
     {
         if ( aInfo is not InfoBase info )
-        { 
+        {
             throw new InvalidCastException();
         }
 
-        MeasureNo  = info.MeasureNo;
-        NotePos    = info.NotePos;
-        Selected   = info.Selected;
+        MeasureNo = info.MeasureNo;
+        NotePos = info.NotePos;
+        Selected = info.Selected;
     }
 
     /// <summary>
     /// NOTE情報を複製
     /// </summary>
     /// <returns>情報(InfoBase)</returns>
-    public virtual object Clone() => new(); 
+    public virtual object Clone() => new();
 }

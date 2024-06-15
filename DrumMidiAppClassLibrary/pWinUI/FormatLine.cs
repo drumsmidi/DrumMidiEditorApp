@@ -23,7 +23,9 @@ public class FormatLine
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public FormatLine() { }
+    public FormatLine()
+    {
+    }
 
     /// <summary>
     /// コンストラクタ
@@ -32,7 +34,7 @@ public class FormatLine
     /// <param name="aLineSize"></param>
     public FormatLine( Color aLineColor, float aLineSize )
     {
-        LineColor   = new( aLineColor );
-        LineSize    = aLineSize;
+        LineColor = new( aLineColor );
+        LineSize = aLineSize;
     }
 }

@@ -7,19 +7,29 @@ namespace DrumMidiClassLibrary.pAudio;
 /// </summary>
 internal abstract class AudioBase : DisposeBaseClass, IAudio
 {
-	public virtual object? GetAudioData() => null;
+    public virtual object? GetAudioData() => null;
 
     public virtual double GetCurrentTime() => 0;
 
-    public virtual void SetCurrentTime( double aCurrentTime ) { }
+    public virtual void SetCurrentTime( double aCurrentTime )
+    {
+    }
 
     public virtual int GetVolume() => 0;
 
-    public virtual void SetVolume( int aVolume ) { }
+    public virtual void SetVolume( int aVolume )
+    {
+    }
 
-    public virtual void Play() { }
+    public virtual void Play()
+    {
+    }
 
-    public virtual void Pause() { }
+    public virtual void Pause()
+    {
+    }
 
-    public virtual void Stop() { }
+    public virtual void Stop()
+    {
+    }
 }

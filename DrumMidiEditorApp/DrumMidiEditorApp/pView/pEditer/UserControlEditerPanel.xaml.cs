@@ -1,30 +1,30 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Graphics.DirectX;
-using Windows.System;
-using Windows.UI;
-
 using DrumMidiClassLibrary.pAudio;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pControl;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pResume;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pResume;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
+using Windows.Graphics.DirectX;
+using Windows.System;
+using Windows.UI;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -126,57 +126,57 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// ノートコピー範囲内で左端ノートのノート位置（絶対値）
     /// </summary>
-	private int	_CopyNotePositionX = 0;
+	private int    _CopyNotePositionX = 0;
 
     /// <summary>
     /// コピーしたNOTE情報リスト
     /// </summary>
-	private readonly List<InfoNote> _CopyNoteList = new();
+	private readonly List<InfoNote> _CopyNoteList = [];
 
     /// <summary>
     /// コピーしたBPM情報リスト
     /// </summary>
-	private readonly List<InfoBpm> _CopyBpmList = new();
+	private readonly List<InfoBpm> _CopyBpmList = [];
 
     /// <summary>
     /// 五線リスト
     /// </summary>
-	private readonly List<DmsItemLine> _StaffLineList = new();
+	private readonly List<DmsItemLine> _StaffLineList = [];
 
     /// <summary>
     /// 小節線リスト
     /// </summary>
-    private readonly List<DmsItemLine> _MeasureLineList	= new();
+    private readonly List<DmsItemLine> _MeasureLineList    = [];
 
     /// <summary>
     /// MidiMapGroup/MidiMapヘッダリスト
     /// </summary>
-    private readonly List<DmsItemMidiMap> _HeaderList = new();
+    private readonly List<DmsItemMidiMap> _HeaderList = [];
 
     /// <summary>
     /// BPMリスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemBpm>> _BpmList = new();
+    private readonly Dictionary<int,List<DmsItemBpm>> _BpmList = [];
 
     /// <summary>
     /// ノートリスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = new();
+    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
 
     /// <summary>
     /// ノート予測リスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NotePredictList = new();
+    private readonly Dictionary<int,List<DmsItemNote>> _NotePredictList = [];
 
     /// <summary>
     /// ノート音量リスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNoteVolume>> _VolumeList = new();
+    private readonly Dictionary<int,List<DmsItemNoteVolume>> _VolumeList = [];
 
     /// <summary>
     /// ノート背景色リスト＜MidiMapKey、背景色＞
     /// </summary>
-    private readonly Dictionary<int, FormatRect> _MidiMapNoteFormatList = new();
+    private readonly Dictionary<int, FormatRect> _MidiMapNoteFormatList = [];
 
     /// <summary>
     /// サポート線
@@ -272,12 +272,12 @@ public sealed partial class UserControlEditerPanel : UserControl
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
-			{
+            {
                 if ( CheckVolumeBodyArea( p.Position ) )
                 {
                     EditVolumeRange( p.Position, true );
 
-    			    _ActionState = EActionState.EditVolume;
+                    _ActionState = EActionState.EditVolume;
                 }
                 else if ( CheckMeasureNoBodyArea( p.Position ) )
                 {
@@ -287,66 +287,66 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
                 else if ( CheckScoreHeadArea( p.Position ) )
                 {
-    			    _ActionState = EActionState.EditSelectDrum;
+                    _ActionState = EActionState.EditSelectDrum;
                 }
                 else if ( CheckBpmBodyArea( p.Position ) )
                 {
-					_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
-					if ( _NoteRange.Selected )
-					{
+                    if ( _NoteRange.Selected )
+                    {
                         ClearSelectNoteRange();
 
-						_ActionState = EActionState.None;
-					}
-					else
-					{
+                        _ActionState = EActionState.None;
+                    }
+                    else
+                    {
                         _ActionState = EActionState.AddBpm;
                     }
                 }
                 else if ( CheckNoteRangeArea( p.Position ) )
                 {
-    				_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
                     if ( ( args.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
-					{
+                    {
                         CopyNoteRange();
-					}
-					else
-					{
+                    }
+                    else
+                    {
                         EditMoveNoteRange( p.Position, true );
 
-						_ActionState = EActionState.MoveNoteRange;
-					}
-				}
+                        _ActionState = EActionState.MoveNoteRange;
+                    }
+                }
                 else if ( CheckScoreBodyArea( p.Position ) )
                 {
-					_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
                     if ( ( args.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
-					{
+                    {
                         PasteNoteRange( p.Position );
                     }
                     else
-					{
-						if ( _NoteRange.Selected )
-						{
+                    {
+                        if ( _NoteRange.Selected )
+                        {
                             ClearSelectNoteRange();
 
-							_ActionState = EActionState.None;
-						}
-						else
-						{
-							_MouseDownPosition = p.Position;
-							_NoteDownPosition  = CalcNotePosition( p.Position );
+                            _ActionState = EActionState.None;
+                        }
+                        else
+                        {
+                            _MouseDownPosition = p.Position;
+                            _NoteDownPosition = CalcNotePosition( p.Position );
 
-							_ActionState = EActionState.AddNote;
-						}
-					}
+                            _ActionState = EActionState.AddNote;
+                        }
+                    }
                 }
-			}
-            else if ( p.Properties.IsRightButtonPressed )					
-			{
+            }
+            else if ( p.Properties.IsRightButtonPressed )
+            {
                 if ( CheckVolumeBodyArea( p.Position ) )
                 {
                     ClearVolumeRange();
@@ -360,7 +360,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
                 else if ( CheckBpmBodyArea( p.Position ) )
                 {
-					_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
                     if ( _NoteRange.Selected )
                     {
@@ -375,13 +375,13 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
                 else if ( CheckNoteRangeArea( p.Position ) )
                 {
-    				_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
                     _ActionState = EActionState.RemoveNoteRange;
                 }
                 else if ( CheckScoreBodyArea( p.Position ) )
                 {
-					_NoteRangeBef.Set( _NoteRange );
+                    _NoteRangeBef.Set( _NoteRange );
 
                     if ( _NoteRange.Selected )
                     {
@@ -392,12 +392,12 @@ public sealed partial class UserControlEditerPanel : UserControl
                     else
                     {
                         _MouseDownPosition = p.Position;
-                        _NoteDownPosition  = CalcNotePosition( p.Position );
+                        _NoteDownPosition = CalcNotePosition( p.Position );
 
                         _ActionState = EActionState.RemoveNote;
                     }
                 }
-			}
+            }
             else if ( p.Properties.IsMiddleButtonPressed )
             {
                 _MouseDownPosition = p.Position;
@@ -426,30 +426,30 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
-			switch ( _ActionState )
-			{
+            switch ( _ActionState )
+            {
                 case EActionState.None:
                     {
-						if ( CheckNoteRangeArea( p.Position ) )
-						{
-							if ( _NoteCursorPosition.X != -1 || _NoteCursorPosition.Y != -1 )
-							{
-								_NoteCursorPosition.X = -1;
-								_NoteCursorPosition.Y = -1;
-							}
-						}
-						else if ( CheckBpmBodyArea( p.Position ) ||
+                        if ( CheckNoteRangeArea( p.Position ) )
+                        {
+                            if ( _NoteCursorPosition.X != -1 || _NoteCursorPosition.Y != -1 )
+                            {
+                                _NoteCursorPosition.X = -1;
+                                _NoteCursorPosition.Y = -1;
+                            }
+                        }
+                        else if ( CheckBpmBodyArea( p.Position ) ||
                             CheckMeasureNoBodyArea( p.Position ) ||
                             CheckScoreBodyArea( p.Position ) ||
                             CheckVolumeBodyArea( p.Position ) )
-						{
-							var note_pos = CalcNotePosition( p.Position );
+                        {
+                            var note_pos = CalcNotePosition( p.Position );
 
-							if ( _NoteCursorPosition != note_pos )
-							{
-								_NoteCursorPosition = note_pos;
-							}
-						}
+                            if ( _NoteCursorPosition != note_pos )
+                            {
+                                _NoteCursorPosition = note_pos;
+                            }
+                        }
                     }
                     break;
                 case EActionState.EditVolume:
@@ -500,7 +500,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         MoveSheetAsync( p.Position );
                     }
                     break;
-    		}
+            }
 
             Refresh();
         }
@@ -589,7 +589,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         RemoveNoteRange();
                     }
                     break;
-			}
+            }
 
             Refresh();
         }
@@ -625,11 +625,11 @@ public sealed partial class UserControlEditerPanel : UserControl
     {
         if ( _Timer != null )
         {
-            _MoveMousePoint= aMousePoint;
+            _MoveMousePoint = aMousePoint;
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds(DrawSet.SheetTimerSecond ) );
+        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
@@ -638,41 +638,41 @@ public sealed partial class UserControlEditerPanel : UserControl
             var paddingSize = DrawSet.SheetMovePaddingSize;
 
             if ( mousePoint.Y < _ScoreBodyRange.Y + paddingSize.Height )
-	        {
+            {
                 note_pos.Y -= (int)( ( _ScoreBodyRange.Y + paddingSize.Height - mousePoint.Y ) / DrawSet.NoteHeightSize );
 
-		        if ( note_pos.Y < 0 )
-		        {
+                if ( note_pos.Y < 0 )
+                {
                     note_pos.Y = 0;
-		        }
-	        }
-	        if ( mousePoint.Y > _ScreenSize.Height - paddingSize.Height )
-	        {
+                }
+            }
+            if ( mousePoint.Y > _ScreenSize.Height - paddingSize.Height )
+            {
                 note_pos.Y += (int)( ( mousePoint.Y - _ScreenSize.Height + paddingSize.Height ) / DrawSet.NoteHeightSize );
 
-		        if ( note_pos.Y >= Score.EditMidiMapSet.DisplayMidiMapAllCount  )
-		        {
+                if ( note_pos.Y >= Score.EditMidiMapSet.DisplayMidiMapAllCount )
+                {
                     note_pos.Y = Score.EditMidiMapSet.DisplayMidiMapAllCount - 1;
-		        }
-	        }
-	        if ( mousePoint.X < _ScoreBodyRange.X + paddingSize.Width )
-	        {
+                }
+            }
+            if ( mousePoint.X < _ScoreBodyRange.X + paddingSize.Width )
+            {
                 note_pos.X -= (int)( ( _ScoreBodyRange.X + paddingSize.Width - mousePoint.X ) / DrawSet.NoteWidthSize );
 
-		        if ( note_pos.X < 0 )
-		        {
+                if ( note_pos.X < 0 )
+                {
                     note_pos.X = 0;
-		        }
-	        }
-	        if ( mousePoint.X > _ScreenSize.Width - paddingSize.Width )
-	        {
+                }
+            }
+            if ( mousePoint.X > _ScreenSize.Width - paddingSize.Width )
+            {
                 note_pos.X += (int)( ( mousePoint.X - _ScreenSize.Width + paddingSize.Width ) / DrawSet.NoteWidthSize );
 
-		        if ( note_pos.X >= ConfigSystem.NoteCount )
-		        {
+                if ( note_pos.X >= ConfigSystem.NoteCount )
+                {
                     note_pos.X = ConfigSystem.NoteCount - 1;
-		        }
-	        }
+                }
+            }
 
             DrawSet.NotePosition = note_pos;
 
@@ -688,24 +688,24 @@ public sealed partial class UserControlEditerPanel : UserControl
     {
         if ( _Timer != null )
         {
-            _MoveMousePoint= aMousePoint;
+            _MoveMousePoint = aMousePoint;
             return;
         }
 
-        _Timer = new( TimeSpan.FromSeconds(DrawSet.SheetTimerSecond ) );
+        _Timer = new( TimeSpan.FromSeconds( DrawSet.SheetTimerSecond ) );
 
         while ( await _Timer.WaitForNextTickAsync() )
         {
             var move = new Point
-                ( 
+                (
                     ( _MoveMousePoint.X - _MouseDownPosition.X ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond,
                     ( _MoveMousePoint.Y - _MouseDownPosition.Y ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond
                 );
 
             if ( move.X == 0 && move.Y == 0 )
-	        {
-		        return;
-	        }
+            {
+                return;
+            }
 
             var note_pos = XamlHelper.AdjustRangeIn
                 (
@@ -739,7 +739,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <returns>True:範囲内、False:範囲外</returns>
 	private bool CheckMeasureNoBodyArea( Point aMousePos )
-        => !CheckVolumeBodyArea( aMousePos ) 
+        => !CheckVolumeBodyArea( aMousePos )
             && XamlHelper.CheckRange( aMousePos, _MeasureNoBodyRange );
 
     /// <summary>
@@ -748,7 +748,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckScoreHeadArea( Point aMousePos )
-        => !CheckVolumeBodyArea( aMousePos ) 
+        => !CheckVolumeBodyArea( aMousePos )
             && XamlHelper.CheckRange( aMousePos, _ScoreHeadRange );
 
     /// <summary>
@@ -757,7 +757,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckScoreBodyArea( Point aMousePos )
-        => !CheckVolumeBodyArea( aMousePos ) 
+        => !CheckVolumeBodyArea( aMousePos )
             && XamlHelper.CheckRange( aMousePos, _ScoreBodyRange );
 
     /// <summary>
@@ -766,7 +766,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckBpmBodyArea( Point aMousePos )
-        => !CheckVolumeBodyArea( aMousePos ) 
+        => !CheckVolumeBodyArea( aMousePos )
         && XamlHelper.CheckRange( aMousePos, _BpmBodyRange );
 
     /// <summary>
@@ -775,7 +775,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckVolumeBodyArea( Point aMousePos )
-        => DrawSet.VolumeDisplay 
+        => DrawSet.VolumeDisplay
             && XamlHelper.CheckRange( aMousePos, _VolumeBodyRange );
 
     /// <summary>
@@ -785,7 +785,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckNoteRangeArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _NoteRange.GetSelectRange(DrawSet.NotePosition ) );
+            && XamlHelper.CheckRange( aMousePos, _NoteRange.GetSelectRange( DrawSet.NotePosition ) );
 
     #endregion
 
@@ -798,27 +798,27 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>X=-1:未取得、0:MidiMapGroup、1:MidiMap、Y=-1:未取得、0-n=MidiMapGroup/MidiMap表示連番</returns>
     private PointInt CalcMidiMapPosition( Point aMousePos )
     {
-		var	head		= _ScoreHeadRange;
-		var	note_pos    = DrawSet.NotePosition;
+        var head        = _ScoreHeadRange;
+        var note_pos    = DrawSet.NotePosition;
 
         var pos = new PointInt()
         {
             X = (int)( ( aMousePos.X - head.X ) / (DrawSet.HeaderWidthSize / 2 ) ),
-            Y = (int)( note_pos.Y + ( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize )
+            Y = (int)( note_pos.Y + (( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize) )
         };
 
-        if ( pos.X < 0 || 2 <= pos.X )
+        if ( pos.X is < 0 or >= 2 )
         {
             pos.X = -1;
         }
 
         if ( pos.Y < 0 || Score.EditMidiMapSet.DisplayMidiMapAllCount <= pos.Y )
-		{
-			pos.Y = -1;
-		}
+        {
+            pos.Y = -1;
+        }
 
         return pos;
-	}
+    }
 
     /// <summary>
     /// １小節分割数を考慮したノート位置（絶対値）を取得
@@ -839,13 +839,13 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>X=-1:未取得、0-n:ノート位置（絶対値）、Y=-1:未取得、0-n=MidiMapGroup/MidiMap表示連番</returns>
     private PointInt CalcNotePosition( Point aMousePos )
     {
-		var	body	    = _ScoreBodyRange;
-		var note_pos    = DrawSet.NotePosition;
+        var body        = _ScoreBodyRange;
+        var note_pos    = DrawSet.NotePosition;
 
         var pos = new PointInt()
-        { 
-			X = (int)( note_pos.X + ( aMousePos.X - body.X + DrawSet.NoteWidthSize / 2 ) / DrawSet.NoteWidthSize ),
-			Y = (int)( note_pos.Y + ( aMousePos.Y - body.Y ) / DrawSet.NoteHeightSize ),
+        {
+            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
+            Y = (int)( note_pos.Y + (( aMousePos.Y - body.Y ) / DrawSet.NoteHeightSize) ),
         };
 
         pos.X = CalcNotePosition( pos.X );
@@ -856,12 +856,12 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
 
         if ( pos.Y < 0 || Score.EditMidiMapSet.DisplayMidiMapAllCount <= pos.Y )
-		{
-			pos.Y = -1;
-		}
+        {
+            pos.Y = -1;
+        }
 
-		return pos;
-	}
+        return pos;
+    }
 
     /// <summary>
     /// BPM位置（絶対値）取得
@@ -870,12 +870,12 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>X=-1:未取得、0-n:NOTE位置（絶対値）、Y=0</returns>
     private PointInt CalcBpmPosition( Point aMousePos )
     {
-		var	note_pos    = DrawSet.NotePosition;
-		var	body		= _BpmBodyRange;
+        var note_pos    = DrawSet.NotePosition;
+        var body        = _BpmBodyRange;
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + ( aMousePos.X - body.X + DrawSet.NoteWidthSize / 2 ) / DrawSet.NoteWidthSize ),
+            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
             Y = 0
         };
 
@@ -886,8 +886,8 @@ public sealed partial class UserControlEditerPanel : UserControl
             pos.X = -1;
         }
 
-		return pos;
-	}
+        return pos;
+    }
 
     /// <summary>
     /// 小節番号位置（絶対値）取得
@@ -901,7 +901,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + ( aMousePos.X - body.X + DrawSet.NoteWidthSize / 2 ) / DrawSet.NoteWidthSize ),
+            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
             Y = 0
         };
 
@@ -922,12 +922,12 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>X=-1:未取得、0-n:ノート位置（絶対値）、Y=音量(127基準)</returns>
     private PointInt CalcNoteVolumePosition( Point aMousePos )
     {
-		var	note_pos    = DrawSet.NotePosition;
-		var	body		= _VolumeBodyRange;
+        var note_pos    = DrawSet.NotePosition;
+        var body        = _VolumeBodyRange;
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + ( aMousePos.X - body.X + DrawSet.NoteWidthSize / 2 ) / DrawSet.NoteWidthSize ),
+            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
             Y = (int)( body.Bottom - aMousePos.Y ),
         };
 
@@ -938,8 +938,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         pos.Y = MidiNet.CheckMidiVolume( pos.Y );
 
-		return pos;
-	}
+        return pos;
+    }
 
     #endregion
 
@@ -969,20 +969,12 @@ public sealed partial class UserControlEditerPanel : UserControl
         #region Input bpm
         if ( aAddFlag )
         {
-            InfoBpm info_new;
-
-            if ( info_old == null )
-            {
-                info_new = new( measure_no, note )
+            var info_new = info_old == null
+                ? new(measure_no, note)
                 {
                     Bpm = Score.Bpm
-                };
-            }
-            else
-            {
-                info_new = (InfoBpm)info_old.Clone();
-            }
-
+                }
+                : (InfoBpm)info_old.Clone();
             var page = new PageInputBpm
             {
                 Bpm = info_new.Bpm
@@ -1085,9 +1077,14 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         switch ( pos.X )
         {
-            case 0: rs.SelectMidiMapGroup( midiMap.Group );   break;
-            case 1: rs.SelectMidiMap( midiMap );              break;
-            default: return;
+            case 0:
+                rs.SelectMidiMapGroup( midiMap.Group );
+                break;
+            case 1:
+                rs.SelectMidiMap( midiMap );
+                break;
+            default:
+                return;
         }
 
         _EditResumeMng.ExcuteAndResume( rs );
@@ -1101,13 +1098,13 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aMousePos">マウス位置</param>
     /// <param name="aAddFlag">True:追加/変更、False:削除</param>
 	private void EditNote( Point aMousePos, bool aAddFlag )
-	{
+    {
         if ( !CheckScoreBodyArea( aMousePos ) )
         {
             return;
         }
 
-		var pos = CalcNotePosition( aMousePos );
+        var pos = CalcNotePosition( aMousePos );
 
         if ( pos.X == -1 || pos.Y == -1 )
         {
@@ -1135,19 +1132,19 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             if ( info_old == null )
             {
-                info_new = new(Score.EditChannelNo, midiMap.MidiMapKey, measure_no, note, DrawSet.NoteOn, !DrawSet.NoteOn );
+                info_new = new( Score.EditChannelNo, midiMap.MidiMapKey, measure_no, note, DrawSet.NoteOn, !DrawSet.NoteOn );
             }
             else
             {
-                if (    (DrawSet.NoteOn && info_old.NoteOn == true && info_old.Volume == DrawSet.NoteSelectVolume )
-                    ||  ( !DrawSet.NoteOn && info_old.NoteOff == true ) )
+                if ( ( DrawSet.NoteOn && info_old.NoteOn == true && info_old.Volume == DrawSet.NoteSelectVolume )
+                    || ( !DrawSet.NoteOn && info_old.NoteOff == true ) )
                 {
                     return;
                 }
 
                 info_new = (InfoNote)info_old.Clone();
 
-                if (DrawSet.NoteOn )
+                if ( DrawSet.NoteOn )
                 {
                     info_new.NoteOn = true;
                 }
@@ -1157,14 +1154,14 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
             }
 
-            if (DrawSet.NoteOn )
+            if ( DrawSet.NoteOn )
             {
                 info_new.Volume = DrawSet.NoteSelectVolume;
             }
 
             rs.AddNote( info_old, info_new );
 
-            AudioFactory.SinglePlay(Score.EditChannelNo, midiMap.Midi, (byte)( midiMap.VolumeAddIncludeGroup + info_new.Volume ) );
+            AudioFactory.SinglePlay( Score.EditChannelNo, midiMap.Midi, (byte)( midiMap.VolumeAddIncludeGroup + info_new.Volume ) );
         }
         #endregion
 
@@ -1173,7 +1170,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             return;
         }
-        else if (DrawSet.NoteOn && info_old.NoteOff )
+        else if ( DrawSet.NoteOn && info_old.NoteOff )
         {
             var info_new = (InfoNote)info_old.Clone();
             info_new.NoteOn = false;
@@ -1188,7 +1185,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             rs.AddNote( info_old, info_new );
         }
         else
-        { 
+        {
             rs.RemoveNote( info_old );
         }
         #endregion
@@ -1201,15 +1198,15 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void ClearSelectNoteRange()
     {
-		var rs = new ResumeMultiple();
+        var rs = new ResumeMultiple();
 
         ClearSelectNoteRange( ref rs );
 
-		if ( rs.Count > 0 )
+        if ( rs.Count > 0 )
         {
             _EditResumeMng.ExcuteAndResume( rs );
         }
-	}
+    }
 
     /// <summary>
     /// 範囲選択解除。処理の実行は呼び出し元で実施が必要です。
@@ -1228,7 +1225,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             _NoteRange.ClearPos();
 
-			aResume.SelectNoteRange( ref _NoteRange, _NoteRangeBef );
+            aResume.SelectNoteRange( ref _NoteRange, _NoteRangeBef );
         }
         #endregion
 
@@ -1238,7 +1235,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 if ( info.Selected )
                 {
-					aResume.SelectNote( info, false );
+                    aResume.SelectNote( info, false );
                 }
             }
         }
@@ -1250,7 +1247,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 if ( info.Selected )
                 {
-					aResume.SelectBpm( info, false );
+                    aResume.SelectBpm( info, false );
                 }
             }
         }
@@ -1331,20 +1328,20 @@ public sealed partial class UserControlEditerPanel : UserControl
                     continue;
                 }
 
-                notePosStart    = ( measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0 );
-                notePosEnd      = ( measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1 );
+                notePosStart = measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0;
+                notePosEnd   = measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1;
 
                 for ( var y = sy; y <= ey; y++ )
                 {
-				    var midiMap = Score.EditMidiMapSet.DisplayMidiMaps[ y ];
-                        
+                    var midiMap = Score.EditMidiMapSet.DisplayMidiMaps[ y ];
+
                     if ( midiMap == null )
                     {
                         continue;
                     }
 
-					if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var note_line ) )
-					{
+                    if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var note_line ) )
+                    {
                         continue;
                     }
 
@@ -1374,7 +1371,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         #endregion
 
-        if (DrawSet.IncludeBpm )
+        if ( DrawSet.IncludeBpm )
         {
             #region Select bpms within range
             {
@@ -1396,8 +1393,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                         continue;
                     }
 
-                    notePosStart    = ( measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0 );
-                    notePosEnd      = ( measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1 );
+                    notePosStart = measure_no == measureNoStart ? sx % ConfigSystem.MeasureNoteNumber : 0;
+                    notePosEnd   = measure_no == measureNoEnd   ? ex % ConfigSystem.MeasureNoteNumber : ConfigSystem.MeasureNoteNumber - 1;
 
                     for ( var note_pos = notePosStart; note_pos <= notePosEnd; note_pos++ )
                     {
@@ -1439,8 +1436,8 @@ public sealed partial class UserControlEditerPanel : UserControl
             }
         }
 
-        if (DrawSet.IncludeBpm )
-        { 
+        if ( DrawSet.IncludeBpm )
+        {
             foreach ( var info in Score.SysChannel.BpmInfoList.Values )
             {
                 if ( info.Selected )
@@ -1517,8 +1514,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // After
                     a = info_old.AbsoluteNotePos + mv_x;
 
-                    measure_no  = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos    = a % ConfigSystem.MeasureNoteNumber;
+                    measure_no = a / ConfigSystem.MeasureNoteNumber;
+                    note_pos = a % ConfigSystem.MeasureNoteNumber;
 
                     var info_new = Score.EditChannel.GetNote( info_old.MidiMapKey, measure_no, note_pos );
 
@@ -1532,15 +1529,15 @@ public sealed partial class UserControlEditerPanel : UserControl
         #endregion
 
         #region Add notes to move
-        { 
+        {
             foreach ( var info_old in Score.EditChannel.NoteInfoList.Values )
             {
                 if ( info_old.Selected )
                 {
                     a = info_old.AbsoluteNotePos + mv_x;
 
-                    measure_no  = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos    = a % ConfigSystem.MeasureNoteNumber;
+                    measure_no = a / ConfigSystem.MeasureNoteNumber;
+                    note_pos = a % ConfigSystem.MeasureNoteNumber;
 
                     var index = Score.EditMidiMapSet.GetDisplayMidiMapIndex( info_old.MidiMapKey );
 
@@ -1576,8 +1573,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // After
                     a = info_old.AbsoluteNotePos + mv_x;
 
-                    measure_no  = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos    = a % ConfigSystem.MeasureNoteNumber;
+                    measure_no = a / ConfigSystem.MeasureNoteNumber;
+                    note_pos = a % ConfigSystem.MeasureNoteNumber;
 
                     var info_new = Score.SysChannel.GetBpm( measure_no, note_pos );
 
@@ -1590,18 +1587,18 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         #endregion
 
-        if (DrawSet.IncludeBpm )
+        if ( DrawSet.IncludeBpm )
         {
             #region Add bpms to move
-            { 
+            {
                 foreach ( var info_old in Score.SysChannel.BpmInfoList.Values )
                 {
                     if ( info_old.Selected )
                     {
                         a = info_old.AbsoluteNotePos + mv_x;
 
-                        measure_no  = a / ConfigSystem.MeasureNoteNumber;
-                        note_pos    = a % ConfigSystem.MeasureNoteNumber;
+                        measure_no = a / ConfigSystem.MeasureNoteNumber;
+                        note_pos = a % ConfigSystem.MeasureNoteNumber;
 
                         rs.AddBpm( null, new( measure_no, note_pos, info_old.Bpm, true ) );
                     }
@@ -1622,34 +1619,34 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void CopyNoteRange()
     {
-		_CopyNoteList.Clear();
+        _CopyNoteList.Clear();
         _CopyBpmList.Clear();
 
         _CopyNotePositionX = ConfigSystem.NoteCount;
 
-		foreach ( var info in Score.EditChannel.NoteInfoList.Values )
+        foreach ( var info in Score.EditChannel.NoteInfoList.Values )
         {
             if ( info.Selected )
             {
-				if ( _CopyNotePositionX > info.AbsoluteNotePos )
-				{
-					_CopyNotePositionX = info.AbsoluteNotePos;
-				}
+                if ( _CopyNotePositionX > info.AbsoluteNotePos )
+                {
+                    _CopyNotePositionX = info.AbsoluteNotePos;
+                }
 
-				_CopyNoteList.Add( (InfoNote)info.Clone() );
+                _CopyNoteList.Add( (InfoNote)info.Clone() );
             }
         }
 
-		foreach ( var info in Score.SysChannel.BpmInfoList.Values )
+        foreach ( var info in Score.SysChannel.BpmInfoList.Values )
         {
             if ( info.Selected )
             {
-				if ( _CopyNotePositionX > info.AbsoluteNotePos )
-				{
-					_CopyNotePositionX = info.AbsoluteNotePos;
-				}
+                if ( _CopyNotePositionX > info.AbsoluteNotePos )
+                {
+                    _CopyNotePositionX = info.AbsoluteNotePos;
+                }
 
-				_CopyBpmList.Add( (InfoBpm)info.Clone() );
+                _CopyBpmList.Add( (InfoBpm)info.Clone() );
             }
         }
 
@@ -1668,7 +1665,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-		var pos = CalcNotePosition( aMousePos );
+        var pos = CalcNotePosition( aMousePos );
 
         if ( pos.X == -1 || pos.Y == -1 )
         {
@@ -1687,8 +1684,8 @@ public sealed partial class UserControlEditerPanel : UserControl
             var measure_no = x / ConfigSystem.MeasureNoteNumber;
             var note       = x % ConfigSystem.MeasureNoteNumber;
 
-			var info_old = Score.EditChannel.GetNote( info.MidiMapKey, measure_no, note );
-			var info_new = new InfoNote(Score.EditChannelNo, info.MidiMapKey, measure_no, note, info.Volume, info.NoteOn, info.NoteOff );
+            var info_old = Score.EditChannel.GetNote( info.MidiMapKey, measure_no, note );
+            var info_new = new InfoNote(Score.EditChannelNo, info.MidiMapKey, measure_no, note, info.Volume, info.NoteOn, info.NoteOff );
 
             rs.AddNote( info_old, info_new );
         }
@@ -1696,8 +1693,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Add bpm
 
-        if (DrawSet.IncludeBpm )
-        { 
+        if ( DrawSet.IncludeBpm )
+        {
             foreach ( var info in _CopyBpmList )
             {
                 var x = pos.X + info.AbsoluteNotePos - _CopyNotePositionX;
@@ -1705,8 +1702,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                 var measure_no = x / ConfigSystem.MeasureNoteNumber;
                 var note       = x % ConfigSystem.MeasureNoteNumber;
 
-				var info_old	= Score.SysChannel.GetBpm( measure_no, note );
-				var info_new	= new InfoBpm( measure_no, note, info.Bpm );
+                var info_old   = Score.SysChannel.GetBpm( measure_no, note );
+                var info_new   = new InfoBpm( measure_no, note, info.Bpm );
 
                 rs.AddBpm( info_old, info_new );
             }
@@ -1737,7 +1734,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-		var pos = CalcNoteVolumePosition( aMousePos );
+        var pos = CalcNoteVolumePosition( aMousePos );
 
         if ( pos.X == -1 || pos.Y == -1 )
         {
@@ -1759,7 +1756,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     /// <param name="aMousePos">マウス位置</param>
 	private void EditNoteVolume( Point aMousePos )
-	{
+    {
         EditVolumeRange( aMousePos, false );
 
         var rs = new ResumeMultiple();
@@ -1783,16 +1780,16 @@ public sealed partial class UserControlEditerPanel : UserControl
                     continue;
                 }
 
-				foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
-				{
+                foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+                {
                     // 未選択の場合
                     if ( !( midiMap.Group?.Selected ?? false ) && !midiMap.Selected )
                     {
                         continue;
                     }
 
-					if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var note_line ))
-					{
+                    if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var note_line ) )
+                    {
                         continue;
                     }
 
@@ -1811,29 +1808,29 @@ public sealed partial class UserControlEditerPanel : UserControl
                     switch ( _VolumeRange.EditType )
                     {
                         case ConfigEditer.VolumeEditType.UpDown:
-                            info_new.Volume += _VolumeRange.VolumeList[ x - sn ];
+                            info_new.Volume += _VolumeRange.VolumeList [ x - sn ];
                             break;
                         case ConfigEditer.VolumeEditType.IntonationHL:
-                            info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
+                            info_new.Volume += _VolumeRange.VolumeList [ x - sn ]
                                 * ( info_new.Volume < _VolumeRange.StartVolume ? -1 : 1 );
                             break;
                         case ConfigEditer.VolumeEditType.IntonationH:
-                            info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
+                            info_new.Volume += _VolumeRange.VolumeList [ x - sn ]
                                 * ( info_new.Volume >= _VolumeRange.StartVolume ? 1 : 0 );
                             break;
                         case ConfigEditer.VolumeEditType.IntonationL:
-                            info_new.Volume += _VolumeRange.VolumeList[ x - sn ]
+                            info_new.Volume += _VolumeRange.VolumeList [ x - sn ]
                                 * ( info_new.Volume <= _VolumeRange.StartVolume ? 1 : 0 );
                             break;
                         default:
-                            info_new.Volume  = _VolumeRange.VolumeList[ x - sn ];
+                            info_new.Volume = _VolumeRange.VolumeList [ x - sn ];
                             break;
                     }
 
                     info_new.Volume = MidiNet.CheckMidiVolume( info_new.Volume );
 
                     rs.SetNoteVolume( info_old, info_new );
-				}
+                }
             }
         }
 
@@ -1865,16 +1862,22 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// フレーム処理
     /// </summary>
     public void OnMove()
-	{
+    {
         #region Resume
 
         while ( EventManage.ResumeRequestQueue.TryDequeue( out var action ) )
-        { 
+        {
             switch ( action )
             {
-                case EventManage.EResumeAction.Redo:    _EditResumeMng.Redo();  break;
-                case EventManage.EResumeAction.Undo:    _EditResumeMng.Undo();  break;
-                case EventManage.EResumeAction.Clear:   _EditResumeMng.Clear(); break;
+                case EventManage.EResumeAction.Redo:
+                    _EditResumeMng.Redo();
+                    break;
+                case EventManage.EResumeAction.Undo:
+                    _EditResumeMng.Undo();
+                    break;
+                case EventManage.EResumeAction.Clear:
+                    _EditResumeMng.Clear();
+                    break;
             }
         }
 
@@ -1882,8 +1885,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score size
 
-        if (DrawSet.UpdateScoreLayoutFlag )
-		{
+        if ( DrawSet.UpdateScoreLayoutFlag )
+        {
             UpdateScore();
             DrawSet.UpdateScoreLayoutFlag = false;
         }
@@ -1892,31 +1895,31 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Sheet potition
 
-        if (DrawSet.UpdateCameraFlag )
-		{
+        if ( DrawSet.UpdateCameraFlag )
+        {
             UpdateSheetPosition();
             DrawSet.UpdateCameraFlag = false;
-		}
+        }
 
         #endregion
 
         #region Line
 
-        if (DrawSet.UpdateScoreLineFlag )
-		{
+        if ( DrawSet.UpdateScoreLineFlag )
+        {
             UpdateScoreLine();
             DrawSet.UpdateScoreLineFlag = false;
-		}
+        }
 
         #endregion
 
         #region Score header
 
-        if (DrawSet.UpdateScoreHeaderFlag )
-		{
+        if ( DrawSet.UpdateScoreHeaderFlag )
+        {
             UpdateMidiMapHeader();
             DrawSet.UpdateScoreHeaderFlag = false;
-		}
+        }
 
         #endregion
 
@@ -1945,8 +1948,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note
 
-        if (DrawSet.UpdateScoreNoteFlag )
-		{
+        if ( DrawSet.UpdateScoreNoteFlag )
+        {
             foreach ( var measure_no in DrawSet.UpdateScoreNoteMeasureNoList )
             {
                 UpdateNoteMeasure( measure_no );
@@ -1962,7 +1965,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note Predict
 
-        if (DrawSet.UpdateScoreNotePredictFlag )
+        if ( DrawSet.UpdateScoreNotePredictFlag )
         {
             // TODO: 機械学習結果反映用：自動採譜を試してみるときに使うかも
             UpdateNotePredictListMeasure();
@@ -2018,7 +2021,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         if ( DrawSet.UpdateClearRangeFlag )
         {
-			_NoteRangeBef.Set( _NoteRange );
+            _NoteRangeBef.Set( _NoteRange );
 
             ClearSelectNoteRange();
 
@@ -2032,69 +2035,69 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// 表示範囲更新
     /// </summary>
     private void UpdateScore()
-	{
-		// Screen
-        _ScreenSize.Width			= ActualSize.X;
-        _ScreenSize.Height			= ActualSize.Y;
+    {
+        // Screen
+        _ScreenSize.Width       = ActualSize.X;
+        _ScreenSize.Height      = ActualSize.Y;
 
-		// Infomation
-        _InfoRange.X			    = 0;
-        _InfoRange.Y			    = 0;
-        _InfoRange.Width		    = DrawSet.HeaderWidthSize / 2;
-        _InfoRange.Height		    = DrawSet.BpmHeightSize + DrawSet.MeasureNoHeightSize;
+        // Infomation
+        _InfoRange.X            = 0;
+        _InfoRange.Y            = 0;
+        _InfoRange.Width        = DrawSet.HeaderWidthSize / 2;
+        _InfoRange.Height       = DrawSet.BpmHeightSize + DrawSet.MeasureNoHeightSize;
 
-		// Bpm header
-        _BpmHeadRange.X			    = _InfoRange.Right;
-        _BpmHeadRange.Y			    = 0;
-        _BpmHeadRange.Width		    = DrawSet.HeaderWidthSize / 2;
-        _BpmHeadRange.Height		= DrawSet.BpmHeightSize;
+        // Bpm header
+        _BpmHeadRange.X         = _InfoRange.Right;
+        _BpmHeadRange.Y         = 0;
+        _BpmHeadRange.Width     = DrawSet.HeaderWidthSize / 2;
+        _BpmHeadRange.Height    = DrawSet.BpmHeightSize;
 
-		// Bpm body
-        _BpmBodyRange.X			    = _BpmHeadRange.Right;
-        _BpmBodyRange.Y			    = _BpmHeadRange.Top;
-        _BpmBodyRange.Width		    = _ScreenSize.Width - _BpmHeadRange.Right > 0 ? _ScreenSize.Width - _BpmHeadRange.Right : 0 ;
-        _BpmBodyRange.Height		= _BpmHeadRange.Height;
+        // Bpm body
+        _BpmBodyRange.X         = _BpmHeadRange.Right;
+        _BpmBodyRange.Y         = _BpmHeadRange.Top;
+        _BpmBodyRange.Width     = _ScreenSize.Width - _BpmHeadRange.Right > 0 ? _ScreenSize.Width - _BpmHeadRange.Right : 0;
+        _BpmBodyRange.Height    = _BpmHeadRange.Height;
 
-		// Measure number header
-        _MeasureNoHeadRange.X		= _InfoRange.Right;
-        _MeasureNoHeadRange.Y		= _BpmBodyRange.Bottom;
-        _MeasureNoHeadRange.Width	= DrawSet.HeaderWidthSize / 2;
-        _MeasureNoHeadRange.Height	= DrawSet.MeasureNoHeightSize;
+        // Measure number header
+        _MeasureNoHeadRange.X       = _InfoRange.Right;
+        _MeasureNoHeadRange.Y       = _BpmBodyRange.Bottom;
+        _MeasureNoHeadRange.Width   = DrawSet.HeaderWidthSize / 2;
+        _MeasureNoHeadRange.Height  = DrawSet.MeasureNoHeightSize;
 
-		// Measure number body
-        _MeasureNoBodyRange.X		= _MeasureNoHeadRange.Right;
-        _MeasureNoBodyRange.Y		= _MeasureNoHeadRange.Top;
-        _MeasureNoBodyRange.Width	= _ScreenSize.Width - _MeasureNoHeadRange.Right > 0 ? _ScreenSize.Width - _MeasureNoHeadRange.Right : 0 ;
-        _MeasureNoBodyRange.Height	= _MeasureNoHeadRange.Height;
+        // Measure number body
+        _MeasureNoBodyRange.X       = _MeasureNoHeadRange.Right;
+        _MeasureNoBodyRange.Y       = _MeasureNoHeadRange.Top;
+        _MeasureNoBodyRange.Width   = _ScreenSize.Width - _MeasureNoHeadRange.Right > 0 ? _ScreenSize.Width - _MeasureNoHeadRange.Right : 0;
+        _MeasureNoBodyRange.Height  = _MeasureNoHeadRange.Height;
 
-		// Score sheet header
-        _ScoreHeadRange.X			= 0;
-        _ScoreHeadRange.Y			= _MeasureNoBodyRange.Bottom;
-        _ScoreHeadRange.Width		= DrawSet.HeaderWidthSize;
-        _ScoreHeadRange.Height		= DrawSet.ScoreMaxHeight;
+        // Score sheet header
+        _ScoreHeadRange.X       = 0;
+        _ScoreHeadRange.Y       = _MeasureNoBodyRange.Bottom;
+        _ScoreHeadRange.Width   = DrawSet.HeaderWidthSize;
+        _ScoreHeadRange.Height  = DrawSet.ScoreMaxHeight;
 
         // Score sheet body
-        _ScoreBodyRange.X			= _ScoreHeadRange.Right;
-        _ScoreBodyRange.Y			= _ScoreHeadRange.Top;
-        _ScoreBodyRange.Width		= _ScreenSize.Width - _ScoreHeadRange.Right > 0 ? _ScreenSize.Width - _ScoreHeadRange.Right : 0 ;
-        _ScoreBodyRange.Height		= _ScoreHeadRange.Height;
+        _ScoreBodyRange.X       = _ScoreHeadRange.Right;
+        _ScoreBodyRange.Y       = _ScoreHeadRange.Top;
+        _ScoreBodyRange.Width   = _ScreenSize.Width - _ScoreHeadRange.Right > 0 ? _ScreenSize.Width - _ScoreHeadRange.Right : 0;
+        _ScoreBodyRange.Height  = _ScoreHeadRange.Height;
 
         // Volume header
-        _VolumeHeadRange.X			= 0;
-        _VolumeHeadRange.Y			= _ScreenSize.Height - DrawSet.VolumeHeightSize > 0 ? _ScreenSize.Height - DrawSet.VolumeHeightSize : 0 ;
-        _VolumeHeadRange.Width		= DrawSet.HeaderWidthSize;
-        _VolumeHeadRange.Height	    = DrawSet.VolumeHeightSize;
+        _VolumeHeadRange.X      = 0;
+        _VolumeHeadRange.Y      = _ScreenSize.Height - DrawSet.VolumeHeightSize > 0 ? _ScreenSize.Height - DrawSet.VolumeHeightSize : 0;
+        _VolumeHeadRange.Width  = DrawSet.HeaderWidthSize;
+        _VolumeHeadRange.Height = DrawSet.VolumeHeightSize;
 
         // Volume body
-        _VolumeBodyRange.X			= _VolumeHeadRange.Right;
-        _VolumeBodyRange.Y			= _VolumeHeadRange.Top;
-        _VolumeBodyRange.Width		= _ScreenSize.Width - _VolumeHeadRange.Right > 0 ? _ScreenSize.Width - _VolumeHeadRange.Right : 0 ;
-        _VolumeBodyRange.Height	    = _VolumeHeadRange.Height;
+        _VolumeBodyRange.X      = _VolumeHeadRange.Right;
+        _VolumeBodyRange.Y      = _VolumeHeadRange.Top;
+        _VolumeBodyRange.Width  = _ScreenSize.Width - _VolumeHeadRange.Right > 0 ? _ScreenSize.Width - _VolumeHeadRange.Right : 0;
+        _VolumeBodyRange.Height = _VolumeHeadRange.Height;
 
         // スコア表示範囲
         {
             _ScoreViewHeight = _ScoreBodyRange._height;
-                
+
             var h = _ScreenSize._height - _ScoreBodyRange._y - _VolumeBodyRange._height;
 
             if ( _ScoreViewHeight > h )
@@ -2139,9 +2142,9 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private void UpdateSheetPosition()
     {
-		var body	    = _ScoreBodyRange;
+        var body        = _ScoreBodyRange;
         var view_h      = _ScoreViewHeight;
-		var	note_pos    = DrawSet.NotePosition;
+        var note_pos    = DrawSet.NotePosition;
 
         #region 水平位置チェック
         {
@@ -2188,7 +2191,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// 小節線表示更新
     /// </summary>
     private void UpdateScoreLine()
-	{
+    {
         var body        = _ScoreBodyRange;
         var note_num    = ConfigSystem.MeasureNoteNumber;
         var note_width  = DrawSet.NoteWidthSize;
@@ -2214,7 +2217,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 for ( var i = 1; i <= 6; i++ )
                 {
-                    if ( pens[ i ].LineSize != 0 )
+                    if ( pens [ i ].LineSize != 0 )
                     {
                         linesize = (int)Math.Pow( 2, i + 1 );
                         break;
@@ -2230,7 +2233,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     for ( int x = 6, y = 1; x >= 0; x--, y *= 2 )
                     {
-                        pen = pens[ x ];
+                        pen = pens [ x ];
 
                         if ( i % ( note_num / y ) == 0 && ( pen.LineSize != 0 ) )
                         {
@@ -2247,7 +2250,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         (
                             new
                             (
-                                body._x + note_width * i,
+                                body._x + ( note_width * i ),
                                 body._y,
                                 0,
                                 body._height,
@@ -2273,11 +2276,11 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             for ( var i = 0; i <= 1; i++ )
             {
-            	if ( pens[ i ].LineSize != 0 )
-            	{
-            		index = i;
+                if ( pens [ i ].LineSize != 0 )
+                {
+                    index = i;
                     break;
-            	}
+                }
             }
 
             _StaffLineList.Clear();
@@ -2292,9 +2295,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     #region MidiMapGroupの上線
 
-      				_StaffLineList.Add( new( x1, y, x2, 0, pens[ index ] ) );
+                    _StaffLineList.Add( new( x1, y, x2, 0, pens [ index ] ) );
 
-                	y += DrawSet.NoteHeightSize;
+                    y += DrawSet.NoteHeightSize;
 
                     #endregion
 
@@ -2306,23 +2309,23 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     if ( pen.LineSize != 0 )
                     {
-                		for ( var j = 1; j < midiMapCount; j++ )
-                		{
-                			_StaffLineList.Add( new( x1, y, x2, 0, pen ) );
+                        for ( var j = 1; j < midiMapCount; j++ )
+                        {
+                            _StaffLineList.Add( new( x1, y, x2, 0, pen ) );
 
-                			y += DrawSet.NoteHeightSize;
-                		}
+                            y += DrawSet.NoteHeightSize;
+                        }
                     }
                     else
                     {
-                		y += DrawSet.NoteHeightSize * ( midiMapCount - 1 );
+                        y += DrawSet.NoteHeightSize * ( midiMapCount - 1 );
                     }
 
                     #endregion
                 }
 
                 // 一番下の線
-                _StaffLineList.Add( new( x1, y, x2, 0, pens[ index ] ) );
+                _StaffLineList.Add( new( x1, y, x2, 0, pens [ index ] ) );
             }
         }
         #endregion
@@ -2332,7 +2335,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// MidiMapGroup/MidiMapヘッダ表示更新
     /// </summary>
     private void UpdateMidiMapHeader()
-	{
+    {
         var head = _ScoreHeadRange;
 
         _HeaderList.Clear();
@@ -2353,7 +2356,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             for ( var index = 0; index < Score.EditMidiMapSet.DisplayGroupCount; index++ )
             {
-                h = DrawSet.NoteHeightSize * Score.EditMidiMapSet.DisplayMidiMapCountByGroup[ index ];
+                h = DrawSet.NoteHeightSize * Score.EditMidiMapSet.DisplayMidiMapCountByGroup [ index ];
 
                 var group = Score.EditMidiMapSet.GetDisplayMidiMapGroup( index );
 
@@ -2371,14 +2374,14 @@ public sealed partial class UserControlEditerPanel : UserControl
         #region MidiMap
         {
             x = head._x + w;
-			y = tmp_y;
-			w = head._width - w;
-			h = DrawSet.NoteHeightSize;
+            y = tmp_y;
+            w = head._width - w;
+            h = DrawSet.NoteHeightSize;
 
-			foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
-			{
+            foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+            {
                 // ノート描画用の書式を登録
-                if ( !_MidiMapNoteFormatList.ContainsKey( midiMap.MidiMapKey ) )
+                if ( !_MidiMapNoteFormatList.TryGetValue( midiMap.MidiMapKey, out var value ) )
                 {
                     var formatRect = new FormatRect
                     {
@@ -2390,14 +2393,14 @@ public sealed partial class UserControlEditerPanel : UserControl
                 }
                 else
                 {
-                    _MidiMapNoteFormatList[ midiMap.MidiMapKey ].Background = new( midiMap.Color );
+                    value.Background = new( midiMap.Color );
                 }
 
                 // ヘッダ情報追加
                 _HeaderList.Add( new( x, y, w, h, midiMap ) );
 
-				y += h;
-			}
+                y += h;
+            }
         }
         #endregion
     }
@@ -2424,7 +2427,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             if ( _NoteList.TryGetValue( aMeasureNo, out var nList ) )
             {
                 nList.Clear();
-                _NoteList.Remove( aMeasureNo );
+                _ = _NoteList.Remove( aMeasureNo );
             }
         }
         #endregion
@@ -2440,46 +2443,46 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         // 描画範囲の左上の座標を基準に算出
         var note_rect = new Rect
-            ( 
-                0, 
+            (
+                0,
                 body_s._y,
                 DrawSet.NoteWidthSize,
-                DrawSet.NoteHeightSize 
+                DrawSet.NoteHeightSize
             );
 
         #region Note
-		{
-			foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
-			{
-				if ( measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
-				{
-					foreach ( var info in measure_line.InfoStates.Values )
-					{
-						note_rect.X = body_s.X + info.NotePos * note_rect.Width - note_rect.Height / 2;
+        {
+            foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+            {
+                if ( measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
+                {
+                    foreach ( var info in measure_line.InfoStates.Values )
+                    {
+                        note_rect.X = body_s.X + ( info.NotePos * note_rect.Width ) - ( note_rect.Height / 2 );
 
-						if ( !_NoteList.TryGetValue( aMeasureNo, out var lst ) )
-						{
-							lst = new();
-						}
-						lst.Add
+                        if ( !_NoteList.TryGetValue( aMeasureNo, out var lst ) )
+                        {
+                            lst = [];
+                        }
+                        lst.Add
                             (
-							    new
-								(
-									note_rect._x,
-								    note_rect._y,
-								    note_rect._height,
-								    note_rect._height,
+                                new
+                                (
+                                    note_rect._x,
+                                    note_rect._y,
+                                    note_rect._height,
+                                    note_rect._height,
                                     info,
-					                _MidiMapNoteFormatList[ midiMap.MidiMapKey ]
+                                    _MidiMapNoteFormatList [ midiMap.MidiMapKey ]
                                 )
-					        );
+                            );
 
-						_NoteList[ aMeasureNo ] = lst;
-					}
-				}
-				note_rect.Y += note_rect.Height;
-			}
-		}
+                        _NoteList [ aMeasureNo ] = lst;
+                    }
+                }
+                note_rect.Y += note_rect.Height;
+            }
+        }
         #endregion
 
         #region Sort
@@ -2502,11 +2505,11 @@ public sealed partial class UserControlEditerPanel : UserControl
         foreach ( var item in _NoteList.Values )
         {
             foreach ( var note in item )
-            { 
+            {
                 if ( note?.InfoNote?.NoteOn ?? false )
                 {
                     var distanceToNextNoteOff = Score.EditChannel.GetNotePosDistanceToNextNoteOff( note.InfoNote );
-                    note.NoteLength = distanceToNextNoteOff == 0 ? 0 : distanceToNextNoteOff * DrawSet.NoteWidthSize ;
+                    note.NoteLength = distanceToNextNoteOff == 0 ? 0 : distanceToNextNoteOff * DrawSet.NoteWidthSize;
                 }
             }
         }
@@ -2534,7 +2537,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             if ( _NotePredictList.TryGetValue( aMeasureNo, out var nList ) )
             {
                 nList.Clear();
-                _NotePredictList.Remove( aMeasureNo );
+                _ = _NotePredictList.Remove( aMeasureNo );
             }
         }
         #endregion
@@ -2550,46 +2553,46 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         // 描画範囲の左上の座標を基準に算出
         var note_rect = new Rect
-            ( 
-                0, 
+            (
+                0,
                 body_s._y,
                 DrawSet.NoteWidthSize,
-                DrawSet.NoteHeightSize 
+                DrawSet.NoteHeightSize
             );
 
         #region Note
-		{
-			foreach ( var midiMap in ScorePredict.EditMidiMapSet.DisplayMidiMaps )
-			{
-				if ( measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
-				{
-					foreach ( var info in measure_line.InfoStates.Values )
-					{
-						note_rect.X = body_s.X + info.NotePos * note_rect.Width - note_rect.Height / 2;
+        {
+            foreach ( var midiMap in ScorePredict.EditMidiMapSet.DisplayMidiMaps )
+            {
+                if ( measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
+                {
+                    foreach ( var info in measure_line.InfoStates.Values )
+                    {
+                        note_rect.X = body_s.X + ( info.NotePos * note_rect.Width ) - ( note_rect.Height / 2 );
 
-						if ( !_NotePredictList.TryGetValue( aMeasureNo, out var lst ) )
-						{
-							lst = new();
-						}
-						lst.Add
+                        if ( !_NotePredictList.TryGetValue( aMeasureNo, out var lst ) )
+                        {
+                            lst = [];
+                        }
+                        lst.Add
                             (
-							    new
-								(
-									note_rect._x,
-								    note_rect._y,
-								    note_rect._height,
-								    note_rect._height,
+                                new
+                                (
+                                    note_rect._x,
+                                    note_rect._y,
+                                    note_rect._height,
+                                    note_rect._height,
                                     info,
-					                _MidiMapNoteFormatList[ midiMap.MidiMapKey ]
+                                    _MidiMapNoteFormatList [ midiMap.MidiMapKey ]
                                 )
-					        );
+                            );
 
-						_NotePredictList[ aMeasureNo ] = lst;
-					}
-				}
-				note_rect.Y += note_rect.Height;
-			}
-		}
+                        _NotePredictList [ aMeasureNo ] = lst;
+                    }
+                }
+                note_rect.Y += note_rect.Height;
+            }
+        }
         #endregion
 
         #region Sort
@@ -2626,7 +2629,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             if ( _VolumeList.TryGetValue( aMeasureNo, out var nList ) )
             {
                 nList.Clear();
-                _VolumeList.Remove( aMeasureNo );
+                _ = _VolumeList.Remove( aMeasureNo );
             }
         }
         #endregion
@@ -2642,46 +2645,46 @@ public sealed partial class UserControlEditerPanel : UserControl
         var n_w  = DrawSet.NoteWidthSize;
 
         #region Note
-		{
-			foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
-			{
+        {
+            foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+            {
                 // 未選択の場合
                 if ( !( midiMap.Group?.Selected ?? false ) && !midiMap.Selected )
                 {
                     continue;
                 }
 
-				if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
-				{
+                if ( !measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
+                {
                     continue;
                 }
 
-				foreach ( var info in measure_line.InfoStates.Values )
-				{
+                foreach ( var info in measure_line.InfoStates.Values )
+                {
                     if ( !info.NoteOn )
                     {
                         continue;
                     }
 
-					if ( !_VolumeList.TryGetValue( aMeasureNo, out var lst ) )
-					{
-						lst = new();
-					}
-					lst.Add
+                    if ( !_VolumeList.TryGetValue( aMeasureNo, out var lst ) )
+                    {
+                        lst = [];
+                    }
+                    lst.Add
                         (
                             new
                             (
-                                body._x + info.NotePos * n_w,
+                                body._x + ( info.NotePos * n_w ),
                                 (float)body.Bottom,
                                 info,
-                                _MidiMapNoteFormatList[ midiMap.MidiMapKey ]
+                                _MidiMapNoteFormatList [ midiMap.MidiMapKey ]
                             )
                         );
 
-                    _VolumeList[ aMeasureNo ] = lst;
-				}
-			}
-		}
+                    _VolumeList [ aMeasureNo ] = lst;
+                }
+            }
+        }
         #endregion
     }
 
@@ -2707,7 +2710,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             if ( _BpmList.TryGetValue( aMeasureNo, out var nList ) )
             {
                 nList.Clear();
-                _BpmList.Remove( aMeasureNo );
+                _ = _BpmList.Remove( aMeasureNo );
             }
         }
         #endregion
@@ -2716,11 +2719,11 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         // 描画範囲の左上の座標基準
         var note_rect = new Rect
-            ( 
-                0, 
+            (
+                0,
                 body._y,
                 DrawSet.NoteWidthSize,
-                DrawSet.BpmHeightSize 
+                DrawSet.BpmHeightSize
             );
 
         #region Bpm
@@ -2736,20 +2739,20 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             if ( bpm_line == null )
             {
-				return;
-			}
+                return;
+            }
 
             foreach ( var info in bpm_line.InfoStates.Values )
             {
-                note_rect.X = body.X + info.NotePos * DrawSet.NoteWidthSize - DrawSet.NoteWidthSize / 2;
+                note_rect.X = body.X + ( info.NotePos * DrawSet.NoteWidthSize ) - ( DrawSet.NoteWidthSize / 2 );
 
                 if ( !_BpmList.TryGetValue( aMeasureNo, out var lst ) )
                 {
-                    lst = new();
+                    lst = [];
                 }
 
                 lst.Add
-                    ( 
+                    (
                         new
                         (
                             note_rect._x,
@@ -2760,7 +2763,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         )
                     );
 
-                _BpmList[ aMeasureNo ] = lst;
+                _BpmList [ aMeasureNo ] = lst;
             }
         }
         #endregion
@@ -2799,7 +2802,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     {
         try
         {
-            Task.Run
+            _ = Task.Run
                 (
                     () =>
                     {
@@ -2813,9 +2816,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                         _ScaleBgm = null;
 
                         // BGM読込
-                        if (Score.BgmFilePath.IsExistFile )
-                        { 
-                            _ScaleBgm = new NAudioData(Score.BgmFilePath, true );
+                        if ( Score.BgmFilePath.IsExistFile )
+                        {
+                            _ScaleBgm = new NAudioData( Score.BgmFilePath, true );
                         }
 
                         DrawSet.UpdateScoreBgmScaleFlag = true;
@@ -2825,9 +2828,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                 );
         }
         catch ( Exception e )
-		{
+        {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
     }
 
     /// <summary>
@@ -2837,7 +2840,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     {
         // タスクが終わっていなければスキップ。次回の処理で更新する
         if ( !( _ScaleWaveFormTask?.IsCompleted ?? true ) )
-        { 
+        {
             return;
         }
 
@@ -2845,15 +2848,15 @@ public sealed partial class UserControlEditerPanel : UserControl
         _ScaleWaveFormTask?.Dispose();
         _ScaleWaveFormTask = null;
 
+        _ScaleBitmapDic.Clear();
+
         // タスク作成
         _ScaleWaveFormTask = Task.Run
-            ( 
+            (
                 () =>
-                { 
+                {
                     if ( _ScaleBgm == null )
                     {
-                        _ScaleBitmapDic.Clear();
-
                         DrawSet.UpdateScoreBgmScaleFlag = false;
 
                         Refresh();
@@ -2878,10 +2881,10 @@ public sealed partial class UserControlEditerPanel : UserControl
                         Refresh();
                     }
                     catch ( Exception e )
-			        {
+                    {
                         Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-			        }
-                } 
+                    }
+                }
             );
     }
 
@@ -2918,10 +2921,10 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-//      var bgm_time        = _ScaleBgm.GetDuration();
-//      var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
+        //      var bgm_time        = _ScaleBgm.GetDuration();
+        //      var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
         var note_rect       = new Rect( 0, 0, 1, 1 );
-//      var note_rect       = new Rect( 0, 0, DrawSet.NoteWidthSize, DrawSet.NoteHeightSize );
+        //      var note_rect       = new Rect( 0, 0, DrawSet.NoteWidthSize, DrawSet.NoteHeightSize );
 
         var body = new Rect
             (
@@ -2936,14 +2939,14 @@ public sealed partial class UserControlEditerPanel : UserControl
             (
                 CanvasDevice.GetSharedDevice(),
                 body._width,
-                body._height, 
+                body._height,
                 96
             );
 
         using var g = offscreen.CreateDrawingSession();
 
         // 背景色塗りつぶし
-        g.Clear(DrawSet.SheetColor.Color );
+        g.Clear( DrawSet.SheetColor.Color );
 
         // 描画書込み用アクション
         var createAction = new Action<int>( ( measure_no ) =>
@@ -2961,7 +2964,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 );
 
 
-            _ScaleBitmapDic.TryAdd( measure_no, bmp );
+            _ = _ScaleBitmapDic.TryAdd( measure_no, bmp );
         } );
 
         #region 周波数
@@ -2978,19 +2981,19 @@ public sealed partial class UserControlEditerPanel : UserControl
                 var hzPerOne        = (float)_ScaleBgm.GetSampleRate() / ( fft.Count * _ScaleBgm.Channels );
 
                 if ( measure_no != note_pos_x / Config.System.MeasureNoteNumber )
-                { 
+                {
                     createAction( measure_no );
 
                     measure_no++;
 
                     // 背景色塗りつぶし
-                    g.Clear(DrawSet.SheetColor.Color );
+                    g.Clear( DrawSet.SheetColor.Color );
                 }
 
                 var midimap_index = -1;
 
-			    foreach ( var midiMap in tmpMidiMapSet.DisplayMidiMaps )
-			    {
+                foreach ( var midiMap in tmpMidiMapSet.DisplayMidiMaps )
+                {
                     midimap_index++;
 
                     var index = ConfigScale.GetScaleListIndex( midiMap.Scale );
@@ -3012,44 +3015,30 @@ public sealed partial class UserControlEditerPanel : UserControl
                     var db = fft[ fft_index ];
                     for ( var x = 1; x < _ScaleBgm.Channels; x++ )
                     {
-                        db = Math.Max( db, fft[ fft_index + x ] );
+                        db = Math.Max( db, fft [ fft_index + x ] );
                     }
 
-                    db = ( db - l_level ) * ( 1F / ( t_level - l_level ) );
-
-                    if ( db < 0F )
-                    {
-                        db = 0F;
-                    }
-                    else if ( db > 1F )
-                    {
-                        db = 1F;
-                    }
-
-                    byte alpha   = 255;//155 + (int)( 100 * db );
-                    var red     = (byte)( db >= h_level ? (int)( 255 * db ) : 0 );
-                    var green   = (byte)( db >= m_level ? (int)( 255 * db ) : 0 );
-                    var blue    = (byte)( db >= l_level ? (int)( 255 * db ) : 0 );
-                    //var red     = t_level > db && db >= h_level ? (int)( 255 * db ) : 0;
-                    //var green   = h_level > db && db >= m_level ? (int)( 255 * db ) : 0;
-                    //var blue    = m_level > db && db >= l_level ? (int)( 255 * db ) : 0;
+                    var alpha   = (byte)( (int)( 255 * db ) );
+                    var red     = (byte)( t_level >= db && db >= h_level ? alpha : 0 );
+                    var green   = (byte)( h_level >  db && db >= m_level ? alpha : 0 );
+                    var blue    = (byte)( m_level >  db && db >= l_level ? alpha : 0 );
 
                     if ( db > 0F )
                     {
-                        note_rect.X = body.X + note_rect.Width  * ( note_pos_x % Config.System.MeasureNoteNumber );
-                        note_rect.Y = body.Y + note_rect.Height * midimap_index;
+                        note_rect.X = body.X + ( note_rect.Width * ( note_pos_x % Config.System.MeasureNoteNumber ) );
+                        note_rect.Y = body.Y + ( note_rect.Height * midimap_index );
 
                         g.FillRectangle
-                            ( 
+                            (
                                 note_rect,
-                                Color.FromArgb( alpha, red, green, blue )  
+                                Color.FromArgb( alpha, red, green, blue )
                             );
                     }
                 }
             }
 
             if ( measure_no != note_pos_x / Config.System.MeasureNoteNumber )
-            { 
+            {
                 createAction( measure_no );
             }
         }
@@ -3102,11 +3091,11 @@ public sealed partial class UserControlEditerPanel : UserControl
             var sheet_pos       = new Point( note_pos.X * DrawSet.NoteWidthSize, note_pos.Y * DrawSet.NoteHeightSize );
             var measure_size    = DrawSet.MeasureSize;
             var measure_start   = note_pos.X / ConfigSystem.MeasureNoteNumber;
-            var measure_end     = (int)( ( note_pos.X + body._width / DrawSet.NoteWidthSize ) / ConfigSystem.MeasureNoteNumber + 1 );
+            var measure_end     = (int)( (( note_pos.X + (body._width / DrawSet.NoteWidthSize) ) / ConfigSystem.MeasureNoteNumber) + 1 );
 
             #region 背景色
             {
-                args.DrawingSession.Clear(DrawSet.SheetColor.Color );
+                args.DrawingSession.Clear( DrawSet.SheetColor.Color );
             }
             #endregion
 
@@ -3115,16 +3104,16 @@ public sealed partial class UserControlEditerPanel : UserControl
                 // TODO: WaveForm 何か案を思いつけば対応
 
                 // 画像表示
-                if (ConfigScale.WaveFormOn && !_ScaleBitmapDic.IsEmpty )
+                if ( ConfigScale.WaveFormOn && !_ScaleBitmapDic.IsEmpty )
                 {
                     for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
                         if ( !_ScaleBitmapDic.TryGetValue( measure_no, out var bmp ) )
-                        { 
+                        {
                             continue;
                         }
 
-                        var diff_x = measure_size * measure_no - sheet_pos._x;
+                        var diff_x = (measure_size * measure_no) - sheet_pos._x;
 
                         // 描画範囲
                         var destRect = new Rect
@@ -3144,31 +3133,23 @@ public sealed partial class UserControlEditerPanel : UserControl
                                 bmp.SizeInPixels.Height
                             );
 
-                        var t_level = ConfigScale.VolumeLevelTop;
-                        var h_level = ConfigScale.VolumeLevelHigh;
-                        var m_level = ConfigScale.VolumeLevelMid;
-                        var l_level = ConfigScale.VolumeLevelLow;
-
-                        var sen = ConfigScale.SensitivityLevel / 100F;
-
-                        // 色補正（設定方法が違うようだ）
-                        var matrix = new Matrix4x4
+                        // フィルターを適用して描画
+                        var blurEffect = new GaussianBlurEffect()
                         {
-                            M11 = sen >= h_level / 4.0F ? sen : 0F,
-                            M22 = sen >= m_level / 3.0F ? sen : 0F,
-                            M33 = sen >= l_level / 2.0F ? sen : 0F,
-                            M44 = 1F,
+                            Source          = bmp,
+                            BlurAmount      = ConfigScale.SensitivityLevel, // 中間値の強さを調整
+                            BorderMode      = EffectBorderMode.Soft,
+                            BufferPrecision = CanvasBufferPrecision.Precision32Float,
                         };
 
                         // 描画
                         args.DrawingSession.DrawImage
                             (
-                                bmp,
+                                blurEffect, //bmp,
                                 destRect,
                                 srcRect,
                                 1.0F,
                                 CanvasImageInterpolation.NearestNeighbor
-                                //matrix
                             );
                     }
                 }
@@ -3182,7 +3163,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     var rect = new Rect
                         (
                             body._x,
-                            body._y + ( _NoteCursorPosition.Y - note_pos.Y ) * DrawSet.NoteHeightSize,
+                            body._y + (( _NoteCursorPosition.Y - note_pos.Y ) * DrawSet.NoteHeightSize),
                             body._width,
                             DrawSet.NoteHeightSize
                         );
@@ -3202,7 +3183,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                 {
-                    diff_x = measure_size * measure_no - sheet_pos._x;
+                    diff_x = ( measure_size * measure_no ) - sheet_pos._x;
 
                     foreach ( var line in _MeasureLineList )
                     {
@@ -3238,7 +3219,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         continue;
                     }
 
-                    diff_x = measure_size * measure_no - sheet_pos._x;
+                    diff_x = ( measure_size * measure_no ) - sheet_pos._x;
 
                     foreach ( var note in notes )
                     {
@@ -3259,7 +3240,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         continue;
                     }
 
-                    diff_x = measure_size * measure_no - sheet_pos._x;
+                    diff_x = ( measure_size * measure_no ) - sheet_pos._x;
 
                     foreach ( var note in notes )
                     {
@@ -3290,7 +3271,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             continue;
                         }
 
-                        diff_x = measure_size * measure_no - sheet_pos._x;
+                        diff_x = ( measure_size * measure_no ) - sheet_pos._x;
 
                         foreach ( var bpm in bpms )
                         {
@@ -3334,7 +3315,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             #endregion
 
             #region Volume
-            if (DrawSet.VolumeDisplay && _VolumeList.Count != 0 )
+            if ( DrawSet.VolumeDisplay && _VolumeList.Count != 0 )
             {
                 #region body
                 {
@@ -3357,7 +3338,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             continue;
                         }
 
-                        diff_x = measure_size * measure_no - sheet_pos._x;
+                        diff_x = ( measure_size * measure_no ) - sheet_pos._x;
 
                         foreach ( var note in notes )
                         {
@@ -3380,7 +3361,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             args.DrawingSession,
                             _VolumeHeadRange,
                             DrawSet.VolumeHeadRect,
-                            $"{ResourcesHelper.GetString( "LabelVolume" )}"
+                            $"{ResourcesHelper.GetString( "LabelVolume" )}-Start={_VolumeRange.StartVolume}"
                         );
                 }
                 #endregion
@@ -3408,7 +3389,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
                     {
-                        rect.X = _MeasureNoBodyRange.X + measure_size * measure_no - sheet_pos.X;
+                        rect.X = _MeasureNoBodyRange.X + ( measure_size * measure_no ) - sheet_pos.X;
 
                         // 外枠
                         args.DrawingSession.DrawRectangle
@@ -3450,7 +3431,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 if ( _NoteCursorPosition.X - note_pos.X >= 0 )
                 {
-                    var x = body._x + ( _NoteCursorPosition.X - note_pos.X ) * DrawSet.NoteWidthSize;
+                    var x = body._x + (( _NoteCursorPosition.X - note_pos.X ) * DrawSet.NoteWidthSize);
 
                     args.DrawingSession.DrawLine
                         (

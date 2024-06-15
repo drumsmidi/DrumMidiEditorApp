@@ -1,8 +1,7 @@
-﻿using Microsoft.Graphics.Canvas;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pUtil;
+﻿using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -38,24 +37,24 @@ public class DmsItemLine : DisposeBaseClass
         _FormatLine         = aFormatLine;
     }
 
-	protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
                 // Dispose managed resources.
                 _FormatLine = null;
             }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -72,8 +71,8 @@ public class DmsItemLine : DisposeBaseClass
         }
 
         var rect = _DrawRect;
-        rect.X  += aDiffX;
-        rect.Y  += aDiffY;
+        rect.X += aDiffX;
+        rect.Y += aDiffY;
 
         aGraphics.DrawLine
             (

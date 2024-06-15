@@ -4,12 +4,12 @@ namespace DrumMidiEditorApp.pView.pDebug;
 
 public sealed partial class PageDebugStyle : Page
 {
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageDebugStyle()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageDebugStyle()
     {
-		// 初期化
-		InitializeComponent();
-	}
+        // 初期化
+        InitializeComponent();
+    }
 }

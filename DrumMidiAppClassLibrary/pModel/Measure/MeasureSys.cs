@@ -17,23 +17,23 @@ public class MeasureSys : DisposeBaseClass
     #endregion
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				BpmLine.Dispose();
-			}
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                BpmLine.Dispose();
+            }
 
-			// Dispose unmanaged resources.
+            // Dispose unmanaged resources.
 
-			_Disposed = true;
+            _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -63,7 +63,7 @@ public class MeasureSys : DisposeBaseClass
     /// <returns>True：削除後 BPM情報が0件、False：削除後 BPM情報が1件以上</returns>
     public bool RemoveBpm( int aNotePos )
     {
-        BpmLine.RemoveInfo( aNotePos );
+        _ = BpmLine.RemoveInfo( aNotePos );
 
         return BpmLine.InfoStates.Count == 0;
     }

@@ -1,16 +1,14 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pEvent;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
@@ -31,9 +29,9 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <summary>
     /// MidiMap別ノート数リスト
     /// </summary>
-	private readonly ObservableCollection<string> _MidiMapNoteList = new();
+	private readonly ObservableCollection<string> _MidiMapNoteList = [];
 
-	#endregion
+    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -48,47 +46,47 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         ReloadMidiMapNoteList();
     }
 
-	#region INotifyPropertyChanged
+    #region INotifyPropertyChanged
 
-	/// <summary>
+    /// <summary>
     /// MidiMap別ノートリスト再読み込み
     /// 
-	/// x:Bind OneWay/TwoWay 再読み込み
-	/// </summary>
-	public void ReloadMidiMapNoteList()
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadMidiMapNoteList()
     {
         try
-		{
-			_MidiMapNoteList.Clear();
+        {
+            _MidiMapNoteList.Clear();
 
-			var items = Score.EditChannel.GetNumberOfNoteUsingMidiMap();
+            var items = Score.EditChannel.GetNumberOfNoteUsingMidiMap();
 
-			foreach ( var key in Score.EditMidiMapSet.MidiMapKeys )
-			{
-				if ( !items.TryGetValue( key, out var cnt ) )
-				{
-					continue;
-				}
+            foreach ( var key in Score.EditMidiMapSet.MidiMapKeys )
+            {
+                if ( !items.TryGetValue( key, out var cnt ) )
+                {
+                    continue;
+                }
 
-				var MidiMapName = Score.EditMidiMapSet.GetGroupAndMidiMapName( key );
+                var MidiMapName = Score.EditMidiMapSet.GetGroupAndMidiMapName( key );
 
-				_MidiMapNoteList.Add( $"{key,-3} {MidiMapName,-30} [{cnt,4}]" );
-			}
+                _MidiMapNoteList.Add( $"{key,-3} {MidiMapName,-30} [{cnt,4}]" );
+            }
 
-			items.Clear();
+            items.Clear();
 
-			OnPropertyChanged( "_MidiMapNoteList" );
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+            OnPropertyChanged( "_MidiMapNoteList" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
-	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 
@@ -99,8 +97,8 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <param name="args"></param>
     private void DisplayButton_Click( object sender, RoutedEventArgs args )
     {
-    	try
-    	{
+        try
+        {
             if ( _HeadGrid.Visibility == Visibility.Visible )
             {
                 _DisplayButton.Content = "<";
@@ -115,9 +113,9 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
             }
         }
         catch ( Exception e )
-    	{
-    		Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-    	}
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
     /// <summary>
@@ -127,14 +125,14 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <param name="args"></param>
     private void KeyChangeButton_Click( object sender, RoutedEventArgs args )
     {
-    	try
-    	{
-    		var index = _MidiMapNoteListBox.SelectedIndex;
+        try
+        {
+            var index = _MidiMapNoteListBox.SelectedIndex;
 
-    		if ( index == -1 )
-    		{
-    			return;
-    		}
+            if ( index == -1 )
+            {
+                return;
+            }
 
             var bef_key = Convert.ToInt32( _MidiMapNoteListBox.SelectedValue.ToString()?.Split(' ')[ 0 ] ?? string.Empty );
 
@@ -151,39 +149,39 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
                     page,
                     () =>
                     {
-    			        var aft_key = page.SelectMidiMapKey;
+                        var aft_key = page.SelectMidiMapKey;
 
                         if ( bef_key == aft_key || aft_key == ConfigSystem.MidiMapKeyNotSelect )
-    			        {
-    				        return;
-    			        }
+                        {
+                            return;
+                        }
 
-			            var midiMapName_o = $"{bef_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( bef_key )}";
-			            var midiMapName_n = $"{aft_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( aft_key )}";
+                        var midiMapName_o = $"{bef_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( bef_key )}";
+                        var midiMapName_n = $"{aft_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( aft_key )}";
 
-			            XamlHelper.MessageDialogYesNoAsync
-				            ( 
-					            Content.XamlRoot,
-					            ResourcesHelper.GetString( "DialogChangeKey/Title" ),
-					            ResourcesHelper.GetString( "DialogChangeKey/Content", midiMapName_o, midiMapName_n ),
-					            ResourcesHelper.GetString( "Dialog/Yes" ),
-					            ResourcesHelper.GetString( "Dialog/No" ),
-					            new( () =>
+                        XamlHelper.MessageDialogYesNoAsync
+                            (
+                                Content.XamlRoot,
+                                ResourcesHelper.GetString( "DialogChangeKey/Title" ),
+                                ResourcesHelper.GetString( "DialogChangeKey/Content", midiMapName_o, midiMapName_n ),
+                                ResourcesHelper.GetString( "Dialog/Yes" ),
+                                ResourcesHelper.GetString( "Dialog/No" ),
+                                new( () =>
                                 {
-                                    lock (Score.LockObj )
+                                    lock ( Score.LockObj )
                                     {
                                         Score.EditChannel.KeyChange( bef_key, aft_key );
                                     }
 
-   				                    EventManage.EventChangeMidiMapKey();
-					            })
-				            );
+                                    EventManage.EventChangeMidiMapKey();
+                                } )
+                            );
                     }
                 );
-    	}
+        }
         catch ( Exception e )
-    	{
-    		Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-    	}
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 }

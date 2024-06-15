@@ -1,10 +1,8 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
-using Windows.Foundation;
-
-using DrumMidiClassLibrary.pModel;
+﻿using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
@@ -44,9 +42,9 @@ internal class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
     {
-        _MidiMapGroup   = aGroup;
-        DrawRect        = new( aX, aY, aWidth, aHeight );
-		_FormatRect     = aFormatRect;
+        _MidiMapGroup = aGroup;
+        DrawRect = new( aX, aY, aWidth, aHeight );
+        _FormatRect = aFormatRect;
     }
 
     /// <summary>
@@ -60,31 +58,31 @@ internal class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemMidiMap( MidiMap aMidiMap, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
     {
-        _MidiMap    = aMidiMap;
-        DrawRect    = new( aX, aY, aWidth, aHeight );
+        _MidiMap = aMidiMap;
+        DrawRect = new( aX, aY, aWidth, aHeight );
         _FormatRect = aFormatRect;
     }
 
     protected override void Dispose( bool aDisposing )
-	{
-		if ( !_Disposed )
-		{
-			if ( aDisposing )
-			{
-				// Dispose managed resources.
-				_MidiMapGroup   = null;
-                _MidiMap        = null;
-                _FormatRect     = null;
+    {
+        if ( !_Disposed )
+        {
+            if ( aDisposing )
+            {
+                // Dispose managed resources.
+                _MidiMapGroup = null;
+                _MidiMap = null;
+                _FormatRect = null;
             }
 
             // Dispose unmanaged resources.
 
             _Disposed = true;
 
-			// Note disposing has been done.
-			base.Dispose( aDisposing );
-		}
-	}
+            // Note disposing has been done.
+            base.Dispose( aDisposing );
+        }
+    }
     private bool _Disposed = false;
 
     /// <summary>
@@ -94,12 +92,12 @@ internal class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aY">描画位置Y座標</param>
     public void SetMovePosition( float aMoveX, float aMoveY )
     {
-        DrawRect = new 
+        DrawRect = new
             (
                 DrawRect.X + aMoveX,
                 DrawRect.Y + aMoveY,
                 DrawRect.Width,
-                DrawRect.Height 
+                DrawRect.Height
             );
     }
 

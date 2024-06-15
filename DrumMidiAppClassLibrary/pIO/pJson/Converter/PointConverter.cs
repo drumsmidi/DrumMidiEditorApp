@@ -10,7 +10,7 @@ namespace DrumMidiClassLibrary.pIO.pJson;
 /// </summary>
 internal class PointConverter : JsonConverter<Point>
 {
-    public override bool CanConvert( Type aTypeToConvert ) 
+    public override bool CanConvert( Type aTypeToConvert )
         => typeof( Point ).IsAssignableFrom( aTypeToConvert );
 
     public override Point Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
@@ -23,7 +23,7 @@ internal class PointConverter : JsonConverter<Point>
             {
                 var prop = aReader.GetString();
 
-                aReader.Read();
+                _ = aReader.Read();
 
                 switch ( prop )
                 {

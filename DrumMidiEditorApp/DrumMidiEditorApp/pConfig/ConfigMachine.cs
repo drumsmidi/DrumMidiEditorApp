@@ -55,7 +55,10 @@ public class ConfigMachine
     /// トレーニングモデル選択
     /// </summary>
     [JsonIgnore]
-    public TrainingModel TrainingModeTypeSelect { get; set; }
+    public TrainingModel TrainingModeTypeSelect
+    {
+        get; set;
+    }
         = TrainingModel.SdcaMaximumEntropyMulticlassTrainer;
 
     #endregion

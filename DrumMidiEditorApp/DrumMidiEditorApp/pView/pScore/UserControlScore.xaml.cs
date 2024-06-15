@@ -1,17 +1,15 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
-using Windows.Foundation;
-using Windows.Graphics.DirectX;
-
+﻿using System;
 using DrumMidiClassLibrary.pAudio;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Windows.Foundation;
+using Windows.Graphics.DirectX;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
@@ -90,8 +88,8 @@ public sealed partial class UserControlScore : UserControl
             return null;
         }
 
-        var tmp_width  = ActualSize.X - DrawSet.NoteWidthSize  * 2;
-        var tmp_height = ActualSize.Y - DrawSet.NoteHeightSize * 2;
+        var tmp_width  = ActualSize.X - (DrawSet.NoteWidthSize  * 2);
+        var tmp_height = ActualSize.Y - (DrawSet.NoteHeightSize * 2);
 
         if ( tmp_width < 0 || tmp_height < 0 )
         {
@@ -178,8 +176,8 @@ public sealed partial class UserControlScore : UserControl
                 {
                     g.DrawRectangle
                         (
-                            body._x + measure_no % w_cnt * m_w,
-                            body._y + measure_no / w_cnt * m_h,
+                            body._x + ( measure_no % w_cnt * m_w ),
+                            body._y + ( measure_no / w_cnt * m_h ),
                             m_w,
                             m_h,
                             DrawSet.MeasureLine.LineColor.Color,
@@ -220,7 +218,7 @@ public sealed partial class UserControlScore : UserControl
 
                         if ( DrawSet.NoteVolumeSizeOn )
                         {
-                            volume = (float)( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)MidiNet.MidiMaxVolume;
+                            volume = ( info.Volume + midiMap.VolumeAddIncludeGroup ) / (float)MidiNet.MidiMaxVolume;
 
                             if ( volume > 1F )
                             {
@@ -232,20 +230,20 @@ public sealed partial class UserControlScore : UserControl
                             volume = 1F;
                         }
 
-                        note_rect.X         = body.X + measure_no % w_cnt * m_w + info.NotePos * t_w;
-                        note_rect.Y         = body.Y + measure_no / w_cnt * m_h + group_index  * t_h;
-                        note_rect.Width     = DrawSet.NoteWidthSize  * volume / 2;
-                        note_rect.Height    = DrawSet.NoteHeightSize * volume / 2;
+                        note_rect.X = body.X + ( measure_no % w_cnt * m_w ) + ( info.NotePos * t_w );
+                        note_rect.Y = body.Y + ( measure_no / w_cnt * m_h ) + ( group_index * t_h );
+                        note_rect.Width = DrawSet.NoteWidthSize * volume / 2;
+                        note_rect.Height = DrawSet.NoteHeightSize * volume / 2;
 
                         if ( note_rect.Width > 0 && note_rect.Height > 0 )
                         {
                             g.FillEllipse
-                                ( 
+                                (
                                     note_rect._x,
                                     note_rect._y,
                                     note_rect._width,
                                     note_rect._height,
-                                    midiMap.Color 
+                                    midiMap.Color
                                 );
                         }
                     }
@@ -258,7 +256,7 @@ public sealed partial class UserControlScore : UserControl
 
         // Bitmap作成
         return CanvasBitmap.CreateFromBytes
-            ( 
+            (
                 g,
                 offscreen.GetPixelBytes( 0, 0, (int)offscreen.SizeInPixels.Width, (int)offscreen.SizeInPixels.Height ),
                 (int)offscreen.SizeInPixels.Width,

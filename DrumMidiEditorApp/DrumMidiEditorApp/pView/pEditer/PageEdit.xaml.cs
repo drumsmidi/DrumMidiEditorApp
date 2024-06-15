@@ -1,21 +1,19 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Input;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Windows.Foundation;
-
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pLog;
 using DrumMidiClassLibrary.pModel;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -43,27 +41,27 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// </summary>
     private Score Score => DMS.SCORE;
 
-	/// <summary>
-	/// 小節番号リスト
-	/// </summary>
-	private readonly ObservableCollection<string> _MeasureNoList = new();
+    /// <summary>
+    /// 小節番号リスト
+    /// </summary>
+    private readonly ObservableCollection<string> _MeasureNoList = [];
 
-	/// <summary>
-	/// 音量入力タイプリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _VolumeEditTypeList = new();
+    /// <summary>
+    /// 音量入力タイプリスト
+    /// </summary>
+    private readonly ObservableCollection<string> _VolumeEditTypeList = [];
 
-	/// <summary>
-	/// 範囲選択タイプリスト
-	/// </summary>
-	private readonly ObservableCollection<string> _RangeSelectTypeList = new();
+    /// <summary>
+    /// 範囲選択タイプリスト
+    /// </summary>
+    private readonly ObservableCollection<string> _RangeSelectTypeList = [];
 
-	#endregion
+    #endregion
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	public PageEdit()
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageEdit()
     {
         InitializeComponent();
 
@@ -73,75 +71,75 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         var keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
 
-		for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
-		{
-			_MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
-		}
+        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        {
+            _MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
+        }
 
-		#endregion
+        #endregion
 
-		#region 音量入力モードリスト作成
+        #region 音量入力モードリスト作成
 
-		foreach ( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
-		{ 
-			_VolumeEditTypeList.Add( name );
-		}
+        foreach ( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
+        {
+            _VolumeEditTypeList.Add( name );
+        }
 
-		#endregion
+        #endregion
 
-		#region 範囲選択モードリスト作成
+        #region 範囲選択モードリスト作成
 
-		foreach ( var name in Enum.GetNames<ConfigEditer.RangeSelectType>() )
-		{
-			_RangeSelectTypeList.Add( name );
-		}
+        foreach ( var name in Enum.GetNames<ConfigEditer.RangeSelectType>() )
+        {
+            _RangeSelectTypeList.Add( name );
+        }
 
         #endregion
 
         #region NumberBox の入力書式設定
 
         _NoteHeightNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-		_NoteWidthNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 
-		_VolumeLevelTopNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
-		_VolumeLevelHighNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
-		_VolumeLevelMidNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
-		_VolumeLevelLowNumberBox.NumberFormatter
-			= XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelTopNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelHighNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelMidNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelLowNumberBox.NumberFormatter
+            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
 
-		#endregion
-	}
+        #endregion
+    }
 
-	#region INotifyPropertyChanged
+    #region INotifyPropertyChanged
 
-	/// <summary>
-	/// 描画設定再読み込み
-	/// 
-	/// x:Bind OneWay/TwoWay 再読み込み
-	/// </summary>
-	public void ReloadConfigEditer()
+    /// <summary>
+    /// 描画設定再読み込み
+    /// 
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadConfigEditer()
     {
-		try
-		{
-			OnPropertyChanged( "DrawSet" );
-		}
-		catch ( Exception e )
+        try
+        {
+            OnPropertyChanged( "DrawSet" );
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-	}
+    }
 
-	public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
-	public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-		=> PropertyChanged?.Invoke( this, new( aPropertyName ) );
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
-	#endregion
+    #endregion
 
     #region Move sheet
 
@@ -152,19 +150,19 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="args"></param>
     private void MeasureNoGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
     {
-		try
-		{
+        try
+        {
             var value = args.AddedItems[ 0 ].ToString();
 
-			if ( !string.IsNullOrEmpty( value ) )
+            if ( !string.IsNullOrEmpty( value ) )
             {
-				JumpMeasure( Convert.ToInt32( value ) );
+                JumpMeasure( Convert.ToInt32( value ) );
             }
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
     /// <summary>
@@ -174,8 +172,8 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="args"></param>
     private void MeasureNoGridView_ItemClick( object sender, ItemClickEventArgs args )
     {
-		try
-		{
+        try
+        {
             if ( sender is not GridView item )
             {
                 return;
@@ -187,13 +185,13 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
             // 同じ小節番号が選択された場合
             if ( oldValue?.Equals( newValue ) ?? false )
             {
-				JumpMeasure( Convert.ToInt32( newValue ) );
+                JumpMeasure( Convert.ToInt32( newValue ) );
             }
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 
     /// <summary>
@@ -202,34 +200,34 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="aMeasureNo">小節番号</param>
     private void JumpMeasure( int aMeasureNo )
     {
-		DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
+        DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
-		EventManage.EventEditUpdateSheetPos();
+        EventManage.EventEditUpdateSheetPos();
     }
 
-	#endregion
+    #endregion
 
-	#region Move sheet Mouse Event
+    #region Move sheet Mouse Event
 
-	/// <summary>
-	/// マウスダウン押下時のマウス位置
-	/// </summary>
-	private Point _MouseDownPosition = new();
+    /// <summary>
+    /// マウスダウン押下時のマウス位置
+    /// </summary>
+    private Point _MouseDownPosition = new();
 
-	/// <summary>
-	/// マウスダウン押下中のマウス位置
-	/// </summary>
-	private Point _MouseMovePosition = new();
+    /// <summary>
+    /// マウスダウン押下中のマウス位置
+    /// </summary>
+    private Point _MouseMovePosition = new();
 
-	/// <summary>
-	/// 等間隔処理実行用タイマー
-	/// </summary>
-	private PeriodicTimer? _Timer = null;
+    /// <summary>
+    /// 等間隔処理実行用タイマー
+    /// </summary>
+    private PeriodicTimer? _Timer = null;
 
-	/// <summary>
-	/// アクション状態一覧
-	/// </summary>
-	private enum EActionState
+    /// <summary>
+    /// アクション状態一覧
+    /// </summary>
+    private enum EActionState
     {
         None = 0,
         MoveSheet,
@@ -246,19 +244,19 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="sender"></param>
     /// <param name="args"></param>
 	private void MoveSheetFlyout_PointerPressed( object sender, PointerRoutedEventArgs args )
-	{
+    {
         try
         {
             if ( !_MoveSheetFlyout.IsOpen )
             {
                 FlyoutBase.ShowAttachedFlyout( (FrameworkElement)sender );
             }
-        }   
+        }
         catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-	}
+    }
 
     /// <summary>
     /// シート移動用のFlyoutを閉じる
@@ -289,11 +287,11 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
-			{
-				_MouseDownPosition = p.Position;
+            {
+                _MouseDownPosition = p.Position;
 
-				_ActionState = EActionState.MoveSheet;
-			}
+                _ActionState = EActionState.MoveSheet;
+            }
         }
         catch ( Exception e )
         {
@@ -319,14 +317,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         {
             var p = args.GetCurrentPoint( sender as FrameworkElement );
 
-			switch ( _ActionState )
-			{
+            switch ( _ActionState )
+            {
                 case EActionState.MoveSheet:
                     {
                         MoveSheetAsync( p.Position );
                     }
                     break;
-    		}
+            }
         }
         catch ( Exception e )
         {
@@ -361,7 +359,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                         HideMoveSheetFlyout();
                     }
                     break;
-			}
+            }
         }
         catch ( Exception e )
         {
@@ -390,7 +388,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         if ( _Timer != null )
         {
-			_MouseMovePosition = aMousePoint;
+            _MouseMovePosition = aMousePoint;
             return;
         }
 
@@ -399,15 +397,15 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         while ( await _Timer.WaitForNextTickAsync() )
         {
             var move = new Point
-                ( 
+                (
                     ( _MouseMovePosition.X - _MouseDownPosition.X ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond,
                     ( _MouseMovePosition.Y - _MouseDownPosition.Y ) / DrawSet.SheetMoveSpeed * DrawSet.SheetTimerSecond
                 );
 
             if ( move.X == 0 && move.Y == 0 )
-	        {
-		        return;
-	        }
+            {
+                return;
+            }
 
             var note_pos = XamlHelper.AdjustRangeIn
                 (
@@ -441,18 +439,18 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="sender"></param>
     /// <param name="args"></param>
     private void SelectRangeToggleButton_Unchecked( object sender, RoutedEventArgs args )
-	{
-		try
-		{
-			EventManage.EventEditClearRangeSelect();
-		}
-		catch ( Exception e )
+    {
+        try
+        {
+            EventManage.EventEditClearRangeSelect();
+        }
+        catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-	}
+    }
 
-	#endregion
+    #endregion
 
     #region Note
 
@@ -463,54 +461,16 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="args"></param>
     private void NoteSizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
     {
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
-			EventManage.EventEditItemResize();
-		}
-		catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            EventManage.EventEditItemResize();
         }
-    }
-
-    #endregion
-
-	#region Resume
-
-	/// <summary>
-	/// Undo実行
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void UndoButton_Click( object sender, RoutedEventArgs args )
-	{
-		try
-		{
-			EventManage.EventEditUndo();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
-
-	/// <summary>
-	/// Redo実行
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-    private void RedoButton_Click( object sender, RoutedEventArgs args )
-    {
-		try
-		{
-			EventManage.EventEditRedo();
-		}
         catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
@@ -519,183 +479,218 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
     #endregion
 
-	#region WaveForm
+    #region Resume
 
-	/// <summary>
-	/// 音量TOP変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void VolumeLevelTopNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-	{
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+    /// <summary>
+    /// Undo実行
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void UndoButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            EventManage.EventEditUndo();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// Redo実行
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void RedoButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            EventManage.EventEditRedo();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    #region WaveForm
+
+    /// <summary>
+    /// 音量TOP変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void VolumeLevelTopNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
-			var t = (float)_VolumeLevelTopNumberBox.Value;
-			var h = (float)_VolumeLevelHighNumberBox.Value;
+            var t = (float)_VolumeLevelTopNumberBox.Value;
+            var h = (float)_VolumeLevelHighNumberBox.Value;
 
-			if ( t < h )
-			{
-				_VolumeLevelHighNumberBox.Value = t;
-			}
-
-			UpdateVolumeLevel();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
-
-	/// <summary>
-	/// 音量HIGT変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void VolumeLevelHighNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-	{
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( t < h )
             {
-				return;
+                _VolumeLevelHighNumberBox.Value = t;
             }
 
-			var t = (float)_VolumeLevelTopNumberBox.Value;
-			var h = (float)_VolumeLevelHighNumberBox.Value;
-			var m = (float)_VolumeLevelMidNumberBox.Value;
+            UpdateVolumeLevel();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
-			if ( h < ConfigScale.VolumeLevelHigh )
-			{
-				if ( h < m )
-				{
-					_VolumeLevelMidNumberBox.Value = h;
-				}
-			}
-			else
-			{
-				if ( h > t )
-				{
-					_VolumeLevelTopNumberBox.Value = h;
-				}
-			}
-
-			UpdateVolumeLevel();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
-
-	/// <summary>
-	/// 音量MID変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void VolumeLevelMidNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-	{
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+    /// <summary>
+    /// 音量HIGT変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void VolumeLevelHighNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
             {
-				return;
+                return;
             }
 
-			var h = (float)_VolumeLevelHighNumberBox.Value;
-			var m = (float)_VolumeLevelMidNumberBox.Value;
-			var l = (float)_VolumeLevelLowNumberBox.Value;
+            var t = (float)_VolumeLevelTopNumberBox.Value;
+            var h = (float)_VolumeLevelHighNumberBox.Value;
+            var m = (float)_VolumeLevelMidNumberBox.Value;
 
-			if ( m < ConfigScale.VolumeLevelMid )
-			{
-				if ( m < l )
-				{
-					_VolumeLevelLowNumberBox.Value = m;
-				}
-			}
-			else
-			{
-				if ( m > h )
-				{
-					_VolumeLevelHighNumberBox.Value = m;
-				}
-			}
-
-			UpdateVolumeLevel();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
-
-	/// <summary>
-	/// 音量LOW変更
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void VolumeLevelLowNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
-	{
-		try
-		{
-			// 必須入力チェック
-			if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( h < ConfigScale.VolumeLevelHigh )
             {
-				return;
+                if ( h < m )
+                {
+                    _VolumeLevelMidNumberBox.Value = h;
+                }
+            }
+            else
+            {
+                if ( h > t )
+                {
+                    _VolumeLevelTopNumberBox.Value = h;
+                }
             }
 
-			var m = (float)_VolumeLevelMidNumberBox.Value;
-			var l = (float)_VolumeLevelLowNumberBox.Value;
+            UpdateVolumeLevel();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
-			if ( l > m )
-			{
-				_VolumeLevelMidNumberBox.Value = l;
-			}
+    /// <summary>
+    /// 音量MID変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void VolumeLevelMidNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+                return;
+            }
 
-			UpdateVolumeLevel();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+            var h = (float)_VolumeLevelHighNumberBox.Value;
+            var m = (float)_VolumeLevelMidNumberBox.Value;
+            var l = (float)_VolumeLevelLowNumberBox.Value;
 
-	/// <summary>
-	/// 音量レベル設定
-	/// </summary>
-	private void UpdateVolumeLevel()
-	{
-		EventManage.EventEditUpdateWaveForm();
-	}
+            if ( m < ConfigScale.VolumeLevelMid )
+            {
+                if ( m < l )
+                {
+                    _VolumeLevelLowNumberBox.Value = m;
+                }
+            }
+            else
+            {
+                if ( m > h )
+                {
+                    _VolumeLevelHighNumberBox.Value = m;
+                }
+            }
 
-	/// <summary>
-	/// 感度設定
-	/// </summary>
-	/// <param name="sender"></param>
-	/// <param name="args"></param>
-	private void WaveFormSensitivityLevelSlider_ValueChanged( object sender, RangeBaseValueChangedEventArgs args )
-	{
-		try
-		{
-			Refresh();
-		}
-		catch ( Exception e )
-		{
-			Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-		}
-	}
+            UpdateVolumeLevel();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
-	#endregion
+    /// <summary>
+    /// 音量LOW変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void VolumeLevelLowNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    {
+        try
+        {
+            // 必須入力チェック
+            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            {
+                return;
+            }
 
-	/// <summary>
-	/// EditerPanel描画更新
-	/// </summary>
-	public void Refresh() => _EditerPanel.Refresh();
+            var m = (float)_VolumeLevelMidNumberBox.Value;
+            var l = (float)_VolumeLevelLowNumberBox.Value;
+
+            if ( l > m )
+            {
+                _VolumeLevelMidNumberBox.Value = l;
+            }
+
+            UpdateVolumeLevel();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// 音量レベル設定
+    /// </summary>
+    private void UpdateVolumeLevel() => EventManage.EventEditUpdateWaveForm();
+
+    /// <summary>
+    /// 感度設定
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void WaveFormSensitivityLevelSlider_ValueChanged( object sender, RangeBaseValueChangedEventArgs args )
+    {
+        try
+        {
+            Refresh();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// EditerPanel描画更新
+    /// </summary>
+    public void Refresh() => _EditerPanel.Refresh();
 }

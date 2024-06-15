@@ -1,12 +1,10 @@
-﻿using Microsoft.Graphics.Canvas;
-using System;
-using Windows.Foundation;
-
+﻿using System;
 using DrumMidiClassLibrary.pConfig;
 using DrumMidiClassLibrary.pUtil;
 using DrumMidiClassLibrary.pWinUI;
-
 using DrumMidiEditorApp.pConfig;
+using Microsoft.Graphics.Canvas;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -98,38 +96,38 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// <summary>
     /// 選択範囲の横幅（ノート数）
     /// </summary>
-    public int TermNotePosX 
+    public int TermNotePosX
         => Math.Abs( _EndNotePosX - _StartNotePosX );
 
     /// <summary>
     /// 移動後、選択範囲内の左端ノート位置（絶対値）
     /// </summary>
-    public int StartNotePosX 
-        => Math.Min( _StartNotePosX , _EndNotePosX ) + MoveNotePosX;
+    public int StartNotePosX
+        => Math.Min( _StartNotePosX, _EndNotePosX ) + MoveNotePosX;
 
     /// <summary>
     /// 移動後、選択範囲内の右端ノート位置（絶対値）
     /// </summary>
-    public int EndNotePosX 
-        => Math.Max( _StartNotePosX , _EndNotePosX ) + MoveNotePosX;
+    public int EndNotePosX
+        => Math.Max( _StartNotePosX, _EndNotePosX ) + MoveNotePosX;
 
     /// <summary>
     /// 選択範囲の高さ（ノート数）
     /// </summary>
-    public int TermNotePosY 
+    public int TermNotePosY
         => Math.Abs( _EndNotePosY - _StartNotePosY ) + 1;
 
     /// <summary>
     /// 移動後、選択範囲内の上端ノート位置（絶対値）
     /// </summary>
-    public int StartNotePosY 
-        => Math.Min( _StartNotePosY , _EndNotePosY ) + MoveNotePosY;
+    public int StartNotePosY
+        => Math.Min( _StartNotePosY, _EndNotePosY ) + MoveNotePosY;
 
     /// <summary>
     /// 移動後、選択範囲内の下端ノート位置（絶対値）
     /// </summary>
-    public int EndNotePosY 
-        => Math.Max( _StartNotePosY , _EndNotePosY ) + MoveNotePosY;
+    public int EndNotePosY
+        => Math.Max( _StartNotePosY, _EndNotePosY ) + MoveNotePosY;
 
     /// <summary>
     /// 左上ノート位置
@@ -140,10 +138,10 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// <param name="aHeight">１ノートの高さ</param>
     public void SetNoteRect( float aX, float aY, float aWidth, float aHeight )
     {
-        _NoteRect.X		    = aX;
-        _NoteRect.Y		    = aY;
-        _NoteRect.Width	    = aWidth;
-        _NoteRect.Height	= aHeight;
+        _NoteRect.X = aX;
+        _NoteRect.Y = aY;
+        _NoteRect.Width = aWidth;
+        _NoteRect.Height = aHeight;
 
         CalcRange();
     }
@@ -161,13 +159,13 @@ public class DmsItemNoteRange : DisposeBaseClass
             aNotePosX = 0;
         }
 
-        _StartNotePosX     = aNotePosX;
-        _StartNotePosY     = aNotePosY;
-        _StartMoveNotePosX = aNotePosX;
-        _StartMoveNotePosY = aNotePosY;
-        _EndMoveNotePosX   = aNotePosX;
-        _EndMoveNotePosY   = aNotePosY;
-        _RangeSelectType   = aRangeSelectType;
+        _StartNotePosX      = aNotePosX;
+        _StartNotePosY      = aNotePosY;
+        _StartMoveNotePosX  = aNotePosX;
+        _StartMoveNotePosY  = aNotePosY;
+        _EndMoveNotePosX    = aNotePosX;
+        _EndMoveNotePosY    = aNotePosY;
+        _RangeSelectType    = aRangeSelectType;
 
         Selected = false;
     }
@@ -182,15 +180,15 @@ public class DmsItemNoteRange : DisposeBaseClass
         switch ( _RangeSelectType )
         {
             case ConfigEditer.RangeSelectType.Normal:
-                { 
+                {
                     _EndNotePosX = aNotePosX;
                 }
                 break;
             case ConfigEditer.RangeSelectType.Split:
                 {
-                    _EndNotePosX = ( _StartNotePosX <= aNotePosX )
+                    _EndNotePosX = _StartNotePosX <= aNotePosX
                             ? Config.System.NoteCount
-                            : 0 ;
+                            : 0;
                 }
                 break;
             case ConfigEditer.RangeSelectType.All:
@@ -210,10 +208,7 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// <summary>
     /// 選択状態を解除
     /// </summary>
-    public void ClearPos()
-    {
-        Selected = false;
-    }
+    public void ClearPos() => Selected = false;
 
     /// <summary>
     /// 選択範囲 移動開始位置設定
@@ -223,16 +218,16 @@ public class DmsItemNoteRange : DisposeBaseClass
     public void SetStartMovePos( int aNotePosX, int aNotePosY )
     {
         // 前回移動後の位置を設定
-        _StartNotePosX    += MoveNotePosX;
-        _StartNotePosY    += MoveNotePosY;
-        _EndNotePosX      += MoveNotePosX;
-        _EndNotePosY      += MoveNotePosY;
+        _StartNotePosX  += MoveNotePosX;
+        _StartNotePosY  += MoveNotePosY;
+        _EndNotePosX    += MoveNotePosX;
+        _EndNotePosY    += MoveNotePosY;
 
         // 移動開始／終了位置の初期化
-        _StartMoveNotePosX = aNotePosX;
-        _StartMoveNotePosY = aNotePosY;
-        _EndMoveNotePosX   = aNotePosX;
-        _EndMoveNotePosY   = aNotePosY;
+        _StartMoveNotePosX  = aNotePosX;
+        _StartMoveNotePosY  = aNotePosY;
+        _EndMoveNotePosX    = aNotePosX;
+        _EndMoveNotePosY    = aNotePosY;
     }
 
     /// <summary>
@@ -251,25 +246,25 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// </summary>
     public void ResetStartPos()
     {
-        _StartNotePosX -= MoveNotePosX;
-        _StartNotePosY -= MoveNotePosY;
-        _EndNotePosX   -= MoveNotePosX;
-        _EndNotePosY   -= MoveNotePosY;
+        _StartNotePosX  -= MoveNotePosX;
+        _StartNotePosY  -= MoveNotePosY;
+        _EndNotePosX    -= MoveNotePosX;
+        _EndNotePosY    -= MoveNotePosY;
     }
 
     /// <summary>
     /// 選択範囲サイズ計算
     /// </summary>
     private void CalcRange()
-	{
-		if ( Selected )
-		{
+    {
+        if ( Selected )
+        {
             _Range.X        = _NoteRect.X;
             _Range.Y        = _NoteRect.Y;
             _Range.Width    = _NoteRect.Width  * TermNotePosX;
             _Range.Height   = _NoteRect.Height * TermNotePosY;
-		}
-	}
+        }
+    }
 
     /// <summary>
     /// 移動後 選択範囲の取得
@@ -284,8 +279,8 @@ public class DmsItemNoteRange : DisposeBaseClass
         }
 
         var rect = _Range;
-        rect.X += ( StartNotePosX - (int)aStartNotePos.X ) * _NoteRect.Width;
-        rect.Y += ( StartNotePosY - (int)aStartNotePos.Y ) * _NoteRect.Height;
+        rect.X += ( StartNotePosX - aStartNotePos.X ) * _NoteRect.Width;
+        rect.Y += ( StartNotePosY - aStartNotePos.Y ) * _NoteRect.Height;
 
         return rect;
     }
@@ -306,8 +301,8 @@ public class DmsItemNoteRange : DisposeBaseClass
 
         var rect = GetSelectRange( aStartNotePos );
 
-		aGraphics.DrawRectangle
-            ( 
+        aGraphics.DrawRectangle
+            (
                 rect,
                 format.LineColor.Color,
                 format.LineSize
@@ -321,20 +316,20 @@ public class DmsItemNoteRange : DisposeBaseClass
     public DmsItemNoteRange Clone()
     {
         return new()
-            {
-                _StartNotePosX      = _StartNotePosX,
-                _StartNotePosY      = _StartNotePosY,
-                _EndNotePosX        = _EndNotePosX,
-                _EndNotePosY        = _EndNotePosY,
-                _StartMoveNotePosX  = _StartMoveNotePosX,
-                _StartMoveNotePosY  = _StartMoveNotePosY,
-                _EndMoveNotePosX    = _EndMoveNotePosX,
-                _EndMoveNotePosY    = _EndMoveNotePosY,
-                _NoteRect           = _NoteRect,
-                _Range              = _Range,
-                _RangeSelectType    = _RangeSelectType,
-                Selected            = Selected
-            };
+        {
+            _StartNotePosX      = _StartNotePosX,
+            _StartNotePosY      = _StartNotePosY,
+            _EndNotePosX        = _EndNotePosX,
+            _EndNotePosY        = _EndNotePosY,
+            _StartMoveNotePosX  = _StartMoveNotePosX,
+            _StartMoveNotePosY  = _StartMoveNotePosY,
+            _EndMoveNotePosX    = _EndMoveNotePosX,
+            _EndMoveNotePosY    = _EndMoveNotePosY,
+            _NoteRect           = _NoteRect,
+            _Range              = _Range,
+            _RangeSelectType    = _RangeSelectType,
+            Selected            = Selected
+        };
     }
 
     /// <summary>
@@ -343,17 +338,17 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// <param name="aObj">コピー元</param>
     public void Set( DmsItemNoteRange aObj )
     {
-        _StartNotePosX     = aObj._StartNotePosX;
-        _StartNotePosY     = aObj._StartNotePosY;
-        _EndNotePosX       = aObj._EndNotePosX;
-        _EndNotePosY       = aObj._EndNotePosY;
-        _StartMoveNotePosX = aObj._StartMoveNotePosX;
-        _StartMoveNotePosY = aObj._StartMoveNotePosY;
-        _EndMoveNotePosX   = aObj._EndMoveNotePosX;
-        _EndMoveNotePosY   = aObj._EndMoveNotePosY;
-        _NoteRect          = aObj._NoteRect;
-        _Range             = aObj._Range;
-        _RangeSelectType   = aObj._RangeSelectType;
-        Selected           = aObj.Selected;
+        _StartNotePosX      = aObj._StartNotePosX;
+        _StartNotePosY      = aObj._StartNotePosY;
+        _EndNotePosX        = aObj._EndNotePosX;
+        _EndNotePosY        = aObj._EndNotePosY;
+        _StartMoveNotePosX  = aObj._StartMoveNotePosX;
+        _StartMoveNotePosY  = aObj._StartMoveNotePosY;
+        _EndMoveNotePosX    = aObj._EndMoveNotePosX;
+        _EndMoveNotePosY    = aObj._EndMoveNotePosY;
+        _NoteRect           = aObj._NoteRect;
+        _Range              = aObj._Range;
+        _RangeSelectType    = aObj._RangeSelectType;
+        Selected            = aObj.Selected;
     }
 }

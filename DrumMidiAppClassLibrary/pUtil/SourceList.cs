@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-
+using System.IO;
 using DrumMidiClassLibrary.pLog;
 
 namespace DrumMidiClassLibrary.pUtil;
@@ -14,7 +13,7 @@ public class SourceList
     /// <summary>
     /// ファイルリスト
     /// </summary>
-	public List<GeneralPath> Sources { get; private set; } = new();
+	public List<GeneralPath> Sources { get; private set; } = [];
 
     /// <summary>
     /// 対象ディレクトリ配下のファイル一覧を取得（サブディレクトリも検索）
@@ -24,7 +23,7 @@ public class SourceList
     public void SearchSource( GeneralPath aFolderPath, string aSearchPattern )
     {
         try
-        { 
+        {
             // ファイル取得
             foreach ( var filename in Directory.GetFiles( aFolderPath.AbsoulteFolderPath, aSearchPattern ) )
             {
