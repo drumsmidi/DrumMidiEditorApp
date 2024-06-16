@@ -36,3 +36,48 @@ $pfx_cert = Get-Content '.\DrumMidiEditorApp (Package)_TemporaryKey.pfx' -Encodi
 ２個目  
 - Name：「Pfx_Key」  
 - Value：署名のパスワード  
+
+## Workflowの追加  
+<img width="275" alt="image" src="https://user-images.githubusercontent.com/97685486/182817247-828b0966-806b-43a8-bbe0-a1b1c8845b32.png">  
+
+参考：WinUI 3 アプリの継続的インテグレーションをセットアップする  
+https://docs.microsoft.com/ja-jp/windows/apps/package-and-deploy/ci-for-winui3?pivots=winui3-packaged-csharp  
+
+設定メモ  
+```yaml
+    strategy:
+      matrix:
+        configuration: [Release]
+        #configuration: [Debug, Release]
+        platform: [x64]
+
+    env:
+      Solution_Name: DrumMidiEditorApp.sln
+      Test_Project_Path: none
+      Wap_Project_Directory: DrumMidiEditorApp\DrumMidiEditorApp (Package)
+      Wap_Project_Path: DrumMidiEditorApp\DrumMidiEditorApp (Package)\DrumMidiEditorApp (Package).wapproj
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.0.x
+
+    # Execute all unit tests in the solution
+    # - name: Execute unit tests
+    #   run: dotnet test
+
+    # Create the app package by building and packaging the Windows Application Packaging project
+    - name: Create the app package
+      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      env:
+        Appx_Bundle: Never
+        #Appx_Bundle: Always
+        Appx_Bundle_Platforms: x64
+        #Appx_Bundle_Platforms: x86|x64
+        Appx_Package_Build_Mode: SideloadOnly
+        #Appx_Package_Build_Mode: StoreUpload
+        Configuration: ${{ matrix.configuration }}
+        Platform: ${{ matrix.platform }}
+```
+
