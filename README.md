@@ -14,7 +14,7 @@
 # Actions によるビルド設定
 
 ## 署名の作成
-[証明書の鮮宇]より、証明書の作成を行う。
+[証明書の選択]より、証明書の作成を行う。
 <img width="854" alt="image" src="https://github.com/drumsmidi/DrumMidieditorApp/assets/172901992/ccb93cb9-a3d2-4632-b317-011920e79260">
 
 ## Githubへの署名登録  
