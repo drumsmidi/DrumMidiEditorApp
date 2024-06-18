@@ -24,7 +24,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// Player設定
     /// </summary>
-    private static ConfigPlayer DrawSet => ConfigLocal.Player;
+    private static ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
     /// プレイヤーサーフェイス

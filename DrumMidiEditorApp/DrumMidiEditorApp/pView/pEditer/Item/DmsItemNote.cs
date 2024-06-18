@@ -151,7 +151,7 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
 
         if ( InfoNote.Selected )
         {
-            var format = ConfigLocal.Editer.NoteSelectLine;
+            var format = Config.Editer.NoteSelectLine;
 
             // ノート選択時の外枠を描画
             aGraphics.DrawRectangle
@@ -176,7 +176,7 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
             return;
         }
 
-        var format = ConfigLocal.Editer.NotePredictLine;
+        var format = Config.Editer.NotePredictLine;
 
         var rect = new Rect
             (

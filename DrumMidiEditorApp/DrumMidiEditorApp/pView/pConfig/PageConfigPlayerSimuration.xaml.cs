@@ -10,7 +10,7 @@ public sealed partial class PageConfigPlayerSimuration : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerSimuration DrawSet => ConfigLocal.Player.Simuration;
+    private ConfigPlayerSimuration DrawSet => Config.Player.Simuration;
 
     #endregion
 

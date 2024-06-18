@@ -72,7 +72,7 @@ public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
             return;
         }
 
-        var format = _BpmInfo.Selected ? ConfigLocal.Editer.BpmSelectRect : ConfigLocal.Editer.BpmNonSelectRect ;
+        var format = _BpmInfo.Selected ? Config.Editer.BpmSelectRect : Config.Editer.BpmNonSelectRect ;
 
         // 描画範囲の左上の座標基準
         var rect = _DrawRect;

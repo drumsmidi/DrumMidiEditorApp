@@ -14,7 +14,7 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private ConfigPlayer ConfigPlayer => ConfigLocal.Player;
+    private ConfigPlayer ConfigPlayer => Config.Player;
 
     /// <summary>
     /// コンストラクタ

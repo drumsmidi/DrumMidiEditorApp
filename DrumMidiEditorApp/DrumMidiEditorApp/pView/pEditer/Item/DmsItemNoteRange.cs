@@ -295,7 +295,7 @@ public class DmsItemNoteRange : DisposeBaseClass
             return;
         }
 
-        var format = ConfigLocal.Editer.NoteRangeLine;
+        var format = Config.Editer.NoteRangeLine;
 
         var rect = GetSelectRange( aStartNotePos );
 

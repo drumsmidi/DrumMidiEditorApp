@@ -14,7 +14,7 @@ public sealed partial class PagePlayer : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private static ConfigPlayer DrawSet => ConfigLocal.Player;
+    private static ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
     /// プレイヤー表示位置調整用マージン

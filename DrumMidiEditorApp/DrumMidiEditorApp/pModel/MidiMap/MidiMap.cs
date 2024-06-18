@@ -1,6 +1,5 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pWinUI;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 

@@ -37,13 +37,13 @@ public class ResumeManage
         _UndoResumeStack.Push( aResume );
 
         // レジューム保持数を超えたデータを削除
-        if ( _UndoResumeStack.Count > ConfigLocal.Editer.ResumeStackCount )
+        if ( _UndoResumeStack.Count > Config.Editer.ResumeStackCount )
         {
             while ( _UndoResumeStack.Count > 0 )
             {
                 _RedoResumeStack.Push( _UndoResumeStack.Pop() );
             }
-            while ( _RedoResumeStack.Count > ConfigLocal.Editer.ResumeStackCount )
+            while ( _RedoResumeStack.Count > Config.Editer.ResumeStackCount )
             {
                 _ = _RedoResumeStack.Pop();
             }

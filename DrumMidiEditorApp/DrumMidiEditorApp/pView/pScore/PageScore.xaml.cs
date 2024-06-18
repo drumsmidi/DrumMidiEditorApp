@@ -13,7 +13,7 @@ public sealed partial class PageScore : Page
     /// <summary>
     /// スコア設定
     /// </summary>
-    private ConfigScore DrawSet => ConfigLocal.Score;
+    private ConfigScore DrawSet => Config.Score;
 
     /// <summary>
     /// コンストラクタ

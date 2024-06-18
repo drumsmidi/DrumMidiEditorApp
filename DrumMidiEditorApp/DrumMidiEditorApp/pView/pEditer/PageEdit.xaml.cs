@@ -23,7 +23,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    private ConfigEditer DrawSet => ConfigLocal.Editer;
+    private ConfigEditer DrawSet => Config.Editer;
 
     /// <summary>
     /// System設定
@@ -33,7 +33,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Scale設定
     /// </summary>
-    private ConfigScale ConfigScale => ConfigLocal.Scale;
+    private ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
     /// Score情報

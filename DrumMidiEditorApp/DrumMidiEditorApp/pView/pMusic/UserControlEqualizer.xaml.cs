@@ -20,7 +20,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザ設定
     /// </summary>
-    private ConfigEqualizer DrawSet => ConfigLocal.Equalizer;
+    private ConfigEqualizer DrawSet => Config.Equalizer;
 
     /// <summary>
     /// イコライザ入力エリア

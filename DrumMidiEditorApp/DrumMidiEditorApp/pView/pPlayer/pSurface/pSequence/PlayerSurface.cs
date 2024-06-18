@@ -22,7 +22,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private ConfigPlayerSequence DrawSet => ConfigLocal.Player.Sequence;
+    private ConfigPlayerSequence DrawSet => Config.Player.Sequence;
 
     /// <summary>
     /// BPM行ヘッダ範囲

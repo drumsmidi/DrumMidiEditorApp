@@ -22,7 +22,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private static ConfigPlayerSimuration DrawSet => ConfigLocal.Player.Simuration;
+    private static ConfigPlayerSimuration DrawSet => Config.Player.Simuration;
 
     /// <summary>
     /// スコア範囲

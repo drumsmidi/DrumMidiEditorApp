@@ -16,7 +16,7 @@ public sealed partial class PageConfigPlayerScore : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerScore DrawSet => ConfigLocal.Player.Score;
+    private ConfigPlayerScore DrawSet => Config.Player.Score;
 
     /// <summary>
     /// Media設定

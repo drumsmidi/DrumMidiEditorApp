@@ -20,7 +20,7 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// <summary>
     /// プレイヤー設定（共通）
     /// </summary>
-    protected ConfigPlayer DrawSetCom => ConfigLocal.Player;
+    protected ConfigPlayer DrawSetCom => Config.Player;
 
     /// <summary>
     /// システム設定

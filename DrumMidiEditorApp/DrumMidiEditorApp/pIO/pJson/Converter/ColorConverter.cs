@@ -2,7 +2,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pWinUI;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pIO.pJson;

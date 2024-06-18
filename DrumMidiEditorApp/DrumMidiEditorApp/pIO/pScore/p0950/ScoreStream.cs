@@ -8,7 +8,6 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pWinUI;
 
 namespace DrumMidiEditorApp.pIO.pScore.p0950;
 

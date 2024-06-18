@@ -18,30 +18,30 @@ public static class Config
     /// <summary>
     /// 機械学習用設定
     /// </summary>
-    //public static ConfigMachine Machine { get; set; } = new();
+    public static ConfigMachine Machine { get; set; } = new();
 
     /// <summary>
     /// イコライザ設定
     /// </summary>
-    //public static ConfigEqualizer Equalizer { get; set; } = new();
+    public static ConfigEqualizer Equalizer { get; set; } = new();
 
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    //public static ConfigEditer Editer { get; set; } = new();
+    public static ConfigEditer Editer { get; set; } = new();
 
     /// <summary>
     /// Player設定
     /// </summary>
-    //public static ConfigPlayer Player { get; set; } = new();
+    public static ConfigPlayer Player { get; set; } = new();
 
     /// <summary>
     /// Scoreタブ設定
     /// </summary>
-    //public static ConfigScore Score { get; set; } = new();
+    public static ConfigScore Score { get; set; } = new();
 
     /// <summary>
     /// Scaleタブ設定
     /// </summary>
-    //public static ConfigScale Scale { get; set; } = new();
+    public static ConfigScale Scale { get; set; } = new();
 }

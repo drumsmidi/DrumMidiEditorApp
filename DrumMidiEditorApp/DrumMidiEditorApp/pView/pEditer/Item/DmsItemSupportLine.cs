@@ -94,7 +94,7 @@ public class DmsItemSupportLine : DisposeBaseClass
             return;
         }
 
-        var format = ConfigLocal.Editer.SheetSupportLine;
+        var format = Config.Editer.SheetSupportLine;
 
         var interval_x = IntervalNotePosX;
 

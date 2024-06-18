@@ -44,23 +44,23 @@ public static class FileIO
 
         // ConfigEditer
         path.FileName = Config.System.FileNameConfigEditer;
-        ConfigLocal.Editer = LoadConfig<ConfigEditer>( path ) ?? ConfigLocal.Editer;
+        Config.Editer = LoadConfig<ConfigEditer>( path ) ?? Config.Editer;
 
         // ConfigPlayer
         path.FileName = Config.System.FileNameConfigPlayer;
-        ConfigLocal.Player = LoadConfig<ConfigPlayer>( path ) ?? ConfigLocal.Player;
+        Config.Player = LoadConfig<ConfigPlayer>( path ) ?? Config.Player;
 
         // ConfigScore
         path.FileName = Config.System.FileNameConfigScore;
-        ConfigLocal.Score = LoadConfig<ConfigScore>( path ) ?? ConfigLocal.Score;
+        Config.Score = LoadConfig<ConfigScore>( path ) ?? Config.Score;
 
         // ConfigEqualizer
         path.FileName = Config.System.FileNameConfigEqualizer;
-        ConfigLocal.Equalizer = LoadConfig<ConfigEqualizer>( path ) ?? ConfigLocal.Equalizer;
+        Config.Equalizer = LoadConfig<ConfigEqualizer>( path ) ?? Config.Equalizer;
 
         // ConfigScale
         path.FileName = Config.System.FileNameConfigScale;
-        ConfigLocal.Scale = LoadConfig<ConfigScale>( path ) ?? ConfigLocal.Scale;
+        Config.Scale = LoadConfig<ConfigScale>( path ) ?? Config.Scale;
 
         return true;
     }
@@ -114,23 +114,23 @@ public static class FileIO
 
         // ConfigEditer
         path.FileName = Config.System.FileNameConfigEditer;
-        SaveConfig( path, ConfigLocal.Editer );
+        SaveConfig( path, Config.Editer );
 
         // ConfigPlayer
         path.FileName = Config.System.FileNameConfigPlayer;
-        SaveConfig( path, ConfigLocal.Player );
+        SaveConfig( path, Config.Player );
 
         // ConfigScore
         path.FileName = Config.System.FileNameConfigScore;
-        SaveConfig( path, ConfigLocal.Score );
+        SaveConfig( path, Config.Score );
 
         // ConfigEqualizer
         path.FileName = Config.System.FileNameConfigEqualizer;
-        SaveConfig( path, ConfigLocal.Equalizer );
+        SaveConfig( path, Config.Equalizer );
 
         // ConfigScale
         path.FileName = Config.System.FileNameConfigScale;
-        SaveConfig( path, ConfigLocal.Scale );
+        SaveConfig( path, Config.Scale );
 
         return true;
     }

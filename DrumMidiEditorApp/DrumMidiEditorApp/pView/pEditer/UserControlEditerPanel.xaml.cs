@@ -32,7 +32,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Editerタブ設定
     /// </summary>
-    private static ConfigEditer DrawSet => ConfigLocal.Editer;
+    private static ConfigEditer DrawSet => Config.Editer;
 
     /// <summary>
     /// System設定
@@ -42,7 +42,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Scale設定
     /// </summary>
-    private static ConfigScale ConfigScale => ConfigLocal.Scale;
+    private static ConfigScale ConfigScale => Config.Scale;
 
     /// <summary>
     /// Media設定

@@ -17,7 +17,7 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayer DrawSet => ConfigLocal.Player;
+    private ConfigPlayer DrawSet => Config.Player;
 
     /// <summary>
     /// Media設定

@@ -19,7 +19,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerSequence DrawSet => ConfigLocal.Player.Sequence;
+    private ConfigPlayerSequence DrawSet => Config.Player.Sequence;
 
     /// <summary>
     /// Media設定

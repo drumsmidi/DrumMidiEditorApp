@@ -20,7 +20,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private static ConfigPlayerScoreType2 DrawSet => ConfigLocal.Player.ScoreType2;
+    private static ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
 
     /// <summary>
     /// セクション範囲

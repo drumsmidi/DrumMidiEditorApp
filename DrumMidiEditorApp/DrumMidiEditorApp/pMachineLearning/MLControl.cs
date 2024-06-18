@@ -155,7 +155,7 @@ public static class MLControl
                             DrumPattern = aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
                             AbsoultNotePos = note_pos,
                             HzCenter = bgm.GetHz( offset_y + ( (int)range.Height / 2 ) ),
-                            FFTBuffer = [ .. bgm.GetFFTBuffer( range, ConfigLocal.Scale.VolumeLevelLow ) ],
+                            FFTBuffer = [ .. bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ) ],
                         }
                     );
             }
@@ -206,7 +206,7 @@ public static class MLControl
         ITransformer?               trainedModel = null;
         IDataView?                  trainedModelData;
 
-        var mode = ConfigLocal.Machine.TrainingModeTypeSelect;
+        var mode = Config.Machine.TrainingModeTypeSelect;
 
         switch ( mode )
         {

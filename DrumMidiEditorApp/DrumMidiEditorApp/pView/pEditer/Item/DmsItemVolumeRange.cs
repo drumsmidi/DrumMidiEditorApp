@@ -322,7 +322,7 @@ public class DmsItemVolumeRange : DisposeBaseClass
         var p1 = _BottomPoint;
         var p2 = _BottomPoint;
 
-        p1.X += ( _StartNotePosX - aStartNotePosX ) * ConfigLocal.Editer.NoteWidthSize;
+        p1.X += ( _StartNotePosX - aStartNotePosX ) * Config.Editer.NoteWidthSize;
         p2.X = p1.X;
 
         var cnt = _VolumeList.Count - 1;
@@ -332,9 +332,9 @@ public class DmsItemVolumeRange : DisposeBaseClass
             return;
         }
 
-        var format = ConfigLocal.Editer.VolumeInputLine;
+        var format = Config.Editer.VolumeInputLine;
 
-        var term = ConfigLocal.Editer.NoteWidthSize * ( _Direct ? 1 : -1 );
+        var term = Config.Editer.NoteWidthSize * ( _Direct ? 1 : -1 );
 
         for ( var i = 0; i < cnt; i++ )
         {

@@ -74,7 +74,7 @@ public sealed partial class WindowEditer : Window
         DmsControl.Start();
 
         // プレイヤーリクエスト通知
-        DmsControl.SetPlayerRequestCallback = ( request ) => ConfigLocal.Player.PlayReq = request;
+        DmsControl.SetPlayerRequestCallback = ( request ) => Config.Player.PlayReq = request;
     }
 
     /// <summary>

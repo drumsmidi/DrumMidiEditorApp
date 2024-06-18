@@ -20,7 +20,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private ConfigPlayerScore DrawSet => ConfigLocal.Player.Score;
+    private ConfigPlayerScore DrawSet => Config.Player.Score;
 
     /// <summary>
     /// セクション範囲

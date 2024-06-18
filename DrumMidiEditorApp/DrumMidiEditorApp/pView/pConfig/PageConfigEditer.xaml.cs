@@ -15,7 +15,7 @@ public sealed partial class PageConfigEditer : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigEditer DrawSet => ConfigLocal.Editer;
+    private ConfigEditer DrawSet => Config.Editer;
 
     /// <summary>
     /// Media設定

@@ -127,7 +127,7 @@ public class DmsItemMidiMap : DisposeBaseClass
             (
                 aGraphics,
                 rect,
-                select ? ConfigLocal.Editer.HeaderSelectRect : ConfigLocal.Editer.HeaderNonSelectRect,
+                select ? Config.Editer.HeaderSelectRect : Config.Editer.HeaderNonSelectRect,
                 text
             );
     }

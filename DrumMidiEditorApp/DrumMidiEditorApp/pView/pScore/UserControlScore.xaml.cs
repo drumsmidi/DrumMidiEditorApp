@@ -19,7 +19,7 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// スコア設定
     /// </summary>
-    private static ConfigScore DrawSet => ConfigLocal.Score;
+    private static ConfigScore DrawSet => Config.Score;
 
     /// <summary>
     /// System設定
