@@ -1,14 +1,13 @@
 ﻿using System;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pIO;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView;
 

@@ -1,13 +1,12 @@
 ﻿using System;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
 using DrumMidiEditorApp.pConfig;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Windows.Foundation;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml.Input;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using DrumMidiClassLibrary.pLog;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;

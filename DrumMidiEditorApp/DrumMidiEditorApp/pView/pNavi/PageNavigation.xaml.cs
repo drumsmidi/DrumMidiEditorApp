@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DrumMidiClassLibrary.pLog;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pView.pConfig;
 using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;

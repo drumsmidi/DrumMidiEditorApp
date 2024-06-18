@@ -1,7 +1,7 @@
 ﻿using System;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pEditer;

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.ML;
 using Microsoft.ML.Data;

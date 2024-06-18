@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Drawing;
 using System.Numerics;
 using System.Threading.Tasks;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pUtil;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pView.pPlayer.pSurface;
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Effects;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.Graphics.DirectX;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
 

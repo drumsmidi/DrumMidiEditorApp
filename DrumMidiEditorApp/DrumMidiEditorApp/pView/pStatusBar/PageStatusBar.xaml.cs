@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
@@ -106,10 +106,10 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
                 return;
             }
 
-            _InfoBar.Title = aTitle;
-            _InfoBar.Content = aContent;
-            _InfoBar.Severity = aSeverity;
-            _InfoBar.IsOpen = true;
+            _InfoBar.Title      = aTitle;
+            _InfoBar.Content    = aContent;
+            _InfoBar.Severity   = aSeverity;
+            _InfoBar.IsOpen     = true;
         }
         catch ( Exception e )
         {

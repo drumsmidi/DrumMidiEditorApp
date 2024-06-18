@@ -1,10 +1,10 @@
 ﻿using System;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pScore;
 

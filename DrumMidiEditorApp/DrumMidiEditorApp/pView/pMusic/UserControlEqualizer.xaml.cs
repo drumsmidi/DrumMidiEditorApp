@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pConfig;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.Foundation;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 

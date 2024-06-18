@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pAudio;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml.Controls;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 

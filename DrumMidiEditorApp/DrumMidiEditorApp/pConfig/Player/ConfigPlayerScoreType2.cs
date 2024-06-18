@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 

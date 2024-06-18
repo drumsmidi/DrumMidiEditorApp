@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.DataTransfer;

@@ -2,11 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pAudio;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pIO;
 using Microsoft.UI.Xaml;
@@ -14,6 +13,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pWinUI;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;

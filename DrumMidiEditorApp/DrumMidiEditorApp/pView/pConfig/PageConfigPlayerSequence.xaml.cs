@@ -2,13 +2,13 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 

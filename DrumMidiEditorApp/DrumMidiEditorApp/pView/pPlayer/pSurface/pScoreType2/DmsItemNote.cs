@@ -1,10 +1,7 @@
 ﻿using System;
-using DrumMidiClassLibrary.pUtil;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Svg;
 using Windows.Foundation;
-using Windows.Storage;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScoreType2;
 

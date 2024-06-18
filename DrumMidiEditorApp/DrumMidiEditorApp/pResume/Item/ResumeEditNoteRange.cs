@@ -1,4 +1,4 @@
-﻿using DrumMidiClassLibrary.pUtil;
+﻿using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pView.pEditer;
 

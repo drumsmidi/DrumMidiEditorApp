@@ -2,22 +2,15 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pResume;
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Effects;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -25,6 +18,10 @@ using Windows.Foundation;
 using Windows.Graphics.DirectX;
 using Windows.System;
 using Windows.UI;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

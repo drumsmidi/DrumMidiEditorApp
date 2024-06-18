@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DrumMidiClassLibrary.pModel;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pView.pEditer;
 
 namespace DrumMidiEditorApp.pResume;

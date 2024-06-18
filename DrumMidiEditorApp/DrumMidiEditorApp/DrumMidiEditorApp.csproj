@@ -11,6 +11,7 @@
     <Nullable>enable</Nullable>
     <StartupObject>DrumMidiEditorApp.Program</StartupObject>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>TRACE</DefineConstants>
@@ -19,6 +20,8 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="pUserControl\GroupBox.xaml" />
+    <None Remove="pUserControl\HGroupUser.xaml" />
     <None Remove="pView\pConfig\PageConfigDevice.xaml" />
     <None Remove="pView\pConfig\PageConfigEditer.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayer.xaml" />
@@ -42,10 +45,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DrumMidiAppClassLibrary\DrumMidiClassLibrary.csproj" />
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.2.0" />
+    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.9.0.20240103" />
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="pUserControl\GroupBox.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="pUserControl\HGroupUser.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="pView\PageEditerMain.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

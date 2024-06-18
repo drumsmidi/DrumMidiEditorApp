@@ -1,7 +1,6 @@
 ﻿using System;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pUtil;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 

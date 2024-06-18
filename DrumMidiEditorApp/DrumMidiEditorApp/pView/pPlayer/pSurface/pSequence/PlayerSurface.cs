@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;
 

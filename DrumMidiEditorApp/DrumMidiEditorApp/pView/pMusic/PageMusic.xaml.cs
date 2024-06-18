@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pWinUI;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage.Pickers;
+using DrumMidiEditorApp.pUtil;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 

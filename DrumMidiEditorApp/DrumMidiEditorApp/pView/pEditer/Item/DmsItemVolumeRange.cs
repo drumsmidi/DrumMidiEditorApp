@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pUtil;
+using DrumMidiEditorApp.pAudio;
+using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pConfig;
-using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
+using Microsoft.Graphics.Canvas;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

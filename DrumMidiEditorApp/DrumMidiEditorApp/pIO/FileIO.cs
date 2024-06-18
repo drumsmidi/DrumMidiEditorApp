@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pControl;
-using DrumMidiClassLibrary.pIO.pVideo;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
-using DrumMidiClassLibrary.pUtil;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pControl;
+using DrumMidiEditorApp.pIO.pJson;
+using DrumMidiEditorApp.pIO.pScore;
+using DrumMidiEditorApp.pIO.pVideo;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pIO;
@@ -24,12 +26,13 @@ public static class FileIO
     /// 設定ファイル読込
     /// </summary>
     /// <returns>Trueのみ</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>" )]
     public static bool LoadConfig()
     {
         using var _ = new LogBlock( Log.GetThisMethodName );
 
+#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.System.FolderConfig );
+#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
@@ -69,21 +72,37 @@ public static class FileIO
     /// <param name="aGeneralPath">読込ファイルパス</param>
     /// <returns>読込済みConfigオブジェクト</returns>
     private static T? LoadConfig<T>( GeneralPath aGeneralPath ) where T : class
-        => DrumMidiClassLibrary.pIO.FileIO.LoadConfig<T>( aGeneralPath );
+    {
+        T? config = null;
+
+        try
+        {
+            config = JsonIO.LoadFile<T>( aGeneralPath );
+
+            Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to read [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+        return config;
+    }
 
     /// <summary>
     /// 設定ファイル保存
     /// </summary>
     /// <returns>Trueのみ</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0017:オブジェクトの初期化を簡略化します", Justification = "<保留中>" )]
     public static bool SaveConfig()
     {
         using var _ = new LogBlock( Log.GetThisMethodName );
 
         // サブフォルダ作成
-        DrumMidiClassLibrary.pIO.FileIO.DocumentFolderStructure();
+        DocumentFolderStructure();
 
+#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.System.FolderConfig );
+#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName = Config.System.FileNameConfigSystem;
@@ -123,36 +142,21 @@ public static class FileIO
     /// <param name="aGeneralPath">出力ファイルパス</param>
     /// <param name="aGeneralPath">出力Configオブジェクト</param>
     private static void SaveConfig<T>( GeneralPath aGeneralPath, T aConfig ) where T : class
-        => DrumMidiClassLibrary.pIO.FileIO.SaveConfig( aGeneralPath, aConfig );
+    {
+        try
+        {
+            JsonIO.SaveFile<T>( aConfig, aGeneralPath );
+
+            Log.Info( $"Succeeded in writing [{aGeneralPath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
     #endregion
-
-    /// <summary>
-    /// スコア保存
-    /// </summary>
-    /// <param name="aFilePath">スコアファイルパス</param>
-    /// <param name="aScore">出力スコア</param>
-    /// <returns>True:読込成功、False:読込失敗</returns>
-    public static bool LoadScore( GeneralPath aFilePath, out Score aScore )
-        => DrumMidiClassLibrary.pIO.FileIO.LoadScore( aFilePath, out aScore );
-
-    /// <summary>
-    /// スコア保存
-    /// </summary>
-    /// <param name="aFilePath">出力先ファイルパス</param>
-    /// <param name="aScore">保存スコア</param>
-    /// <returns>True:保存成功、False:保存失敗</returns>
-    public static bool SaveScore( GeneralPath aFilePath, Score aScore )
-        => DrumMidiClassLibrary.pIO.FileIO.SaveScore( aFilePath, aScore );
-
-    /// <summary>
-    /// スコア - Midi保存
-    /// </summary>
-    /// <param name="aFilePath">出力先ファイルパス</param>
-    /// <param name="aScore">保存スコア</param>
-    /// <returns>True:保存成功、False:保存失敗</returns>
-    public static bool SaveMidi( GeneralPath aFilePath, Score aScore )
-        => DrumMidiClassLibrary.pIO.FileIO.SaveMidi( aFilePath, aScore );
 
     /// <summary>
     /// スコア - Video保存
@@ -198,6 +202,8 @@ public static class FileIO
             var frameTime = 1d / fps;
 
             var log_cnt = 0;
+
+            // TODO: 非同期処理中に別操作に対する制限など未実装
 
             await Task.Run
                 (
@@ -252,6 +258,167 @@ public static class FileIO
         }
     }
 
+    #region Create sub folder
+
+    /// <summary>
+    /// ドキュメントフォルダを構築
+    /// </summary>
+    public static void DocumentFolderStructure()
+    {
+        var folderList = new List<GeneralPath>()
+        {
+            Config.System.FolderConfig,
+            Config.System.FolderModel,
+        };
+
+        var targetFolderList = new List<GeneralPath>();
+
+        try
+        {
+            // フォルダ存在チェック
+            foreach ( var folder in folderList )
+            {
+                if ( !folder.IsExistDirectory )
+                {
+                    targetFolderList.Add( folder );
+                }
+            }
+
+            if ( targetFolderList.Count == 0 )
+            {
+                return;
+            }
+
+            // フォルダ作成
+            targetFolderList.ForEach( CreateFolder );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// フォルダ作成
+    /// </summary>
+    /// <param name="aFolderPath"></param>
+    private static void CreateFolder( GeneralPath aFolderPath )
+    {
+        try
+        {
+            if ( aFolderPath.Length == 0 || aFolderPath.IsExistDirectory )
+            {
+                return;
+            }
+
+            _ = aFolderPath.CreateDirectory();
+
+            Log.Info( $"Folder creation successful [{aFolderPath.AbsoulteFolderPath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Folder creation failure [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
+
+    /// <summary>
+    /// スコア保存
+    /// </summary>
+    /// <param name="aFilePath">スコアファイルパス</param>
+    /// <param name="aScore">出力スコア</param>
+    /// <returns>True:読込成功、False:読込失敗</returns>
+    public static bool LoadScore( GeneralPath aFilePath, out Score aScore )
+    {
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        aScore = new();
+
+        try
+        {
+            var ext = aFilePath.Extension.ToLower();
+
+            if ( ext.Equals( ".dms" ) )
+            {
+                ScoreIO.LoadFile( aFilePath, out aScore );
+            }
+            else if ( ext.Equals( ".mid" ) )
+            {
+                ScoreIO.LoadMidiFile( aFilePath, out aScore );
+            }
+            else if ( ext.Equals( ".dtx" ) )
+            {
+                // not recommended
+                ScoreIO.LoadDtxManiaFile( aFilePath, out aScore );
+            }
+            else
+            {
+                throw new NotSupportedException( $"Extension {ext} is not supported" );
+            }
+
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// スコア保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static bool SaveScore( GeneralPath aFilePath, Score aScore )
+    {
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            ScoreIO.SaveFile( aFilePath, aScore );
+
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// スコア - Midi保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static bool SaveMidi( GeneralPath aFilePath, Score aScore )
+    {
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            ScoreIO.SaveMidiFile( aFilePath, aScore );
+
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
+
     /// <summary>
     /// MidiMapセットテンプレートの読込
     /// </summary>
@@ -259,7 +426,25 @@ public static class FileIO
     /// <param name="aMidiMapSet">出力MidiMapセット</param>
     /// <returns>True:読込成功、False:読込失敗</returns>
     public static bool LoadMidiMapSet( GeneralPath aFilePath, out MidiMapSet aMidiMapSet )
-        => DrumMidiClassLibrary.pIO.FileIO.LoadMidiMapSet( aFilePath, out aMidiMapSet );
+    {
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            ScoreIO.LoadFile( aFilePath, out aMidiMapSet );
+
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            aMidiMapSet = new();
+            return false;
+        }
+        return true;
+    }
 
     /// <summary>
     /// MidiMapセットテンプレートの保存
@@ -268,7 +453,23 @@ public static class FileIO
     /// <param name="aMidiMapSet">保存MidiMapセット</param>
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveMidiMapSet( GeneralPath aFilePath, MidiMapSet aMidiMapSet )
-        => DrumMidiClassLibrary.pIO.FileIO.SaveMidiMapSet( aFilePath, aMidiMapSet );
+    {
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            ScoreIO.SaveFile( aFilePath, aMidiMapSet );
+
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        return true;
+    }
 
     /// <summary>
     /// スコア情報のインポート
@@ -276,5 +477,32 @@ public static class FileIO
     /// <param name="aFilePath">スコアファイルパス</param>
     /// <returns>True:インポート成功、False:インポート失敗</returns>
     public static bool ImportScore( GeneralPath aFilePath )
-        => DrumMidiClassLibrary.pIO.FileIO.ImportScore( aFilePath );
+    {
+        // TODO: この辺は改良の余地あり。
+
+        using var _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            var ext = aFilePath.Extension.ToLower();
+
+            //if ( ext.Equals( ".mid" ) )
+            //{
+            //    ScoreIO.LoadMidiFile( aFilePath, out aScore );
+            //}
+            //else
+            {
+                throw new NotSupportedException( $"Extension {ext} is not supported" );
+            }
+
+            //Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            return false;
+        }
+        //return true;
+    }
 }

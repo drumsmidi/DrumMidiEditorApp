@@ -1,9 +1,8 @@
 ﻿using System;
-using DrumMidiClassLibrary.pAudio;
-using DrumMidiClassLibrary.pConfig;
-using DrumMidiClassLibrary.pLog;
-using DrumMidiClassLibrary.pModel;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pModel;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;

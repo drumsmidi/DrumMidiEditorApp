@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiClassLibrary.pLog;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
