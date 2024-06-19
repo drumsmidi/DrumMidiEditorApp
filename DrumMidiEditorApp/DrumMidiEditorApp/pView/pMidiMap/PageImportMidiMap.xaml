@@ -10,11 +10,10 @@
 
     <Grid ColumnSpacing="6">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -22,7 +21,7 @@
         <Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource TableHeader}">
             <TextBlock x:Uid="ColumnMidiMapKeyChange" />
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="0" Style="{StaticResource TableHeader}">
+        <Grid Grid.Row="0" Grid.Column="1" Style="{StaticResource TableHeader}">
             <TextBlock x:Uid="ColumnImportMidiMap" />
         </Grid>
         
@@ -97,8 +96,8 @@
         </ScrollViewer>
         
         <ScrollViewer
-            Grid.Row="3"
-            Grid.Column="0" >
+            Grid.Row="1"
+            Grid.Column="1" >
 
             <GridView x:Name="_ImportMidiMapGridView"
                 ItemsSource="{x:Bind _ImportDataList, Mode=OneTime}"

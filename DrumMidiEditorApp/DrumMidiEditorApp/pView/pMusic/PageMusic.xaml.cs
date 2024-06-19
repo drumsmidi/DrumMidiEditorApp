@@ -45,11 +45,11 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         #region NumberBox の入力書式設定
 
         _MusicInfoBpmNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 2, 1 );
+            = XamlHelper.CreateNumberFormatter( 1, 2, 0.01 );
         _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+            = XamlHelper.CreateNumberFormatter( 1, 3, 0.001 );
         _MusicInfoBgmVolumeNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 10 );
+            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
 
         #endregion
     }

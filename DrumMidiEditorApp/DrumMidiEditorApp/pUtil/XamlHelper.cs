@@ -380,8 +380,8 @@ public static class XamlHelper
             FractionDigits  = aFractionDigits,
             NumberRounder   = new IncrementNumberRounder
             {
-                Increment           = aIncrement,
-                RoundingAlgorithm   = RoundingAlgorithm.RoundHalfAwayFromZero,
+                Increment           = aIncrement,                
+                RoundingAlgorithm   = RoundingAlgorithm.RoundHalfToEven,
             },
             IsGrouped       = true,
             IsZeroSigned    = true,

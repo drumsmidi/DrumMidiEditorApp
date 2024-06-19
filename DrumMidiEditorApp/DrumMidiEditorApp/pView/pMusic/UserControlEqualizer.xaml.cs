@@ -397,7 +397,7 @@ public sealed partial class UserControlEqualizer : UserControl
         {
             var p = _GainCenters[ index ];
 
-            pointRect.X = p.X - ( pointRect.Width / 2 );
+            pointRect.X = p.X - ( pointRect.Width  / 2 );
             pointRect.Y = p.Y - ( pointRect.Height / 2 );
 
             if ( XamlHelper.CheckRange( aMousePos, pointRect ) )
@@ -514,7 +514,8 @@ public sealed partial class UserControlEqualizer : UserControl
     /// イコライザ入力情報ログ表示
     /// </summary>
     /// <param name="aPoint">イコライザ入力情報</param>
-    private void SetEqualizerInfo( Point aGainInfo ) => _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )}   db={CalcGain( aGainInfo.Y )}";
+    private void SetEqualizerInfo( Point aGainInfo ) 
+        => _EqualizerInfoTextBlock.Text = $"hz={CalcHz( aGainInfo.X )}   db={CalcGain( aGainInfo.Y )}";
 
     /// <summary>
     /// BGMイコライザ設定反映
@@ -591,14 +592,14 @@ public sealed partial class UserControlEqualizer : UserControl
     private void UpdateRange()
     {
         // Equlizer body
-        _EqulizerBodyRange.X = DrawSet.EqulizerBodyMarginLeftTop.X;
-        _EqulizerBodyRange.Y = DrawSet.EqulizerBodyMarginLeftTop.Y;
-        _EqulizerBodyRange.Width = DrawSet.GetHzTotalWidth();
-        _EqulizerBodyRange.Height = DrawSet.DbTotalHeight;
+        _EqulizerBodyRange.X        = DrawSet.EqulizerBodyMarginLeftTop.X;
+        _EqulizerBodyRange.Y        = DrawSet.EqulizerBodyMarginLeftTop.Y;
+        _EqulizerBodyRange.Width    = DrawSet.GetHzTotalWidth();
+        _EqulizerBodyRange.Height   = DrawSet.DbTotalHeight;
 
         // イコライザキャンバスのサイズ調整
-        _EqualizerCanvas.Width = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width + DrawSet.EqulizerBodyMarginRightBottom.X;
-        _EqualizerCanvas.Height = DrawSet.EqulizerBodyMarginLeftTop.Y + _EqulizerBodyRange.Height + DrawSet.EqulizerBodyMarginRightBottom.Y;
+        _EqualizerCanvas.Width      = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width + DrawSet.EqulizerBodyMarginRightBottom.X;
+        _EqualizerCanvas.Height     = DrawSet.EqulizerBodyMarginLeftTop.Y + _EqulizerBodyRange.Height + DrawSet.EqulizerBodyMarginRightBottom.Y;
     }
 
     #endregion
@@ -720,9 +721,9 @@ public sealed partial class UserControlEqualizer : UserControl
                             {
                                 var format = pen[ k % bgm.Channels ];
 
-                                r.X = body.X - ( k % bgm.Channels * format.LineSize );
-                                r.Height = fft [ k ] * body.Height;
-                                r.Y = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
+                                r.X         = body.X - ( k % bgm.Channels * format.LineSize );
+                                r.Height    = fft [ k ] * body.Height;
+                                r.Y         = body.Y + body.Height - ( r.Height > 0 ? r.Height : 0 );
 
                                 var hz_b    = 0d;
                                 var hz      = hzPerOne * ( k + 1 - (k % bgm.Channels) );
