@@ -207,7 +207,7 @@ MidiMapSet を設定する画面です。
 取込対象のテンプレートファイル(.dms)を選択後  
 『既存⇒インポート先へのMidiMap置換』と『インポートMidiMapSet』を表示します。  
 
-<img width="411" alt="image" src="https://user-images.githubusercontent.com/97685486/182596029-7414147f-5d8d-4cff-9134-945d5f59b57a.png">  
+<img width="785" alt="image" src="https://github.com/drumsmidi/DrumMidiEditorApp/assets/172901992/bbb3b9c5-8b29-4e08-933e-c2c2df341a4a">
 
 ### 『既存⇒インポート先へのMidiMap置換』  
 
