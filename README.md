@@ -59,7 +59,7 @@ https://docs.microsoft.com/ja-jp/windows/apps/package-and-deploy/ci-for-winui3?p
 
     # Install the .NET Core workload
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
 
