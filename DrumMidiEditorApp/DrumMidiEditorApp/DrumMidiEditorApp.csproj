@@ -20,6 +20,14 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="NAudio\**" />
+    <Content Remove="NAudio\**" />
+    <EmbeddedResource Remove="NAudio\**" />
+    <None Remove="NAudio\**" />
+    <Page Remove="NAudio\**" />
+    <PRIResource Remove="NAudio\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="pUserControl\GroupBox.xaml" />
     <None Remove="pUserControl\HGroupUser.xaml" />
     <None Remove="pView\pConfig\PageConfigDevice.xaml" />
@@ -206,9 +214,5 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NAudio\" />
   </ItemGroup>
 </Project>
