@@ -23,7 +23,7 @@ public class NAudioData : DisposeBaseClass
     /// <summary>
     /// Audioファイル読込
     /// </summary>
-    private AudioFileReader? _Reader = null;
+    private AudioFileReaderStub? _Reader = null;
 
     /// <summary>
     /// サンプリング
@@ -117,7 +117,7 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            _Reader = new AudioFileReader( aFilePath );
+            _Reader = new AudioFileReaderStub( aFilePath );
             _Sample = new Sampling( _Reader );
             _Wave = new WaveOutEvent();
 
@@ -138,7 +138,7 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            _Reader = new AudioFileReader( aFilePath );
+            _Reader = new AudioFileReaderStub( aFilePath );
             _Sample = new Sampling( _Reader );
             _Wave = new WaveOutEvent();
 

@@ -1,8 +1,9 @@
 ﻿using System;
+using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
 // ReSharper disable once CheckNamespace
-namespace NAudio.Wave;
+namespace DrumMidiEditorApp.pAudio;
 
 /// <summary>
 /// AudioFileReader simplifies opening an audio file in NAudio
@@ -13,7 +14,7 @@ namespace NAudio.Wave;
 /// ISampleProvider, making it possibly the only stage in your audio
 /// pipeline necessary for simple playback scenarios
 /// </summary>
-public class AudioFileReader : WaveStream, ISampleProvider
+public class AudioFileReaderStub : WaveStream, ISampleProvider
 {
     private WaveStream? readerStream; // the waveStream which we will use for all positioning
     private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
@@ -26,7 +27,7 @@ public class AudioFileReader : WaveStream, ISampleProvider
     /// Initializes a new instance of AudioFileReader
     /// </summary>
     /// <param name="fileName">The file to open</param>
-    public AudioFileReader( string fileName )
+    public AudioFileReaderStub( string fileName )
     {
         lockObject = new object();
         FileName = fileName;
