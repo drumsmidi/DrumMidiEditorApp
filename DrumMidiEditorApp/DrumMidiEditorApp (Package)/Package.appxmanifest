@@ -37,7 +37,7 @@
         DisplayName="DrumMidiEditorApp (Package)"
         Description="DrumMidiEditorApp (Package)"
         BackgroundColor="transparent" Square150x150Logo="Visual\MediumTile.png" Square44x44Logo="Visual\AppIcon.png">
-        <uap:DefaultTile Square71x71Logo="Visual\SmallTile.png" Wide310x150Logo="Visual\WideTile.png" Square310x310Logo="Visual\LargeTile.png"/>
+        <uap:DefaultTile Square71x71Logo="Visual\SmallTile.png" Wide310x150Logo="Visual\WideTile.png" />
         <uap:SplashScreen Image="Visual\SplashScreen.png"/>
         <uap:LockScreen BadgeLogo="Visual\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
