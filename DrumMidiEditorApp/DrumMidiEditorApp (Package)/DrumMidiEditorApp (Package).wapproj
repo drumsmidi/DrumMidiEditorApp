@@ -34,12 +34,40 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Visual\AppIcon.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Visual\AppIcon.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Visual\AppIcon.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Visual\AppIcon.altform-unplated_targetsize-16.png" />
+    <Content Include="Visual\AppIcon.altform-unplated_targetsize-256.png" />
+    <Content Include="Visual\AppIcon.altform-unplated_targetsize-48.png" />
+    <Content Include="Visual\AppIcon.scale-100.png" />
+    <Content Include="Visual\AppIcon.scale-200.png" />
+    <Content Include="Visual\AppIcon.scale-400.png" />
+    <Content Include="Visual\AppIcon.targetsize-16.png" />
+    <Content Include="Visual\AppIcon.targetsize-256.png" />
+    <Content Include="Visual\AppIcon.targetsize-48.png" />
+    <Content Include="Visual\BadgeLogo.scale-100.png" />
+    <Content Include="Visual\BadgeLogo.scale-200.png" />
+    <Content Include="Visual\BadgeLogo.scale-400.png" />
+    <Content Include="Visual\LargeTile.scale-100.png" />
+    <Content Include="Visual\LargeTile.scale-200.png" />
+    <Content Include="Visual\LargeTile.scale-400.png" />
+    <Content Include="Visual\MediumTile.scale-100.png" />
+    <Content Include="Visual\MediumTile.scale-200.png" />
+    <Content Include="Visual\MediumTile.scale-400.png" />
+    <Content Include="Visual\PackageLogo.scale-100.png" />
+    <Content Include="Visual\PackageLogo.scale-200.png" />
+    <Content Include="Visual\PackageLogo.scale-400.png" />
+    <Content Include="Visual\SmallTile.scale-100.png" />
+    <Content Include="Visual\SmallTile.scale-200.png" />
+    <Content Include="Visual\SmallTile.scale-400.png" />
+    <Content Include="Visual\SplashScreen.scale-100.png" />
+    <Content Include="Visual\SplashScreen.scale-200.png" />
+    <Content Include="Visual\SplashScreen.scale-400.png" />
+    <Content Include="Visual\WideTile.scale-100.png" />
+    <Content Include="Visual\WideTile.scale-200.png" />
+    <Content Include="Visual\WideTile.scale-400.png" />
     <None Include="DrumMidiEditorApp %28Package%29_TemporaryKey.pfx" />
-    <Content Include="Images\Square150x150Logo.scale-100.png" />
-    <Content Include="Images\Square150x150Logo.scale-125.png" />
-    <Content Include="Images\Square150x150Logo.scale-150.png" />
-    <Content Include="Images\Square150x150Logo.scale-200.png" />
-    <Content Include="Images\Square150x150Logo.scale-400.png" />
     <Content Include="Images\stop.jpg" />
     <PRIResource Include="Strings\ja-JP\Resources.resw" />
   </ItemGroup>
