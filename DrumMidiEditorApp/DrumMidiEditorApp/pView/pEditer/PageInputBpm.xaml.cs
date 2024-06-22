@@ -27,7 +27,7 @@ public sealed partial class PageInputBpm : Page
 
         // NumberBox の入力書式設定
         _BpmNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 2, 1 );
+            = XamlHelper.CreateNumberFormatter( 1, 2, 0.01 );
     }
 
     /// <summary>
