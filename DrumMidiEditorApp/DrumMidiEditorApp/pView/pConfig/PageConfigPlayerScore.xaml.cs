@@ -63,7 +63,9 @@ public sealed partial class PageConfigPlayerScore : Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
+#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
     private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
     {
         try
         {

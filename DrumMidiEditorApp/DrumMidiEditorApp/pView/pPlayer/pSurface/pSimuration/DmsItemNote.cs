@@ -65,7 +65,7 @@ internal class DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidi
 
         var distance = _NotePosX + aDiffX;
 
-        if ( distance is not < 0F or not > 9F )
+        //if ( distance is not < 0F or not > 9F )
         {
             // 1:0, 10:1
             var sa = 1F + Math.Log10( distance + 1 );

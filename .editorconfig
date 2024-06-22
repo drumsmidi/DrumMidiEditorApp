@@ -231,3 +231,5 @@ dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion
 dotnet_style_namespace_match_folder = true:suggestion
 dotnet_diagnostic.CA1416.severity = none
 dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.CA2201.severity = silent
+dotnet_diagnostic.CA2211.severity = none

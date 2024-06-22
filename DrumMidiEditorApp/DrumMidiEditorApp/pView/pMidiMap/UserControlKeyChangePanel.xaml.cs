@@ -101,15 +101,15 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         {
             if ( _HeadGrid.Visibility == Visibility.Visible )
             {
-                _DisplayButton.Content = "<";
-                _HeadGrid.Visibility = Visibility.Collapsed;
-                _BodyGrid.Visibility = Visibility.Collapsed;
+                _DisplayButton.Content  = "<";
+                _HeadGrid.Visibility    = Visibility.Collapsed;
+                _BodyGrid.Visibility    = Visibility.Collapsed;
             }
             else
             {
-                _DisplayButton.Content = ">";
-                _HeadGrid.Visibility = Visibility.Visible;
-                _BodyGrid.Visibility = Visibility.Visible;
+                _DisplayButton.Content  = ">";
+                _HeadGrid.Visibility    = Visibility.Visible;
+                _BodyGrid.Visibility    = Visibility.Visible;
             }
         }
         catch ( Exception e )

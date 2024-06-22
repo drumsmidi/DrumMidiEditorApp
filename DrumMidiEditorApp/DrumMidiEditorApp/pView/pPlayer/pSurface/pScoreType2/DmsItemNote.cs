@@ -138,7 +138,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
         }
     }
 
-    private static IAsyncOperation<CanvasBitmap>? _StopImage;
+    //private static IAsyncOperation<CanvasBitmap>? _StopImage;
 
 
     /// <summary>

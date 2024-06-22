@@ -57,7 +57,7 @@ public sealed partial class PageInputMidiMap : Page
                 if ( midiMap.MidiMapKey == SelectMidiMapKey )
                 {
                     _MidiMapListBox.SelectedIndex = _MidiMapListBox.Items.Count - 1;
-                    _MidiMapBeforeTextBlock.Text = name;
+                    _MidiMapBeforeTextBlock.Text  = name;
                 }
             }
         }

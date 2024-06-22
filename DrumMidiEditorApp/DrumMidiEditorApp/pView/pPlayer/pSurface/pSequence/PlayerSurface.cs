@@ -305,7 +305,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 if ( midiMap != null )
                 {
                     // ノート描画用の書式を登録
-                    if ( !_MidiMapNoteFormatList.ContainsKey( midiMap.MidiMapKey ) )
+                    if ( !_MidiMapNoteFormatList.TryGetValue( midiMap.MidiMapKey, out var value ) )
                     {
                         // TODO: 線の色とか情報追加が必要
                         var formatRect = new FormatRect
@@ -317,7 +317,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     }
                     else
                     {
-                        _MidiMapNoteFormatList [ midiMap.MidiMapKey ].Background = new( midiMap.Color );
+                        value.Background = new( midiMap.Color );
                     }
 
                     if ( !DrawSet.HeaderGroupOn )

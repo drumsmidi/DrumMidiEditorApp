@@ -62,7 +62,11 @@ public sealed partial class PageConfigEditer : Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
+#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
+#pragma warning disable IDE0060 // 未使用のパラメーターを削除します
     private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+#pragma warning restore IDE0060 // 未使用のパラメーターを削除します
+#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
     {
         try
         {

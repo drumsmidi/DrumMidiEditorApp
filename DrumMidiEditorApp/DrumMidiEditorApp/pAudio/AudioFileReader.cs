@@ -16,11 +16,16 @@ namespace DrumMidiEditorApp.pAudio;
 /// </summary>
 public class AudioFileReaderStub : WaveStream, ISampleProvider
 {
-    private WaveStream? readerStream; // the waveStream which we will use for all positioning
-    private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
+    private readonly WaveStream readerStream;
+
+    private readonly SampleChannel sampleChannel;
+
     private readonly int destBytesPerSample;
+
     private readonly int sourceBytesPerSample;
+
     private readonly long length;
+
     private readonly object lockObject;
 
     /// <summary>
@@ -29,13 +34,13 @@ public class AudioFileReaderStub : WaveStream, ISampleProvider
     /// <param name="fileName">The file to open</param>
     public AudioFileReaderStub( string fileName )
     {
-        lockObject = new object();
-        FileName = fileName;
-        CreateReaderStream( fileName );
-        sourceBytesPerSample = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;
-        sampleChannel = new SampleChannel( readerStream, false );
-        destBytesPerSample = 4 * sampleChannel.WaveFormat.Channels;
-        length = SourceToDest( readerStream.Length );
+        lockObject              = new object();
+        FileName                = fileName;
+        readerStream            = CreateReaderStream( fileName );
+        sourceBytesPerSample    = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;
+        sampleChannel           = new SampleChannel( readerStream, false );
+        destBytesPerSample      = 4 * sampleChannel.WaveFormat.Channels;
+        length                  = SourceToDest( readerStream.Length );
     }
 
     /// <summary>
@@ -43,35 +48,40 @@ public class AudioFileReaderStub : WaveStream, ISampleProvider
     /// and ensuring we are in PCM format
     /// </summary>
     /// <param name="fileName">File Name</param>
-    private void CreateReaderStream( string fileName )
+    private WaveStream CreateReaderStream( string fileName )
     {
+        WaveStream ws;
         if ( fileName.EndsWith( ".wav", StringComparison.OrdinalIgnoreCase ) )
         {
-            readerStream = new WaveFileReader( fileName );
-            if ( readerStream.WaveFormat.Encoding != WaveFormatEncoding.Pcm && readerStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat )
+            ws = new WaveFileReader( fileName );
+            if ( ws.WaveFormat.Encoding != WaveFormatEncoding.Pcm && ws.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat )
             {
-                readerStream = WaveFormatConversionStream.CreatePcmStream( readerStream );
-                readerStream = new BlockAlignReductionStream( readerStream );
+#pragma warning disable IDE0059 // 値の不必要な代入
+                ws = WaveFormatConversionStream.CreatePcmStream( ws );
+#pragma warning restore IDE0059 // 値の不必要な代入
+                ws = new BlockAlignReductionStream( ws );
             }
         }
         else if ( fileName.EndsWith( ".mp3", StringComparison.OrdinalIgnoreCase ) )
         {
-            readerStream = new Mp3FileReader( fileName );
+            ws = new Mp3FileReader( fileName );
 
             //if ( Environment.OSVersion.Version.Major < 6)
             //    readerStream = new Mp3FileReader(fileName);
             //else // make MediaFoundationReader the default for MP3 going forwards
             //    readerStream = new MediaFoundationReader(fileName);
         }
-        else if ( fileName.EndsWith( ".aiff", StringComparison.OrdinalIgnoreCase ) || fileName.EndsWith( ".aif", StringComparison.OrdinalIgnoreCase ) )
+        else if (  fileName.EndsWith( ".aiff", StringComparison.OrdinalIgnoreCase ) 
+                || fileName.EndsWith( ".aif" , StringComparison.OrdinalIgnoreCase ) )
         {
-            readerStream = new AiffFileReader( fileName );
+            ws = new AiffFileReader( fileName );
         }
         else
         {
             // fall back to media foundation reader, see if that can play it
-            readerStream = new MediaFoundationReader( fileName );
+            ws = new MediaFoundationReader( fileName );
         }
+        return ws;
     }
     /// <summary>
     /// File Name
@@ -115,9 +125,9 @@ public class AudioFileReaderStub : WaveStream, ISampleProvider
     /// <returns>Number of bytes read</returns>
     public override int Read( byte [] buffer, int offset, int count )
     {
-        var waveBuffer = new WaveBuffer(buffer);
+        var waveBuffer      = new WaveBuffer( buffer );
         var samplesRequired = count / 4;
-        var samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
+        var samplesRead     = Read( waveBuffer.FloatBuffer, offset / 4, samplesRequired );
         return samplesRead * 4;
     }
 
@@ -169,11 +179,7 @@ public class AudioFileReaderStub : WaveStream, ISampleProvider
     {
         if ( disposing )
         {
-            if ( readerStream != null )
-            {
-                readerStream.Dispose();
-                readerStream = null;
-            }
+            readerStream?.Dispose();
         }
         base.Dispose( disposing );
     }

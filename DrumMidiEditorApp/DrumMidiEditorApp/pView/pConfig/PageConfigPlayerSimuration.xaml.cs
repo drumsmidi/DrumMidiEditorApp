@@ -10,7 +10,9 @@ public sealed partial class PageConfigPlayerSimuration : Page
     /// <summary>
     /// 描画設定
     /// </summary>
+#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
     private ConfigPlayerSimuration DrawSet => Config.Player.Simuration;
+#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
 
     #endregion
 
