@@ -52,7 +52,7 @@ internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBp
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _Info = null;
+                _Info       = null;
                 _FormatRect = null;
             }
 

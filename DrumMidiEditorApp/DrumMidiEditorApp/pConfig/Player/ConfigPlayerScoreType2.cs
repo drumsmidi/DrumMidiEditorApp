@@ -23,34 +23,13 @@ public class ConfigPlayerScoreType2
     /// BPMテキスト表示横幅
     /// </summary>
     [JsonInclude]
-    public float BpmWidthSize { get; set; } = 40F;
-
-    /// <summary>
-    /// BPM描画アイテム
-    /// </summary>
-    [JsonInclude]
-    public FormatRect BpmRect
-    {
-        get; set;
-    } = new()
-    {
-        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-        Text = new( Color.FromArgb( 255, 0, 0, 0 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+    public float BpmWidthSize { get; set; } = 100F;
 
     /// <summary>
     /// 現在のBPM値表示フラグ
     /// </summary>
     [JsonInclude]
-    public bool BpmNowDisplay { get; set; } = false;
+    public bool BpmNowDisplay { get; set; } = true;
 
     /// <summary>
     /// 現在のBPM値描画アイテム
@@ -61,15 +40,15 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 0 ), 0F ),
-        Text = new( Color.FromArgb( 255, 0, 0, 0 ),
+        Background  = new( Color.FromArgb(   0,  0,  0, 0 ) ),
+        Line        = new( Color.FromArgb(   0, 60, 60, 0 ), 0F ),
+        Text        = new( Color.FromArgb( 255,  0,  0, 0 ),
                             new()
                             {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -92,33 +71,42 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.0F ),
-        Text = new( Color.FromArgb( 255, 0, 0, 0 ),
+        Background  = new( Color.FromArgb( 255, 100, 100, 100 ) ),
+        Line        = new( Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
                             new()
                             {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
+
+    /// <summary>
+    /// 小節番号描画アイテム
+    /// </summary>
+    [JsonInclude]
+    public FormatRect MeasureNoSelectRect
+    {
+        get; set;
+    } = new()
+    {
+        Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line        = new( Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
+                            new()
+                            {
+                                FontFamily          = "system-ui",
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
                             } ),
     };
 
     #endregion
 
     #region Header
-
-    /// <summary>
-    /// ヘッダーエフェクト
-    /// </summary>
-    [JsonInclude]
-    public bool HeaderEffectOn { get; set; } = false;
-
-    /// <summary>
-    /// ヘッダー横幅
-    /// </summary>
-    [JsonInclude]
-    public float HeaderWidthSize { get; set; } = 100F;
 
     /// <summary>
     /// ヘッダー描画アイテム
@@ -143,7 +131,7 @@ public class ConfigPlayerScoreType2
     } = new()
     {
         LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize = 0.0F,
+        LineSize = 0.4F,
     };
 
     #endregion
@@ -151,7 +139,7 @@ public class ConfigPlayerScoreType2
     #region Note
 
     /// <summary>
-    /// BPM描画アイテム
+    /// NOTE描画アイテム
     /// </summary>
     [JsonInclude]
     public FormatRect NoteRect
@@ -159,15 +147,15 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
-        Text = new( Color.FromArgb( 255, 0, 0, 0 ),
+        Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line        = new( Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
+        Text        = new( Color.FromArgb( 255, 0, 0, 0 ),
                             new()
                             {
-                                FontFamily = "system-ui",
-                                FontSize = 24F,
+                                FontFamily          = "system-ui",
+                                FontSize            = 24F,
                                 HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
                             } ),
     };
 
@@ -221,8 +209,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize = 1.0F,
+        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineSize    = 1.0F,
     };
 
     /// <summary>
@@ -234,8 +222,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize = 1.0F,
+        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineSize    = 1.0F,
     };
 
     /// <summary>
@@ -247,8 +235,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize = 0.5F,
+        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineSize    = 0.5F,
     };
 
     /// <summary>
@@ -260,8 +248,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize = 0.3F,
+        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineSize    = 0.3F,
     };
 
     /// <summary>
@@ -273,8 +261,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 50, 50, 50 ) ),
-        LineSize = 0.0F,
+        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+        LineSize    = 0.0F,
     };
 
     /// <summary>
@@ -286,8 +274,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 40, 40, 40 ) ),
-        LineSize = 0.0F,
+        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+        LineSize    = 0.0F,
     };
 
     /// <summary>
@@ -299,8 +287,8 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize = 0.0F,
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize    = 0.0F,
     };
 
     /// <summary>
@@ -312,16 +300,11 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-        LineSize = 0.0F,
+        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        LineSize    = 0.0F,
     };
 
     #endregion
-
-    /// <summary>
-    /// スコア最大横幅
-    /// </summary>
-	public float ScoreMaxWidth => NoteTermWidthSize * Config.System.NoteCount;
 
     /// <summary>
     /// スコア最大高さ
@@ -339,7 +322,13 @@ public class ConfigPlayerScoreType2
     /// <summary>
     /// 音階アイテム
     /// </summary>
-    public class ScaleItem
+    /// <remarks>
+    /// コンストラクタ
+    /// </remarks>
+    /// <param name="aName">音階名称</param>
+    /// <param name="aLabel">ラベル</param>
+    /// <param name="aLineDrawFlag">ライン描画フラグ</param>
+    public class ScaleItem( string aName, string aLabel, bool aLineDrawFlag )
     {
         /// <summary>
         /// 音階名称
@@ -347,7 +336,7 @@ public class ConfigPlayerScoreType2
         public string Name
         {
             get; private set;
-        }
+        } = aName;
 
         /// <summary>
         /// ラベル
@@ -355,28 +344,15 @@ public class ConfigPlayerScoreType2
         public string Label
         {
             get; private set;
-        }
+        } = aLabel;
 
         /// <summary>
-        /// コンストラクタ
+        /// ライン描画フラグ
         /// </summary>
-        /// <param name="aName">音階名称</param>
-        public ScaleItem( string aName )
+        public bool LineDrawFlag
         {
-            Name = aName;
-            Label = "";
-        }
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="aName">音階名称</param>
-        /// <param name="aLabel">ラベル</param>
-        public ScaleItem( string aName, string aLabel )
-        {
-            Name = aName;
-            Label = aLabel;
-        }
+            get; private set;
+        } = aLineDrawFlag;
 
         /// <summary>
         /// 音階名称＋ラベル
@@ -396,18 +372,18 @@ public class ConfigPlayerScoreType2
     [JsonIgnore]
     private readonly List<ScaleItem> _ScaleList =
     [
-        new( "DUMMY" ),
-        new( "CY"   ),
-        new( "RD"   ),
-        new( "HH"   ),
-        new( "SD"   ),
-        new( "HT"   ),
-        new( "MT"   ),
-        new( "LT"   ),
-        new( "FT1"  ),
-        new( "FT2"  ),
-        new( "BD"   ),
-        new( "PC"   ),
+        new( "DUMMY", "", false   ),
+        new( "CY"   , "", false   ),
+        new( "RD"   , "", true    ),
+        new( "HH"   , "", false   ),
+        new( "SD"   , "", false   ),
+        new( "HT"   , "", true    ),
+        new( "MT"   , "", false   ),
+        new( "LT"   , "", false   ),
+        new( "FT1"  , "", false   ),
+        new( "FT2"  , "", true    ),
+        new( "BD"   , "", false   ),
+        new( "PC"   , "", false   ),
     ];
 
     /// <summary>

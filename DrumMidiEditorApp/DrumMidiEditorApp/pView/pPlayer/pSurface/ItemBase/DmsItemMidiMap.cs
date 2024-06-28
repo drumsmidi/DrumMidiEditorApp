@@ -41,9 +41,9 @@ internal class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
     {
-        _MidiMapGroup = aGroup;
-        DrawRect = new( aX, aY, aWidth, aHeight );
-        _FormatRect = aFormatRect;
+        _MidiMapGroup   = aGroup;
+        DrawRect        = new( aX, aY, aWidth, aHeight );
+        _FormatRect     = aFormatRect;
     }
 
     /// <summary>
@@ -57,9 +57,9 @@ internal class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemMidiMap( MidiMap aMidiMap, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
     {
-        _MidiMap = aMidiMap;
-        DrawRect = new( aX, aY, aWidth, aHeight );
-        _FormatRect = aFormatRect;
+        _MidiMap        = aMidiMap;
+        DrawRect        = new( aX, aY, aWidth, aHeight );
+        _FormatRect     = aFormatRect;
     }
 
     protected override void Dispose( bool aDisposing )
@@ -69,9 +69,9 @@ internal class DmsItemMidiMap : DisposeBaseClass
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _MidiMapGroup = null;
-                _MidiMap = null;
-                _FormatRect = null;
+                _MidiMapGroup   = null;
+                _MidiMap        = null;
+                _FormatRect     = null;
             }
 
             // Dispose unmanaged resources.

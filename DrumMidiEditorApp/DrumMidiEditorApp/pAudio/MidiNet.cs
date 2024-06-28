@@ -287,7 +287,9 @@ public static partial class MidiNet
     }
 
     [DllImport( "Winmm.dll" )]
+#pragma warning disable SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
     private static extern uint midiOutGetDevCaps(
+#pragma warning restore SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
         uint aDeviceID, out MidiOutCaps aMidiOutCaps, int aMidiOutCapsLength );
 
     [LibraryImport( "Winmm.dll" )]

@@ -40,11 +40,11 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
     /// <param name="aDmsItemMidiMap">MidiMap描画アイテム</param>
     public DmsItemNote( float aNotePosX, float aWidth, float aHeight, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap )
     {
-        _NotePosX = aNotePosX;
-        _NoteSize.Width = aWidth;
-        _NoteSize.Height = aHeight;
-        _FormatRect = aFormatRect;
-        _DmsItemMidiMap = aDmsItemMidiMap;
+        _NotePosX           = aNotePosX;
+        _NoteSize.Width     = aWidth;
+        _NoteSize.Height    = aHeight;
+        _FormatRect         = aFormatRect;
+        _DmsItemMidiMap     = aDmsItemMidiMap;
     }
 
     protected override void Dispose( bool aDisposing )
@@ -54,7 +54,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _FormatRect = null;
+                _FormatRect     = null;
                 _DmsItemMidiMap = null;
             }
 

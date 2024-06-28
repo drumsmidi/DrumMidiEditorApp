@@ -117,45 +117,45 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             var s = _ScreenSize;
 
-            _ScreenSize.Height = s.Width;
-            _ScreenSize.Width = s.Height;
+            _ScreenSize.Height  = s.Width;
+            _ScreenSize.Width   = s.Height;
         }
 
         // bpm header
-        _BpmHeadRange.X = 0;
-        _BpmHeadRange.Y = 0;
-        _BpmHeadRange.Width = DrawSet.HeaderTotalWidthSize;
-        _BpmHeadRange.Height = DrawSet.BpmHeightSize;
+        _BpmHeadRange.X         = 0;
+        _BpmHeadRange.Y         = 0;
+        _BpmHeadRange.Width     = DrawSet.HeaderTotalWidthSize;
+        _BpmHeadRange.Height    = DrawSet.BpmHeightSize;
 
         // bpm body
-        _BpmBodyRange.X = _BpmHeadRange.Right;
-        _BpmBodyRange.Y = _BpmHeadRange.Top;
-        _BpmBodyRange.Width = _ScreenSize.Width - _BpmHeadRange.Right;
-        _BpmBodyRange.Height = _BpmHeadRange.Height;
+        _BpmBodyRange.X         = _BpmHeadRange.Right;
+        _BpmBodyRange.Y         = _BpmHeadRange.Top;
+        _BpmBodyRange.Width     = _ScreenSize.Width - _BpmHeadRange.Right;
+        _BpmBodyRange.Height    = _BpmHeadRange.Height;
 
         // measure no header
-        _MeasureNoHeadRange.X = 0;
-        _MeasureNoHeadRange.Y = _BpmBodyRange.Bottom;
-        _MeasureNoHeadRange.Width = DrawSet.HeaderTotalWidthSize;
-        _MeasureNoHeadRange.Height = DrawSet.MeasureNoHeightSize;
+        _MeasureNoHeadRange.X       = 0;
+        _MeasureNoHeadRange.Y       = _BpmBodyRange.Bottom;
+        _MeasureNoHeadRange.Width   = DrawSet.HeaderTotalWidthSize;
+        _MeasureNoHeadRange.Height  = DrawSet.MeasureNoHeightSize;
 
         // measure no body
-        _MeasureNoBodyRange.X = _MeasureNoHeadRange.Right;
-        _MeasureNoBodyRange.Y = _MeasureNoHeadRange.Top;
-        _MeasureNoBodyRange.Width = _ScreenSize.Width - _MeasureNoHeadRange.Right;
-        _MeasureNoBodyRange.Height = _MeasureNoHeadRange.Height;
+        _MeasureNoBodyRange.X       = _MeasureNoHeadRange.Right;
+        _MeasureNoBodyRange.Y       = _MeasureNoHeadRange.Top;
+        _MeasureNoBodyRange.Width   = _ScreenSize.Width - _MeasureNoHeadRange.Right;
+        _MeasureNoBodyRange.Height  = _MeasureNoHeadRange.Height;
 
         // score header
-        _ScoreHeadRange.X = 0;
-        _ScoreHeadRange.Y = _MeasureNoBodyRange.Bottom;
-        _ScoreHeadRange.Width = DrawSet.HeaderTotalWidthSize;
-        _ScoreHeadRange.Height = DrawSet.ScoreMaxHeight;
+        _ScoreHeadRange.X       = 0;
+        _ScoreHeadRange.Y       = _MeasureNoBodyRange.Bottom;
+        _ScoreHeadRange.Width   = DrawSet.HeaderTotalWidthSize;
+        _ScoreHeadRange.Height  = DrawSet.ScoreMaxHeight;
 
         // score body
-        _ScoreBodyRange.X = _ScoreHeadRange.Right;
-        _ScoreBodyRange.Y = _ScoreHeadRange.Top;
-        _ScoreBodyRange.Width = _ScreenSize.Width - _ScoreHeadRange.Right;
-        _ScoreBodyRange.Height = _ScoreHeadRange.Height;
+        _ScoreBodyRange.X       = _ScoreHeadRange.Right;
+        _ScoreBodyRange.Y       = _ScoreHeadRange.Top;
+        _ScoreBodyRange.Width   = _ScreenSize.Width - _ScoreHeadRange.Right;
+        _ScoreBodyRange.Height  = _ScoreHeadRange.Height;
     }
 
     protected override void UpdateScoreLine()

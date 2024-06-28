@@ -37,12 +37,12 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
     /// <param name="aLabelText">ラベル</param>
     public DmsItemNote( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect, string aLabelText )
     {
-        _DrawRect.X = aX;
-        _DrawRect.Y = aY;
-        _DrawRect.Width = aWidth;
-        _DrawRect.Height = aHeight;
-        _FormatRect = aFormatRect;
-        _LabelText = aLabelText;
+        _DrawRect.X         = aX;
+        _DrawRect.Y         = aY;
+        _DrawRect.Width     = aWidth;
+        _DrawRect.Height    = aHeight;
+        _FormatRect         = aFormatRect;
+        _LabelText          = aLabelText;
     }
 
     protected override void Dispose( bool aDisposing )

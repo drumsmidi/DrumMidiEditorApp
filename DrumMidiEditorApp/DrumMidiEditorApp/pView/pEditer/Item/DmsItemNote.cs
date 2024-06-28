@@ -56,9 +56,9 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                InfoNote = null;
+                InfoNote    = null;
                 _FormatRect = null;
-                NoteOnItem = null;
+                NoteOnItem  = null;
             }
 
             // Dispose unmanaged resources.
@@ -229,7 +229,7 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
         return aOther == null
                 ? 1
                 : GetType() != aOther.GetType()
-                    ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
-                    : CompareTo( aOther as DmsItemNote );
+                ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
+                : CompareTo( aOther as DmsItemNote );
     }
 }

@@ -56,9 +56,7 @@ public class AudioFileReaderStub : WaveStream, ISampleProvider
             ws = new WaveFileReader( fileName );
             if ( ws.WaveFormat.Encoding != WaveFormatEncoding.Pcm && ws.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat )
             {
-#pragma warning disable IDE0059 // 値の不必要な代入
                 ws = WaveFormatConversionStream.CreatePcmStream( ws );
-#pragma warning restore IDE0059 // 値の不必要な代入
                 ws = new BlockAlignReductionStream( ws );
             }
         }

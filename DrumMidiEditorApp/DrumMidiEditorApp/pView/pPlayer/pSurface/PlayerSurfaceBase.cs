@@ -80,6 +80,11 @@ public class PlayerSurfaceBase : IPlayerSurface
     /// </summary>
     private PlayState _DmsPlayStatePre = PlayState.Stop;
 
+    /// <summary>
+    /// 停止中にプレイヤーへ描画する画像
+    /// </summary>
+    private IAsyncOperation<CanvasBitmap>? _StopImage;
+
     #endregion
 
     /// <summary>
@@ -215,10 +220,10 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         DmsControl.WaitAudio();
 
-                        _SheetPosX = 0;
-                        _NotePositionX = 0;
-                        _DmsPlayTime = DmsControl.StartPlayTime;
-                        _DmsPlayState = PlayState.Playing;
+                        _SheetPosX      = 0;
+                        _NotePositionX  = 0;
+                        _DmsPlayTime    = DmsControl.StartPlayTime;
+                        _DmsPlayState   = PlayState.Playing;
                     }
                     break;
                 case PlayState.PreLoopPlayStart:
@@ -241,10 +246,10 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         DmsControl.WaitAudio();
 
-                        _SheetPosX = 0;
-                        _NotePositionX = 0;
-                        _DmsPlayTime = DmsControl.StartPlayTime;
-                        _DmsPlayState = PlayState.Playing;
+                        _SheetPosX      = 0;
+                        _NotePositionX  = 0;
+                        _DmsPlayTime    = DmsControl.StartPlayTime;
+                        _DmsPlayState   = PlayState.Playing;
                     }
                     break;
                 case PlayState.PreRecord:
@@ -269,15 +274,14 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         DmsControl.WaitAudio();
 
-                        _SheetPosX = 0;
-                        _NotePositionX = 0;
-                        _DmsPlayTime = DmsControl.StartPlayTime;
-                        _DmsPlayState = PlayState.Recording;
+                        _SheetPosX      = 0;
+                        _NotePositionX  = 0;
+                        _DmsPlayTime    = DmsControl.StartPlayTime;
+                        _DmsPlayState   = PlayState.Recording;
                     }
                     break;
                 case PlayState.Stop:
                     {
-
                     }
                     break;
             }
@@ -362,6 +366,7 @@ public class PlayerSurfaceBase : IPlayerSurface
 
         if ( _DmsPlayState == PlayState.Stop )
         {
+            // Effect機能確認用に停止中に画像を表示
             _StopImage ??= CanvasBitmap.LoadAsync( args.DrawingSession, new Uri("ms-appx:///Images/stop.jpg") );
             if ( _StopImage.Status == AsyncStatus.Completed )
             {
@@ -371,7 +376,4 @@ public class PlayerSurfaceBase : IPlayerSurface
 
         return _DmsPlayState is PlayState.Playing or PlayState.Recording;
     }
-
-    private IAsyncOperation<CanvasBitmap>? _StopImage;
-
 }

@@ -82,8 +82,8 @@ public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
         // 背景色
         aGraphics.FillRectangle( rect, format.Background.Color );
 
-        rect.X += rect.Width + 1;
-        rect.Width += 100;
+        rect.X      += rect.Width + 1;
+        rect.Width  += 100;
 
         // テキスト描画
         aGraphics.DrawText
@@ -128,7 +128,7 @@ public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
         return aOther == null
                 ? 1
                 : GetType() != aOther.GetType()
-                    ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
-                    : CompareTo( aOther as DmsItemBpm );
+                ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
+                : CompareTo( aOther as DmsItemBpm );
     }
 }

@@ -63,8 +63,8 @@ public class DmsItemMidiMap : DisposeBaseClass
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _MidiMapGroup = null;
-                _MidiMap = null;
+                _MidiMapGroup   = null;
+                _MidiMap        = null;
             }
 
             // Dispose unmanaged resources.

@@ -20,17 +20,17 @@ public class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatR
     /// <summary>
     /// 描画位置
     /// </summary>
-    private readonly float _PosX       = aX;
+    private readonly float _PosX = aX;
 
     /// <summary>
     /// 描画 底位置
     /// </summary>
-    private float _Bottom     = aBottom;
+    private float _Bottom = aBottom;
 
     /// <summary>
     /// NOTE情報
     /// </summary>
-    private InfoNote? _NoteInfo   = aInfo;
+    private InfoNote? _NoteInfo = aInfo;
 
     /// <summary>
     /// 書式設定
@@ -44,7 +44,7 @@ public class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatR
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _NoteInfo = null;
+                _NoteInfo   = null;
                 _FormatRect = null;
             }
 
@@ -90,7 +90,7 @@ public class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatR
 
         // 音量文字表示（手抜き）
         rect.X      -= 10;
-        rect.Y      -= 10;
+        rect.Y      -= 20;
         rect.Width   = 100;
         rect.Height  = 10;
 

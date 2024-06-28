@@ -239,10 +239,10 @@ public class DmsItemVolumeRange : DisposeBaseClass
                 }
             }
         }
-        else if ( EditType is ConfigEditer.VolumeEditType.UpDown
-                or ConfigEditer.VolumeEditType.IntonationHL
-                or ConfigEditer.VolumeEditType.IntonationH
-                or ConfigEditer.VolumeEditType.IntonationL )
+        else if ( EditType  is ConfigEditer.VolumeEditType.UpDown
+                            or ConfigEditer.VolumeEditType.IntonationHL
+                            or ConfigEditer.VolumeEditType.IntonationH
+                            or ConfigEditer.VolumeEditType.IntonationL )
         {
             _VolumeList.Clear();
 
@@ -251,8 +251,8 @@ public class DmsItemVolumeRange : DisposeBaseClass
                 _VolumeList.Add( StartVolume );
             }
         }
-        else if ( EditType is ConfigEditer.VolumeEditType.FreeHand
-                or ConfigEditer.VolumeEditType.StraightLine )
+        else if ( EditType  is ConfigEditer.VolumeEditType.FreeHand
+                            or ConfigEditer.VolumeEditType.StraightLine )
         {
             _VolumeList.Clear();
 

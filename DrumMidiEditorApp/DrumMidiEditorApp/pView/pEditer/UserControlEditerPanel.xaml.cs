@@ -335,7 +335,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         else
                         {
                             _MouseDownPosition = p.Position;
-                            _NoteDownPosition = CalcNotePosition( p.Position );
+                            _NoteDownPosition  = CalcNotePosition( p.Position );
 
                             _ActionState = EActionState.AddNote;
                         }
@@ -389,7 +389,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     else
                     {
                         _MouseDownPosition = p.Position;
-                        _NoteDownPosition = CalcNotePosition( p.Position );
+                        _NoteDownPosition  = CalcNotePosition( p.Position );
 
                         _ActionState = EActionState.RemoveNote;
                     }
@@ -435,10 +435,10 @@ public sealed partial class UserControlEditerPanel : UserControl
                                 _NoteCursorPosition.Y = -1;
                             }
                         }
-                        else if ( CheckBpmBodyArea( p.Position ) ||
-                            CheckMeasureNoBodyArea( p.Position ) ||
-                            CheckScoreBodyArea( p.Position ) ||
-                            CheckVolumeBodyArea( p.Position ) )
+                        else if ( CheckBpmBodyArea      ( p.Position ) ||
+                                  CheckMeasureNoBodyArea( p.Position ) ||
+                                  CheckScoreBodyArea    ( p.Position ) ||
+                                  CheckVolumeBodyArea   ( p.Position ) )
                         {
                             var note_pos = CalcNotePosition( p.Position );
 
@@ -1512,7 +1512,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     a = info_old.AbsoluteNotePos + mv_x;
 
                     measure_no = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos = a % ConfigSystem.MeasureNoteNumber;
+                    note_pos   = a % ConfigSystem.MeasureNoteNumber;
 
                     var info_new = Score.EditChannel.GetNote( info_old.MidiMapKey, measure_no, note_pos );
 
@@ -1534,7 +1534,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     a = info_old.AbsoluteNotePos + mv_x;
 
                     measure_no = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos = a % ConfigSystem.MeasureNoteNumber;
+                    note_pos   = a % ConfigSystem.MeasureNoteNumber;
 
                     var index = Score.EditMidiMapSet.GetDisplayMidiMapIndex( info_old.MidiMapKey );
 
@@ -1571,7 +1571,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     a = info_old.AbsoluteNotePos + mv_x;
 
                     measure_no = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos = a % ConfigSystem.MeasureNoteNumber;
+                    note_pos   = a % ConfigSystem.MeasureNoteNumber;
 
                     var info_new = Score.SysChannel.GetBpm( measure_no, note_pos );
 
@@ -1595,7 +1595,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         a = info_old.AbsoluteNotePos + mv_x;
 
                         measure_no = a / ConfigSystem.MeasureNoteNumber;
-                        note_pos = a % ConfigSystem.MeasureNoteNumber;
+                        note_pos   = a % ConfigSystem.MeasureNoteNumber;
 
                         rs.AddBpm( null, new( measure_no, note_pos, info_old.Bpm, true ) );
                     }
@@ -2384,6 +2384,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     {
                         Background  = new( midiMap.Color ),
                         Line        = new( midiMap.Color, DrawSet.NoteOffLine.LineSize ),
+                        Text        = DrawSet.VolumeBodyRect.Text,
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
@@ -2918,10 +2919,10 @@ public sealed partial class UserControlEditerPanel : UserControl
             return;
         }
 
-        //      var bgm_time        = _ScaleBgm.GetDuration();
-        //      var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
+//      var bgm_time        = _ScaleBgm.GetDuration();
+//      var note_pos_x_last = DmsControl.SearchPosition( bgm_time.TotalSeconds + bgm_position );
         var note_rect       = new Rect( 0, 0, 1, 1 );
-        //      var note_rect       = new Rect( 0, 0, DrawSet.NoteWidthSize, DrawSet.NoteHeightSize );
+//      var note_rect       = new Rect( 0, 0, DrawSet.NoteWidthSize, DrawSet.NoteHeightSize );
 
         var body = new Rect
             (

@@ -35,12 +35,12 @@ internal class DmsItemLabel : DisposeBaseClass
 	/// <param name="aFormatRect">描画書式</param>
     public DmsItemLabel( float aX, float aY, float aWidth, float aHeight, string aText, FormatRect aFormatRect )
     {
-        _DrawRect.X = aX;
-        _DrawRect.Y = aY;
-        _DrawRect.Width = aWidth;
-        _DrawRect.Height = aHeight;
-        Text = aText;
-        _FormatRect = aFormatRect;
+        _DrawRect.X         = aX;
+        _DrawRect.Y         = aY;
+        _DrawRect.Width     = aWidth;
+        _DrawRect.Height    = aHeight;
+        Text                = aText;
+        _FormatRect         = aFormatRect;
     }
 
     protected override void Dispose( bool aDisposing )
@@ -67,12 +67,25 @@ internal class DmsItemLabel : DisposeBaseClass
     /// 描画
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
-    public void Draw( CanvasDrawingSession aGraphics )
+    public void Draw( CanvasDrawingSession aGraphics ) 
+        => Draw( aGraphics, 0, 0 );
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics">グラフィック</param>
+    /// <param name="aDiffX">描画差分X</param>
+    /// <param name="aDiffY">描画差分Y</param>
+    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
         if ( _FormatRect == null )
         {
             return;
         }
+
+        var rect = _DrawRect;
+        rect.X += aDiffX;
+        rect.Y += aDiffY;
 
         XamlHelper.FormatRectDraw
             (

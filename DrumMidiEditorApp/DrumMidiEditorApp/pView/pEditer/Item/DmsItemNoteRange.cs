@@ -136,10 +136,10 @@ public class DmsItemNoteRange : DisposeBaseClass
     /// <param name="aHeight">１ノートの高さ</param>
     public void SetNoteRect( float aX, float aY, float aWidth, float aHeight )
     {
-        _NoteRect.X = aX;
-        _NoteRect.Y = aY;
-        _NoteRect.Width = aWidth;
-        _NoteRect.Height = aHeight;
+        _NoteRect.X         = aX;
+        _NoteRect.Y         = aY;
+        _NoteRect.Width     = aWidth;
+        _NoteRect.Height    = aHeight;
 
         CalcRange();
     }

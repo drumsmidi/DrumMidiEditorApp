@@ -29,11 +29,11 @@ internal class DmsItemLine : DisposeBaseClass
 	/// <param name="aFormatLine">描画書式</param>
     public DmsItemLine( float aX, float aY, float aWidth, float aHeight, FormatLine aFormatLine )
     {
-        _DrawRect.X = aX;
-        _DrawRect.Y = aY;
-        _DrawRect.Width = aWidth;
-        _DrawRect.Height = aHeight;
-        _FormatLine = aFormatLine;
+        _DrawRect.X         = aX;
+        _DrawRect.Y         = aY;
+        _DrawRect.Width     = aWidth;
+        _DrawRect.Height    = aHeight;
+        _FormatLine         = aFormatLine;
     }
 
     protected override void Dispose( bool aDisposing )
