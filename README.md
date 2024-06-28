@@ -469,7 +469,9 @@ Editで入力したノート情報のシーケンスを表示する機能です�
 
 <img width="479" alt="image" src="https://user-images.githubusercontent.com/97685486/184236317-336e53e9-2d6c-42ed-952f-1da6ab5ab350.png">
 
-> v0.1.0.0 では異常終了します。  
+### ScoreType2  
+
+<img width="472" alt="image" src="https://github.com/drumsmidi/DrumMidiEditorApp/assets/172901992/d8594a9e-002e-4d1f-a1a0-250fdabf9862">
 
 
 
