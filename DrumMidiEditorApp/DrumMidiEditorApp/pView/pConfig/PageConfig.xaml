@@ -29,6 +29,7 @@
                         <TextBlock Tag="PageConfigPlayerA"  x:Uid="NaviConfigPlayerA" />
                         <TextBlock Tag="PageConfigPlayerC"  x:Uid="NaviConfigPlayerC" />
                         <TextBlock Tag="PageConfigPlayerD"  x:Uid="NaviConfigPlayerD" />
+                        <TextBlock Tag="PageConfigPlayerE"  x:Uid="NaviConfigPlayerE" />
                     </ListView>
                 </Grid>
             </SplitView.Pane>

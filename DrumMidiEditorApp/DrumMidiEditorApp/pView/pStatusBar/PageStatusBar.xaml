@@ -11,6 +11,7 @@
         <StackPanel Orientation="Vertical">
 
             <InfoBar x:Name="_InfoBar"
+                MaxHeight="64"
                 IsOpen="False"
                 IsClosable="True" />
 

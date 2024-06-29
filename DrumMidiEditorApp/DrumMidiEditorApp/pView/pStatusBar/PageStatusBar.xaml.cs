@@ -107,7 +107,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
             }
 
             _InfoBar.Title      = aTitle;
-            _InfoBar.Content    = aContent;
+            _InfoBar.Message    = aContent;
             _InfoBar.Severity   = aSeverity;
             _InfoBar.IsOpen     = true;
         }

@@ -144,7 +144,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
                 _ = ( _PlayerSurface?.OnDraw( args ) );
 
-                // https://microsoft.github.io/Win2D/WinUI2/html/N_Microsoft_Graphics_Canvas_Effects.htm
 
                 var blur = GetEffectImage( cl );
                 if ( blur != null )
@@ -173,8 +172,15 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
+    /// <summary>
+    /// エフェクト
+    /// </summary>
+    /// <param name="aCanvasCommandList"></param>
+    /// <returns></returns>
     private static ICanvasImage? GetEffectImage( CanvasCommandList aCanvasCommandList )
     {
+        // https://microsoft.github.io/Win2D/WinUI2/html/N_Microsoft_Graphics_Canvas_Effects.htm
+
         ICanvasImage? blur = null;
         switch ( DrawSet.PlayerSurfaceEffectModeSelect )
         {
@@ -684,7 +690,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
                         Amount = 0.5F,
                         Color  = Windows.UI.Color.FromArgb(255,255,255,255),
                         Curve  = 0.5F,
-
                     };
                 }
                 break;

@@ -558,7 +558,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             return;
         }
 
-        var start  = (int)_LoopPlayMeasureStartNumberBox.Value;
+        var start   = (int)_LoopPlayMeasureStartNumberBox.Value;
         var end     = (int)_LoopPlayMeasureEndNumberBox.Value;
         var conn    = (int)_LoopPlayMeasureConnectNumberBox.Value;
         var min     = (int)_LoopPlayMeasureStartNumberBox.Minimum;
@@ -589,7 +589,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
 
         _LoopPlayMeasureStartNumberBox.Value = start;
-        _LoopPlayMeasureEndNumberBox.Value = end;
+        _LoopPlayMeasureEndNumberBox.Value   = end;
     }
 
     /// <summary>

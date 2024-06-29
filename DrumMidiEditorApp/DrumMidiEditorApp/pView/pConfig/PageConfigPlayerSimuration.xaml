@@ -10,7 +10,10 @@
     <Grid Padding="10">
         <StackPanel Orientation="Vertical" Spacing="6">
 
-            
+            <Button x:Uid="InputBackgroudColor"
+                Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
+                Click="ColorButton_Click" />
+
 
         </StackPanel>
     </Grid>

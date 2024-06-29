@@ -10,6 +10,22 @@ namespace DrumMidiEditorApp.pConfig;
 /// </summary>
 public class ConfigPlayerSimuration
 {
+    #region Sheet
+
+    /// <summary>
+    /// 背景色
+    /// </summary>
+    [JsonInclude]
+    public FormatColor SheetColor
+    {
+        get; set;
+    } = new()
+    {
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
+
+    #endregion
+
     #region Bpm
 
     /// <summary>

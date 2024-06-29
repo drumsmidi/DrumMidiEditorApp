@@ -1,5 +1,10 @@
 ﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using System;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -30,5 +35,35 @@ public sealed partial class PageConfigPlayerSimuration : Page
         //	= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 
         #endregion
+    }
+
+    /// <summary>
+    /// 色選択
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            if ( sender is not Button item )
+            {
+                return;
+            }
+
+            XamlHelper.ColorDialog
+                (
+                    item,
+                    ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
+                    ( color ) =>
+                    {
+                        item.Background = new SolidColorBrush( color );
+                    }
+                );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
     }
 }

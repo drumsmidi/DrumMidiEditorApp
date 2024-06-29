@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="DrumMidiEditorApp.pView.pConfig.PageConfigPlayerSequence"
+    x:Class="DrumMidiEditorApp.pView.pConfig.PageConfigPlayerScoreType2"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,53 +8,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Padding="10">
-
         <StackPanel Orientation="Vertical" Spacing="6">
 
             <Button x:Uid="InputBackgroudColor"
                 Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
                 Click="ColorButton_Click" />
-
-            <ComboBox x:Uid="InputPlayerDrawDirectionMode"
-                ItemsSource="{x:Bind _DrawDirectionModeList, Mode=OneTime}"
-                SelectedIndex="{x:Bind DrawSet.DrawDirectionModeSelectIndex, Mode=TwoWay}"
-                SelectionChanged="DrawDirectionModeComboBox_SelectionChanged" />
-
-            <ToggleSwitch x:Uid="InputVolumeSize"
-                IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <ToggleSwitch x:Uid="InputVolumeZero"
-                IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <ToggleSwitch x:Uid="InputHeaderGroup"
-                IsOn="{x:Bind DrawSet.HeaderGroupOn, Mode=OneWay}"
-                Toggled="HeaderGroupToggleSwitch_Toggled" />
-
-            <NumberBox x:Name="_NoteTermHeightNumberBox" x:Uid="InputNoteTermHeight"
-                Value="{x:Bind DrawSet.NoteTermHeightSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
-
-            <NumberBox x:Name="_NoteTermWidthNumberBox" x:Uid="InputNoteTermWidth"
-                Value="{x:Bind DrawSet.NoteTermWidthSize, Mode=TwoWay}"
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
-
-            <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
-                Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
-
-            <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
-                Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
 
             <VariableSizedWrapGrid 
                 Orientation="Horizontal" 
@@ -63,7 +21,7 @@
                 HorizontalAlignment="Left"
                 ItemHeight="64"
                 ItemWidth="100" >
-
+           
                 <NumberBox x:Name="_Line128NumberBox" x:Uid="InputLine128Size"
                     Value="{x:Bind DrawSet.SheetMeasure128Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"

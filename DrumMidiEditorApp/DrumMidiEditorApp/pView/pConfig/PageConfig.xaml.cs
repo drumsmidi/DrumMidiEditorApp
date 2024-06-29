@@ -44,13 +44,14 @@ public sealed partial class PageConfig : Page
     /// </summary>
     private readonly List<(string Tag, Type Page)> _Pages =
         [
-            ( "PageConfigDevice"    , typeof( PageConfigDevice )    ),
-            ( "PageConfigVideo"     , typeof( PageConfigVideo )     ),
-            ( "PageConfigEditer"    , typeof( PageConfigEditer )    ),
-            ( "PageConfigPlayer"    , typeof( PageConfigPlayer )    ),
-            ( "PageConfigPlayerA"   , typeof( PageConfigPlayerSequence )            ),
-            ( "PageConfigPlayerC"   , typeof( PageConfigPlayerScore )               ),
-            ( "PageConfigPlayerD"   , typeof( PageConfigPlayerSimuration )          ),
+            ( "PageConfigDevice"    , typeof( PageConfigDevice              ) ),
+            ( "PageConfigVideo"     , typeof( PageConfigVideo               ) ),
+            ( "PageConfigEditer"    , typeof( PageConfigEditer              ) ),
+            ( "PageConfigPlayer"    , typeof( PageConfigPlayer              ) ),
+            ( "PageConfigPlayerA"   , typeof( PageConfigPlayerSequence      ) ),
+            ( "PageConfigPlayerC"   , typeof( PageConfigPlayerScore         ) ),
+            ( "PageConfigPlayerD"   , typeof( PageConfigPlayerSimuration    ) ),
+            ( "PageConfigPlayerE"   , typeof( PageConfigPlayerScoreType2    ) ),
         ];
 
     /// <summary>

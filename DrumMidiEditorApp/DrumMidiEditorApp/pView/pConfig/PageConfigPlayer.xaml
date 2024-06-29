@@ -27,10 +27,6 @@
                 ItemsSource="{x:Bind _PlayerScreenSizeList, Mode=OneTime}"
                 SelectedIndex="{x:Bind DrawSet.ResolutionScreenIndex, Mode=TwoWay}"
                 SelectionChanged="PlayerScreenSizeComboBox_SelectionChanged" />
-
-            <Button x:Uid="InputBackgroudColor"
-                Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
-                Click="ColorButton_Click" />
             
         </StackPanel>
     </Grid>

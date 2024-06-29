@@ -323,10 +323,10 @@ BPMノートを含める</value>
     <value>小節接続</value>
   </data>
   <data name="InputLoopPlayMeasureEnd.Header" xml:space="preserve">
-    <value>小節終了番号</value>
+    <value>小節終了</value>
   </data>
   <data name="InputLoopPlayMeasureStart.Header" xml:space="preserve">
-    <value>小節開始番号</value>
+    <value>小節開始</value>
   </data>
   <data name="InputMidiOutDevice.Header" xml:space="preserve">
     <value>Midi-Out デバイス</value>
@@ -368,7 +368,7 @@ BPMノートを含める</value>
     <value>ノート横幅</value>
   </data>
   <data name="InputPlayerDisplay.Header" xml:space="preserve">
-    <value>プレイヤー表示</value>
+    <value>プレイヤー</value>
   </data>
   <data name="InputPlayerDrawDirectionMode.Header" xml:space="preserve">
     <value>描画方向</value>
@@ -379,7 +379,7 @@ BPMノートを含める</value>
   <data name="InputPlayerScreenSize.Header" xml:space="preserve">
     <value>プレイヤーサイズ（横 x 縦）</value>
   </data>
-  <data name="InputPlayerSurfaceEffectMode" xml:space="preserve">
+  <data name="InputPlayerSurfaceEffectMode.Header" xml:space="preserve">
     <value>エフェクトモード</value>
   </data>
   <data name="InputPlayerSurfaceMode.Header" xml:space="preserve">
@@ -480,6 +480,9 @@ BPMノートを含める</value>
   </data>
   <data name="NaviConfigPlayerD.Text" xml:space="preserve">
     <value>プレイヤー個別設定：Simuration</value>
+  </data>
+  <data name="NaviConfigPlayerE.Text" xml:space="preserve">
+    <value>プレイヤー個別設定：ScoreType2</value>
   </data>
   <data name="NaviConfigVideo.Text" xml:space="preserve">
     <value>ビデオ出力設定</value>

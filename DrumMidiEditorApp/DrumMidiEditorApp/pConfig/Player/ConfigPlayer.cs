@@ -189,17 +189,10 @@ public class ConfigPlayer
     [JsonInclude]
     public readonly List<Size> ResolutionScreenList =
     [
-        new(  320,  240 ),
         new(  480,  360 ),
         new(  640,  480 ),
+        new(  640,  720 ),
         new(  640, 1024 ),
-	//	new( 1024,  768 ),
-	//	new( 1280,  720 ),
-	//	new( 1440,  900 ),
-	//	new( 1920, 1024 ),
-    //  new(  240,  360 ),  // MP4出力が正常にできない
-    //  new(  360,  480 ),  // MP4出力が正常にできない
-        new(  480,  640 ),
     ];
 
     /// <summary>
@@ -227,7 +220,7 @@ public class ConfigPlayer
     /// <summary>
     /// 背景色
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public FormatColor SheetColor
     {
         get; set;

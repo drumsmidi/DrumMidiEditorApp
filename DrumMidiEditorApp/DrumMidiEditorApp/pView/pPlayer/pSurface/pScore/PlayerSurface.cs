@@ -413,6 +413,9 @@ public class PlayerSurface : PlayerSurfaceBase
 
     public override bool OnDraw( CanvasDrawEventArgs args )
     {
+        // 背景色
+        args.DrawingSession.Clear( DrawSet.SheetColor.Color );
+
         if ( !base.OnDraw( args ) )
         {
             return false;
