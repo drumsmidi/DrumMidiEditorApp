@@ -27,7 +27,7 @@ public class AcmMp3FrameDecompressor : IMp3FrameDecompressor
         catch ( Exception )
         {
             disposed = true;
-            GC.SuppressFinalize( this );
+            //GC.SuppressFinalize( this );
             throw;
         }
     }
@@ -51,7 +51,7 @@ public class AcmMp3FrameDecompressor : IMp3FrameDecompressor
     {
         if ( frame == null )
         {
-            throw new ArgumentNullException( "frame", "You must provide a non-null Mp3Frame to decompress" );
+            throw new ArgumentNullException( nameof( frame ), "You must provide a non-null Mp3Frame to decompress" );
         }
         Array.Copy( frame.RawData, conversionStream.SourceBuffer, frame.FrameLength );
         var converted = conversionStream.Convert(frame.FrameLength, out var sourceBytesConverted);

@@ -29,20 +29,21 @@ public class WaveOutBuffer : IDisposable
     /// <param name="waveOutLock">Lock to protect WaveOut API's from being called on >1 thread</param>
     public WaveOutBuffer( nint hWaveOut, int bufferSize, IWaveProvider bufferFillStream, object waveOutLock )
     {
-        BufferSize = bufferSize;
-        buffer = new byte [ bufferSize ];
-        hBuffer = GCHandle.Alloc( buffer, GCHandleType.Pinned );
-        this.hWaveOut = hWaveOut;
-        waveStream = bufferFillStream;
-        this.waveOutLock = waveOutLock;
+        BufferSize          = bufferSize;
+        buffer              = new byte [ bufferSize ];
+        hBuffer             = GCHandle.Alloc( buffer, GCHandleType.Pinned );
+        this.hWaveOut       = hWaveOut;
+        waveStream          = bufferFillStream;
+        this.waveOutLock    = waveOutLock;
 
-        header = new WaveHeader();
-        hHeader = GCHandle.Alloc( header, GCHandleType.Pinned );
-        header.dataBuffer = hBuffer.AddrOfPinnedObject();
+        header              = new WaveHeader();
+        hHeader             = GCHandle.Alloc( header, GCHandleType.Pinned );
+        header.dataBuffer   = hBuffer.AddrOfPinnedObject();
         header.bufferLength = bufferSize;
-        header.loops = 1;
-        hThis = GCHandle.Alloc( this );
-        header.userData = (nint)hThis;
+        header.loops        = 1;
+        hThis               = GCHandle.Alloc( this );
+        header.userData     = (nint)hThis;
+
         lock ( waveOutLock )
         {
             MmException.Try( WaveInterop.waveOutPrepareHeader( hWaveOut, header, Marshal.SizeOf( header ) ), "waveOutPrepareHeader" );
@@ -154,5 +155,4 @@ public class WaveOutBuffer : IDisposable
 
         GC.KeepAlive( this );
     }
-
 }

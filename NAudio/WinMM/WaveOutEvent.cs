@@ -6,8 +6,6 @@ using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.WinMM.MmeInterop;
 
-
-// ReSharper disable once CheckNamespace
 namespace NAudio.WinMM;
 
 /// <summary>
@@ -61,14 +59,14 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
     {
         syncContext = SynchronizationContext.Current;
         if ( syncContext != null &&
-            ( syncContext.GetType().Name == "LegacyAspNetSynchronizationContext" ||
+           ( syncContext.GetType().Name == "LegacyAspNetSynchronizationContext" ||
              syncContext.GetType().Name == "AspNetSynchronizationContext" ) )
         {
             syncContext = null;
         }
 
         // set default values up
-        DesiredLatency = 300;
+        DesiredLatency  = 300;
         NumberOfBuffers = 2;
 
         waveOutLock = new object();
@@ -95,7 +93,7 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
 
         callbackEvent = new AutoResetEvent( false );
 
-        waveStream = waveProvider;
+        waveStream     = waveProvider;
         var bufferSize = waveProvider.WaveFormat.ConvertLatencyToByteSize((DesiredLatency + NumberOfBuffers - 1) / NumberOfBuffers);
 
         MmResult result;
@@ -105,7 +103,7 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
         }
         MmException.Try( result, "waveOutOpen" );
 
-        buffers = new WaveOutBuffer [ NumberOfBuffers ];
+        buffers       = new WaveOutBuffer [ NumberOfBuffers ];
         playbackState = PlaybackState.Stopped;
         for ( var n = 0; n < NumberOfBuffers; n++ )
         {
@@ -165,7 +163,6 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
                     Debug.WriteLine( "WARNING: WaveOutEvent callback event timeout" );
                 }
             }
-
 
             // requeue any buffers returned to us
             if ( playbackState == PlaybackState.Playing )

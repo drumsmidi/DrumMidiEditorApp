@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using NAudio.Core;
 using NAudio.WinMM.MmeInterop;
 
-// ReSharper disable once CheckNamespace
 namespace NAudio.WinMM;
 
 /// <summary>
@@ -41,7 +40,7 @@ public static class WaveOutUtils
             throw new ArgumentOutOfRangeException( nameof( value ), "Volume must be between 0.0 and 1.0" );
         }
 
-        var left = value;
+        var left  = value;
         var right = value;
 
         var stereoVolume = (int)(left * 0xFFFF) + ((int)(right * 0xFFFF) << 16);

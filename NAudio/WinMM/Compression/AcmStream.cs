@@ -57,34 +57,6 @@ public class AcmStream : IDisposable
     }
 
     /// <summary>
-    /// Creates a new ACM stream to convert one format to another, using a 
-    /// specified driver identifier and wave filter
-    /// </summary>
-    /// <param name="driverId">the driver identifier</param>
-    /// <param name="sourceFormat">the source format</param>
-    /// <param name="waveFilter">the wave filter</param>
-    public AcmStream( nint driverId, WaveFormat sourceFormat, WaveFilter waveFilter )
-    {
-        var sourceBufferSize = Math.Max(16384, sourceFormat.AverageBytesPerSecond);
-        this.sourceFormat = sourceFormat;
-        sourceBufferSize -= sourceBufferSize % sourceFormat.BlockAlign;
-        MmException.Try( AcmInterop.acmDriverOpen( out driverHandle, driverId, 0 ), "acmDriverOpen" );
-
-        var sourceFormatPointer = WaveFormat.MarshalToPtr(sourceFormat);
-        try
-        {
-            MmException.Try( AcmInterop.acmStreamOpen2( out streamHandle, driverHandle,
-                sourceFormatPointer, sourceFormatPointer, waveFilter, nint.Zero, nint.Zero, AcmStreamOpenFlags.NonRealTime ), "acmStreamOpen" );
-        }
-        finally
-        {
-            Marshal.FreeHGlobal( sourceFormatPointer );
-        }
-        streamHeader = new AcmStreamHeader( streamHandle, sourceBufferSize, SourceToDest( sourceBufferSize ) );
-    }
-
-
-    /// <summary>
     /// Returns the number of output bytes for a given number of input bytes
     /// </summary>
     /// <param name="source">Number of input bytes</param>

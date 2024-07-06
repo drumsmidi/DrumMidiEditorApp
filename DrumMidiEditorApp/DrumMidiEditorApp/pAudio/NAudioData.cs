@@ -10,6 +10,7 @@ using NAudio.Core.Wave.SampleProviders;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.WinMM;
+using NAudio.WinMM.Mixer;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pAudio;
@@ -123,7 +124,7 @@ public class NAudioData : DisposeBaseClass
         {
             _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
-            _Wave = new WaveOutEvent();
+            _Wave   = new WaveOutEvent();
 
             _Mixer.AddMixerInput( _Sample );
             _IsMixerAdd = true;
@@ -144,7 +145,7 @@ public class NAudioData : DisposeBaseClass
         {
             _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
-            _Wave = new WaveOutEvent();
+            _Wave   = new WaveOutEvent();
 
             _Wave.Init( _Sample );
 
@@ -544,9 +545,9 @@ public class NAudioData : DisposeBaseClass
                 {
                     for ( var i = 0; i < sampleNum; i++ )
                     {
-                        //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
-                        buffer [ fftPos ].X = (float)( samples [ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
-                        //  buffer[ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
+                    //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
+                        buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
+                    //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
                         buffer [ fftPos ].Y = 0.0f;
 
                         fftPos++;
@@ -570,7 +571,7 @@ public class NAudioData : DisposeBaseClass
                                 var percent = intensityDB < minDB ? 1d : intensityDB / minDB;
 
                                 _FFTBuffer [ i / fftLength, k ] = (float)( 1d - percent );
-                                //  _FFTBuffer[ i / fftLength, k ] = (float)percent;
+                            //  _FFTBuffer [ i / fftLength, k ] = (float)percent;
                             }
                         }
                     }
@@ -609,7 +610,7 @@ public class NAudioData : DisposeBaseClass
             {
                 item = new();
             }
-            item.Hz = aHz;
+            item.Hz   = aHz;
             item.Gain = aGain;
 
             _EqualizerBand [ aKey ] = item;
@@ -667,7 +668,7 @@ public class NAudioData : DisposeBaseClass
                 if ( aDisposing )
                 {
                     // Dispose managed resources.
-                    _SampleProvider = null;
+                    _SampleProvider  = null;
                     _EqualizerFilter = null;
                     _EqualizerBandList.Clear();
                 }
@@ -696,7 +697,7 @@ public class NAudioData : DisposeBaseClass
                 {
                     _EqualizerBandList.Add( new()
                     {
-                        Hz = band.Hz,
+                        Hz   = band.Hz,
                         Gain = band.Gain
                     } );
                 }
