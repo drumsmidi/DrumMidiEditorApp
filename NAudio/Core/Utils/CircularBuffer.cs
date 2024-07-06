@@ -6,23 +6,17 @@ namespace NAudio.Core.Utils;
 /// <summary>
 /// A very basic circular buffer implementation
 /// </summary>
-public class CircularBuffer
+/// <remarks>
+/// Create a new circular buffer
+/// </remarks>
+/// <param name="size">Max buffer size in bytes</param>
+public class CircularBuffer( int size )
 {
-    private readonly byte[] buffer;
-    private readonly object lockObject;
+    private readonly byte[] buffer = new byte [ size ];
+    private readonly object lockObject = new();
     private int writePosition;
     private int readPosition;
     private int byteCount;
-
-    /// <summary>
-    /// Create a new circular buffer
-    /// </summary>
-    /// <param name="size">Max buffer size in bytes</param>
-    public CircularBuffer( int size )
-    {
-        buffer = new byte [ size ];
-        lockObject = new object();
-    }
 
     /// <summary>
     /// Write data to the buffer

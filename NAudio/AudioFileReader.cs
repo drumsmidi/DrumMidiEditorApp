@@ -32,13 +32,13 @@ public class AudioFileReader : WaveStream, ISampleProvider
     /// <param name="fileName">The file to open</param>
     public AudioFileReader( string fileName )
     {
-        lockObject = new object();
-        FileName = fileName;
+        lockObject              = new object();
+        FileName                = fileName;
         CreateReaderStream( fileName );
-        sourceBytesPerSample = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;
-        sampleChannel = new SampleChannel( readerStream, false );
-        destBytesPerSample = 4 * sampleChannel.WaveFormat.Channels;
-        length = SourceToDest( readerStream.Length );
+        sourceBytesPerSample    = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;
+        sampleChannel           = new SampleChannel( readerStream, false );
+        destBytesPerSample      = 4 * sampleChannel.WaveFormat.Channels;
+        length                  = SourceToDest( readerStream.Length );
     }
 
     /// <summary>
@@ -104,9 +104,9 @@ public class AudioFileReader : WaveStream, ISampleProvider
     /// <returns>Number of bytes read</returns>
     public override int Read( byte [] buffer, int offset, int count )
     {
-        var waveBuffer = new WaveBuffer(buffer);
+        var waveBuffer      = new WaveBuffer(buffer);
         var samplesRequired = count / 4;
-        var samplesRead = Read(waveBuffer.FloatBuffer, offset / 4, samplesRequired);
+        var samplesRead     = Read( waveBuffer.FloatBuffer, offset / 4, samplesRequired );
         return samplesRead * 4;
     }
 
@@ -137,12 +137,14 @@ public class AudioFileReader : WaveStream, ISampleProvider
     /// <summary>
     /// Helper to convert source to dest bytes
     /// </summary>
-    private long SourceToDest( long sourceBytes ) => destBytesPerSample * ( sourceBytes / sourceBytesPerSample );
+    private long SourceToDest( long sourceBytes ) 
+        => destBytesPerSample * ( sourceBytes / sourceBytesPerSample );
 
     /// <summary>
     /// Helper to convert dest to source bytes
     /// </summary>
-    private long DestToSource( long destBytes ) => sourceBytesPerSample * ( destBytes / destBytesPerSample );
+    private long DestToSource( long destBytes ) 
+        => sourceBytesPerSample * ( destBytes / destBytesPerSample );
 
     /// <summary>
     /// Disposes this AudioFileReader

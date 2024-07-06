@@ -6,7 +6,11 @@ namespace NAudio.Core.Utils;
 /// Pass-through stream that ignores Dispose
 /// Useful for dealing with MemoryStreams that you want to re-use
 /// </summary>
-public class IgnoreDisposeStream : Stream
+/// <remarks>
+/// Creates a new IgnoreDisposeStream
+/// </remarks>
+/// <param name="sourceStream">The source stream</param>
+public class IgnoreDisposeStream( Stream sourceStream ) : Stream
 {
     /// <summary>
     /// The source stream all other methods fall through to
@@ -14,7 +18,7 @@ public class IgnoreDisposeStream : Stream
     public Stream SourceStream
     {
         get; private set;
-    }
+    } = sourceStream;
 
     /// <summary>
     /// If true the Dispose will be ignored, if false, will pass through to the SourceStream
@@ -23,17 +27,7 @@ public class IgnoreDisposeStream : Stream
     public bool IgnoreDispose
     {
         get; set;
-    }
-
-    /// <summary>
-    /// Creates a new IgnoreDisposeStream
-    /// </summary>
-    /// <param name="sourceStream">The source stream</param>
-    public IgnoreDisposeStream( Stream sourceStream )
-    {
-        SourceStream = sourceStream;
-        IgnoreDispose = true;
-    }
+    } = true;
 
     /// <summary>
     /// Can Read

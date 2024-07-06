@@ -5,17 +5,11 @@ namespace NAudio.Core.Wave.WaveInputs;
 /// <summary>
 /// Event Args for WaveInStream event
 /// </summary>
-public class WaveInEventArgs : EventArgs
+/// <remarks>
+/// Creates new WaveInEventArgs
+/// </remarks>
+public class WaveInEventArgs( byte [] buffer, int bytes ) : EventArgs
 {
-
-    /// <summary>
-    /// Creates new WaveInEventArgs
-    /// </summary>
-    public WaveInEventArgs( byte [] buffer, int bytes )
-    {
-        Buffer = buffer;
-        this.BytesRecorded = bytes;
-    }
 
     /// <summary>
     /// Buffer containing recorded data. Note that it might not be completely
@@ -24,7 +18,7 @@ public class WaveInEventArgs : EventArgs
     public byte [] Buffer
     {
         get;
-    }
+    } = buffer;
 
     /// <summary>
     /// The number of recorded bytes in Buffer. <seealso cref="Buffer"/>
@@ -32,5 +26,5 @@ public class WaveInEventArgs : EventArgs
     public int BytesRecorded
     {
         get;
-    }
+    } = bytes;
 }

@@ -73,7 +73,7 @@ public static class ByteArrayExtensions
 
         if ( size <= 0 )
         {
-            return new byte [ 0 ];
+            return [];
         }
 
         var result = new byte[size];

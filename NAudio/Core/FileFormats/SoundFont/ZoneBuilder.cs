@@ -44,7 +44,7 @@ internal class ZoneBuilder : StructureBuilder<Zone>
         data.RemoveAt( data.Count - 1 );
     }
 
-    public Zone [] Zones => data.ToArray();
+    public Zone [] Zones => [ .. data ];
 
     public override int Length => 4;
 }
