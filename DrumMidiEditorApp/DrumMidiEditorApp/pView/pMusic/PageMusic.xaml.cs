@@ -45,11 +45,11 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         #region NumberBox の入力書式設定
 
         _MusicInfoBpmNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 2, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
         _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.001 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
         _MusicInfoBgmVolumeNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
 
         #endregion
     }
@@ -91,7 +91,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     {
         try
         {
-            XamlHelper.OpenDialogAsync
+            HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportBgm,
@@ -138,7 +138,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -161,7 +161,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -184,7 +184,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

@@ -78,21 +78,10 @@ internal class DmsItemLabel : DisposeBaseClass
     /// <param name="aDiffY">描画差分Y</param>
     public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
-        if ( _FormatRect == null )
-        {
-            return;
-        }
-
         var rect = _DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        XamlHelper.FormatRectDraw
-            (
-                aGraphics,
-                _DrawRect,
-                _FormatRect,
-                Text ?? string.Empty
-            );
+        HelperXaml.DrawFormatRect( aGraphics, _DrawRect, _FormatRect, Text ?? string.Empty );
     }
 }

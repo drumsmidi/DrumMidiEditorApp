@@ -29,7 +29,7 @@ public sealed partial class PageConfig : Page
         try
         {
             // 初期ページへ移動
-            NaviLinkListView_Navigate( "PageConfigDevice" );
+            NaviLinkListView_Navigate( "PageConfigSystem" );
         }
         catch ( Exception e )
         {
@@ -44,6 +44,7 @@ public sealed partial class PageConfig : Page
     /// </summary>
     private readonly List<(string Tag, Type Page)> _Pages =
         [
+            ( "PageConfigSystem"    , typeof( PageConfigSystem              ) ),
             ( "PageConfigDevice"    , typeof( PageConfigDevice              ) ),
             ( "PageConfigVideo"     , typeof( PageConfigVideo               ) ),
             ( "PageConfigEditer"    , typeof( PageConfigEditer              ) ),

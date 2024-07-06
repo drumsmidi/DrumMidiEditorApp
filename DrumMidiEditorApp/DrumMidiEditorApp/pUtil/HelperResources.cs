@@ -2,7 +2,7 @@
 
 namespace DrumMidiEditorApp.pUtil;
 
-public static class ResourcesHelper
+public static class HelperResources
 {
     /// <summary>
     /// リソース

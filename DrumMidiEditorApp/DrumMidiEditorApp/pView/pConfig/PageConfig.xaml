@@ -21,7 +21,7 @@
                     <ListView x:Name="_NaviLinkListView" 
                         SelectionMode="Single" 
                         SelectionChanged="NaviLinkListView_SelectionChanged">
-
+                        <TextBlock Tag="PageConfigSystem"   x:Uid="NaviConfigSystem" />
                         <TextBlock Tag="PageConfigDevice"   x:Uid="NaviConfigDevice" />
                         <TextBlock Tag="PageConfigVideo"    x:Uid="NaviConfigVideo" />
                         <TextBlock Tag="PageConfigEditer"   x:Uid="NaviConfigEditer" />

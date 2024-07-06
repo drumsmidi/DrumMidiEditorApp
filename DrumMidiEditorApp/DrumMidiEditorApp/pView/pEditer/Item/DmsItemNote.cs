@@ -92,26 +92,19 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
         if ( InfoNote.NoteOn )
         {
             // ノートON描画
-            aGraphics.FillEllipse
-                (
-                    (float)( rect.X + ( rect.Width / 2 ) ),
-                    (float)( rect.Y + ( rect.Height / 2 ) ),
-                    rect._width / 2,
-                    rect._height / 2,
-                    _FormatRect.Background.Color
-                );
+            HelperXaml.DrawFormatRectFillEllipse( aGraphics, rect, _FormatRect );
 
             // ノートON-OFF間の線を描画
-            if ( NoteLength > 0 && _FormatRect.Line.LineSize > 0 )
+            if ( NoteLength > 0 )
             {
-                aGraphics.DrawLine
+                HelperXaml.DrawFormatLine
                     (
+                        aGraphics,
                         (float)rect.Right,
                         (float)( rect.Y + ( rect.Height / 2F ) ),
                         (float)( rect.Left + NoteLength ),
                         (float)( rect.Y + ( rect.Height / 2F ) ),
-                        _FormatRect.Line.LineColor.Color,
-                        _FormatRect.Line.LineSize
+                        _FormatRect.Line
                     );
             }
         }
@@ -127,39 +120,32 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
                 ];
 
             // ノートOFF描画
-            aGraphics.DrawGeometry
+            HelperXaml.DrawFormatRectOutlineGeometry
                     (
+                        aGraphics,  
                         CanvasGeometry.CreatePolygon( sender, ps ),
-                        _FormatRect.Line.LineColor.Color,
-                        _FormatRect.Line.LineSize
+                        _FormatRect
                     );
         }
 
         // ノートON-OFF間の線を描画
         if ( NoteOnItem != null )
         {
-            aGraphics.DrawLine
+            HelperXaml.DrawFormatLine
                 (
+                    aGraphics,
                     (float)( rect.X - NoteOnItem.NoteLength ),
                     (float)( rect.Y + ( rect.Height / 2 ) ),
-                    (float)rect.X,
+                    (float)  rect.X,
                     (float)( rect.Y + ( rect.Height / 2 ) ),
-                    _FormatRect.Line.LineColor.Color,
-                    _FormatRect.Line.LineSize
+                    _FormatRect.Line
                 );
         }
 
         if ( InfoNote.Selected )
         {
-            var format = Config.Editer.NoteSelectLine;
-
             // ノート選択時の外枠を描画
-            aGraphics.DrawRectangle
-                (
-                    rect,
-                    format.LineColor.Color,
-                    format.LineSize
-                );
+            HelperXaml.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteSelectRect );
         }
     }
 
@@ -176,8 +162,6 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
             return;
         }
 
-        var format = Config.Editer.NotePredictLine;
-
         var rect = new Rect
             (
                 DrawRect.X + aDiffX,
@@ -186,15 +170,7 @@ public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoN
                 DrawRect.Height
             );
 
-        aGraphics.DrawEllipse
-            (
-                rect._x,
-                rect._y,
-                rect._width,
-                rect._height,
-                format.LineColor.Color,
-                format.LineSize
-            );
+        HelperXaml.DrawFormatRectOutlineEllipse( aGraphics, rect, Config.Editer.NotePredictRect );
     }
 
     /// <summary>

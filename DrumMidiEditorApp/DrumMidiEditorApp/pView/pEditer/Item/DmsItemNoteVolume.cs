@@ -1,4 +1,5 @@
-﻿using DrumMidiEditorApp.pModel;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
@@ -76,30 +77,26 @@ public class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatR
             return;
         }
 
-        // TODO: 音量の幅調整が必要かも
         var rect = new Rect
             (
                 _PosX + aDiffX - 1,
                 _Bottom - _NoteInfo.Volume,
-                2,
+                1,
                 _NoteInfo.Volume
             );
 
         // 音量線描画
-        aGraphics.FillRectangle( rect, _FormatRect.Background.Color );
+        HelperXaml.DrawFormatRectFillRectangle( aGraphics, rect, _FormatRect );
 
-        // 音量文字表示（手抜き）
-        rect.X      -= 10;
-        rect.Y      -= 20;
-        rect.Width   = 100;
-        rect.Height  = 10;
+        if ( Config.Editer.VolumeValueDisplay )
+        {
+            // 音量文字表示（手抜き）
+            rect.X      -= 10;
+            rect.Y      -= 20;
+            rect.Width   = 100;
+            rect.Height  = 10;
 
-        aGraphics.DrawText
-            (
-                $"{_NoteInfo.Volume}",
-                rect,
-                _FormatRect.Text.TextColor.Color,
-                _FormatRect.Text.TextFormat
-            );
+            HelperXaml.DrawFormatRectText( aGraphics, rect, _FormatRect, $"{_NoteInfo.Volume}" );
+        }
     }
 }

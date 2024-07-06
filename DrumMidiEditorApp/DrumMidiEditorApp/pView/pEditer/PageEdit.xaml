@@ -247,6 +247,12 @@
                     TickPlacement="Outside"
                     ValueChanged="WaveFormSensitivityLevelSlider_ValueChanged" />
 
+                <Button x:Uid="ButtonEditerWaveForm" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    IsEnabled="False"
+                    Height="50"
+                    Click="WaveForm_Click" />
+
             </StackPanel>
 
         </Grid>

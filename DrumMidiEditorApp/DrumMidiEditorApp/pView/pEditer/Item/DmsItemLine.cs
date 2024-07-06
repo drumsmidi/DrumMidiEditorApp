@@ -64,23 +64,10 @@ public class DmsItemLine : DisposeBaseClass
     /// <param name="aDiffY">描画差分Y</param>
     public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
-        if ( _FormatLine == null || _FormatLine.LineSize <= 0 )
-        {
-            return;
-        }
-
         var rect = _DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        aGraphics.DrawLine
-            (
-                (float)rect.Left,
-                (float)rect.Top,
-                (float)rect.Right,
-                (float)rect.Bottom,
-                _FormatLine.LineColor.Color,
-                _FormatLine.LineSize
-            );
+        HelperXaml.DrawFormatLine( aGraphics, rect, _FormatLine );
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+
 using WinRT.Interop;
 
 namespace DrumMidiEditorApp.pUtil;
@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pUtil;
 /// <summary>
 /// Window操作拡張
 /// </summary>
-public static class AppWindowHelper
+public static class HelperAppWindow
 {
     /// <summary>
     /// AppWindow取得
@@ -102,11 +102,11 @@ public static class AppWindowHelper
         // https://tera1707.com/entry/2022/04/24/220519
 
         var op = OverlappedPresenter.Create();
-        op.IsMaximizable = aMaximizable;
-        op.IsMinimizable = aMinimizable;
-        op.IsResizable = aResizable;
-        op.IsAlwaysOnTop = aAlwaysOnTop;
-        op.IsModal = aModal;
+        op.IsMaximizable    = aMaximizable;
+        op.IsMinimizable    = aMinimizable;
+        op.IsResizable      = aResizable;
+        op.IsAlwaysOnTop    = aAlwaysOnTop;
+        op.IsModal          = aModal;
         op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
 
         aAppWindow.SetPresenter( op );

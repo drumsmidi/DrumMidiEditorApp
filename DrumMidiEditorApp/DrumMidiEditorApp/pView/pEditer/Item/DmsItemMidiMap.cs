@@ -123,7 +123,7 @@ public class DmsItemMidiMap : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        XamlHelper.FormatRectDraw
+        HelperXaml.DrawFormatRect
             (
                 aGraphics,
                 rect,

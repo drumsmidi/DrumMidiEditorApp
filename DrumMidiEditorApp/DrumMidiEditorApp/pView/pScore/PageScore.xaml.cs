@@ -24,9 +24,9 @@ public sealed partial class PageScore : Page
 
         // NumberBox の入力書式設定
         _NoteHeightNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _NoteWidthNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public sealed partial class PageScore : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

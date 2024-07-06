@@ -10,6 +10,9 @@
     <Grid Padding="10">
         <StackPanel Orientation="Vertical" Spacing="6">
 
+            <ToggleSwitch x:Uid="InputVolumeValueDisplay"
+                IsOn="{x:Bind DrawSet.VolumeValueDisplay, Mode=TwoWay}" />
+
             <VariableSizedWrapGrid 
                 Orientation="Horizontal" 
                 MaximumRowsOrColumns="8"

@@ -180,6 +180,12 @@ public class ConfigSystem
     public int MeasureMaxNumber { get; private set; } = 999;
 
     /// <summary>
+    /// 小節番号書式フォーマット
+    /// </summary>
+    [JsonIgnore]
+    public string MeasureNumberFormat { get; private set; } = "{0:000}";
+
+    /// <summary>
     /// 1小節辺りのノート数
     /// </summary>
     [JsonIgnore]
@@ -217,7 +223,7 @@ public class ConfigSystem
     /// ドキュメントベースフォルダパス
     /// </summary>
     [JsonInclude]
-    public GeneralPath FolderDocBase { get; private set; } = new( $"{AppDirectory.AppBaseDirectory}\\" );
+    public GeneralPath FolderDocBase { get; private set; } = new( $"{HelperAppDirectory.AppBaseDirectory}\\" );
 
     /// <summary>
     /// Configフォルダ（アプリの設定ファイル格納）

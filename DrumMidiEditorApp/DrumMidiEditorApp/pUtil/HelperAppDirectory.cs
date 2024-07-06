@@ -2,7 +2,7 @@
 
 namespace DrumMidiEditorApp.pUtil;
 
-public static class AppDirectory
+public static class HelperAppDirectory
 {
     /// <summary>
     /// アプリケーションベースディレクトリ

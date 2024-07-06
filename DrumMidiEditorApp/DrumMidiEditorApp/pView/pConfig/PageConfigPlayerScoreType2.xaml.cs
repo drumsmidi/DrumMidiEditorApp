@@ -40,20 +40,29 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
 
         #region NumberBox の入力書式設定
 
+        _NoteTermHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteTermWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
         _Line128NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line064NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line032NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line016NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line008NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line004NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _Line001NumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
 
         #endregion
     }
@@ -63,9 +72,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
     private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
-#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
     {
         try
         {
@@ -87,7 +94,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -114,7 +121,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
                 return;
             }
 
-            XamlHelper.ColorDialog
+            HelperXaml.ColorDialog
                 (
                     item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,

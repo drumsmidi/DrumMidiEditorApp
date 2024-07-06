@@ -65,7 +65,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     public void ApplyEqulizer()
     {
-        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, ApplyEqulizer ) )
+        if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ApplyEqulizer ) )
         {
             return;
         }
@@ -78,7 +78,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     public void ResetEqualizer()
     {
-        if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, ResetEqualizer ) )
+        if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ResetEqualizer ) )
         {
             return;
         }
@@ -378,7 +378,7 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <param name="aMousePos"></param>
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckEqulizerBodyArea( Point aMousePos )
-        => XamlHelper.CheckRange( aMousePos, _EqulizerBodyRange );
+        => HelperXaml.CheckRange( aMousePos, _EqulizerBodyRange );
 
     #endregion
 
@@ -400,7 +400,7 @@ public sealed partial class UserControlEqualizer : UserControl
             pointRect.X = p.X - ( pointRect.Width  / 2 );
             pointRect.Y = p.Y - ( pointRect.Height / 2 );
 
-            if ( XamlHelper.CheckRange( aMousePos, pointRect ) )
+            if ( HelperXaml.CheckRange( aMousePos, pointRect ) )
             {
                 return index;
             }
@@ -501,7 +501,7 @@ public sealed partial class UserControlEqualizer : UserControl
             return;
         }
 
-        var p = XamlHelper.AdjustRangeIn( aMousePos, _EqulizerBodyRange );
+        var p = HelperXaml.AdjustRangeIn( aMousePos, _EqulizerBodyRange );
 
         _GainCenters [ aGearIndex ] = p;
 

@@ -295,16 +295,9 @@ public class DmsItemNoteRange : DisposeBaseClass
             return;
         }
 
-        var format = Config.Editer.NoteRangeLine;
-
         var rect = GetSelectRange( aStartNotePos );
 
-        aGraphics.DrawRectangle
-            (
-                rect,
-                format.LineColor.Color,
-                format.LineSize
-            );
+        HelperXaml.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteRangeRect );
     }
 
     /// <summary>

@@ -133,6 +133,9 @@
     <value>範囲選択
 解除</value>
   </data>
+  <data name="ButtonEditerWaveForm.Content" xml:space="preserve">
+    <value>波形作成</value>
+  </data>
   <data name="ButtonEqualizer.Content" xml:space="preserve">
     <value>イコライザ</value>
   </data>
@@ -403,6 +406,9 @@ BPMノートを含める</value>
   <data name="InputVolumeSize.Header" xml:space="preserve">
     <value>音量によるノートサイズ変更</value>
   </data>
+  <data name="InputVolumeValueDisplay.Header" xml:space="preserve">
+    <value>Volume値表示</value>
+  </data>
   <data name="InputVolumeZero.Header" xml:space="preserve">
     <value>音量０のノート表示</value>
   </data>
@@ -483,6 +489,9 @@ BPMノートを含める</value>
   </data>
   <data name="NaviConfigPlayerE.Text" xml:space="preserve">
     <value>プレイヤー個別設定：ScoreType2</value>
+  </data>
+  <data name="NaviConfigSystem.Text" xml:space="preserve">
+    <value>システム設定</value>
   </data>
   <data name="NaviConfigVideo.Text" xml:space="preserve">
     <value>ビデオ出力設定</value>

@@ -108,16 +108,11 @@ internal class DmsItemMidiMap : DisposeBaseClass
     /// <param name="aDiffY">描画差分Y</param>
     public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
-        if ( _FormatRect == null )
-        {
-            return;
-        }
-
         var rect = DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        XamlHelper.FormatRectDraw
+        HelperXaml.DrawFormatRect
             (
                 aGraphics,
                 rect,

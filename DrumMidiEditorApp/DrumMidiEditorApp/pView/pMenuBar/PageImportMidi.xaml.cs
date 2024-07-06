@@ -22,7 +22,7 @@ public sealed partial class PageImportMidi : Page
 
         // NumberBox の入力書式設定
         _BpmZoomNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 4, 0.0125 );
+            = HelperXaml.CreateNumberFormatter( 1, 4, 0.0125 );
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public sealed partial class PageImportMidi : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

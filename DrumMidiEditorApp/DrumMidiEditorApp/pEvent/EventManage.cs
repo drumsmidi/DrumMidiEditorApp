@@ -149,12 +149,12 @@ public static class EventManage
         // 範囲選択解除
         EventEditClearRangeSelect();
 
-        Config.Editer.UpdateScoreLayoutFlag = true;
-        Config.Editer.UpdateCameraFlag = true;
-        Config.Editer.UpdateScoreLineFlag = true;
-        Config.Editer.UpdateScoreHeaderFlag = true;
-        Config.Editer.UpdateScoreFlag = true;
-        Config.Editer.UpdateScoreBgmScaleFlag = true;
+        Config.Editer.UpdateScoreLayoutFlag     = true;
+        Config.Editer.UpdateCameraFlag          = true;
+        Config.Editer.UpdateScoreLineFlag       = true;
+        Config.Editer.UpdateScoreHeaderFlag     = true;
+        Config.Editer.UpdateScoreFlag           = true;
+        Config.Editer.UpdateScoreBgmScaleFlag   = true;
 
         //Config.Editer.UpdateScoreNoteFlag         = true;
         //Config.Editer.UpdateScoreNotePredictFlag  = true;

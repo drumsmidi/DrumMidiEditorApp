@@ -34,7 +34,7 @@ public sealed partial class PageConfigDevice : Page
 
         // NumberBox の入力書式設定
         _MidiOutLatencyNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.001 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
     }
 
     #region Midi device
@@ -62,7 +62,7 @@ public sealed partial class PageConfigDevice : Page
         {
             if ( !MidiNet.InitDevice( ConfigMedia.MidiOutDeviceName ) )
             {
-                Log.Error( ResourcesHelper.GetString( "ErrMsgInitMidiDevice", ConfigMedia.MidiOutDeviceName ) );
+                Log.Error( HelperResources.GetString( "ErrMsgInitMidiDevice", ConfigMedia.MidiOutDeviceName ) );
                 return;
             }
         }
@@ -82,7 +82,7 @@ public sealed partial class PageConfigDevice : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

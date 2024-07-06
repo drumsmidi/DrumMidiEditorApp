@@ -210,7 +210,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-            XamlHelper.OpenDialogAsync
+            HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportMidiMapSet,
@@ -226,10 +226,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                         var page = new PageImportMidiMap();
                         page.LoadMidiMap( midiMapSet );
 
-                        XamlHelper.InputDialogOkCancelAsync
+                        HelperXaml.InputDialogOkCancelAsync
                             (
                                 Content.XamlRoot,
-                                ResourcesHelper.GetString( "LabelImportMidiMap" ),
+                                HelperResources.GetString( "LabelImportMidiMap" ),
                                 page,
                                 () =>
                                 {
@@ -272,7 +272,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     {
         try
         {
-            XamlHelper.SaveDialogAsync
+            HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportMidiMapSet,
@@ -658,7 +658,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -681,7 +681,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -708,7 +708,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
 
-            XamlHelper.ColorDialog
+            HelperXaml.ColorDialog
                 (
                     item,
                     ( item.Background as SolidColorBrush )?.Color ?? ConfigSystem.DefaultMidiMapColor,

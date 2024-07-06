@@ -27,7 +27,7 @@ public sealed partial class PageInputBpm : Page
 
         // NumberBox の入力書式設定
         _BpmNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 2, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public sealed partial class PageInputBpm : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

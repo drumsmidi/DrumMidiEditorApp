@@ -98,18 +98,18 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         #region NumberBox の入力書式設定
 
         _NoteHeightNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _NoteWidthNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
 
         _VolumeLevelTopNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
         _VolumeLevelHighNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
         _VolumeLevelMidNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
         _VolumeLevelLowNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 3, 0.01 );
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
 
         #endregion
     }
@@ -406,7 +406,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 return;
             }
 
-            var note_pos = XamlHelper.AdjustRangeIn
+            var note_pos = HelperXaml.AdjustRangeIn
                 (
                     new
                     (
@@ -463,7 +463,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -528,7 +528,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -559,7 +559,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -583,7 +583,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 }
             }
 
-            UpdateVolumeLevel();
+            //UpdateVolumeLevel();
         }
         catch ( Exception e )
         {
@@ -601,7 +601,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -625,7 +625,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 }
             }
 
-            UpdateVolumeLevel();
+            //UpdateVolumeLevel();
         }
         catch ( Exception e )
         {
@@ -643,7 +643,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
@@ -656,7 +656,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 _VolumeLevelMidNumberBox.Value = l;
             }
 
-            UpdateVolumeLevel();
+            //UpdateVolumeLevel();
         }
         catch ( Exception e )
         {
@@ -685,6 +685,24 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+
+    /// <summary>
+    /// 再生停止
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void WaveForm_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            UpdateVolumeLevel();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
 
     #endregion
 

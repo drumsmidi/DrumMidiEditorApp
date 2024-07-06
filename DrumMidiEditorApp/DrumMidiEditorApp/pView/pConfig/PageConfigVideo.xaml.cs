@@ -23,7 +23,7 @@ public sealed partial class PageConfigVideo : Page
 
         // NumberBox の入力書式設定
         _VideoFpsNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
     }
 
     #region Video
@@ -38,7 +38,7 @@ public sealed partial class PageConfigVideo : Page
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }

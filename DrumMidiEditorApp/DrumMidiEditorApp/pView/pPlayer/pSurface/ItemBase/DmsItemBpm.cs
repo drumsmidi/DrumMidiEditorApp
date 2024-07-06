@@ -74,22 +74,11 @@ internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBp
     /// <param name="aDiffY">描画差分Y</param>
     public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
     {
-        if ( _FormatRect == null )
-        {
-            return;
-        }
-
         var rect = _DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        aGraphics.DrawText
-            (
-                _Info?.Bpm.ToString() ?? string.Empty,
-                rect,
-                _FormatRect.Text.TextColor.Color,
-                _FormatRect.Text.TextFormat
-            );
+        HelperXaml.DrawFormatRect( aGraphics, rect, _FormatRect, _Info?.Bpm.ToString() ?? string.Empty );
     }
 
     /// <summary>

@@ -102,14 +102,14 @@ public class DmsItemSupportLine : DisposeBaseClass
         {
             var x = _NoteColumnRect._x + (( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width);
 
-            aGraphics.DrawLine
+            HelperXaml.DrawFormatLine
                 (
+                    aGraphics,
                     x,
                     (float)_NoteColumnRect.Top,
                     x,
                     (float)_NoteColumnRect.Bottom + aDiffY,
-                    format.LineColor.Color,
-                    format.LineSize
+                    format
                 );
         }
         else
@@ -125,14 +125,14 @@ public class DmsItemSupportLine : DisposeBaseClass
             {
                 x = _NoteColumnRect._x + ( ( i - aNotePosX ) * _NoteColumnRect._width );
 
-                aGraphics.DrawLine
+                HelperXaml.DrawFormatLine
                     (
+                        aGraphics,
                         x,
                         (float)_NoteColumnRect.Top,
                         x,
                         (float)_NoteColumnRect.Bottom + aDiffY,
-                        format.LineColor.Color,
-                        format.LineSize
+                        format
                     );
             }
         }

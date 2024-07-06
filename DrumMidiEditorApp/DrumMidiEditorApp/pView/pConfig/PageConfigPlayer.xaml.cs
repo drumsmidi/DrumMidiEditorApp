@@ -151,7 +151,11 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
+#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
+#pragma warning disable IDE0060 // 未使用のパラメーターを削除します
     private void ColorButton_Click( object sender, RoutedEventArgs args )
+#pragma warning restore IDE0060 // 未使用のパラメーターを削除します
+#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
     {
         try
         {
@@ -160,7 +164,7 @@ public sealed partial class PageConfigPlayer : Page
                 return;
             }
 
-            XamlHelper.ColorDialog
+            HelperXaml.ColorDialog
                 (
                     item,
                     ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,

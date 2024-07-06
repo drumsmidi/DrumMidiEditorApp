@@ -142,10 +142,10 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
             };
             page.LoadMidiMap();
 
-            XamlHelper.InputDialogOkCancelAsync
+            HelperXaml.InputDialogOkCancelAsync
                 (
                     Content.XamlRoot,
-                    ResourcesHelper.GetString( "LabelKeyChange" ),
+                    HelperResources.GetString( "LabelKeyChange" ),
                     page,
                     () =>
                     {
@@ -159,13 +159,13 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
                         var midiMapName_o = $"{bef_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( bef_key )}";
                         var midiMapName_n = $"{aft_key,-3}{Score.EditMidiMapSet.GetGroupAndMidiMapName( aft_key )}";
 
-                        XamlHelper.MessageDialogYesNoAsync
+                        HelperXaml.MessageDialogYesNoAsync
                             (
                                 Content.XamlRoot,
-                                ResourcesHelper.GetString( "DialogChangeKey/Title" ),
-                                ResourcesHelper.GetString( "DialogChangeKey/Content", midiMapName_o, midiMapName_n ),
-                                ResourcesHelper.GetString( "Dialog/Yes" ),
-                                ResourcesHelper.GetString( "Dialog/No" ),
+                                HelperResources.GetString( "DialogChangeKey/Title" ),
+                                HelperResources.GetString( "DialogChangeKey/Content", midiMapName_o, midiMapName_n ),
+                                HelperResources.GetString( "Dialog/Yes" ),
+                                HelperResources.GetString( "Dialog/No" ),
                                 new( () =>
                                 {
                                     lock ( Score.LockObj )

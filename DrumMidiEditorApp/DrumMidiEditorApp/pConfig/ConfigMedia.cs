@@ -131,13 +131,13 @@ public class ConfigMedia
     public int OutputVideoFps { get; set; } = 60;
 
     /// <summary>
-    /// 動画出力FPS：最大値
+    /// 動画出力FPS：最小値
     /// </summary>
     [JsonIgnore]
     public int OutputVideoFpsMin { get; set; } = 30;
 
     /// <summary>
-    /// 動画出力FPS：最小値
+    /// 動画出力FPS：最大値
     /// </summary>
     [JsonIgnore]
     public int OutputVideoFpsMax { get; set; } = 120;

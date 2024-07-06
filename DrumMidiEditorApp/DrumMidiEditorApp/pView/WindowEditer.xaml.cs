@@ -44,7 +44,7 @@ public sealed partial class WindowEditer : Window
         InitializeComponent();
 
         // 自身のウィンドウ情報取得
-        _AppWindow = AppWindowHelper.GetAppWindow( this );
+        _AppWindow = HelperAppWindow.GetAppWindow( this );
 
         // タイトル初期設定
         Title = $"{ConfigSystem.AppName}";
@@ -57,7 +57,7 @@ public sealed partial class WindowEditer : Window
         // ウィンドウ初期サイズ変更
         if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
         {
-            AppWindowHelper.ResizeWindow
+            HelperAppWindow.ResizeWindow
                 (
                     _AppWindow,
                     ConfigSystem.WindowSizeWidth,
@@ -66,7 +66,7 @@ public sealed partial class WindowEditer : Window
         }
 
         // 通常ウィンドウのプレゼンター設定
-        //AppWindowHelper.SetPresenterNormalWindow( _AppWindow );
+        //HelperAppWindow.SetPresenterNormalWindow( _AppWindow );
 
         ControlAccess.MainWindow = this;
 

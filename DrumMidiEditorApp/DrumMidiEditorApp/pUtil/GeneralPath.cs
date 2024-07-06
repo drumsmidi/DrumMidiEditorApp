@@ -79,7 +79,7 @@ public class GeneralPath
     /// アプレケーション起動ディレクトリパス
     /// </summary>
     [JsonIgnore]
-    public static string StartupFolderPath => ConvertPath( AppDirectory.AppBaseDirectory );
+    public static string StartupFolderPath => ConvertPath( HelperAppDirectory.AppBaseDirectory );
 
     /// <summary>
     /// 基準ディレクトリパス

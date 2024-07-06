@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DrumMidiEditorApp.pLog;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -17,8 +18,10 @@ namespace DrumMidiEditorApp.pUtil;
 /// <summary>
 /// XAMLユーティリティ
 /// </summary>
-public static class XamlHelper
+public static class HelperXaml
 {
+    #region Dialog
+
     public static async void MessageDialogOk( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
     {
         var cd = new ContentDialog
@@ -60,10 +63,10 @@ public static class XamlHelper
         => InputDialogOkCancelAsync
             (
                 aContentXamlRoot,
-                string.IsNullOrEmpty( aTitle ) ? ResourcesHelper.GetString( "Dialog/Input" ) : aTitle,
+                string.IsNullOrEmpty( aTitle ) ? HelperResources.GetString( "Dialog/Input" ) : aTitle,
                 aPageContent,
-                ResourcesHelper.GetString( "Dialog/Ok" ),
-                ResourcesHelper.GetString( "Dialog/Cancel" ),
+                HelperResources.GetString( "Dialog/Ok" ),
+                HelperResources.GetString( "Dialog/Cancel" ),
                 aAction
             );
 
@@ -118,7 +121,7 @@ public static class XamlHelper
 
         var apply_button = new Button()
         {
-            Content = ResourcesHelper.GetString( "Dialog/Apply" ),
+            Content = HelperResources.GetString( "Dialog/Apply" ),
         };
 
         stack_panel.Children.Add( color_picker );
@@ -169,10 +172,10 @@ public static class XamlHelper
 
         var cd = new ContentDialog
         {
-            Title               = ResourcesHelper.GetString( "Dialog/Input" ),
+            Title               = HelperResources.GetString( "Dialog/Input" ),
             Content             = content,
-            PrimaryButtonText   = ResourcesHelper.GetString( "Dialog/Ok" ),
-            CloseButtonText     = ResourcesHelper.GetString( "Dialog/Cancel" ),
+            PrimaryButtonText   = HelperResources.GetString( "Dialog/Ok" ),
+            CloseButtonText     = HelperResources.GetString( "Dialog/Cancel" ),
             XamlRoot            = aContentXamlRoot,
         };
 
@@ -304,6 +307,8 @@ public static class XamlHelper
         }
     }
 
+    #endregion
+
     #region Win2D
 
     /// <summary>
@@ -313,38 +318,229 @@ public static class XamlHelper
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
     /// <param name="aLabelText"></param>
-    public static void FormatRectDraw( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect, string aLabelText )
+    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
     {
+        if ( aFormatRect == null )
+        {
+            return;
+        }
+
         // 背景色
-        aGraphics.FillRectangle
+        DrawFormatRectFillRectangle
             (
+                aGraphics,
                 aDrawRect,
-                aFormatRect.Background.Color
+                aFormatRect
             );
 
         // テキスト
-        if ( aLabelText.Length != 0 )
-        {
-            aGraphics.DrawText
-                (
-                    aLabelText,
-                    aDrawRect,
-                    aFormatRect.Text.TextColor.Color,
-                    aFormatRect.Text.TextFormat
-                );
-        }
+        DrawFormatText
+            (
+                aGraphics,
+                aDrawRect,
+                aFormatRect.Text,
+                aLabelText
+            );
 
         // 外枠
-        if ( aFormatRect.Line.LineSize > 0 )
+        DrawFormatRectOutlineRectangle
+            (
+                aGraphics,
+                aDrawRect,
+                aFormatRect
+            );
+    }
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatRect"></param>
+    public static void DrawFormatRectFillRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null )
         {
-            aGraphics.DrawRectangle
+            return;
+        }
+
+        aGraphics.FillRectangle( aDrawRect, aFormatRect.Background.Color );
+    }
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatRect"></param>
+    public static void DrawFormatRectFillEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null )
+        {
+            return;
+        }
+
+        aGraphics.FillEllipse
+            (
+                (float)( aDrawRect.X + ( aDrawRect.Width  / 2 ) ),
+                (float)( aDrawRect.Y + ( aDrawRect.Height / 2 ) ),
+                aDrawRect._width  / 2,
+                aDrawRect._height / 2,
+                aFormatRect.Background.Color
+            );
+    }
+
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aLineColor"></param>
+    /// <param name="aLineSize"></param>
+    public static void DrawFormatRectOutlineRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawRectangle( aDrawRect, aFormatRect.Line.LineColor.Color, aFormatRect.Line.LineSize );
+    }
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aLineColor"></param>
+    /// <param name="aLineSize"></param>
+    public static void DrawFormatRectOutlineEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawEllipse
+            (
+                (float)( aDrawRect.X + ( aDrawRect.Width  / 2 ) ),
+                (float)( aDrawRect.Y + ( aDrawRect.Height / 2 ) ),
+                aDrawRect._width  / 2,
+                aDrawRect._height / 2,
+                aFormatRect.Line.LineColor.Color, 
+                aFormatRect.Line.LineSize 
+            );
+    }
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aLineColor"></param>
+    /// <param name="aLineSize"></param>
+    public static void DrawFormatRectOutlineGeometry( CanvasDrawingSession aGraphics, CanvasGeometry aCanvasGeometry, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawGeometry
                 (
-                    aDrawRect,
+                    aCanvasGeometry,
                     aFormatRect.Line.LineColor.Color,
                     aFormatRect.Line.LineSize
                 );
-        }
     }
+
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aLineColor"></param>
+    /// <param name="aLineSize"></param>
+    public static void DrawFormatRectText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
+    {
+        DrawFormatText
+            (
+                aGraphics,
+                aDrawRect,
+                aFormatRect?.Text,
+                aLabelText
+            );
+    }
+
+
+    /// <summary>
+    /// ラベル描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatText"></param>
+    /// <param name="aLabelText"></param>
+    public static void DrawFormatText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatText? aFormatText, string aLabelText )
+    {
+        if ( aFormatText == null || aFormatText.TextFormat.FontSize <= 0 || aLabelText.Length == 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawText
+            (
+                aLabelText,
+                aDrawRect,
+                aFormatText.TextColor.Color,
+                aFormatText.TextFormat
+            );
+    }
+
+    /// <summary>
+    /// ラベル描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatLine"></param>
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatLine? aFormatLine )
+        => DrawFormatLine( aGraphics, (float)aDrawRect.Left, (float)aDrawRect.Top, (float)aDrawRect.Right, (float)aDrawRect.Bottom, aFormatLine );
+
+    /// <summary>
+    /// ラベル描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatLine"></param>
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Point aP1, Point aP2, FormatLine? aFormatLine )
+        => DrawFormatLine( aGraphics, aP1._x, aP1._y, aP2._x, aP2._y, aFormatLine );
+
+    /// <summary>
+    /// ラベル描画
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatLine"></param>
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, float aX1, float aY1, float aX2, float aY2, FormatLine? aFormatLine )
+    {
+        if ( aFormatLine == null || aFormatLine.LineSize <= 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawLine
+            (
+                aX1,
+                aY1,
+                aX2,
+                aY2,
+                aFormatLine.LineColor.Color,
+                aFormatLine.LineSize
+            );
+    }
+
+
 
     #endregion
 

@@ -41,8 +41,8 @@ internal class DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aW
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _MidiMapGroup = null;
-                _FormatRect = null;
+                _MidiMapGroup   = null;
+                _FormatRect     = null;
             }
 
             // Dispose unmanaged resources.
@@ -75,19 +75,6 @@ internal class DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aW
     /// 描画
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
-    public void Draw( CanvasDrawingSession aGraphics )
-    {
-        if ( _FormatRect == null )
-        {
-            return;
-        }
-
-        XamlHelper.FormatRectDraw
-            (
-                aGraphics,
-                DrawRect,
-                _FormatRect,
-                _MidiMapGroup?.GroupName ?? string.Empty
-            );
-    }
+    public void Draw( CanvasDrawingSession aGraphics ) 
+        => HelperXaml.DrawFormatRect( aGraphics, DrawRect, _FormatRect, _MidiMapGroup?.GroupName ?? string.Empty );
 }

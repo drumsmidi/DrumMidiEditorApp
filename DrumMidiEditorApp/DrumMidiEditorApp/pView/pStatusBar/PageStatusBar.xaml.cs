@@ -39,7 +39,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
     {
         try
         {
-            if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => ReloadProgressBar( aProgressBarValue ) ) )
+            if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, () => ReloadProgressBar( aProgressBarValue ) ) )
             {
                 return;
             }
@@ -101,7 +101,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
     {
         try
         {
-            if ( !XamlHelper.DispatcherQueueHasThreadAccess( this, () => SetStatusText( aTitle, aContent, aSeverity ) ) )
+            if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, () => SetStatusText( aTitle, aContent, aSeverity ) ) )
             {
                 return;
             }

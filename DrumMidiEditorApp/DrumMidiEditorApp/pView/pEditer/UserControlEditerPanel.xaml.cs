@@ -704,7 +704,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 return;
             }
 
-            var note_pos = XamlHelper.AdjustRangeIn
+            var note_pos = HelperXaml.AdjustRangeIn
                 (
                     new
                     (
@@ -737,7 +737,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
 	private bool CheckMeasureNoBodyArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _MeasureNoBodyRange );
+            && HelperXaml.CheckRange( aMousePos, _MeasureNoBodyRange );
 
     /// <summary>
     /// MidiMapGroup/MidiMapヘッダ範囲チェック
@@ -746,7 +746,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckScoreHeadArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _ScoreHeadRange );
+            && HelperXaml.CheckRange( aMousePos, _ScoreHeadRange );
 
     /// <summary>
     /// MidiMapGroup/MidiMapボディ範囲チェック
@@ -755,7 +755,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckScoreBodyArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _ScoreBodyRange );
+            && HelperXaml.CheckRange( aMousePos, _ScoreBodyRange );
 
     /// <summary>
     /// BPM行ボディ範囲チェック
@@ -764,7 +764,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckBpmBodyArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-        && XamlHelper.CheckRange( aMousePos, _BpmBodyRange );
+        && HelperXaml.CheckRange( aMousePos, _BpmBodyRange );
 
     /// <summary>
     /// 音量行ボディ範囲チェック
@@ -773,7 +773,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckVolumeBodyArea( Point aMousePos )
         => DrawSet.VolumeDisplay
-            && XamlHelper.CheckRange( aMousePos, _VolumeBodyRange );
+            && HelperXaml.CheckRange( aMousePos, _VolumeBodyRange );
 
     /// <summary>
     /// 範囲選択内チェック
@@ -782,7 +782,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <returns>True:範囲内、False:範囲外</returns>
     private bool CheckNoteRangeArea( Point aMousePos )
         => !CheckVolumeBodyArea( aMousePos )
-            && XamlHelper.CheckRange( aMousePos, _NoteRange.GetSelectRange( DrawSet.NotePosition ) );
+            && HelperXaml.CheckRange( aMousePos, _NoteRange.GetSelectRange( DrawSet.NotePosition ) );
 
     #endregion
 
@@ -977,10 +977,10 @@ public sealed partial class UserControlEditerPanel : UserControl
                 Bpm = info_new.Bpm
             };
 
-            XamlHelper.InputDialogOkCancelAsync
+            HelperXaml.InputDialogOkCancelAsync
                 (
                     Content.XamlRoot,
-                    ResourcesHelper.GetString( "LabelBpm" ),
+                    HelperResources.GetString( "LabelBpm" ),
                     page,
                     () =>
                     {
@@ -3166,10 +3166,11 @@ public sealed partial class UserControlEditerPanel : UserControl
                             DrawSet.NoteHeightSize
                         );
 
-                    args.DrawingSession.FillRectangle
+                    HelperXaml.DrawFormatRectFillRectangle
                         (
+                            args.DrawingSession,
                             rect,
-                            DrawSet.SheetCursorHorizonLine.Color
+                            DrawSet.SheetCursorHorizonRect
                         );
                 }
             }
@@ -3252,12 +3253,12 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region body
                 {
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _BpmBodyRange,
                             DrawSet.BpmBodyRect,
-                            ""
+                            string.Empty
                         );
 
                     float diff_x;
@@ -3300,12 +3301,12 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region header
                 {
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _BpmHeadRange,
                             DrawSet.BpmHeadRect,
-                            $"{ResourcesHelper.GetString( "LabelBpm" )}"
+                            $"{HelperResources.GetString( "LabelBpm" )}"
                         );
                 }
                 #endregion
@@ -3318,12 +3319,12 @@ public sealed partial class UserControlEditerPanel : UserControl
                 #region body
                 {
                     // 背景描画
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _VolumeBodyRange,
                             DrawSet.VolumeBodyRect,
-                            ""
+                            string.Empty
                         );
 
                     // 音量描画
@@ -3354,12 +3355,12 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 #region Header
                 {
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _VolumeHeadRange,
                             DrawSet.VolumeHeadRect,
-                            $"{ResourcesHelper.GetString( "LabelVolume" )}-Start={_VolumeRange.StartVolume}"
+                            $"{HelperResources.GetString( "LabelVolume" )}-Start={_VolumeRange.StartVolume}"
                         );
                 }
                 #endregion
@@ -3371,10 +3372,11 @@ public sealed partial class UserControlEditerPanel : UserControl
                 #region body
                 {
                     // 背景色
-                    args.DrawingSession.FillRectangle
+                    HelperXaml.DrawFormatRectFillRectangle
                         (
+                            args.DrawingSession,
                             _MeasureNoBodyRange,
-                            DrawSet.MeasureNoBodyRect.Background.Color
+                            DrawSet.MeasureNoBodyRect
                         );
 
                     var rect = new Rect
@@ -3390,22 +3392,22 @@ public sealed partial class UserControlEditerPanel : UserControl
                         rect.X = _MeasureNoBodyRange.X + ( measure_size * measure_no ) - sheet_pos.X;
 
                         // 外枠
-                        args.DrawingSession.DrawRectangle
+                        HelperXaml.DrawFormatRectOutlineRectangle
                             (
+                                args.DrawingSession,
                                 rect,
-                                DrawSet.MeasureNoBodyRect.Line.LineColor.Color,
-                                DrawSet.MeasureNoBodyRect.Line.LineSize
+                                DrawSet.MeasureNoBodyRect
                             );
 
                         rect.X += 5;
 
                         // テキスト
-                        args.DrawingSession.DrawText
+                        HelperXaml.DrawFormatRectText
                             (
-                                string.Format( "{0:000}", measure_no ),
+                                args.DrawingSession,
                                 rect,
-                                DrawSet.MeasureNoBodyRect.Text.TextColor.Color,
-                                DrawSet.MeasureNoBodyRect.Text.TextFormat
+                                DrawSet.MeasureNoBodyRect,
+                                string.Format( Config.System.MeasureNumberFormat, measure_no )
                             );
                     }
                 }
@@ -3413,12 +3415,12 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 #region header
                 {
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _MeasureNoHeadRange,
                             DrawSet.MeasureNoHeadRect,
-                            $"{ResourcesHelper.GetString( "LabelMeasureNo" )}"
+                            $"{HelperResources.GetString( "LabelMeasureNo" )}"
                         );
                 }
                 #endregion
@@ -3431,14 +3433,14 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     var x = body._x + (( _NoteCursorPosition.X - note_pos.X ) * DrawSet.NoteWidthSize);
 
-                    args.DrawingSession.DrawLine
+                    HelperXaml.DrawFormatLine
                         (
+                            args.DrawingSession,
                             x,
                             body._y,
                             x,
                             (float)body.Bottom,
-                            DrawSet.SheetCursorVerticleLine.LineColor.Color,
-                            DrawSet.SheetCursorVerticleLine.LineSize
+                            DrawSet.SheetCursorVerticleLine
                         );
                 }
             }
@@ -3448,7 +3450,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region header
                 {
-                    XamlHelper.FormatRectDraw
+                    HelperXaml.DrawFormatRect
                         (
                             args.DrawingSession,
                             _InfoRange,

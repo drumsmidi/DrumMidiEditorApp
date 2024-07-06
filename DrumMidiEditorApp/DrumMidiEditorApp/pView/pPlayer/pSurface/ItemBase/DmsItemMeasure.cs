@@ -1,4 +1,5 @@
-﻿using DrumMidiEditorApp.pUtil;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -103,23 +104,16 @@ internal class DmsItemMeasure : DisposeBaseClass
     /// <param name="aSelectFlag">選択中フラグ</param>
     public void Draw( CanvasDrawingSession aGraphics, int aMeasureNo, float aDiffX, float aDiffY, bool aSelectFlag )
     {
-        var fomartRect = aSelectFlag ? _FormatSelectRect : _FormatRect ;
-
-        if ( fomartRect == null )
-        {
-            return;
-        }
-
         var rect = _DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        XamlHelper.FormatRectDraw
-            (
-                aGraphics,
+        HelperXaml.DrawFormatRect
+            ( 
+                aGraphics, 
                 rect,
-                fomartRect,
-                string.Format( " {0:000}", aMeasureNo )
+                aSelectFlag ? _FormatSelectRect : _FormatRect, 
+                string.Format( " " + Config.System.MeasureNumberFormat, aMeasureNo ) 
             );
     }
 }

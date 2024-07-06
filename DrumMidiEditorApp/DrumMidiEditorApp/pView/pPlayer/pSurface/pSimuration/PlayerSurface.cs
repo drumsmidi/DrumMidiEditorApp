@@ -115,7 +115,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
                 foreach ( var header in _HeaderList )
                 {
-                    if ( XamlHelper.CheckRange( p.Position, header.Value.DrawRect ) )
+                    if ( HelperXaml.CheckRange( p.Position, header.Value.DrawRect ) )
                     {
                         _MoveMidiMapKey = header.Key;
                         break;

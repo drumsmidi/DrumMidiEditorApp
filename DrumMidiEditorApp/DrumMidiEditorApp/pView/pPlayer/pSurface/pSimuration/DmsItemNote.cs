@@ -37,7 +37,7 @@ internal class DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidi
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _FormatRect = null;
+                _FormatRect     = null;
                 _DmsItemMidiMap = null;
             }
 

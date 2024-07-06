@@ -64,15 +64,15 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         #region NumberBox の入力書式設定
 
         _LoopPlayMeasureStartNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
         _LoopPlayMeasureEndNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
         _LoopPlayMeasureConnectNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
         _LoopPlayMeasureStartNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
         _LoopPlayMeasureEndNumberBox.NumberFormatter
-            = XamlHelper.CreateNumberFormatter( 1, 0, 1 );
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
 
         #endregion
 
@@ -161,13 +161,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.MessageDialogYesNoAsync
+            HelperXaml.MessageDialogYesNoAsync
                 (
                     Content.XamlRoot,
-                    ResourcesHelper.GetString( "DialogMenuItemNew/Title" ),
-                    ResourcesHelper.GetString( "DialogMenuItemNew/Content" ),
-                    ResourcesHelper.GetString( "Dialog/Yes" ),
-                    ResourcesHelper.GetString( "Dialog/No" ),
+                    HelperResources.GetString( "DialogMenuItemNew/Title" ),
+                    HelperResources.GetString( "DialogMenuItemNew/Content" ),
+                    HelperResources.GetString( "Dialog/Yes" ),
+                    HelperResources.GetString( "Dialog/No" ),
                     new( () =>
                     {
                         DMS.SCORE = new();
@@ -194,7 +194,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.OpenDialogAsync
+            HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportDmsOpen,
@@ -238,7 +238,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
             if ( !edit_filepath.IsExistFile )
             {
-                XamlHelper.SaveDialogAsync
+                HelperXaml.SaveDialogAsync
                     (
                         ControlAccess.MainWindow,
                         ConfigSystem.SupportDmsSave,
@@ -285,7 +285,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.SaveDialogAsync
+            HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportDmsSave,
@@ -324,7 +324,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.SaveDialogAsync
+            HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportMidi,
@@ -357,7 +357,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.SaveDialogAsync
+            HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportVideo,
@@ -390,7 +390,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            XamlHelper.OpenDialogAsync
+            HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportMidi,
@@ -403,10 +403,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                             BpmZoom = ConfigMedia.MidiImportZoom
                         };
 
-                        XamlHelper.InputDialogOkCancelAsync
+                        HelperXaml.InputDialogOkCancelAsync
                             (
                                 Content.XamlRoot,
-                                ResourcesHelper.GetString( "LabelImportMidi" ),
+                                HelperResources.GetString( "LabelImportMidi" ),
                                 page,
                                 () =>
                                 {
@@ -517,7 +517,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         try
         {
             // 必須入力チェック
-            if ( !XamlHelper.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
             {
                 return;
             }
