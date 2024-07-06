@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil;
-using NAudio.Dsp;
-using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
+using NAudio;
+using NAudio.Core.Dsp;
+using NAudio.Core.Wave;
+using NAudio.Core.Wave.SampleProviders;
+using NAudio.Core.Wave.WaveFormats;
+using NAudio.Core.Wave.WaveOutputs;
+using NAudio.WinMM;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pAudio;
@@ -23,7 +27,7 @@ public class NAudioData : DisposeBaseClass
     /// <summary>
     /// Audioファイル読込
     /// </summary>
-    private AudioFileReaderStub? _Reader = null;
+    private AudioFileReader? _Reader = null;
 
     /// <summary>
     /// サンプリング
@@ -117,7 +121,7 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            _Reader = new AudioFileReaderStub( aFilePath );
+            _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
             _Wave = new WaveOutEvent();
 
@@ -138,7 +142,7 @@ public class NAudioData : DisposeBaseClass
     {
         lock ( _LockObj )
         {
-            _Reader = new AudioFileReaderStub( aFilePath );
+            _Reader = new AudioFileReader( aFilePath );
             _Sample = new Sampling( _Reader );
             _Wave = new WaveOutEvent();
 
