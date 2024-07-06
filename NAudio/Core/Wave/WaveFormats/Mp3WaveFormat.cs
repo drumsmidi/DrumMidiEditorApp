@@ -37,19 +37,19 @@ public class Mp3WaveFormat : WaveFormat
     /// </summary>
     public Mp3WaveFormat( int sampleRate, int channels, int blockSize, int bitRate )
     {
-        waveFormatTag = WaveFormatEncoding.MpegLayer3;
-        this.channels = (short)channels;
-        averageBytesPerSecond = bitRate / 8;
-        bitsPerSample = 0; // must be zero
-        blockAlign = 1; // must be 1
-        this.sampleRate = sampleRate;
+        waveFormatTag           = WaveFormatEncoding.MpegLayer3;
+        this.channels           = (short)channels;
+        averageBytesPerSecond   = bitRate / 8;
+        bitsPerSample           = 0; // must be zero
+        blockAlign              = 1; // must be 1
+        this.sampleRate         = sampleRate;
 
-        extraSize = Mp3WaveFormatExtraBytes;
-        id = Mp3WaveFormatId.Mpeg;
-        flags = Mp3WaveFormatFlags.PaddingIso;
-        this.blockSize = (ushort)blockSize;
-        framesPerBlock = 1;
-        codecDelay = 0;
+        extraSize               = Mp3WaveFormatExtraBytes;
+        id                      = Mp3WaveFormatId.Mpeg;
+        flags                   = Mp3WaveFormatFlags.PaddingIso;
+        this.blockSize          = (ushort)blockSize;
+        framesPerBlock          = 1;
+        codecDelay              = 0;
     }
 }
 

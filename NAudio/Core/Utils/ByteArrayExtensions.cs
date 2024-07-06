@@ -9,56 +9,6 @@ namespace NAudio.Core.Utils;
 public static class ByteArrayExtensions
 {
     /// <summary>
-    /// Checks if the buffer passed in is entirely full of nulls
-    /// </summary>
-    public static bool IsEntirelyNull( byte [] buffer )
-    {
-        foreach ( var b in buffer )
-        {
-            if ( b != 0 )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /// <summary>
-    /// Converts to a string containing the buffer described in hex
-    /// </summary>
-    public static string DescribeAsHex( byte [] buffer, string separator, int bytesPerLine )
-    {
-        var sb = new StringBuilder();
-        var n = 0;
-        foreach ( var b in buffer )
-        {
-            _ = sb.AppendFormat( "{0:X2}{1}", b, separator );
-            if ( ++n % bytesPerLine == 0 )
-            {
-                _ = sb.Append( "\r\n" );
-            }
-        }
-        _ = sb.Append( "\r\n" );
-        return sb.ToString();
-    }
-
-    /// <summary>
-    /// Decodes the buffer using the specified encoding, stopping at the first null
-    /// </summary>
-    public static string DecodeAsString( byte [] buffer, int offset, int length, Encoding encoding )
-    {
-        for ( var n = 0; n < length; n++ )
-        {
-            if ( buffer [ offset + n ] == 0 )
-            {
-                length = n;
-            }
-        }
-        return encoding.GetString( buffer, offset, length );
-    }
-
-    /// <summary>
     /// Concatenates the given arrays into a single array.
     /// </summary>
     /// <param name="byteArrays">The arrays to concatenate</param>

@@ -30,7 +30,7 @@ public class WaveToSampleProvider64 : SampleProviderConverterBase
     {
         var bytesNeeded = count * 8;
         EnsureSourceBuffer( bytesNeeded );
-        var bytesRead = source.Read(sourceBuffer, 0, bytesNeeded);
+        var bytesRead   = source.Read(sourceBuffer, 0, bytesNeeded);
         var samplesRead = bytesRead / 8;
         var outputIndex = offset;
         for ( var n = 0; n < bytesRead; n += 8 )

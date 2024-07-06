@@ -6,19 +6,13 @@ namespace NAudio.Core.Wave.SampleProviders;
 /// <summary>
 /// Very simple sample provider supporting adjustable gain
 /// </summary>
-public class VolumeSampleProvider : ISampleProvider
+/// <remarks>
+/// Initializes a new instance of VolumeSampleProvider
+/// </remarks>
+/// <param name="source">Source Sample Provider</param>
+public class VolumeSampleProvider( ISampleProvider source ) : ISampleProvider
 {
-    private readonly ISampleProvider source;
-
-    /// <summary>
-    /// Initializes a new instance of VolumeSampleProvider
-    /// </summary>
-    /// <param name="source">Source Sample Provider</param>
-    public VolumeSampleProvider( ISampleProvider source )
-    {
-        this.source = source;
-        Volume = 1.0f;
-    }
+    private readonly ISampleProvider source = source;
 
     /// <summary>
     /// WaveFormat
@@ -51,5 +45,5 @@ public class VolumeSampleProvider : ISampleProvider
     public float Volume
     {
         get; set;
-    }
+    } = 1.0f;
 }

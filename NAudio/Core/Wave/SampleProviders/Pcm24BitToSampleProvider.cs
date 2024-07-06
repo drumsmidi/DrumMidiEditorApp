@@ -6,18 +6,12 @@ namespace NAudio.Core.Wave.SampleProviders;
 /// Converts an IWaveProvider containing 24 bit PCM to an
 /// ISampleProvider
 /// </summary>
-public class Pcm24BitToSampleProvider : SampleProviderConverterBase
+/// <remarks>
+/// Initialises a new instance of Pcm24BitToSampleProvider
+/// </remarks>
+/// <param name="source">Source Wave Provider</param>
+public class Pcm24BitToSampleProvider( IWaveProvider source ) : SampleProviderConverterBase( source )
 {
-    /// <summary>
-    /// Initialises a new instance of Pcm24BitToSampleProvider
-    /// </summary>
-    /// <param name="source">Source Wave Provider</param>
-    public Pcm24BitToSampleProvider( IWaveProvider source )
-        : base( source )
-    {
-
-    }
-
     /// <summary>
     /// Reads floating point samples from this sample provider
     /// </summary>
@@ -29,8 +23,8 @@ public class Pcm24BitToSampleProvider : SampleProviderConverterBase
     {
         var sourceBytesRequired = count * 3;
         EnsureSourceBuffer( sourceBytesRequired );
-        var bytesRead = source.Read(sourceBuffer, 0, sourceBytesRequired);
-        var outIndex = offset;
+        var bytesRead           = source.Read(sourceBuffer, 0, sourceBytesRequired);
+        var outIndex            = offset;
         for ( var n = 0; n < bytesRead; n += 3 )
         {
             buffer [ outIndex++ ] = ( ( (sbyte)sourceBuffer [ n + 2 ] << 16 ) | ( sourceBuffer [ n + 1 ] << 8 ) | sourceBuffer [ n ] ) / 8388608f;

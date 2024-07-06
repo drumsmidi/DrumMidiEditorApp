@@ -10,7 +10,6 @@ namespace NAudio.Core.Wave.WaveFormats;
 [StructLayout( LayoutKind.Sequential, Pack = 2 )]
 public class Gsm610WaveFormat : WaveFormat
 {
-
     /// <summary>
     /// Creates a GSM 610 WaveFormat
     /// For now hardcoded to 13kbps

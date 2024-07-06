@@ -75,13 +75,13 @@ public class WaveFormat
     {
         var waveFormat = new WaveFormat
         {
-            waveFormatTag = tag,
-            channels = (short)channels,
-            sampleRate = sampleRate,
-            averageBytesPerSecond = averageBytesPerSecond,
-            blockAlign = (short)blockAlign,
-            bitsPerSample = (short)bitsPerSample,
-            extraSize = 0
+            waveFormatTag           = tag,
+            channels                = (short)channels,
+            sampleRate              = sampleRate,
+            averageBytesPerSecond   = averageBytesPerSecond,
+            blockAlign              = (short)blockAlign,
+            bitsPerSample           = (short)bitsPerSample,
+            extraSize               = 0
         };
         return waveFormat;
     }
@@ -92,7 +92,8 @@ public class WaveFormat
     /// <param name="sampleRate">Sample Rate</param>
     /// <param name="channels">Number of Channels</param>
     /// <returns>Wave Format</returns>
-    public static WaveFormat CreateALawFormat( int sampleRate, int channels ) => CreateCustomFormat( WaveFormatEncoding.ALaw, sampleRate, channels, sampleRate * channels, channels, 8 );
+    public static WaveFormat CreateALawFormat( int sampleRate, int channels ) 
+        => CreateCustomFormat( WaveFormatEncoding.ALaw, sampleRate, channels, sampleRate * channels, channels, 8 );
 
     /// <summary>
     /// Creates a Mu-law wave format
@@ -100,7 +101,8 @@ public class WaveFormat
     /// <param name="sampleRate">Sample Rate</param>
     /// <param name="channels">Number of Channels</param>
     /// <returns>Wave Format</returns>
-    public static WaveFormat CreateMuLawFormat( int sampleRate, int channels ) => CreateCustomFormat( WaveFormatEncoding.MuLaw, sampleRate, channels, sampleRate * channels, channels, 8 );
+    public static WaveFormat CreateMuLawFormat( int sampleRate, int channels ) 
+        => CreateCustomFormat( WaveFormatEncoding.MuLaw, sampleRate, channels, sampleRate * channels, channels, 8 );
 
     /// <summary>
     /// Creates a new PCM format with the specified sample rate, bit depth and channels
@@ -112,14 +114,14 @@ public class WaveFormat
             throw new ArgumentOutOfRangeException( nameof( channels ), "Channels must be 1 or greater" );
         }
         // minimum 16 bytes, sometimes 18 for PCM
-        waveFormatTag = WaveFormatEncoding.Pcm;
-        this.channels = (short)channels;
-        sampleRate = rate;
-        bitsPerSample = (short)bits;
-        extraSize = 0;
+        waveFormatTag           = WaveFormatEncoding.Pcm;
+        this.channels           = (short)channels;
+        sampleRate              = rate;
+        bitsPerSample           = (short)bits;
+        extraSize               = 0;
 
-        blockAlign = (short)( channels * ( bits / 8 ) );
-        averageBytesPerSecond = sampleRate * blockAlign;
+        blockAlign              = (short)( channels * ( bits / 8 ) );
+        averageBytesPerSecond   = sampleRate * blockAlign;
     }
 
     /// <summary>
@@ -131,14 +133,14 @@ public class WaveFormat
     {
         var wf = new WaveFormat
         {
-            waveFormatTag = WaveFormatEncoding.IeeeFloat,
-            channels = (short)channels,
-            bitsPerSample = 32,
-            sampleRate = sampleRate,
-            blockAlign = (short)( 4 * channels )
+            waveFormatTag   = WaveFormatEncoding.IeeeFloat,
+            channels        = (short)channels,
+            bitsPerSample   = 32,
+            sampleRate      = sampleRate,
+            blockAlign      = (short)( 4 * channels )
         };
-        wf.averageBytesPerSecond = sampleRate * wf.blockAlign;
-        wf.extraSize = 0;
+        wf.averageBytesPerSecond    = sampleRate * wf.blockAlign;
+        wf.extraSize                = 0;
         return wf;
     }
 
@@ -183,8 +185,8 @@ public class WaveFormat
     /// <returns>IntPtr to WaveFormat structure (needs to be freed by callee)</returns>
     public static nint MarshalToPtr( WaveFormat format )
     {
-        var formatSize = Marshal.SizeOf(format);
-        var formatPointer = Marshal.AllocHGlobal(formatSize);
+        var formatSize      = Marshal.SizeOf(format);
+        var formatPointer   = Marshal.AllocHGlobal(formatSize);
         Marshal.StructureToPtr( format, formatPointer, false );
         return formatPointer;
     }
@@ -211,12 +213,12 @@ public class WaveFormat
             throw new InvalidDataException( "Invalid WaveFormat Structure" );
         }
 
-        waveFormatTag = (WaveFormatEncoding)br.ReadUInt16();
-        channels = br.ReadInt16();
-        sampleRate = br.ReadInt32();
-        averageBytesPerSecond = br.ReadInt32();
-        blockAlign = br.ReadInt16();
-        bitsPerSample = br.ReadInt16();
+        waveFormatTag           = (WaveFormatEncoding)br.ReadUInt16();
+        channels                = br.ReadInt16();
+        sampleRate              = br.ReadInt32();
+        averageBytesPerSecond   = br.ReadInt32();
+        blockAlign              = br.ReadInt16();
+        bitsPerSample           = br.ReadInt16();
         if ( formatChunkLength > 16 )
         {
             extraSize = br.ReadInt16();
@@ -259,13 +261,13 @@ public class WaveFormat
     /// <returns>True if the objects are the same</returns>
     public override bool Equals( object obj )
     {
-        return obj is WaveFormat other
-&& waveFormatTag == other.waveFormatTag &&
-                channels == other.channels &&
-                sampleRate == other.sampleRate &&
-                averageBytesPerSecond == other.averageBytesPerSecond &&
-                blockAlign == other.blockAlign &&
-                bitsPerSample == other.bitsPerSample;
+        return obj is WaveFormat other && 
+                waveFormatTag           == other.waveFormatTag &&
+                channels                == other.channels &&
+                sampleRate              == other.sampleRate &&
+                averageBytesPerSecond   == other.averageBytesPerSecond &&
+                blockAlign              == other.blockAlign &&
+                bitsPerSample           == other.bitsPerSample;
     }
 
     /// <summary>

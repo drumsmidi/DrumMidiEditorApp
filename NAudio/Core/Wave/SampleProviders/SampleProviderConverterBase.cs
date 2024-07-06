@@ -7,12 +7,16 @@ namespace NAudio.Core.Wave.SampleProviders;
 /// <summary>
 /// Helper base class for classes converting to ISampleProvider
 /// </summary>
-public abstract class SampleProviderConverterBase : ISampleProvider
+/// <remarks>
+/// Initialises a new instance of SampleProviderConverterBase
+/// </remarks>
+/// <param name="source">Source Wave provider</param>
+public abstract class SampleProviderConverterBase( IWaveProvider source ) : ISampleProvider
 {
     /// <summary>
     /// Source Wave Provider
     /// </summary>
-    protected IWaveProvider source;
+    protected IWaveProvider source = source;
 
     /// <summary>
     /// Source buffer (to avoid constantly creating small buffers during playback)
@@ -20,22 +24,12 @@ public abstract class SampleProviderConverterBase : ISampleProvider
     protected byte[] sourceBuffer;
 
     /// <summary>
-    /// Initialises a new instance of SampleProviderConverterBase
-    /// </summary>
-    /// <param name="source">Source Wave provider</param>
-    public SampleProviderConverterBase( IWaveProvider source )
-    {
-        this.source = source;
-        WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat( source.WaveFormat.SampleRate, source.WaveFormat.Channels );
-    }
-
-    /// <summary>
     /// Wave format of this wave provider
     /// </summary>
     public WaveFormat WaveFormat
     {
         get;
-    }
+    } = WaveFormat.CreateIeeeFloatWaveFormat( source.WaveFormat.SampleRate, source.WaveFormat.Channels );
 
     /// <summary>
     /// Reads samples from the source wave provider
@@ -50,5 +44,6 @@ public abstract class SampleProviderConverterBase : ISampleProvider
     /// Ensure the source buffer exists and is big enough
     /// </summary>
     /// <param name="sourceBytesRequired">Bytes required</param>
-    protected void EnsureSourceBuffer( int sourceBytesRequired ) => sourceBuffer = BufferHelpers.Ensure( sourceBuffer, sourceBytesRequired );
+    protected void EnsureSourceBuffer( int sourceBytesRequired ) 
+        => sourceBuffer = BufferHelpers.Ensure( sourceBuffer, sourceBytesRequired );
 }

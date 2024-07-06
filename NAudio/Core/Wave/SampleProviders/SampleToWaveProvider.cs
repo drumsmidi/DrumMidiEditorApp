@@ -30,9 +30,9 @@ public class SampleToWaveProvider : IWaveProvider
     /// </summary>
     public int Read( byte [] buffer, int offset, int count )
     {
-        var samplesNeeded = count / 4;
-        var wb = new WaveBuffer(buffer);
-        var samplesRead = source.Read(wb.FloatBuffer, offset / 4, samplesNeeded);
+        var samplesNeeded   = count / 4;
+        var wb              = new WaveBuffer(buffer);
+        var samplesRead     = source.Read(wb.FloatBuffer, offset / 4, samplesNeeded);
         return samplesRead * 4;
     }
 

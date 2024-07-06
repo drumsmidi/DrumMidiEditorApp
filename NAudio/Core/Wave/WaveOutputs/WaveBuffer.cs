@@ -36,11 +36,11 @@ public class WaveBuffer : IWaveBuffer
     /// <param name="sizeToAllocateInBytes">The number of bytes. The size of the final buffer will be aligned on 4 Bytes (upper bound)</param>
     public WaveBuffer( int sizeToAllocateInBytes )
     {
-        var aligned4Bytes = sizeToAllocateInBytes%4;
-        sizeToAllocateInBytes = aligned4Bytes == 0 ? sizeToAllocateInBytes : sizeToAllocateInBytes + 4 - aligned4Bytes;
+        var aligned4Bytes       = sizeToAllocateInBytes%4;
+        sizeToAllocateInBytes   = aligned4Bytes == 0 ? sizeToAllocateInBytes : sizeToAllocateInBytes + 4 - aligned4Bytes;
         // Allocating the byteBuffer is co-allocating the floatBuffer and the intBuffer
-        byteBuffer = new byte [ sizeToAllocateInBytes ];
-        numberOfBytes = 0;
+        byteBuffer              = new byte [ sizeToAllocateInBytes ];
+        numberOfBytes           = 0;
     }
 
     /// <summary>
@@ -63,8 +63,8 @@ public class WaveBuffer : IWaveBuffer
         {
             throw new ArgumentException("The byte buffer to bound must be 4 bytes aligned");
         }*/
-        byteBuffer = bufferToBoundTo;
-        numberOfBytes = 0;
+        byteBuffer      = bufferToBoundTo;
+        numberOfBytes   = 0;
     }
 
     /// <summary>
@@ -183,7 +183,8 @@ public class WaveBuffer : IWaveBuffer
     /// <summary>
     /// Copy this WaveBuffer to a destination buffer up to ByteBufferCount bytes.
     /// </summary>
-    public void Copy( Array destinationArray ) => Array.Copy( byteBuffer, destinationArray, numberOfBytes );
+    public void Copy( Array destinationArray ) 
+        => Array.Copy( byteBuffer, destinationArray, numberOfBytes );
 
     /// <summary>
     /// Checks the validity of the count parameters.

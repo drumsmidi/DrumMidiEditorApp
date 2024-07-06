@@ -25,32 +25,9 @@ public class MixingSampleProvider : ISampleProvider
         {
             throw new ArgumentException( "Mixer wave format must be IEEE float" );
         }
-        sources = [];
-        WaveFormat = waveFormat;
+        sources     = [];
+        WaveFormat  = waveFormat;
     }
-
-    /// <summary>
-    /// Creates a new MixingSampleProvider, based on the given inputs
-    /// </summary>
-    /// <param name="sources">Mixer inputs - must all have the same waveformat, and must
-    /// all be of the same WaveFormat. There must be at least one input</param>
-    public MixingSampleProvider( IEnumerable<ISampleProvider> sources )
-    {
-        this.sources = [];
-        foreach ( var source in sources )
-        {
-            AddMixerInput( source );
-        }
-        if ( this.sources.Count == 0 )
-        {
-            throw new ArgumentException( "Must provide at least one input in this constructor" );
-        }
-    }
-
-    /// <summary>
-    /// Returns the mixer inputs (read-only - use AddMixerInput to add an input
-    /// </summary>
-    public IEnumerable<ISampleProvider> MixerInputs => sources;
 
     /// <summary>
     /// When set to true, the Read method always returns the number
@@ -63,13 +40,6 @@ public class MixingSampleProvider : ISampleProvider
     {
         get; set;
     }
-
-    /// <summary>
-    /// Adds a WaveProvider as a Mixer input.
-    /// Must be PCM or IEEE float already
-    /// </summary>
-    /// <param name="mixerInput">IWaveProvider mixer input</param>
-    public void AddMixerInput( IWaveProvider mixerInput ) => AddMixerInput( SampleProviderConverters.ConvertWaveProviderIntoSampleProvider( mixerInput ) );
 
     /// <summary>
     /// Adds a new mixer input
@@ -193,15 +163,11 @@ public class MixingSampleProvider : ISampleProvider
 /// <summary>
 /// SampleProvider event args
 /// </summary>
-public class SampleProviderEventArgs : EventArgs
+/// <remarks>
+/// Constructs a new SampleProviderEventArgs
+/// </remarks>
+public class SampleProviderEventArgs( ISampleProvider sampleProvider ) : EventArgs
 {
-    /// <summary>
-    /// Constructs a new SampleProviderEventArgs
-    /// </summary>
-    public SampleProviderEventArgs( ISampleProvider sampleProvider )
-    {
-        SampleProvider = sampleProvider;
-    }
 
     /// <summary>
     /// The Sample Provider
@@ -209,5 +175,5 @@ public class SampleProviderEventArgs : EventArgs
     public ISampleProvider SampleProvider
     {
         get; private set;
-    }
+    } = sampleProvider;
 }

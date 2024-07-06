@@ -21,16 +21,6 @@ public class SampleChannel : ISampleProvider
     /// Initialises a new instance of SampleChannel
     /// </summary>
     /// <param name="waveProvider">Source wave provider, must be PCM or IEEE</param>
-    public SampleChannel( IWaveProvider waveProvider )
-        : this( waveProvider, false )
-    {
-
-    }
-
-    /// <summary>
-    /// Initialises a new instance of SampleChannel
-    /// </summary>
-    /// <param name="waveProvider">Source wave provider, must be PCM or IEEE</param>
     /// <param name="forceStereo">force mono inputs to become stereo</param>
     public SampleChannel( IWaveProvider waveProvider, bool forceStereo )
     {
@@ -52,7 +42,8 @@ public class SampleChannel : ISampleProvider
     /// <param name="offset">Offset into sample buffer</param>
     /// <param name="sampleCount">Number of samples desired</param>
     /// <returns>Number of samples read</returns>
-    public int Read( float [] buffer, int offset, int sampleCount ) => volumeProvider.Read( buffer, offset, sampleCount );
+    public int Read( float [] buffer, int offset, int sampleCount ) 
+        => volumeProvider.Read( buffer, offset, sampleCount );
 
     /// <summary>
     /// The WaveFormat of this Sample Provider
@@ -77,7 +68,7 @@ public class SampleChannel : ISampleProvider
     /// </summary>
     public event EventHandler<StreamVolumeEventArgs> PreVolumeMeter
     {
-        add => preVolumeMeter.StreamVolume += value;
-        remove => preVolumeMeter.StreamVolume -= value;
+        add     => preVolumeMeter.StreamVolume += value;
+        remove  => preVolumeMeter.StreamVolume -= value;
     }
 }

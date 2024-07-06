@@ -6,18 +6,12 @@ namespace NAudio.Core.Wave.SampleProviders;
 /// Converts an IWaveProvider containing 32 bit PCM to an
 /// ISampleProvider
 /// </summary>
-public class Pcm32BitToSampleProvider : SampleProviderConverterBase
+/// <remarks>
+/// Initialises a new instance of Pcm32BitToSampleProvider
+/// </remarks>
+/// <param name="source">Source Wave Provider</param>
+public class Pcm32BitToSampleProvider( IWaveProvider source ) : SampleProviderConverterBase( source )
 {
-    /// <summary>
-    /// Initialises a new instance of Pcm32BitToSampleProvider
-    /// </summary>
-    /// <param name="source">Source Wave Provider</param>
-    public Pcm32BitToSampleProvider( IWaveProvider source )
-        : base( source )
-    {
-
-    }
-
     /// <summary>
     /// Reads floating point samples from this sample provider
     /// </summary>
@@ -29,14 +23,14 @@ public class Pcm32BitToSampleProvider : SampleProviderConverterBase
     {
         var sourceBytesRequired = count*4;
         EnsureSourceBuffer( sourceBytesRequired );
-        var bytesRead = source.Read(sourceBuffer, 0, sourceBytesRequired);
-        var outIndex = offset;
+        var bytesRead           = source.Read(sourceBuffer, 0, sourceBytesRequired);
+        var outIndex            = offset;
         for ( var n = 0; n < bytesRead; n += 4 )
         {
             buffer [ outIndex++ ] = ( ( (sbyte)sourceBuffer [ n + 3 ] << 24 ) |
                                     ( sourceBuffer [ n + 2 ] << 16 ) |
-                                   ( sourceBuffer [ n + 1 ] << 8 ) |
-                                  sourceBuffer [ n ] ) / 2147483648f;
+                                    ( sourceBuffer [ n + 1 ] << 8 ) |
+                                      sourceBuffer [ n ] ) / 2147483648f;
         }
         return bytesRead / 4;
     }

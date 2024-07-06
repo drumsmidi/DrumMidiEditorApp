@@ -44,14 +44,15 @@ public class WaveFileReader : WaveStream
     private WaveFileReader( Stream inputStream, bool ownInput )
     {
         waveStream = inputStream;
+
         var chunkReader = new WaveFileChunkReader();
         try
         {
             chunkReader.ReadWaveHeader( inputStream );
-            waveFormat = chunkReader.WaveFormat;
-            dataPosition = chunkReader.DataChunkPosition;
+            waveFormat      = chunkReader.WaveFormat;
+            dataPosition    = chunkReader.DataChunkPosition;
             dataChunkLength = chunkReader.DataChunkLength;
-            ExtraChunks = chunkReader.RiffChunks;
+            ExtraChunks     = chunkReader.RiffChunks;
         }
         catch
         {
@@ -63,8 +64,8 @@ public class WaveFileReader : WaveStream
             throw;
         }
 
-        Position = 0;
-        this.ownInput = ownInput;
+        Position        = 0;
+        this.ownInput   = ownInput;
     }
 
     /// <summary>
@@ -80,9 +81,9 @@ public class WaveFileReader : WaveStream
     /// </summary>
     public byte [] GetChunkData( RiffChunk chunk )
     {
-        var oldPosition = waveStream.Position;
+        var oldPosition     = waveStream.Position;
         waveStream.Position = chunk.StreamPosition;
-        var data = new byte[chunk.Length];
+        var data            = new byte[chunk.Length];
         _ = waveStream.Read( data, 0, data.Length );
         waveStream.Position = oldPosition;
         return data;
@@ -207,8 +208,8 @@ public class WaveFileReader : WaveStream
         }
         var sampleFrame = new float[waveFormat.Channels];
         var bytesToRead = waveFormat.Channels*(waveFormat.BitsPerSample/8);
-        var raw = new byte[bytesToRead];
-        var bytesRead = Read(raw, 0, bytesToRead);
+        var raw         = new byte[bytesToRead];
+        var bytesRead   = Read(raw, 0, bytesToRead);
         if ( bytesRead == 0 )
         {
             return null; // end of file

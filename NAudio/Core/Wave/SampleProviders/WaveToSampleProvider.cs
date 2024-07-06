@@ -30,7 +30,7 @@ public class WaveToSampleProvider : SampleProviderConverterBase
     {
         var bytesNeeded = count * 4;
         EnsureSourceBuffer( bytesNeeded );
-        var bytesRead = source.Read(sourceBuffer, 0, bytesNeeded);
+        var bytesRead   = source.Read(sourceBuffer, 0, bytesNeeded);
         var samplesRead = bytesRead / 4;
         var outputIndex = offset;
         unsafe

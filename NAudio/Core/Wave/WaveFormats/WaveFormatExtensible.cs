@@ -26,8 +26,8 @@ public class WaveFormatExtensible : WaveFormat
     public WaveFormatExtensible( int rate, int bits, int channels )
         : base( rate, bits, channels )
     {
-        waveFormatTag = WaveFormatEncoding.Extensible;
-        extraSize = 22;
+        waveFormatTag       = WaveFormatEncoding.Extensible;
+        extraSize           = 22;
         wValidBitsPerSample = (short)bits;
         for ( var n = 0; n < channels; n++ )
         {
@@ -43,7 +43,6 @@ public class WaveFormatExtensible : WaveFormat
             // KSDATAFORMAT_SUBTYPE_PCM
             SubFormat = AudioMediaSubtypes.MEDIASUBTYPE_PCM;
         }
-
     }
 
     /// <summary>
@@ -56,7 +55,9 @@ public class WaveFormatExtensible : WaveFormat
     {
         return SubFormat == AudioMediaSubtypes.MEDIASUBTYPE_IEEE_FLOAT && bitsPerSample == 32
             ? CreateIeeeFloatWaveFormat( sampleRate, channels )
-            : SubFormat == AudioMediaSubtypes.MEDIASUBTYPE_PCM ? new WaveFormat( sampleRate, bitsPerSample, channels ) : this;
+            : SubFormat == AudioMediaSubtypes.MEDIASUBTYPE_PCM 
+            ? new WaveFormat( sampleRate, bitsPerSample, channels ) 
+            : this;
         //throw new InvalidOperationException("Not a recognised PCM or IEEE float format");
     }
 

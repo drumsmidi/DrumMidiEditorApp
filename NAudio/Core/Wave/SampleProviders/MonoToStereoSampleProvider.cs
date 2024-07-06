@@ -19,14 +19,14 @@ public class MonoToStereoSampleProvider : ISampleProvider
     /// <param name="source">Source sample provider</param>
     public MonoToStereoSampleProvider( ISampleProvider source )
     {
-        LeftVolume = 1.0f;
+        LeftVolume  = 1.0f;
         RightVolume = 1.0f;
         if ( source.WaveFormat.Channels != 1 )
         {
             throw new ArgumentException( "Source must be mono" );
         }
         this.source = source;
-        WaveFormat = WaveFormat.CreateIeeeFloatWaveFormat( source.WaveFormat.SampleRate, 2 );
+        WaveFormat  = WaveFormat.CreateIeeeFloatWaveFormat( source.WaveFormat.SampleRate, 2 );
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public class MonoToStereoSampleProvider : ISampleProvider
     /// <returns>Number of samples read</returns>
     public int Read( float [] buffer, int offset, int count )
     {
-        var sourceSamplesRequired = count / 2;
-        var outIndex = offset;
+        var sourceSamplesRequired   = count / 2;
+        var outIndex                = offset;
         EnsureSourceBuffer( sourceSamplesRequired );
         var sourceSamplesRead = source.Read(sourceBuffer, 0, sourceSamplesRequired);
         for ( var n = 0; n < sourceSamplesRead; n++ )

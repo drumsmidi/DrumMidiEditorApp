@@ -48,11 +48,12 @@ public class MeteringSampleProvider : ISampleProvider
     /// <param name="samplesPerNotification">Number of samples between notifications</param>
     public MeteringSampleProvider( ISampleProvider source, int samplesPerNotification )
     {
-        this.source = source;
-        channels = source.WaveFormat.Channels;
-        maxSamples = new float [ channels ];
-        SamplesPerNotification = samplesPerNotification;
-        args = new StreamVolumeEventArgs() { MaxSampleValues = maxSamples }; // create objects up front giving GC little to do
+        this.source             = source;
+        channels                = source.WaveFormat.Channels;
+        maxSamples              = new float [ channels ];
+        SamplesPerNotification  = samplesPerNotification;
+        args                    = new StreamVolumeEventArgs() { MaxSampleValues = maxSamples }; 
+        // create objects up front giving GC little to do
     }
 
     /// <summary>

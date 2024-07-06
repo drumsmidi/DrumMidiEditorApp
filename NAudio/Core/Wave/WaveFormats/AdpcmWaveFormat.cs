@@ -65,9 +65,9 @@ public class AdpcmWaveFormat : WaveFormat
 
 
         numCoeff = 7;
-        coefficients = new short [ 14 ] {
+        coefficients = [
             256,0,512,-256,0,0,192,64,240,0,460,-208,392,-232
-        };
+        ];
     }
 
     /// <summary>

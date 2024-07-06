@@ -74,12 +74,14 @@ public abstract class WaveStream : Stream, IWaveProvider
     /// Sets the length of the WaveStream. Not Supported.
     /// </summary>
     /// <param name="length"></param>
-    public override void SetLength( long length ) => throw new NotSupportedException( "Can't set length of a WaveFormatString" );
+    public override void SetLength( long length ) 
+        => throw new NotSupportedException( "Can't set length of a WaveFormatString" );
 
     /// <summary>
     /// Writes to the WaveStream. Not Supported.
     /// </summary>
-    public override void Write( byte [] buffer, int offset, int count ) => throw new NotSupportedException( "Can't write to a WaveFormatString" );
+    public override void Write( byte [] buffer, int offset, int count ) 
+        => throw new NotSupportedException( "Can't write to a WaveFormatString" );
 
     /// <summary>
     /// The block alignment for this wavestream. Do not modify the Position
@@ -109,7 +111,8 @@ public abstract class WaveStream : Stream, IWaveProvider
     /// <summary>
     /// Total length in real-time of the stream (may be an estimate for compressed files)
     /// </summary>
-    public virtual TimeSpan TotalTime => TimeSpan.FromSeconds( (double)Length / WaveFormat.AverageBytesPerSecond );
+    public virtual TimeSpan TotalTime 
+        => TimeSpan.FromSeconds( (double)Length / WaveFormat.AverageBytesPerSecond );
 
     /// <summary>
     /// Whether the WaveStream has non-zero sample data at the current position for the 

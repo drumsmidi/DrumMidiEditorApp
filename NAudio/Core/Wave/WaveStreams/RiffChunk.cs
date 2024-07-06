@@ -24,7 +24,8 @@ public class RiffChunk( int identifier, int length, long streamPosition )
     /// <summary>
     /// The chunk identifier converted to a string
     /// </summary>
-    public string IdentifierAsString => Encoding.UTF8.GetString( BitConverter.GetBytes( Identifier ) );
+    public string IdentifierAsString 
+        => Encoding.UTF8.GetString( BitConverter.GetBytes( Identifier ) );
 
     /// <summary>
     /// The chunk length
