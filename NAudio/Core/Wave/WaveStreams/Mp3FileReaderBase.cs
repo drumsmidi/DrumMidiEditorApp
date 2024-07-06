@@ -99,15 +99,9 @@ public class Mp3FileReaderBase : WaveStream
     /// <exception cref="ArgumentNullException"></exception>
     protected Mp3FileReaderBase( Stream inputStream, FrameDecompressorBuilder frameDecompressorBuilder, bool ownInputStream )
     {
-        if ( inputStream == null )
-        {
-            throw new ArgumentNullException( nameof( inputStream ) );
-        }
+        ArgumentNullException.ThrowIfNull( inputStream );
 
-        if ( frameDecompressorBuilder == null )
-        {
-            throw new ArgumentNullException( nameof( frameDecompressorBuilder ) );
-        }
+        ArgumentNullException.ThrowIfNull( frameDecompressorBuilder );
 
         this.ownInputStream = ownInputStream;
         try
@@ -116,11 +110,7 @@ public class Mp3FileReaderBase : WaveStream
             Id3v2Tag = Id3v2Tag.ReadTag( mp3Stream );
 
             dataStartPosition = mp3Stream.Position;
-            var firstFrame = Mp3Frame.LoadFromStream(mp3Stream);
-            if ( firstFrame == null )
-            {
-                throw new InvalidDataException( "Invalid MP3 file - no MP3 Frames Detected" );
-            }
+            var firstFrame = Mp3Frame.LoadFromStream(mp3Stream) ?? throw new InvalidDataException( "Invalid MP3 file - no MP3 Frames Detected" );
 
             double bitRate = firstFrame.BitRate;
             XingHeader = XingHeader.LoadXingHeader( firstFrame );

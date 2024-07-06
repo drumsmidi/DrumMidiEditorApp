@@ -288,7 +288,7 @@ public class AudioMediaSubtypes
     /// <summary>
     /// Audio Subtypes
     /// </summary>
-    public static readonly Guid[] AudioSubTypes = {
+    public static readonly Guid[] AudioSubTypes = [
         MEDIASUBTYPE_PCM,
         MEDIASUBTYPE_PCMAudioObsolete,
         MEDIASUBTYPE_MPEG1Packet,
@@ -302,12 +302,12 @@ public class AudioMediaSubtypes
         MEDIASUBTYPE_RAW_SPORT,
         MEDIASUBTYPE_SPDIF_TAG_241h,
         WMMEDIASUBTYPE_MP3,
-    };
+    ];
 
     /// <summary>
     /// Audio subtype names
     /// </summary>
-    public static readonly string[] AudioSubTypeNames = {
+    public static readonly string[] AudioSubTypeNames = [
         "PCM",
         "PCM Obsolete",
         "MPEG1Packet",
@@ -321,7 +321,7 @@ public class AudioMediaSubtypes
         "RAW_SPORT",
         "SPDIF_TAG_241h",
         "MP3"
-    };
+    ];
 
     /// <summary>
     /// Get Audio Subtype Name

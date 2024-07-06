@@ -7,17 +7,11 @@ namespace NAudio.Core.Wave.WaveStreams;
 /// <summary>
 /// Holds information about a RIFF file chunk
 /// </summary>
-public class RiffChunk
+/// <remarks>
+/// Creates a RiffChunk object
+/// </remarks>
+public class RiffChunk( int identifier, int length, long streamPosition )
 {
-    /// <summary>
-    /// Creates a RiffChunk object
-    /// </summary>
-    public RiffChunk( int identifier, int length, long streamPosition )
-    {
-        Identifier = identifier;
-        Length = length;
-        StreamPosition = streamPosition;
-    }
 
     /// <summary>
     /// The chunk identifier
@@ -25,7 +19,7 @@ public class RiffChunk
     public int Identifier
     {
         get;
-    }
+    } = identifier;
 
     /// <summary>
     /// The chunk identifier converted to a string
@@ -38,7 +32,7 @@ public class RiffChunk
     public int Length
     {
         get; private set;
-    }
+    } = length;
 
     /// <summary>
     /// The stream position this chunk is located at
@@ -46,5 +40,5 @@ public class RiffChunk
     public long StreamPosition
     {
         get; private set;
-    }
+    } = streamPosition;
 }

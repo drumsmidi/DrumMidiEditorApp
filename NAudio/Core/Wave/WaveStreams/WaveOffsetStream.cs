@@ -72,7 +72,7 @@ public class WaveOffsetStream : WaveStream
                 audioStartPosition = (long)( startTime.TotalSeconds * sourceStream.WaveFormat.SampleRate ) * bytesPerSample;
                 // fix up our length and position
                 length = audioStartPosition + sourceLengthBytes;
-                Position = Position;
+                //Position = Position;
             }
         }
     }
@@ -90,7 +90,7 @@ public class WaveOffsetStream : WaveStream
                 sourceOffset = value;
                 sourceOffsetBytes = (long)( sourceOffset.TotalSeconds * sourceStream.WaveFormat.SampleRate ) * bytesPerSample;
                 // fix up our position
-                Position = Position;
+                //Position = Position;
             }
         }
     }
@@ -109,7 +109,7 @@ public class WaveOffsetStream : WaveStream
                 sourceLengthBytes = (long)( sourceLength.TotalSeconds * sourceStream.WaveFormat.SampleRate ) * bytesPerSample;
                 // fix up our length and position
                 length = audioStartPosition + sourceLengthBytes;
-                Position = Position;
+                //Position = Position;
             }
         }
 

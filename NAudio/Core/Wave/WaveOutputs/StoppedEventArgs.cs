@@ -6,17 +6,12 @@ namespace NAudio.Core.Wave.WaveOutputs;
 /// <summary>
 /// Stopped Event Args
 /// </summary>
-public class StoppedEventArgs : EventArgs
+/// <remarks>
+/// Initializes a new instance of StoppedEventArgs
+/// </remarks>
+/// <param name="exception">An exception to report (null if no exception)</param>
+public class StoppedEventArgs( Exception exception = null ) : EventArgs
 {
-
-    /// <summary>
-    /// Initializes a new instance of StoppedEventArgs
-    /// </summary>
-    /// <param name="exception">An exception to report (null if no exception)</param>
-    public StoppedEventArgs( Exception exception = null )
-    {
-        Exception = exception;
-    }
 
     /// <summary>
     /// An exception. Will be null if the playback or record operation stopped due to 
@@ -25,5 +20,5 @@ public class StoppedEventArgs : EventArgs
     public Exception Exception
     {
         get;
-    }
+    } = exception;
 }

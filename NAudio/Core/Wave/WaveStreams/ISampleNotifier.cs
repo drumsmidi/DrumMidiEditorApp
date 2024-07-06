@@ -17,7 +17,10 @@ public interface ISampleNotifier
 /// <summary>
 /// Sample event arguments
 /// </summary>
-public class SampleEventArgs : EventArgs
+/// <remarks>
+/// Constructor
+/// </remarks>
+public class SampleEventArgs( float left, float right ) : EventArgs
 {
     /// <summary>
     /// Left sample
@@ -25,21 +28,12 @@ public class SampleEventArgs : EventArgs
     public float Left
     {
         get; set;
-    }
+    } = left;
     /// <summary>
     /// Right sample
     /// </summary>
     public float Right
     {
         get; set;
-    }
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public SampleEventArgs( float left, float right )
-    {
-        Left = left;
-        Right = right;
-    }
+    } = right;
 }

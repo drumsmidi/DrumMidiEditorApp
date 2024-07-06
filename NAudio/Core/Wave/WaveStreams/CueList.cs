@@ -12,7 +12,12 @@ namespace NAudio.Core.Wave.WaveStreams;
 /// <summary>
 /// Holds information on a cue: a labeled position within a Wave file
 /// </summary>
-public class Cue
+/// <remarks>
+/// Creates a Cue based on a sample position and label 
+/// </remarks>
+/// <param name="position"></param>
+/// <param name="label"></param>
+public class Cue( int position, string label )
 {
     /// <summary>
     /// Cue position in samples
@@ -20,25 +25,14 @@ public class Cue
     public int Position
     {
         get;
-    }
+    } = position;
     /// <summary>
     /// Label of the cue
     /// </summary>
     public string Label
     {
         get;
-    }
-
-    /// <summary>
-    /// Creates a Cue based on a sample position and label 
-    /// </summary>
-    /// <param name="position"></param>
-    /// <param name="label"></param>
-    public Cue( int position, string label )
-    {
-        Position = position;
-        Label = label ?? string.Empty;
-    }
+    } = label ?? string.Empty;
 }
 
 /// <summary>
@@ -255,11 +249,11 @@ public class CueList
 
         foreach ( var chunk in reader.ExtraChunks )
         {
-            if ( chunk.IdentifierAsString.ToLower() == "cue " )
+            if ( chunk.IdentifierAsString.Equals( "cue ", StringComparison.CurrentCultureIgnoreCase ) )
             {
                 cueChunkData = reader.GetChunkData( chunk );
             }
-            else if ( chunk.IdentifierAsString.ToLower() == "list" )
+            else if ( chunk.IdentifierAsString.Equals( "list", StringComparison.CurrentCultureIgnoreCase ) )
             {
                 listChunkData = reader.GetChunkData( chunk );
             }

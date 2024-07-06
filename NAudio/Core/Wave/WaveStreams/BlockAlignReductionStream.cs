@@ -11,24 +11,18 @@ namespace NAudio.Core.Wave.WaveStreams;
 /// Helper stream that lets us read from compressed audio files with large block alignment
 /// as though we could read any amount and reposition anywhere
 /// </summary>
-public class BlockAlignReductionStream : WaveStream
+/// <remarks>
+/// Creates a new BlockAlignReductionStream
+/// </remarks>
+/// <param name="sourceStream">the input stream</param>
+public class BlockAlignReductionStream( WaveStream sourceStream ) : WaveStream
 {
-    private WaveStream sourceStream;
+    private WaveStream sourceStream = sourceStream;
     private long position;
-    private readonly CircularBuffer circularBuffer;
+    private readonly CircularBuffer circularBuffer = new( sourceStream.WaveFormat.AverageBytesPerSecond * 4 );
     private long bufferStartPosition;
     private byte[] sourceBuffer;
     private readonly object lockObject = new();
-
-    /// <summary>
-    /// Creates a new BlockAlignReductionStream
-    /// </summary>
-    /// <param name="sourceStream">the input stream</param>
-    public BlockAlignReductionStream( WaveStream sourceStream )
-    {
-        this.sourceStream = sourceStream;
-        circularBuffer = new CircularBuffer( sourceStream.WaveFormat.AverageBytesPerSecond * 4 );
-    }
 
     private byte [] GetSourceBuffer( int size )
     {

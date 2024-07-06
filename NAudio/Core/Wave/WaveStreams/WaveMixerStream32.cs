@@ -57,12 +57,12 @@ public class WaveMixerStream32 : WaveStream
     {
         if ( waveStream.WaveFormat.Encoding != WaveFormatEncoding.IeeeFloat )
         {
-            throw new ArgumentException( "Must be IEEE floating point", "waveStream" );
+            throw new ArgumentException( "Must be IEEE floating point", nameof( waveStream ) );
         }
 
         if ( waveStream.WaveFormat.BitsPerSample != 32 )
         {
-            throw new ArgumentException( "Only 32 bit audio currently supported", "waveStream" );
+            throw new ArgumentException( "Only 32 bit audio currently supported", nameof( waveStream ) );
         }
 
         if ( inputStreams.Count == 0 )
@@ -76,7 +76,7 @@ public class WaveMixerStream32 : WaveStream
         {
             if ( !waveStream.WaveFormat.Equals( waveFormat ) )
             {
-                throw new ArgumentException( "All incoming channels must have the same format", "waveStream" );
+                throw new ArgumentException( "All incoming channels must have the same format", nameof( waveStream ) );
             }
         }
 
@@ -147,7 +147,7 @@ public class WaveMixerStream32 : WaveStream
 
         if ( count % bytesPerSample != 0 )
         {
-            throw new ArgumentException( "Must read an whole number of samples", "count" );
+            throw new ArgumentException( "Must read an whole number of samples", nameof( count ) );
         }
 
         // blank the buffer
