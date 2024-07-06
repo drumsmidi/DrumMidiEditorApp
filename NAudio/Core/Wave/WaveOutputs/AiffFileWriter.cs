@@ -70,7 +70,7 @@ public class AiffFileWriter : Stream
     public AiffFileWriter( string filename, WaveFormat format )
         : this( new FileStream( filename, FileMode.Create, FileAccess.Write, FileShare.Read ), format )
     {
-        this.Filename = filename;
+        Filename = filename;
     }
 
     private void WriteSsndChunkHeader()
@@ -82,9 +82,9 @@ public class AiffFileWriter : Stream
         writer.Write( SwapEndian( WaveFormat.BlockAlign ) );
     }
 
-    private byte [] SwapEndian( short n ) => new byte [] { (byte)( n >> 8 ), (byte)( n & 0xff ) };
+    private byte [] SwapEndian( short n ) => [(byte)( n >> 8 ), (byte)( n & 0xff )];
 
-    private byte [] SwapEndian( int n ) => new byte [] { (byte)( ( n >> 24 ) & 0xff ), (byte)( ( n >> 16 ) & 0xff ), (byte)( ( n >> 8 ) & 0xff ), (byte)( n & 0xff ), };
+    private byte [] SwapEndian( int n ) => [(byte)( ( n >> 24 ) & 0xff ), (byte)( ( n >> 16 ) & 0xff ), (byte)( ( n >> 8 ) & 0xff ), (byte)( n & 0xff ),];
 
     private void CreateCommChunk()
     {
