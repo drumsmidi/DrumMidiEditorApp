@@ -62,49 +62,6 @@ public class WaveFormat
     }
 
     /// <summary>
-    /// Creates a WaveFormat with custom members
-    /// </summary>
-    /// <param name="tag">The encoding</param>
-    /// <param name="sampleRate">Sample Rate</param>
-    /// <param name="channels">Number of channels</param>
-    /// <param name="averageBytesPerSecond">Average Bytes Per Second</param>
-    /// <param name="blockAlign">Block Align</param>
-    /// <param name="bitsPerSample">Bits Per Sample</param>
-    /// <returns></returns>
-    public static WaveFormat CreateCustomFormat( WaveFormatEncoding tag, int sampleRate, int channels, int averageBytesPerSecond, int blockAlign, int bitsPerSample )
-    {
-        var waveFormat = new WaveFormat
-        {
-            waveFormatTag           = tag,
-            channels                = (short)channels,
-            sampleRate              = sampleRate,
-            averageBytesPerSecond   = averageBytesPerSecond,
-            blockAlign              = (short)blockAlign,
-            bitsPerSample           = (short)bitsPerSample,
-            extraSize               = 0
-        };
-        return waveFormat;
-    }
-
-    /// <summary>
-    /// Creates an A-law wave format
-    /// </summary>
-    /// <param name="sampleRate">Sample Rate</param>
-    /// <param name="channels">Number of Channels</param>
-    /// <returns>Wave Format</returns>
-    public static WaveFormat CreateALawFormat( int sampleRate, int channels ) 
-        => CreateCustomFormat( WaveFormatEncoding.ALaw, sampleRate, channels, sampleRate * channels, channels, 8 );
-
-    /// <summary>
-    /// Creates a Mu-law wave format
-    /// </summary>
-    /// <param name="sampleRate">Sample Rate</param>
-    /// <param name="channels">Number of Channels</param>
-    /// <returns>Wave Format</returns>
-    public static WaveFormat CreateMuLawFormat( int sampleRate, int channels ) 
-        => CreateCustomFormat( WaveFormatEncoding.MuLaw, sampleRate, channels, sampleRate * channels, channels, 8 );
-
-    /// <summary>
     /// Creates a new PCM format with the specified sample rate, bit depth and channels
     /// </summary>
     public WaveFormat( int rate, int bits, int channels )
@@ -252,36 +209,6 @@ public class WaveFormat
             WaveFormatEncoding.IeeeFloat => $"{bitsPerSample} bit IEEFloat: {sampleRate}Hz {channels} channels",
             _ => waveFormatTag.ToString(),
         };
-    }
-
-    /// <summary>
-    /// Compares with another WaveFormat object
-    /// </summary>
-    /// <param name="obj">Object to compare to</param>
-    /// <returns>True if the objects are the same</returns>
-    public override bool Equals( object obj )
-    {
-        return obj is WaveFormat other && 
-                waveFormatTag           == other.waveFormatTag &&
-                channels                == other.channels &&
-                sampleRate              == other.sampleRate &&
-                averageBytesPerSecond   == other.averageBytesPerSecond &&
-                blockAlign              == other.blockAlign &&
-                bitsPerSample           == other.bitsPerSample;
-    }
-
-    /// <summary>
-    /// Provides a Hashcode for this WaveFormat
-    /// </summary>
-    /// <returns>A hashcode</returns>
-    public override int GetHashCode()
-    {
-        return (int)waveFormatTag ^
-            channels ^
-            sampleRate ^
-            averageBytesPerSecond ^
-            blockAlign ^
-            bitsPerSample;
     }
 
     /// <summary>

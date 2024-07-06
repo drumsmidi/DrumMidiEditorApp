@@ -236,6 +236,7 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
             // some drivers will block here until OnDone is called
             // for every buffer
             playbackState = PlaybackState.Stopped; // set this here to avoid a problem with some drivers whereby 
+
             MmResult result;
             lock ( waveOutLock )
             {

@@ -1,8 +1,6 @@
 using System;
 using NAudio.Core.Wave.WaveFormats;
 
-
-// ReSharper disable once CheckNamespace
 namespace NAudio.Core.Wave.WaveOutputs;
 
 /// <summary>

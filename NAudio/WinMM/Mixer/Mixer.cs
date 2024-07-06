@@ -51,7 +51,7 @@ public class Mixer
     public MixerLine GetDestination( int destinationIndex )
     {
         return destinationIndex < 0 || destinationIndex >= DestinationCount
-            ? throw new ArgumentOutOfRangeException( "destinationIndex" )
+            ? throw new ArgumentOutOfRangeException( nameof( destinationIndex ) )
             : new MixerLine( mixerHandle, destinationIndex, mixerHandleType );
     }
 

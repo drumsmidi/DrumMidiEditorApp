@@ -7,7 +7,7 @@ using NAudio.Core;
 // TODO: Create enums for flags parameters
 namespace NAudio.WinMM.Mixer;
 
-internal class MixerInterop
+internal partial class MixerInterop
 {
     public const uint MIXERCONTROL_CONTROLF_UNIFORM = 0x00000001;
     public const uint MIXERCONTROL_CONTROLF_MULTIPLE = 0x00000002;
@@ -18,44 +18,44 @@ internal class MixerInterop
     public const int MIXER_LONG_NAME_CHARS = 64;
 
     // http://msdn.microsoft.com/en-us/library/dd757304%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern int mixerGetNumDevs();
+    [LibraryImport( "winmm.dll" )]
+    public static partial int mixerGetNumDevs();
 
     // http://msdn.microsoft.com/en-us/library/dd757308%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerOpen( out nint hMixer, int uMxId, nint dwCallback, nint dwInstance, MixerFlags dwOpenFlags );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerOpen( out nint hMixer, int uMxId, nint dwCallback, nint dwInstance, MixerFlags dwOpenFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757292%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerClose( nint hMixer );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerClose( nint hMixer );
 
     // http://msdn.microsoft.com/en-us/library/dd757299%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerGetControlDetails( nint hMixer, ref MIXERCONTROLDETAILS mixerControlDetails, MixerFlags dwDetailsFlags );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerGetControlDetails( nint hMixer, ref MIXERCONTROLDETAILS mixerControlDetails, MixerFlags dwDetailsFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757300%28VS.85%29.aspx
     [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
     public static extern MmResult mixerGetDevCaps( nint nMixerID, ref MIXERCAPS mixerCaps, int mixerCapsSize );
 
     // http://msdn.microsoft.com/en-us/library/dd757301%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerGetID( nint hMixer, out int mixerID, MixerFlags dwMixerIDFlags );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerGetID( nint hMixer, out int mixerID, MixerFlags dwMixerIDFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757302%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerGetLineControls( nint hMixer, ref MIXERLINECONTROLS mixerLineControls, MixerFlags dwControlFlags );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerGetLineControls( nint hMixer, ref MIXERLINECONTROLS mixerLineControls, MixerFlags dwControlFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757303%28VS.85%29.aspx
     [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
     public static extern MmResult mixerGetLineInfo( nint hMixer, ref MIXERLINE mixerLine, MixerFlags dwInfoFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757307%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerMessage( nint hMixer, uint nMessage, nint dwParam1, nint dwParam2 );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerMessage( nint hMixer, uint nMessage, nint dwParam1, nint dwParam2 );
 
     // http://msdn.microsoft.com/en-us/library/dd757309%28VS.85%29.aspx
-    [DllImport( "winmm.dll", CharSet = CharSet.Ansi )]
-    public static extern MmResult mixerSetControlDetails( nint hMixer, ref MIXERCONTROLDETAILS mixerControlDetails, MixerFlags dwDetailsFlags );
+    [LibraryImport( "winmm.dll" )]
+    public static partial MmResult mixerSetControlDetails( nint hMixer, ref MIXERCONTROLDETAILS mixerControlDetails, MixerFlags dwDetailsFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd757294%28VS.85%29.aspx
     [StructLayout( LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 1 )]

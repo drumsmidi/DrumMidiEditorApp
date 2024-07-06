@@ -27,7 +27,7 @@ public class AcmMp3FrameDecompressor : IMp3FrameDecompressor
         catch ( Exception )
         {
             disposed = true;
-            //GC.SuppressFinalize( this );
+            GC.SuppressFinalize( this );
             throw;
         }
     }
