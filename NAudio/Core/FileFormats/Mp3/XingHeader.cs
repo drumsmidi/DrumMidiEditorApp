@@ -16,14 +16,6 @@ public class XingHeader
         VbrScale = 8
     }
 
-    private static readonly int[] sr_table = { 44100, 48000, 32000, 99999 };
-    private int startOffset;
-    private int endOffset;
-
-    private int tocOffset = -1;
-    private int framesOffset = -1;
-    private int bytesOffset = -1;
-
     private static int ReadBigEndian( byte [] buffer, int offset )
     {
         int x;
@@ -37,15 +29,6 @@ public class XingHeader
         x |= buffer [ offset + 3 ];
 
         return x;
-    }
-
-    private void WriteBigEndian( byte [] buffer, int offset, int value )
-    {
-        var littleEndian = BitConverter.GetBytes(value);
-        for ( var n = 0; n < 4; n++ )
-        {
-            buffer [ offset + 3 - n ] = littleEndian [ n ];
-        }
     }
 
     /// <summary>
@@ -79,7 +62,6 @@ public class XingHeader
              frame.RawData [ offset + 2 ] == 'n' &&
              frame.RawData [ offset + 3 ] == 'g' )
         {
-            xingHeader.startOffset = offset;
             offset += 4;
         }
         else if ( frame.RawData [ offset + 0 ] == 'I' &&
@@ -87,7 +69,6 @@ public class XingHeader
                   frame.RawData [ offset + 2 ] == 'f' &&
                   frame.RawData [ offset + 3 ] == 'o' )
         {
-            xingHeader.startOffset = offset;
             offset += 4;
         }
         else
@@ -100,25 +81,21 @@ public class XingHeader
 
         if ( ( flags & XingHeaderOptions.Frames ) != 0 )
         {
-            xingHeader.framesOffset = offset;
             offset += 4;
         }
         if ( ( flags & XingHeaderOptions.Bytes ) != 0 )
         {
-            xingHeader.bytesOffset = offset;
             offset += 4;
         }
         if ( ( flags & XingHeaderOptions.Toc ) != 0 )
         {
-            xingHeader.tocOffset = offset;
             offset += 100;
         }
         if ( ( flags & XingHeaderOptions.VbrScale ) != 0 )
         {
             xingHeader.VbrScale = ReadBigEndian( frame.RawData, offset );
-            offset += 4;
+            //offset += 4;
         }
-        xingHeader.endOffset = offset;
         return xingHeader;
     }
 
@@ -127,40 +104,6 @@ public class XingHeader
     /// </summary>
     private XingHeader()
     {
-    }
-
-    /// <summary>
-    /// Number of frames
-    /// </summary>
-    public int Frames
-    {
-        get => framesOffset == -1 ? -1 : ReadBigEndian( Mp3Frame.RawData, framesOffset );
-        set
-        {
-            if ( framesOffset == -1 )
-            {
-                throw new InvalidOperationException( "Frames flag is not set" );
-            }
-
-            WriteBigEndian( Mp3Frame.RawData, framesOffset, value );
-        }
-    }
-
-    /// <summary>
-    /// Number of bytes
-    /// </summary>
-    public int Bytes
-    {
-        get => bytesOffset == -1 ? -1 : ReadBigEndian( Mp3Frame.RawData, bytesOffset );
-        set
-        {
-            if ( framesOffset == -1 )
-            {
-                throw new InvalidOperationException( "Bytes flag is not set" );
-            }
-
-            WriteBigEndian( Mp3Frame.RawData, bytesOffset, value );
-        }
     }
 
     /// <summary>
@@ -176,5 +119,4 @@ public class XingHeader
         get;
         private set;
     }
-
 }

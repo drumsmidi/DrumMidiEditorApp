@@ -75,23 +75,6 @@ public class AcmStream : IDisposable
     }
 
     /// <summary>
-    /// Returns the number of source bytes for a given number of destination bytes
-    /// </summary>
-    /// <param name="dest">Number of destination bytes</param>
-    /// <returns>Number of source bytes</returns>
-    public int DestToSource( int dest )
-    {
-        if ( dest == 0 ) // zero is an invalid parameter to acmStreamSize
-        {
-            return 0;
-        }
-
-        int convertedBytes;
-        MmException.Try( AcmInterop.acmStreamSize( streamHandle, dest, out convertedBytes, AcmStreamSizeFlags.Destination ), "acmStreamSize" );
-        return convertedBytes;
-    }
-
-    /// <summary>
     /// Suggests an appropriate PCM format that the compressed format can be converted
     /// to in one step
     /// </summary>
@@ -156,29 +139,6 @@ public class AcmStream : IDisposable
             ? throw new ObjectDisposedException( "AcmStream has already been disposed" )
             : streamHeader.Convert( bytesToConvert, out sourceBytesConverted );
     }
-
-    /// <summary>
-    /// Converts the contents of the SourceBuffer into the DestinationBuffer
-    /// </summary>
-    /// <param name="bytesToConvert">The number of bytes in the SourceBuffer
-    /// that need to be converted</param>
-    /// <returns>The number of converted bytes in the DestinationBuffer</returns>
-    [Obsolete( "Call the version returning sourceBytesConverted instead" )]
-    public int Convert( int bytesToConvert )
-    {
-        int sourceBytesConverted;
-        var destBytes = Convert(bytesToConvert, out sourceBytesConverted);
-        return sourceBytesConverted != bytesToConvert
-            ? throw new MmException( MmResult.NotSupported, "AcmStreamHeader.Convert didn't convert everything" )
-            : destBytes;
-    }
-
-    /* Relevant only for async conversion streams
-    public void Reset()
-    {
-        MmException.Try(AcmInterop.acmStreamReset(streamHandle,0),"acmStreamReset");
-    }
-    */
 
     #region IDisposable Members
 

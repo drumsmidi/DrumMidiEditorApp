@@ -126,15 +126,6 @@ public class AudioFileReader : WaveStream, ISampleProvider
     }
 
     /// <summary>
-    /// Gets or Sets the Volume of this AudioFileReader. 1.0f is full volume
-    /// </summary>
-    public float Volume
-    {
-        get => sampleChannel.Volume;
-        set => sampleChannel.Volume = value;
-    }
-
-    /// <summary>
     /// Helper to convert source to dest bytes
     /// </summary>
     private long SourceToDest( long sourceBytes ) 

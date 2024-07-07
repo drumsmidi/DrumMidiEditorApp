@@ -54,15 +54,6 @@ public class SampleChannel : ISampleProvider
     }
 
     /// <summary>
-    /// Allows adjusting the volume, 1.0f = full volume
-    /// </summary>
-    public float Volume
-    {
-        get => volumeProvider.Volume;
-        set => volumeProvider.Volume = value;
-    }
-
-    /// <summary>
     /// Raised periodically to inform the user of the max volume
     /// (before the volume meter)
     /// </summary>

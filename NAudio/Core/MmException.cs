@@ -27,21 +27,4 @@ public class MmException( MmResult result, string function ) : Exception( ErrorM
             throw new MmException( result, function );
         }
     }
-
-    /// <summary>
-    /// Returns the Windows API result
-    /// </summary>
-    public MmResult Result
-    {
-        get;
-    } = result;
-
-    /// <summary>
-    /// The function being called
-    /// </summary>
-    public string Function
-    {
-        get;
-    } = function;
-
 }

@@ -36,9 +36,9 @@ public class Mp3Frame
         }
     };
 
-    private static readonly int[] sampleRatesVersion1 = new int[] {44100, 48000, 32000};
-    private static readonly int[] sampleRatesVersion2 = new int[] {22050, 24000, 16000};
-    private static readonly int[] sampleRatesVersion25 = new int[] {11025, 12000, 8000};
+    private static readonly int[] sampleRatesVersion1 = [44100, 48000, 32000];
+    private static readonly int[] sampleRatesVersion2 = [22050, 24000, 16000];
+    private static readonly int[] sampleRatesVersion25 = [11025, 12000, 8000];
 
     //private short crc;
     private const int MaxFrameLength = 16*1024;

@@ -27,15 +27,6 @@ public class WaveFormatExtraData : WaveFormat
     {
     }
 
-    /// <summary>
-    /// Reads this structure from a BinaryReader
-    /// </summary>
-    public WaveFormatExtraData( BinaryReader reader )
-        : base( reader )
-    {
-        ReadExtraData( reader );
-    }
-
     internal void ReadExtraData( BinaryReader reader )
     {
         if ( extraSize > 0 )

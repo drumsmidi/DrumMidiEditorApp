@@ -6,11 +6,9 @@ using DrumMidiEditorApp.pUtil;
 using NAudio;
 using NAudio.Core.Dsp;
 using NAudio.Core.Wave;
-using NAudio.Core.Wave.SampleProviders;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.WinMM;
-using NAudio.WinMM.Mixer;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pAudio;
@@ -51,22 +49,9 @@ public class NAudioData : DisposeBaseClass
     private bool _IsFFTLoad = false;
 
     /// <summary>
-    /// Mixer追加フラグ
-    /// </summary>
-    private bool _IsMixerAdd = false;
-
-    /// <summary>
     /// イコライザ設定
     /// </summary>
     private readonly Dictionary<int, EqualizerBand> _EqualizerBand = [];
-
-    /// <summary>
-    /// Mixer
-    /// </summary>
-    private static readonly MixingSampleProvider _Mixer = new( WaveFormat.CreateIeeeFloatWaveFormat( 44100, 2 ) )
-    {
-        ReadFully = true,
-    };
 
     /// <summary>
     /// コンストラクタ
@@ -126,10 +111,7 @@ public class NAudioData : DisposeBaseClass
             _Sample = new Sampling( _Reader );
             _Wave   = new WaveOutEvent();
 
-            _Mixer.AddMixerInput( _Sample );
-            _IsMixerAdd = true;
-
-            _Wave.Init( _Mixer );
+            _Wave.Init( _Sample );
 
             //CalcFFT();
         }
@@ -162,12 +144,6 @@ public class NAudioData : DisposeBaseClass
         {
             // オーディオ読込解放
             _Wave?.Dispose();
-
-            if ( _IsMixerAdd )
-            {
-                _Mixer.RemoveMixerInput( _Sample );
-            }
-
             _Sample?.Dispose();
             _Reader?.Dispose();
 

@@ -19,19 +19,4 @@ public static class BufferHelpers
         }
         return buffer;
     }
-
-    /// <summary>
-    /// Ensures the buffer is big enough
-    /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="samplesRequired"></param>
-    /// <returns></returns>
-    public static float [] Ensure( float [] buffer, int samplesRequired )
-    {
-        if ( buffer == null || buffer.Length < samplesRequired )
-        {
-            buffer = new float [ samplesRequired ];
-        }
-        return buffer;
-    }
 }

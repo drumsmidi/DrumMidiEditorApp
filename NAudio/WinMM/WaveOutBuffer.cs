@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using NAudio.Core.Utils;
 using NAudio.Core;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.WinMM.MmeInterop;
@@ -9,7 +10,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// A buffer of Wave samples for streaming to a Wave Output device
 /// </summary>
-public class WaveOutBuffer : IDisposable
+public class WaveOutBuffer : DisposeBaseClass
 {
     private readonly WaveHeader header;
     private readonly byte[] buffer;
@@ -50,62 +51,47 @@ public class WaveOutBuffer : IDisposable
         }
     }
 
-    #region Dispose Pattern
-
-    /// <summary>
-    /// Finalizer for this wave buffer
-    /// </summary>
-    ~WaveOutBuffer()
+    protected override void Dispose( bool aDisposing )
     {
-        Dispose( false );
-        System.Diagnostics.Debug.Assert( true, "WaveBuffer was not disposed" );
-    }
-
-    /// <summary>
-    /// Releases resources held by this WaveBuffer
-    /// </summary>
-    public void Dispose()
-    {
-        GC.SuppressFinalize( this );
-        Dispose( true );
-    }
-
-    /// <summary>
-    /// Releases resources held by this WaveBuffer
-    /// </summary>
-    protected void Dispose( bool disposing )
-    {
-        if ( disposing )
+        if ( !_Disposed )
         {
-            // free managed resources
-        }
-        // free unmanaged resources
-        if ( hHeader.IsAllocated )
-        {
-            hHeader.Free();
-        }
-
-        if ( hBuffer.IsAllocated )
-        {
-            hBuffer.Free();
-        }
-
-        if ( hThis.IsAllocated )
-        {
-            hThis.Free();
-        }
-
-        if ( hWaveOut != nint.Zero )
-        {
-            lock ( waveOutLock )
+            if ( aDisposing )
             {
-                _ = WaveInterop.waveOutUnprepareHeader( hWaveOut, header, Marshal.SizeOf( header ) );
+                // Dispose managed resources.
+                //component.Dispose();
             }
-            hWaveOut = nint.Zero;
+
+            // Dispose unmanaged resources.
+            // free unmanaged resources
+            if ( hHeader.IsAllocated )
+            {
+                hHeader.Free();
+            }
+
+            if ( hBuffer.IsAllocated )
+            {
+                hBuffer.Free();
+            }
+
+            if ( hThis.IsAllocated )
+            {
+                hThis.Free();
+            }
+
+            if ( hWaveOut != nint.Zero )
+            {
+                lock ( waveOutLock )
+                {
+                    _ = WaveInterop.waveOutUnprepareHeader( hWaveOut, header, Marshal.SizeOf( header ) );
+                }
+                hWaveOut = nint.Zero;
+            }
+
+            // Note disposing has been done.
+            _Disposed = true;
         }
     }
-
-    #endregion
+    private bool _Disposed = false;
 
     /// this is called by the WAVE callback and should be used to refill the buffer
     public bool OnDone()
