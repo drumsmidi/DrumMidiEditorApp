@@ -31,19 +31,6 @@ public class WaveBuffer : IWaveBuffer
     private readonly int[] intBuffer;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="WaveBuffer"/> class.
-    /// </summary>
-    /// <param name="sizeToAllocateInBytes">The number of bytes. The size of the final buffer will be aligned on 4 Bytes (upper bound)</param>
-    public WaveBuffer( int sizeToAllocateInBytes )
-    {
-        var aligned4Bytes       = sizeToAllocateInBytes%4;
-        sizeToAllocateInBytes   = aligned4Bytes == 0 ? sizeToAllocateInBytes : sizeToAllocateInBytes + 4 - aligned4Bytes;
-        // Allocating the byteBuffer is co-allocating the floatBuffer and the intBuffer
-        byteBuffer              = new byte [ sizeToAllocateInBytes ];
-        numberOfBytes           = 0;
-    }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="WaveBuffer"/> class binded to a specific byte buffer.
     /// </summary>
     /// <param name="bufferToBoundTo">A byte buffer to bound the WaveBuffer to.</param>
@@ -174,17 +161,6 @@ public class WaveBuffer : IWaveBuffer
         get => numberOfBytes / 4;
         set => numberOfBytes = CheckValidityCount( "IntBufferCount", value, 4 );
     }
-
-    /// <summary>
-    /// Clears the associated buffer.
-    /// </summary>
-    public void Clear() => Array.Clear( byteBuffer, 0, byteBuffer.Length );
-
-    /// <summary>
-    /// Copy this WaveBuffer to a destination buffer up to ByteBufferCount bytes.
-    /// </summary>
-    public void Copy( Array destinationArray ) 
-        => Array.Copy( byteBuffer, destinationArray, numberOfBytes );
 
     /// <summary>
     /// Checks the validity of the count parameters.

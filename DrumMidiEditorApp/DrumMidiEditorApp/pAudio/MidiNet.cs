@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
 using DrumMidiEditorApp.pLog;
+using Windows.Devices.Midi;
+using Windows.Storage.Streams;
 
 namespace DrumMidiEditorApp.pAudio;
 
 /// <summary>
 /// MIDI操作
 /// </summary>
-public static partial class MidiNet
+internal static partial class MidiNet
 {
     /// <summary>
     /// ロック用
@@ -17,9 +17,15 @@ public static partial class MidiNet
     private static readonly object _LockObj = new();
 
     /// <summary>
-    /// MIDI-OUTデバイスハンドル
+    /// MIDI-OUTデバイス
     /// </summary>
-    private static IntPtr _MidiHandle = IntPtr.Zero;
+    private static MidiOutDeviceWatcher? _MidiOutDeviceWatcher;
+
+    /// <summary>
+    /// MIDI-OUTデバイス
+    /// </summary>
+    private static IMidiOutPort? _CurrentMidiOutputDevice;
+
 
     #region Midi define
 
@@ -130,55 +136,35 @@ public static partial class MidiNet
     #region Midi device
 
     /// <summary>
+    /// MIDI-OUTデバイスウオッチ開始
+    /// </summary>
+    /// <returns>Trueのみ</returns>
+    public static void MidiOutDeviceWatcher()
+    {
+        _MidiOutDeviceWatcher?.Dispose();
+        _MidiOutDeviceWatcher = new();
+        _MidiOutDeviceWatcher.DeviceStart();
+    }
+
+    /// <summary>
     /// MIDI-OUTデバイス初期化
     /// </summary>
     /// <param name="aMidiOutDeviceName"></param>
     /// <returns>Trueのみ</returns>
-    public static bool InitDevice( string aMidiOutDeviceName )
+    public static async void InitDeviceAsync( string aMidiOutDeviceName )
     {
+        if ( _MidiOutDeviceWatcher == null )
+        {
+            return;
+        }
+        var port = await _MidiOutDeviceWatcher.GetMidiOutPortAsync( aMidiOutDeviceName );
+
         lock ( _LockObj )
         {
-            var index = -1;
-
-            var list = GetDeviceList();
-
-            for ( var i = 0; i < list.Count; i++ )
-            {
-                var name = list[ i ];
-
-                if ( aMidiOutDeviceName.Equals( name ) )
-                {
-                    index = i;
-                }
-            }
-
-            _ = midiOutClose( _MidiHandle );
-
-            var ret = midiOutOpen( out _MidiHandle, index, null, 0, 0 );
-
-            if ( ret != 0 )
-            {
-                var msg = string.Empty;
-                switch ( ret )
-                {
-                    case 2:
-                        msg = "MMSYSERR_BADDEVICEID";
-                        break;
-                    case 4:
-                        msg = "MMSYSERR_ALLOCATED";
-                        break;
-                    case 7:
-                        msg = "MMSYSERR_NOMEM";
-                        break;
-                    case 11:
-                        msg = "MMSYSERR_INVALPARAM";
-                        break;
-                }
-
-                Log.Warning( $"{Log.GetThisMethodName}:{msg}", true );
-            }
+            SystemReset();
+            _CurrentMidiOutputDevice?.Dispose();
+            _CurrentMidiOutputDevice = port;
         }
-        return true;
     }
 
     /// <summary>
@@ -189,33 +175,17 @@ public static partial class MidiNet
     {
         var list = new List<string>();
 
-        var count = GetDeviceCount();
-
-        for ( var i = 0; i < count; i++ )
+        if ( _MidiOutDeviceWatcher != null )
         {
-            list.Add( GetDeviceName( i ) );
-        }
+            foreach ( var device in _MidiOutDeviceWatcher.MidiOutDeviceDic.Values )
+            {
+                list.Add( device.Name );
 
+                Log.Info( $"{device.Id}:{device.Name}", false );
+            }
+        }
         return list;
     }
-
-    /// <summary>
-    /// デバイス名取得
-    /// </summary>
-    /// <param name="aIndex">MIDIデバイスインデックス</param>
-    /// <returns>取得：デバイス名、未取得：空文字</returns>
-    public static string GetDeviceName( int aIndex )
-    {
-        _ = midiOutGetDevCaps( (uint)aIndex, out var info, Marshal.SizeOf( typeof( MidiOutCaps ) ) );
-
-        return info.Pname ?? string.Empty;
-    }
-
-    /// <summary>
-    /// デバイス数取得
-    /// </summary>
-    /// <returns>デバイス数</returns>
-    public static int GetDeviceCount() => (int)midiOutGetNumDevs();
 
     #endregion
 
@@ -228,7 +198,7 @@ public static partial class MidiNet
     /// <param name="aMidi">MIDIノート番号</param>
     /// <param name="aVolume">音量(127基準)</param>
     public static void NoteOn( byte aChannel, byte aMidi, byte aVolume )
-        => MidiOutShortMsg( 0x9, aChannel, aMidi, aVolume );
+        => MidiOutShortMsg( new MidiNoteOnMessage( Convert.ToByte( aChannel ), Convert.ToByte( aMidi ), Convert.ToByte( aVolume ) ) );
 
     /// <summary>
     /// ノートONイベント
@@ -237,7 +207,26 @@ public static partial class MidiNet
     /// <param name="aMidi">MIDIノート番号</param>
     /// <param name="aVolume">音量(127基準)</param>
     public static void NoteOff( byte aChannel, byte aMidi )
-        => MidiOutShortMsg( 0x8, aChannel, aMidi, 0 );
+        => MidiOutShortMsg( new MidiNoteOffMessage( Convert.ToByte( aChannel ), Convert.ToByte( aMidi ), Convert.ToByte( 0 ) ) );
+
+    /// <summary>
+    /// ノートONイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aMidi">MIDIノート番号</param>
+    /// <param name="aVolume">音量(127基準)</param>
+    public static void PolyphonicKeyPressure( byte aChannel, byte aNote, byte aPressure )
+        => MidiOutShortMsg( new MidiPolyphonicKeyPressureMessage( Convert.ToByte( aChannel ), Convert.ToByte( aNote ), Convert.ToByte( aPressure ) ) );
+
+    /// <summary>
+    /// ノートONイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aMidi">MIDIノート番号</param>
+    /// <param name="aVolume">音量(127基準)</param>
+    public static void ControlChange( byte aChannel, byte aController, byte aControlValue )
+        => MidiOutShortMsg( new MidiControlChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aController ), Convert.ToByte( aControlValue ) ) );
+
 
     /// <summary>
     /// プログラムチェンジイベント
@@ -245,7 +234,118 @@ public static partial class MidiNet
     /// <param name="aChannel">チャンネル</param>
     /// <param name="aProgram">プログラムNO</param>
     public static void ProgramChange( byte aChannel, byte aProgram )
-        => MidiOutShortMsg( 0xC, aChannel, aProgram, 0 );
+        => MidiOutShortMsg( new MidiProgramChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aProgram ) ) );
+
+
+    /// <summary>
+    /// プログラムチェンジイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aProgram">プログラムNO</param>
+    public static void ChannelPressure( byte aChannel, byte aPressure )
+        => MidiOutShortMsg( new MidiChannelPressureMessage( Convert.ToByte( aChannel ), Convert.ToByte( aPressure ) ) );
+
+    /// <summary>
+    /// プログラムチェンジイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aProgram">プログラムNO</param>
+    public static void PitchBendChange( byte aChannel, byte aBend )
+        => MidiOutShortMsg( new MidiPitchBendChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aBend ) ) );
+
+    /// <summary>
+    /// プログラムチェンジイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aProgram">プログラムNO</param>
+    public static void SystemExclusive( string aSysExMessage )
+    {
+        var dataWriter = new DataWriter();
+        var sysExMessageLength = aSysExMessage.Length;
+
+        // Do not send a blank SysEx message
+        if ( sysExMessageLength == 0 )
+        {
+            return;
+        }
+
+        // SysEx messages are two characters long with 1-character space in between them
+        // So we add 1 to the message length, so that it is perfectly divisible by 3
+        // The loop count tracks the number of individual message pieces
+        var loopCount = (sysExMessageLength + 1) / 3;
+
+        // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
+        for ( var i = 0; i < loopCount; i++ )
+        {
+            var messageString = aSysExMessage.Substring(3 * i, 2);
+            var messageByte = Convert.ToByte(messageString, 16);
+            dataWriter.WriteByte( messageByte );
+        }
+        MidiOutShortMsg( new MidiSystemExclusiveMessage( dataWriter.DetachBuffer() ) );
+    }
+
+    /// <summary>
+    /// ノートONイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    public static void MidiTimeCode( byte aFrameType, byte aValues )
+        => MidiOutShortMsg( new MidiTimeCodeMessage( Convert.ToByte( aFrameType ), Convert.ToByte( aValues ) ) );
+
+    /// <summary>
+    /// ノートONイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    public static void SongPositionPointer( ushort aBeats )
+        => MidiOutShortMsg( new MidiSongPositionPointerMessage( Convert.ToUInt16( aBeats ) ) );
+
+    /// <summary>
+    /// ノートONイベント
+    /// </summary>
+    /// <param name="aChannel">チャンネル</param>
+    public static void SongSelect( byte aSong )
+        => MidiOutShortMsg( new MidiSongSelectMessage( Convert.ToByte( aSong ) ) );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void TuneRequest()
+        => MidiOutShortMsg( new MidiTuneRequestMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void TimingClock()
+        => MidiOutShortMsg( new MidiTimingClockMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void Start()
+        => MidiOutShortMsg( new MidiStartMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void Continue()
+        => MidiOutShortMsg( new MidiContinueMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void Stop()
+        => MidiOutShortMsg( new MidiStopMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void ActiveSensing()
+        => MidiOutShortMsg( new MidiActiveSensingMessage() );
+
+    /// <summary>
+    /// MIDI-OUT リセット
+    /// </summary>
+    public static void SystemReset()
+        => MidiOutShortMsg( new MidiSystemResetMessage() );
 
     /// <summary>
     /// MIDI-OUT ショートメッセージ
@@ -255,57 +355,8 @@ public static partial class MidiNet
     /// <param name="aData1">データ１</param>
     /// <param name="aData2">データ２</param>
     /// <returns>実行結果</returns>
-    private static uint MidiOutShortMsg( byte aStatus, byte aChannel, byte aData1, byte aData2 )
-        => midiOutShortMsg( _MidiHandle, ( aStatus << 4 ) | aChannel | ( aData1 << 8 ) | ( aData2 << 16 ) );
-
-    /// <summary>
-    /// MIDI-OUT リセット
-    /// </summary>
-    public static void Reset()
-        => _ = midiOutReset( _MidiHandle );
-
-    #endregion
-
-    #region Windows API
-
-    [LibraryImport( "Winmm.dll" )]
-    private static partial uint midiOutGetNumDevs();
-
-    [StructLayout( LayoutKind.Sequential, CharSet = CharSet.Ansi )]
-    private struct MidiOutCaps
-    {
-        public ushort   Mid;
-        public ushort   Pid;
-        public uint     DriverVersion;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public string   Pname;
-        public ushort   Technology;
-        public ushort   Voices;
-        public ushort   Notes;
-        public ushort   ChannelMask;
-        public uint     Support;
-    }
-
-    [DllImport( "Winmm.dll" )]
-#pragma warning disable SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
-    private static extern uint midiOutGetDevCaps(
-#pragma warning restore SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
-        uint aDeviceID, out MidiOutCaps aMidiOutCaps, int aMidiOutCapsLength );
-
-    [LibraryImport( "Winmm.dll" )]
-    private static partial uint midiOutOpen(
-        out IntPtr aHmo, int aDeviceID, MidiOutProc? aCallback, int aCallbackInstance, uint aFlags );
-
-    private delegate void MidiOutProc( IntPtr aHmo, uint aHwnd, int aInstance, int aParam1, int aParam2 );
-
-    [LibraryImport( "Winmm.dll" )]
-    private static partial uint midiOutShortMsg( IntPtr aHmo, int aMsg );
-
-    [LibraryImport( "Winmm.dll" )]
-    private static partial uint midiOutReset( IntPtr aHandle );
-
-    [LibraryImport( "Winmm.dll" )]
-    private static partial uint midiOutClose( IntPtr aHmo );
+    private static void MidiOutShortMsg( IMidiMessage aMidiMessage )
+        => _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
 
     #endregion
 }

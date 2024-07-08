@@ -38,7 +38,8 @@ public sealed partial class WindowEditer : Window
 #endif
 
         // Midiデバイス初期化
-        MidiNet.InitDevice( Config.Media.MidiOutDeviceName );
+        MidiNet.MidiOutDeviceWatcher();
+        MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
 
         // ウィンドウ構築
         InitializeComponent();

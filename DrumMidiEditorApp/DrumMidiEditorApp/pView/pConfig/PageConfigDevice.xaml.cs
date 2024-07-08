@@ -60,11 +60,7 @@ public sealed partial class PageConfigDevice : Page
     {
         try
         {
-            if ( !MidiNet.InitDevice( ConfigMedia.MidiOutDeviceName ) )
-            {
-                Log.Error( HelperResources.GetString( "ErrMsgInitMidiDevice", ConfigMedia.MidiOutDeviceName ) );
-                return;
-            }
+            MidiNet.InitDeviceAsync( ConfigMedia.MidiOutDeviceName );
         }
         catch ( Exception e )
         {

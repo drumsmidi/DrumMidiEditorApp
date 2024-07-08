@@ -44,10 +44,10 @@ public class ConfigEqualizer
         Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                         new()
                         {
-                            FontFamily = "system-ui",
-                            FontSize = 12,
+                            FontFamily          = "system-ui",
+                            FontSize            = 12,
                             HorizontalAlignment = CanvasHorizontalAlignment.Right,
-                            VerticalAlignment = CanvasVerticalAlignment.Center,
+                            VerticalAlignment   = CanvasVerticalAlignment.Center,
                         } ),
     };
 
@@ -63,10 +63,10 @@ public class ConfigEqualizer
         Text = new( Color.FromArgb( 255, 100, 200, 100 ),
                         new()
                         {
-                            FontFamily = "system-ui",
-                            FontSize = 12,
+                            FontFamily          = "system-ui",
+                            FontSize            = 12,
                             HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                            VerticalAlignment = CanvasVerticalAlignment.Center,
+                            VerticalAlignment   = CanvasVerticalAlignment.Center,
                         } ),
     };
 
@@ -83,8 +83,8 @@ public class ConfigEqualizer
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize = 1,
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize    = 1,
     };
 
     #endregion
@@ -100,8 +100,8 @@ public class ConfigEqualizer
         get; set;
     } = new()
     {
-        Background = new( Color.FromArgb( 255, 100, 200, 100 ) ),
-        Line = new( Color.FromArgb( 255, 0, 100, 255 ), 1F ),
+        Background  = new( Color.FromArgb( 255, 100, 200, 100 ) ),
+        Line        = new( Color.FromArgb( 255, 0, 100, 255 ), 1F ),
     };
 
     /// <summary>
@@ -113,8 +113,8 @@ public class ConfigEqualizer
         get; set;
     } = new()
     {
-        Background = new( Color.FromArgb( 255, 0, 100, 255 ) ),
-        Line = new( Color.FromArgb( 255, 0, 100, 255 ), 1F ),
+        Background  = new( Color.FromArgb( 255, 0, 100, 255 ) ),
+        Line        = new( Color.FromArgb( 255, 0, 100, 255 ), 1F ),
     };
 
     /// <summary>
@@ -294,8 +294,8 @@ public class ConfigEqualizer
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 100, 255, 0, 0 ) ),
-        LineSize = 0.4F,
+        LineColor   = new( Color.FromArgb( 100, 255, 0, 0 ) ),
+        LineSize    = 0.4F,
     };
 
     /// <summary>
@@ -307,8 +307,8 @@ public class ConfigEqualizer
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 100, 0, 255, 0 ) ),
-        LineSize = 0.4F,
+        LineColor   = new( Color.FromArgb( 100, 0, 255, 0 ) ),
+        LineSize    = 0.4F,
     };
 
     #endregion

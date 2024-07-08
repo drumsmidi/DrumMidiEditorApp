@@ -452,7 +452,7 @@ public static class DmsControl
                                 bgm_play        = false;
                                 sleeptime       = 1;
 
-                                MidiNet.Reset();
+                                MidiNet.SystemReset();
                                 _BgmAudio?.Stop();
 
                                 WaitPlayer();
@@ -494,7 +494,7 @@ public static class DmsControl
                                 bgm_play        = false;
                                 sleeptime       = 1;
 
-                                MidiNet.Reset();
+                                MidiNet.SystemReset();
                                 _BgmAudio?.Stop();
 
                                 // 再生開始位置まで、ノート位置を進める
@@ -523,7 +523,7 @@ public static class DmsControl
                             {
                                 sleeptime = 500;
 
-                                MidiNet.Reset();
+                                MidiNet.SystemReset();
                                 _BgmAudio?.Stop();
 
                                 _PlayTimeStopWatch.Stop();
@@ -555,7 +555,7 @@ public static class DmsControl
                                 bgm_play        = false;
                                 sleeptime       = 500;
 
-                                MidiNet.Reset();
+                                MidiNet.SystemReset();
                                 _BgmAudio?.Pause();
 
                                 WaitPlayer();
