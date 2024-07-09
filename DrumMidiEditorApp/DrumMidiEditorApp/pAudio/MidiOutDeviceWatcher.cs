@@ -10,20 +10,29 @@ namespace DrumMidiEditorApp.pAudio;
 
 internal class MidiOutDeviceWatcher : DisposeBaseClass
 {
-    private readonly DeviceWatcher _DeviceWatcher;
-
+    /// <summary>
+    /// MIDI-OUTデバイス全検索文字列
+    /// </summary>
     private readonly string _MidiSelector = MidiOutPort.GetDeviceSelector();
 
-    private bool _EnumerationCompleted = false;
-
-    public readonly Dictionary<string, DeviceInformation> MidiOutDeviceDic = [];
-
+    /// <summary>
+    /// MIDI-OUTデバイスウオッチャー
+    /// </summary>
+    private readonly DeviceWatcher _DeviceWatcher;
 
     /// <summary>
-    /// Constructor: Initialize and hook up Device Watcher events
+    /// MIDI-OUTデバイス検索完了フラグ
     /// </summary>
-    /// <param name="dispatcher">CoreDispatcher instance, to update UI thread</param>
-    /// <param name="portListBox">The UI element to update with list of devices</param>
+    private bool _EnumerationCompleted = false;
+
+    /// <summary>
+    /// MIDI-OUTデバイス一覧（デバイス名、デバイス情報）
+    /// </summary>
+    public readonly Dictionary<string, DeviceInformation> MidiOutDeviceDic = [];
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public MidiOutDeviceWatcher()
     {
         _DeviceWatcher = DeviceInformation.CreateWatcher( _MidiSelector );

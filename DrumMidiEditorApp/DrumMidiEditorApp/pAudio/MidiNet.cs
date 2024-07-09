@@ -111,26 +111,6 @@ internal static partial class MidiNet
     /// </summary>
     public static byte ChannelDrum { get; set; } = 0x9;
 
-    /// <summary>
-    /// ドラムプログラムリスト
-    /// </summary>
-    /// <returns>ドラムプログラムリスト</returns>
-    public static Dictionary<byte, string> DrumProgramList
-    {
-        get; private set;
-    } = new()
-        {
-            {  0, "Standard"    },
-            {  9, "Room"        },
-            { 17, "Power"       },
-            { 25, "Electronic"  },
-            { 26, "TR-808"      },
-            { 33, "Jass"        },
-            { 41, "Brush"       },
-            { 49, "Orchestra"   },
-            { 57, "SFX"         },
-        };
-
     #endregion
 
     #region Midi device
@@ -138,7 +118,6 @@ internal static partial class MidiNet
     /// <summary>
     /// MIDI-OUTデバイスウオッチ開始
     /// </summary>
-    /// <returns>Trueのみ</returns>
     public static void MidiOutDeviceWatcher()
     {
         _MidiOutDeviceWatcher?.Dispose();
@@ -149,8 +128,7 @@ internal static partial class MidiNet
     /// <summary>
     /// MIDI-OUTデバイス初期化
     /// </summary>
-    /// <param name="aMidiOutDeviceName"></param>
-    /// <returns>Trueのみ</returns>
+    /// <param name="aMidiOutDeviceName">MIDI-OUTデバイス名</param>
     public static async void InitDeviceAsync( string aMidiOutDeviceName )
     {
         if ( _MidiOutDeviceWatcher == null )
@@ -194,73 +172,70 @@ internal static partial class MidiNet
     /// <summary>
     /// ノートONイベント
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aMidi">MIDIノート番号</param>
+    /// <param name="aChannel">チャンネル<(0-15)/param>
+    /// <param name="aNote">MIDIノート番号</param>
     /// <param name="aVolume">音量(127基準)</param>
-    public static void NoteOn( byte aChannel, byte aMidi, byte aVolume )
-        => MidiOutShortMsg( new MidiNoteOnMessage( Convert.ToByte( aChannel ), Convert.ToByte( aMidi ), Convert.ToByte( aVolume ) ) );
+    public static void NoteOn( byte aChannel, byte aNote, byte aVolume )
+        => MidiOutShortMsg( new MidiNoteOnMessage( Convert.ToByte( aChannel ), Convert.ToByte( aNote ), Convert.ToByte( aVolume ) ) );
 
     /// <summary>
-    /// ノートONイベント
+    /// ノートOFFイベント
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aMidi">MIDIノート番号</param>
-    /// <param name="aVolume">音量(127基準)</param>
-    public static void NoteOff( byte aChannel, byte aMidi )
-        => MidiOutShortMsg( new MidiNoteOffMessage( Convert.ToByte( aChannel ), Convert.ToByte( aMidi ), Convert.ToByte( 0 ) ) );
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aNote">MIDIノート番号</param>
+    public static void NoteOff( byte aChannel, byte aNote )
+        => MidiOutShortMsg( new MidiNoteOffMessage( Convert.ToByte( aChannel ), Convert.ToByte( aNote ), Convert.ToByte( 0 ) ) );
 
     /// <summary>
-    /// ノートONイベント
+    /// ポリフォニック キーの圧力を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aMidi">MIDIノート番号</param>
-    /// <param name="aVolume">音量(127基準)</param>
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aNote">MIDIノート番号</param>
+    /// <param name="aPressure">ポリフォニック キー圧力(127基準)</param>
     public static void PolyphonicKeyPressure( byte aChannel, byte aNote, byte aPressure )
         => MidiOutShortMsg( new MidiPolyphonicKeyPressureMessage( Convert.ToByte( aChannel ), Convert.ToByte( aNote ), Convert.ToByte( aPressure ) ) );
 
     /// <summary>
-    /// ノートONイベント
+    /// コントロールの変更を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aMidi">MIDIノート番号</param>
-    /// <param name="aVolume">音量(127基準)</param>
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aController">コントローラー(0-127)</param>
+    /// <param name="aControlValue">コントローラーに適用する値(0-127)</param>
     public static void ControlChange( byte aChannel, byte aController, byte aControlValue )
         => MidiOutShortMsg( new MidiControlChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aController ), Convert.ToByte( aControlValue ) ) );
 
 
     /// <summary>
-    /// プログラムチェンジイベント
+    /// プログラムの変更を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aProgram">プログラムNO</param>
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aProgram">プログラムNO(0-127)</param>
     public static void ProgramChange( byte aChannel, byte aProgram )
         => MidiOutShortMsg( new MidiProgramChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aProgram ) ) );
 
 
     /// <summary>
-    /// プログラムチェンジイベント
+    /// チャネル圧力を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aProgram">プログラムNO</param>
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aPressure">圧力(0-127)</param>
     public static void ChannelPressure( byte aChannel, byte aPressure )
         => MidiOutShortMsg( new MidiChannelPressureMessage( Convert.ToByte( aChannel ), Convert.ToByte( aPressure ) ) );
 
     /// <summary>
-    /// プログラムチェンジイベント
+    /// ピッチベンドの変更を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aProgram">プログラムNO</param>
+    /// <param name="aChannel">チャンネル(0-15)</param>
+    /// <param name="aBend">0 から 16383 の 14 ビット値として指定されたピッチ ベンド値</param>
     public static void PitchBendChange( byte aChannel, byte aBend )
         => MidiOutShortMsg( new MidiPitchBendChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aBend ) ) );
 
     /// <summary>
-    /// プログラムチェンジイベント
+    /// システム排他メッセージを指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aProgram">プログラムNO</param>
+    /// <param name="aSysExMessage">システムメッセージ</param>
     public static void SystemExclusive( string aSysExMessage )
     {
-        var dataWriter = new DataWriter();
         var sysExMessageLength = aSysExMessage.Length;
 
         // Do not send a blank SysEx message
@@ -268,6 +243,8 @@ internal static partial class MidiNet
         {
             return;
         }
+
+        var dataWriter = new DataWriter();
 
         // SysEx messages are two characters long with 1-character space in between them
         // So we add 1 to the message length, so that it is perfectly divisible by 3
@@ -285,64 +262,65 @@ internal static partial class MidiNet
     }
 
     /// <summary>
-    /// ノートONイベント
+    /// タイム コードを指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aFrameType">フレームの種類(0-7)</param>
+    /// <param name="aValues">時刻コード(0-15)</param>
     public static void MidiTimeCode( byte aFrameType, byte aValues )
         => MidiOutShortMsg( new MidiTimeCodeMessage( Convert.ToByte( aFrameType ), Convert.ToByte( aValues ) ) );
 
     /// <summary>
-    /// ノートONイベント
+    /// 曲の位置ポインターを指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aBeats">0 から 16383 の 14 ビット値でエンコードされた曲の位置</param>
     public static void SongPositionPointer( ushort aBeats )
         => MidiOutShortMsg( new MidiSongPositionPointerMessage( Convert.ToUInt16( aBeats ) ) );
 
     /// <summary>
-    /// ノートONイベント
+    /// 選択した曲を指定する MIDI メッセージ
     /// </summary>
-    /// <param name="aChannel">チャンネル</param>
+    /// <param name="aSong">曲選択(0-127)</param>
     public static void SongSelect( byte aSong )
         => MidiOutShortMsg( new MidiSongSelectMessage( Convert.ToByte( aSong ) ) );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// チューニング要求を指定する MIDI メッセージ
     /// </summary>
     public static void TuneRequest()
         => MidiOutShortMsg( new MidiTuneRequestMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// タイミング クロックを指定する MIDI メッセージ
     /// </summary>
     public static void TimingClock()
         => MidiOutShortMsg( new MidiTimingClockMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// 開始メッセージを指定する MIDI メッセージ
     /// </summary>
     public static void Start()
         => MidiOutShortMsg( new MidiStartMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// 続行メッセージを指定する MIDI メッセージ
     /// </summary>
     public static void Continue()
         => MidiOutShortMsg( new MidiContinueMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// 停止メッセージを指定する MIDI メッセージ
     /// </summary>
     public static void Stop()
         => MidiOutShortMsg( new MidiStopMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// アクティブなセンシングを指定する MIDI メッセージ
     /// </summary>
     public static void ActiveSensing()
         => MidiOutShortMsg( new MidiActiveSensingMessage() );
 
     /// <summary>
-    /// MIDI-OUT リセット
+    /// システム リセットを指定する MIDI メッセージ
     /// </summary>
     public static void SystemReset()
         => MidiOutShortMsg( new MidiSystemResetMessage() );
@@ -350,11 +328,7 @@ internal static partial class MidiNet
     /// <summary>
     /// MIDI-OUT ショートメッセージ
     /// </summary>
-    /// <param name="aStatus">ステータス</param>
-    /// <param name="aChannel">チャンネル</param>
-    /// <param name="aData1">データ１</param>
-    /// <param name="aData2">データ２</param>
-    /// <returns>実行結果</returns>
+    /// <param name="aMidiMessage">MIDIメッセージ</param>
     private static void MidiOutShortMsg( IMidiMessage aMidiMessage )
         => _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
 
