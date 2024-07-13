@@ -177,9 +177,11 @@ public class WaveOutEvent : IWavePlayer, IWavePosition
                 }
                 if ( queued == 0 )
                 {
+                    Stop();
+
                     // we got to the end
-                    playbackState = PlaybackState.Stopped;
-                    _ = callbackEvent.Set();
+                    //playbackState = PlaybackState.Stopped;
+                    //_ = callbackEvent.Set();
                 }
             }
         }

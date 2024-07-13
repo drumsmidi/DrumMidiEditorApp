@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Windows.Foundation;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pMachineLearning;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -705,6 +706,23 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
 
     #endregion
+
+    /// <summary>
+    /// 再生停止
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MachineLearning_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            MLControl.Start();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
     /// <summary>
     /// EditerPanel描画更新

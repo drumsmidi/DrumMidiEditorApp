@@ -253,6 +253,12 @@
                     Height="50"
                     Click="WaveForm_Click" />
 
+                <Button x:Uid="ButtonEditerMachineLearning" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    IsEnabled="True"
+                    Height="50"
+                    Click="MachineLearning_Click" />
+
             </StackPanel>
 
         </Grid>
