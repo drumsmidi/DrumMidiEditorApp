@@ -61,6 +61,10 @@ public class AudioFileReader : WaveStream, ISampleProvider
         {
             readerStream =  new Mp3FileReader( fileName );
         }
+        else
+        {
+            throw new NotSupportedException();
+        }
     }
     /// <summary>
     /// File Name
