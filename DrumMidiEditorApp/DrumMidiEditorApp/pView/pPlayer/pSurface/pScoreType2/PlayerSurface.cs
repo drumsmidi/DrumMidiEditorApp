@@ -416,13 +416,9 @@ public class PlayerSurface : PlayerSurfaceBase
         var measure_x       = (int)( body.Width / measure_size );
         var measure_y       = (int)( ( _ScreenSize.Height - section.Top ) / section.Height );
 
-        if ( measure_x < 0 )
+        if ( measure_x <= 0 || measure_y <= 0 )
         {
-            measure_x = 0;
-        }
-        if ( measure_y < 0 )
-        {
-            measure_y = 0;
+            return true;
         }
 
         var measure_no_now = (int)( note_pos / ConfigSystem.MeasureNoteNumber );
@@ -497,7 +493,6 @@ public class PlayerSurface : PlayerSurfaceBase
                     }
                 }
                 #endregion
-
             }
         }
         #endregion
@@ -506,7 +501,7 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             var measure_no  = (int)( _SheetPosX / ConfigSystem.MeasureNoteNumber );
 
-            var diff_x = ( measure_size    * ( measure_no % measure_x )) + ( _SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize );
+            var diff_x = ( measure_size  * ( measure_no % measure_x ) ) + ( _SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize );
             var diff_y = section._height * ( measure_no / measure_x % measure_y );
 
             _NowPosition?.Draw( args.DrawingSession, diff_x, diff_y );

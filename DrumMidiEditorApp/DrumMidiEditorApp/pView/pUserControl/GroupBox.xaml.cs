@@ -1,11 +1,11 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace DrumMidiEditorApp.pUserControl;
+namespace DrumMidiEditorApp.pView.pUserControl;
 
-public sealed partial class HGroup : UserControl
+public sealed partial class GroupBox : UserControl
 {
-    public HGroup()
+    public GroupBox()
     {
         InitializeComponent();
     }
@@ -27,13 +27,13 @@ public sealed partial class HGroup : UserControl
                 new PropertyMetadata( "Your Header", HeaderPropertyChangedCallback )
             );
 
-    public static void HeaderPropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs args )
+    public static void HeaderPropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
     {
-        var obj = sender as HGroup;
+        var obj = sender as GroupBox;
 
-        if ( args.NewValue != args.OldValue && obj != null )
+        if ( ev.NewValue != ev.OldValue && obj != null )
         {
-            obj._HeaderTitle.Text = args.NewValue?.ToString() ?? string.Empty ;
+            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? string.Empty ;
         }
     }
 
@@ -56,15 +56,18 @@ public sealed partial class HGroup : UserControl
                 new PropertyMetadata( null, PropertyChangedCallback )
             );
 
-    public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs args )
+    public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
     {
-        var obj = sender as HGroup;
+        var obj = sender as GroupBox;
 
-        if ( args.NewValue != args.OldValue && obj != null )
+        if ( ev.NewValue != ev.OldValue && obj != null )
         {
-            obj._Content.Content = args.NewValue;
+            obj._Content.Content = ev.NewValue;
         }
     }
 
     #endregion
+
+    private void HeaderTitle_LayoutUpdated( object sender, object ev ) 
+        => _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
 }

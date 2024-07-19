@@ -1,11 +1,11 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace DrumMidiEditorApp.pUserControl;
+namespace DrumMidiEditorApp.pView.pUserControl;
 
-public sealed partial class GroupBox : UserControl
+public sealed partial class HGroup : UserControl
 {
-    public GroupBox()
+    public HGroup()
     {
         InitializeComponent();
     }
@@ -27,13 +27,13 @@ public sealed partial class GroupBox : UserControl
                 new PropertyMetadata( "Your Header", HeaderPropertyChangedCallback )
             );
 
-    public static void HeaderPropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
+    public static void HeaderPropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs args )
     {
-        var obj = sender as GroupBox;
+        var obj = sender as HGroup;
 
-        if ( ev.NewValue != ev.OldValue && obj != null )
+        if ( args.NewValue != args.OldValue && obj != null )
         {
-            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? string.Empty ;
+            obj._HeaderTitle.Text = args.NewValue?.ToString() ?? string.Empty ;
         }
     }
 
@@ -56,18 +56,15 @@ public sealed partial class GroupBox : UserControl
                 new PropertyMetadata( null, PropertyChangedCallback )
             );
 
-    public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
+    public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs args )
     {
-        var obj = sender as GroupBox;
+        var obj = sender as HGroup;
 
-        if ( ev.NewValue != ev.OldValue && obj != null )
+        if ( args.NewValue != args.OldValue && obj != null )
         {
-            obj._Content.Content = ev.NewValue;
+            obj._Content.Content = args.NewValue;
         }
     }
 
     #endregion
-
-    private void HeaderTitle_LayoutUpdated( object sender, object ev ) 
-        => _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
 }

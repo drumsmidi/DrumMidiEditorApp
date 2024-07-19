@@ -133,6 +133,9 @@
     <value>範囲選択
 解除</value>
   </data>
+  <data name="ButtonEditerMachineLearning.Content" xml:space="preserve">
+    <value>ML</value>
+  </data>
   <data name="ButtonEditerWaveForm.Content" xml:space="preserve">
     <value>波形作成</value>
   </data>
@@ -280,6 +283,9 @@ BPMノートを含める</value>
   <data name="InputBpm.Header" xml:space="preserve">
     <value>BPM</value>
   </data>
+  <data name="InputBpmNowDisplay.Header" xml:space="preserve">
+    <value>現在のBpm表示</value>
+  </data>
   <data name="InputBpmZoom.Header" xml:space="preserve">
     <value>bpm 取込倍率</value>
   </data>
@@ -287,7 +293,7 @@ BPMノートを含める</value>
     <value>Ch.</value>
   </data>
   <data name="InputDivisionLine.Text" xml:space="preserve">
-    <value>小節分割数</value>
+    <value>小節分割</value>
   </data>
   <data name="InputHeaderGroup.Header" xml:space="preserve">
     <value>グループ表示</value>
@@ -330,6 +336,9 @@ BPMノートを含める</value>
   </data>
   <data name="InputLoopPlayMeasureStart.Header" xml:space="preserve">
     <value>小節開始</value>
+  </data>
+  <data name="InputMeasureNoHeightSize.Header" xml:space="preserve">
+    <value>小節番号高さ</value>
   </data>
   <data name="InputMidiOutDevice.Header" xml:space="preserve">
     <value>Midi-Out デバイス</value>

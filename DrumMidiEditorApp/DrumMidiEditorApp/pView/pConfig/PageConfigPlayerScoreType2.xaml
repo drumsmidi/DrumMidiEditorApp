@@ -14,6 +14,10 @@
                 Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
                 Click="ColorButton_Click" />
 
+            <ToggleSwitch x:Uid="InputBpmNowDisplay"
+                IsOn="{x:Bind DrawSet.BpmNowDisplay, Mode=TwoWay}"
+                Toggled="ToggleSwitch_Toggled" />
+
             <ToggleSwitch x:Uid="InputVolumeSize"
                 IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
                 Toggled="ToggleSwitch_Toggled" />
@@ -21,6 +25,12 @@
             <ToggleSwitch x:Uid="InputVolumeZero"
                 IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
                 Toggled="ToggleSwitch_Toggled" />
+
+            <NumberBox x:Name="_MeasureNoHeightSizeNumberBox" x:Uid="InputMeasureNoHeightSize"
+                Value="{x:Bind DrawSet.MeasureNoHeightSize, Mode=TwoWay}" 
+                Style="{StaticResource PanelItemSizeStyle}"
+                HorizontalAlignment="Left"
+                ValueChanged="SizeNumberBox_ValueChanged" />
 
             <NumberBox x:Name="_NoteTermHeightNumberBox" x:Uid="InputNoteTermHeight"
                 Value="{x:Bind DrawSet.NoteTermHeightSize, Mode=TwoWay}" 

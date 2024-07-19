@@ -40,6 +40,8 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
 
         #region NumberBox の入力書式設定
 
+        _MeasureNoHeightSizeNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _NoteTermHeightNumberBox.NumberFormatter
             = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
         _NoteTermWidthNumberBox.NumberFormatter

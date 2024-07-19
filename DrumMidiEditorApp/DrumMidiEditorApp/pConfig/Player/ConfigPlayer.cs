@@ -264,7 +264,7 @@ public class ConfigPlayer
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
-    [JsonIgnore]
+    [JsonInclude]
     public ConfigPlayerScoreType2 ScoreType2 { get; set; } = new();
 
     #endregion
