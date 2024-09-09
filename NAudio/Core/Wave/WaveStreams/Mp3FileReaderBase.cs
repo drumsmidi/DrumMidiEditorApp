@@ -68,27 +68,6 @@ public class Mp3FileReaderBase : WaveStream
     private readonly object repositionLock = new();
 
 
-    /// <summary>Supports opening a MP3 file</summary>
-    /// <param name="mp3FileName">MP3 File name</param>
-    /// <param name="frameDecompressorBuilder">Factory method to build a frame decompressor</param>
-    public Mp3FileReaderBase( string mp3FileName, FrameDecompressorBuilder frameDecompressorBuilder )
-        : this( File.OpenRead( mp3FileName ), frameDecompressorBuilder, true )
-    {
-    }
-
-
-
-    /// <summary>
-    /// Opens MP3 from a stream rather than a file
-    /// Will not dispose of this stream itself
-    /// </summary>
-    /// <param name="inputStream">The incoming stream containing MP3 data</param>
-    /// <param name="frameDecompressorBuilder">Factory method to build a frame decompressor</param>
-    public Mp3FileReaderBase( Stream inputStream, FrameDecompressorBuilder frameDecompressorBuilder )
-        : this( inputStream, frameDecompressorBuilder, false )
-    {
-
-    }
 
     /// <summary>
     /// Constructor that takes an input stream and a frame decompressor builder
@@ -269,20 +248,7 @@ public class Mp3FileReaderBase : WaveStream
         get;
     }
 
-    /// <summary>
-    /// Reads the next mp3 frame
-    /// </summary>
-    /// <returns>Next mp3 frame, or null if EOF</returns>
-    public Mp3Frame ReadNextFrame()
-    {
-        var frame = ReadNextFrame(true);
-        if ( frame != null )
-        {
-            position += frame.SampleCount * bytesPerSample;
-        }
 
-        return frame;
-    }
 
     /// <summary>
     /// Reads the next mp3 frame

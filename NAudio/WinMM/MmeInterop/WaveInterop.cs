@@ -95,65 +95,65 @@ public partial class WaveInterop
     /// Prepare wave out header
     /// </summary>
     [DllImport( "winmm.dll" )]
-    public static extern MmResult waveOutPrepareHeader( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
+    internal static extern MmResult waveOutPrepareHeader( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
     /// <summary>
     /// Unprepare WaveOut header
     /// </summary>
     [DllImport( "winmm.dll" )]
-    public static extern MmResult waveOutUnprepareHeader( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
+    internal static extern MmResult waveOutUnprepareHeader( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
     /// <summary>
     /// Write to WaveOut device
     /// </summary>
     [DllImport( "winmm.dll" )]
-    public static extern MmResult waveOutWrite( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
+    internal static extern MmResult waveOutWrite( nint hWaveOut, WaveHeader lpWaveOutHdr, int uSize );
 
     /// <summary>
     /// Open WaveOut Device with window callback
     /// </summary>
     [DllImport( "winmm.dll", EntryPoint = "waveOutOpen" )]
-    public static extern MmResult waveOutOpenWindow( out nint hWaveOut, nint uDeviceID, WaveFormat lpFormat, nint callbackWindowHandle, nint dwInstance, WaveInOutOpenFlags dwFlags );
+    internal static extern MmResult waveOutOpenWindow( out nint hWaveOut, nint uDeviceID, WaveFormat lpFormat, nint callbackWindowHandle, nint dwInstance, WaveInOutOpenFlags dwFlags );
 
     /// <summary>
     /// Reset WaveOut device
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutReset( nint hWaveOut );
+    internal static partial MmResult waveOutReset( nint hWaveOut );
 
     /// <summary>
     /// Close WaveOut device
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutClose( nint hWaveOut );
+    internal static partial MmResult waveOutClose( nint hWaveOut );
 
     /// <summary>
     /// Pause WaveOut device
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutPause( nint hWaveOut );
+    internal static partial MmResult waveOutPause( nint hWaveOut );
 
     /// <summary>
     /// Restart WaveOut device
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutRestart( nint hWaveOut );
+    internal static partial MmResult waveOutRestart( nint hWaveOut );
 
     // http://msdn.microsoft.com/en-us/library/dd743863%28VS.85%29.aspx
     /// <summary>
     /// Get WaveOut device position
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutGetPosition( nint hWaveOut, ref MmTime mmTime, int uSize );
+    internal static partial MmResult waveOutGetPosition( nint hWaveOut, ref MmTime mmTime, int uSize );
 
     // http://msdn.microsoft.com/en-us/library/dd743874%28VS.85%29.aspx
     /// <summary>
     /// Set WaveOut device volume
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutSetVolume( nint hWaveOut, int dwVolume );
+    internal static partial MmResult waveOutSetVolume( nint hWaveOut, int dwVolume );
 
     /// <summary>
     /// Get WaveOut device volume
     /// </summary>
     [LibraryImport( "winmm.dll" )]
-    public static partial MmResult waveOutGetVolume( nint hWaveOut, out int dwVolume );
+    internal static partial MmResult waveOutGetVolume( nint hWaveOut, out int dwVolume );
 }

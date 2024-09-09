@@ -101,7 +101,7 @@ public class WaveFileChunkReader
                         throw new InvalidDataException( string.Format( "RiffChunk chunk length must be between 0 and {0}.", int.MaxValue ) );
                     }
 
-                    RiffChunks.Add( GetRiffChunk( stream, chunkIdentifier, (int)chunkLength ) );
+                    RiffChunks.Add( GetRiffChunk( stream, (int)chunkLength ) );
                 }
                 stream.Position += chunkLength;
             }
@@ -146,7 +146,7 @@ public class WaveFileChunkReader
         _ = reader.ReadBytes( chunkSize - 24 ); // get to the end of this chunk (should parse extra stuff later)
     }
 
-    private static RiffChunk GetRiffChunk( Stream stream, int chunkIdentifier, int chunkLength ) => new( chunkIdentifier, chunkLength, stream.Position );
+    private static RiffChunk GetRiffChunk( Stream stream, int chunkLength ) => new( chunkLength, stream.Position );
 
     private void ReadRiffHeader( BinaryReader br )
     {

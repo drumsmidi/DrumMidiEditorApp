@@ -60,6 +60,16 @@
                 </com:ExeServer>
             </com:ComServer>
         </com:Extension>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="drummidieditorapp">
+            <uap:SupportedFileTypes>
+              <uap:FileType>.dms</uap:FileType>
+            </uap:SupportedFileTypes>
+            <uap:Logo>Images\logo.jpg</uap:Logo>
+            <uap:DisplayName>DrumMidiEditorApp</uap:DisplayName>
+            <uap:EditFlags OpenIsSafe="true"/>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
       </Extensions>
 
 	</Application>

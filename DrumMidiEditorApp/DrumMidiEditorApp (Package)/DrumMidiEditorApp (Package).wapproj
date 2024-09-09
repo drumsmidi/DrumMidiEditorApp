@@ -46,6 +46,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\logo.jpg" />
     <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-16.png" />
     <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-24.png" />
     <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-256.png" />

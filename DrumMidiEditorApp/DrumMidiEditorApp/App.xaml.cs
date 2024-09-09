@@ -47,6 +47,10 @@ public partial class App : Application
     /// <param name="args">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs args )
     {
+        // TODO:起動ファイルのパス取得（Windows App SDKはまだサポートされていないっぽい）
+        //Config.System.AppStartParameter = args.Arguments ?? "";
+        //Config.System.AppStartParameter = Environment.GetCommandLineArgs().ToString() ?? "";
+
         #region デバッグ設定
 #if DEBUG
         // [エラーになる]フレーム レートとフレームごとの CPU 使用率情報を表示するかどうか

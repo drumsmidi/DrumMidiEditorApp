@@ -14,54 +14,6 @@ public class WaveFormatExtensible : WaveFormat
     private readonly int dwChannelMask; // which channels are present in stream
 
     /// <summary>
-    /// Parameterless constructor for marshalling
-    /// </summary>
-    private WaveFormatExtensible()
-    {
-    }
-
-    /// <summary>
-    /// Creates a new WaveFormatExtensible for PCM or IEEE
-    /// </summary>
-    public WaveFormatExtensible( int rate, int bits, int channels )
-        : base( rate, bits, channels )
-    {
-        waveFormatTag       = WaveFormatEncoding.Extensible;
-        extraSize           = 22;
-        wValidBitsPerSample = (short)bits;
-        for ( var n = 0; n < channels; n++ )
-        {
-            dwChannelMask |= 1 << n;
-        }
-        if ( bits == 32 )
-        {
-            // KSDATAFORMAT_SUBTYPE_IEEE_FLOAT
-            SubFormat = AudioMediaSubtypes.MEDIASUBTYPE_IEEE_FLOAT;
-        }
-        else
-        {
-            // KSDATAFORMAT_SUBTYPE_PCM
-            SubFormat = AudioMediaSubtypes.MEDIASUBTYPE_PCM;
-        }
-    }
-
-    /// <summary>
-    /// WaveFormatExtensible for PCM or floating point can be awkward to work with
-    /// This creates a regular WaveFormat structure representing the same audio format
-    /// Returns the WaveFormat unchanged for non PCM or IEEE float
-    /// </summary>
-    /// <returns></returns>
-    public WaveFormat ToStandardWaveFormat()
-    {
-        return SubFormat == AudioMediaSubtypes.MEDIASUBTYPE_IEEE_FLOAT && bitsPerSample == 32
-            ? CreateIeeeFloatWaveFormat( sampleRate, channels )
-            : SubFormat == AudioMediaSubtypes.MEDIASUBTYPE_PCM 
-            ? new WaveFormat( sampleRate, bitsPerSample, channels ) 
-            : this;
-        //throw new InvalidOperationException("Not a recognised PCM or IEEE float format");
-    }
-
-    /// <summary>
     /// SubFormat (may be one of AudioMediaSubtypes)
     /// </summary>
     public Guid SubFormat

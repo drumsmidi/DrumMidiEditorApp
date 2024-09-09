@@ -6,7 +6,7 @@ namespace NAudio.WinMM.Compression;
 /// <summary>
 /// Interop definitions for Windows ACM (Audio Compression Manager) API
 /// </summary>
-internal class AcmInterop
+internal partial class AcmInterop
 {
     // http://msdn.microsoft.com/en-us/library/dd742891%28VS.85%29.aspx
     public delegate bool AcmDriverEnumCallback( nint hAcmDriverId, nint instance, AcmDriverDetailsSupportFlags flags );
@@ -26,11 +26,11 @@ internal class AcmInterop
     public delegate bool AcmFormatChooseHookProc( nint windowHandle, int message, nint wParam, nint lParam );
 
     // http://msdn.microsoft.com/en-us/library/dd742886%28VS.85%29.aspx
-    [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmDriverClose( nint hAcmDriver, int closeFlags );
+    [LibraryImport( "Msacm32.dll" )]
+    internal static partial MmResult acmDriverClose( nint hAcmDriver, int closeFlags );
 
-    [DllImport( "Msacm32.dll", EntryPoint = "acmFormatSuggest" )]
-    public static extern MmResult acmFormatSuggest2(
+    [LibraryImport( "Msacm32.dll", EntryPoint = "acmFormatSuggest" )]
+    internal static partial MmResult acmFormatSuggest2(
         nint hAcmDriver,
         nint sourceFormatPointer,
         nint destFormatPointer,
@@ -41,7 +41,7 @@ internal class AcmInterop
     /// A version with pointers for troubleshooting
     /// </summary>
     [DllImport( "Msacm32.dll", EntryPoint = "acmStreamOpen" )]
-    public static extern MmResult acmStreamOpen2(
+    internal static extern MmResult acmStreamOpen2(
         out nint hAcmStream,
         nint hAcmDriver,
         nint sourceFormatPointer,
@@ -52,22 +52,22 @@ internal class AcmInterop
         AcmStreamOpenFlags openFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd742923%28VS.85%29.aspx
-    [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmStreamClose( nint hAcmStream, int closeFlags );
+    [LibraryImport( "Msacm32.dll" )]
+    internal static partial MmResult acmStreamClose( nint hAcmStream, int closeFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd742924%28VS.85%29.aspx
     [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmStreamConvert( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, AcmStreamConvertFlags streamConvertFlags );
+    internal static extern MmResult acmStreamConvert( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, AcmStreamConvertFlags streamConvertFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd742929%28VS.85%29.aspx
     [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmStreamPrepareHeader( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, int prepareFlags );
+    internal static extern MmResult acmStreamPrepareHeader( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, int prepareFlags );
 
     // http://msdn.microsoft.com/en-us/library/dd742931%28VS.85%29.aspx
-    [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmStreamSize( nint hAcmStream, int inputBufferSize, out int outputBufferSize, AcmStreamSizeFlags flags );
+    [LibraryImport( "Msacm32.dll" )]
+    internal static partial MmResult acmStreamSize( nint hAcmStream, int inputBufferSize, out int outputBufferSize, AcmStreamSizeFlags flags );
 
     // http://msdn.microsoft.com/en-us/library/dd742932%28VS.85%29.aspx
     [DllImport( "Msacm32.dll" )]
-    public static extern MmResult acmStreamUnprepareHeader( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, int flags );
+    internal static extern MmResult acmStreamUnprepareHeader( nint hAcmStream, [In, Out] AcmStreamHeaderStruct streamHeader, int flags );
 }

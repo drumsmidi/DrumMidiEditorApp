@@ -45,8 +45,8 @@ public class Id3v2Tag
             {
                 // extended header present
                 var extendedHeader = reader.ReadBytes(4);
-                var extendedHeaderLength = extendedHeader[0] * (1 << 21);
-                extendedHeaderLength += extendedHeader [ 1 ] * ( 1 << 14 );
+                //var extendedHeaderLength = extendedHeader[0] * (1 << 21);
+                //extendedHeaderLength += extendedHeader [ 1 ] * ( 1 << 14 );
                 _ = extendedHeader [ 2 ] * ( 1 << 7 );
                 _ = extendedHeader [ 3 ];
             }

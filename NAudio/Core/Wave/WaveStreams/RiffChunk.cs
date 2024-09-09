@@ -10,22 +10,8 @@ namespace NAudio.Core.Wave.WaveStreams;
 /// <remarks>
 /// Creates a RiffChunk object
 /// </remarks>
-public class RiffChunk( int identifier, int length, long streamPosition )
+public class RiffChunk( int length, long streamPosition )
 {
-
-    /// <summary>
-    /// The chunk identifier
-    /// </summary>
-    public int Identifier
-    {
-        get;
-    } = identifier;
-
-    /// <summary>
-    /// The chunk identifier converted to a string
-    /// </summary>
-    public string IdentifierAsString 
-        => Encoding.UTF8.GetString( BitConverter.GetBytes( Identifier ) );
 
     /// <summary>
     /// The chunk length

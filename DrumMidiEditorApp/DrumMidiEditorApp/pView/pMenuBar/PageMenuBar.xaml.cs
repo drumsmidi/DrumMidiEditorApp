@@ -76,17 +76,20 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
         #endregion
 
-#if DEBUG
-        var filepath = new GeneralPath( "D:/CreateGame/DrumMidiEditor/build/net6.0-windows10.0.19041.0/Dms/test.dms" );
+        if ( Config.System.AppStartParameter.Length > 0 )
+        {
+            var filepath = new GeneralPath( Config.System.AppStartParameter );
 
-		FileIO.LoadScore( filepath, out var score );
-		//FileIO.SaveScore( filepath, score );
+            Log.Info( $"{Log.GetThisMethodName}:{filepath}", true );
 
-		DMS.SCORE			= score;
-		DMS.OpenFilePath	= filepath;
+            FileIO.LoadScore( filepath, out var score );
+            //FileIO.SaveScore( filepath, score );
 
-		ApplyScore();
-#endif
+            DMS.SCORE = score;
+            DMS.OpenFilePath = filepath;
+
+            ApplyScore();
+        }
     }
 
     #region INotifyPropertyChanged

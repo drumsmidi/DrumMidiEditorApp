@@ -161,6 +161,12 @@ public class ConfigSystem
     public string AppName { get; private set; } = $"DrumMidiEditor";
 
     /// <summary>
+    /// アプリケーション起動パラメータ
+    /// </summary>
+    [JsonIgnore]
+    public string AppStartParameter { get; set; } = $"";
+
+    /// <summary>
     /// エディターウィンドウ初期サイズ：横幅
     /// </summary>
     [JsonInclude]

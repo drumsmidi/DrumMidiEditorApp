@@ -32,15 +32,6 @@ public class WaveFileReader : WaveStream
     {
     }
 
-    /// <summary>
-    /// Creates a Wave File Reader based on an input stream
-    /// </summary>
-    /// <param name="inputStream">The input stream containing a WAV file including header</param>
-    public WaveFileReader( Stream inputStream ) :
-       this( inputStream, false )
-    {
-    }
-
     private WaveFileReader( Stream inputStream, bool ownInput )
     {
         waveStream = inputStream;
@@ -74,19 +65,6 @@ public class WaveFileReader : WaveStream
     public List<RiffChunk> ExtraChunks
     {
         get;
-    }
-
-    /// <summary>
-    /// Gets the data for the specified chunk
-    /// </summary>
-    public byte [] GetChunkData( RiffChunk chunk )
-    {
-        var oldPosition     = waveStream.Position;
-        waveStream.Position = chunk.StreamPosition;
-        var data            = new byte[chunk.Length];
-        _ = waveStream.Read( data, 0, data.Length );
-        waveStream.Position = oldPosition;
-        return data;
     }
 
     /// <summary>
@@ -130,26 +108,6 @@ public class WaveFileReader : WaveStream
     public override long Length => dataChunkLength;
 
     /// <summary>
-    /// Number of Sample Frames  (if possible to calculate)
-    /// This currently does not take into account number of channels
-    /// Multiply number of channels if you want the total number of samples
-    /// </summary>
-    public long SampleCount
-    {
-        get
-        {
-            if ( waveFormat.Encoding is WaveFormatEncoding.Pcm or
-                WaveFormatEncoding.Extensible or
-                WaveFormatEncoding.IeeeFloat )
-            {
-                return dataChunkLength / BlockAlign;
-            }
-            // n.b. if there is a fact chunk, you can use that to get the number of samples
-            throw new InvalidOperationException( "Sample count is calculated only for the standard encodings" );
-        }
-    }
-
-    /// <summary>
     /// Position in the WAV data chunk.
     /// <see cref="Stream.Position"/>
     /// </summary>
@@ -188,79 +146,5 @@ public class WaveFileReader : WaveStream
             }
             return waveStream.Read( array, offset, count );
         }
-    }
-
-    /// <summary>
-    /// Attempts to read the next sample or group of samples as floating point normalised into the range -1.0f to 1.0f
-    /// </summary>
-    /// <returns>An array of samples, 1 for mono, 2 for stereo etc. Null indicates end of file reached
-    /// </returns>
-    public float [] ReadNextSampleFrame()
-    {
-        switch ( waveFormat.Encoding )
-        {
-            case WaveFormatEncoding.Pcm:
-            case WaveFormatEncoding.IeeeFloat:
-            case WaveFormatEncoding.Extensible: // n.b. not necessarily PCM, should probably write more code to handle this case
-                break;
-            default:
-                throw new InvalidOperationException( "Only 16, 24 or 32 bit PCM or IEEE float audio data supported" );
-        }
-        var sampleFrame = new float[waveFormat.Channels];
-        var bytesToRead = waveFormat.Channels*(waveFormat.BitsPerSample/8);
-        var raw         = new byte[bytesToRead];
-        var bytesRead   = Read(raw, 0, bytesToRead);
-        if ( bytesRead == 0 )
-        {
-            return null; // end of file
-        }
-
-        if ( bytesRead < bytesToRead )
-        {
-            throw new InvalidDataException( "Unexpected end of file" );
-        }
-
-        var offset = 0;
-        for ( var channel = 0; channel < waveFormat.Channels; channel++ )
-        {
-            if ( waveFormat.BitsPerSample == 16 )
-            {
-                sampleFrame [ channel ] = BitConverter.ToInt16( raw, offset ) / 32768f;
-                offset += 2;
-            }
-            else if ( waveFormat.BitsPerSample == 24 )
-            {
-                sampleFrame [ channel ] = ( ( (sbyte)raw [ offset + 2 ] << 16 ) | ( raw [ offset + 1 ] << 8 ) | raw [ offset ] ) / 8388608f;
-                offset += 3;
-            }
-            else if ( waveFormat.BitsPerSample == 32 && waveFormat.Encoding == WaveFormatEncoding.IeeeFloat )
-            {
-                sampleFrame [ channel ] = BitConverter.ToSingle( raw, offset );
-                offset += 4;
-            }
-            else if ( waveFormat.BitsPerSample == 32 )
-            {
-                sampleFrame [ channel ] = BitConverter.ToInt32( raw, offset ) / ( int.MaxValue + 1f );
-                offset += 4;
-            }
-            else
-            {
-                throw new InvalidOperationException( "Unsupported bit depth" );
-            }
-        }
-        return sampleFrame;
-    }
-
-    /// <summary>
-    /// Attempts to read a sample into a float. n.b. only applicable for uncompressed formats
-    /// Will normalise the value read into the range -1.0f to 1.0f if it comes from a PCM encoding
-    /// </summary>
-    /// <returns>False if the end of the WAV data chunk was reached</returns>
-    [Obsolete( "Use ReadNextSampleFrame instead (this version does not support stereo properly)" )]
-    public bool TryReadFloat( out float sampleValue )
-    {
-        var sf = ReadNextSampleFrame();
-        sampleValue = sf != null ? sf [ 0 ] : 0;
-        return sf != null;
     }
 }
