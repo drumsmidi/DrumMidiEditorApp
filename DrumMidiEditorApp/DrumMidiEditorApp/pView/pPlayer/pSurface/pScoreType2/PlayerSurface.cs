@@ -20,7 +20,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private static ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
+    private static ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2SelectType;
 
     /// <summary>
     /// セクション範囲
@@ -56,6 +56,11 @@ public class PlayerSurface : PlayerSurfaceBase
     /// NOTEリスト（小節番号、NOTE描画アイテム）
     /// </summary>
     private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
+
+    /// <summary>
+    /// ノート背景色リスト＜MidiMapKey、背景色＞
+    /// </summary>
+    private readonly Dictionary<int, FormatRect> _MidiMapNoteFormatList = [];
 
     /// <summary>
     /// 小節番号
@@ -251,6 +256,30 @@ public class PlayerSurface : PlayerSurfaceBase
         }
         #endregion
 
+        #region MidiMap
+        {
+            foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
+            {
+                // ノート描画用の書式を登録
+                if ( !_MidiMapNoteFormatList.TryGetValue( midiMap.MidiMapKey, out var value ) )
+                {
+                    // TODO: 線の色とか情報追加が必要
+                    var formatRect = new FormatRect
+                    {
+                        Background = new( midiMap.Color ),
+                        Text = DrawSet.NoteRect.Text,
+                    };
+
+                    _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
+                }
+                else
+                {
+                    value.Background = new( midiMap.Color );
+                }
+            }
+        }
+        #endregion
+
         #region Bpm now
         {
             _NowBpm = new DmsItemLabel
@@ -344,10 +373,11 @@ public class PlayerSurface : PlayerSurfaceBase
                         volume = 1F;
                     }
 
-                    note_rect.X = body_s.X + ( info.NotePos * DrawSet.NoteTermWidthSize ); //- ( volume * DrawSet.NoteWidthSize / 2.0F );
-                    note_rect.Y = body_s.Y + ( item.Item1 * DrawSet.NoteTermHeightSize ) + ( ( DrawSet.NoteTermHeightSize - ( volume * DrawSet.NoteHeightSize ) ) / 2.0F );
-                    note_rect.Width = DrawSet.NoteWidthSize * volume;
-                    note_rect.Height = DrawSet.NoteHeightSize * volume;
+                    note_rect.Width     = DrawSet.NoteWidthSize  * volume;
+                    note_rect.Height    = DrawSet.NoteHeightSize * volume;
+                    note_rect.X         = body_s.X + ( info.NotePos * DrawSet.NoteTermWidthSize ); //- ( volume * DrawSet.NoteWidthSize / 2.0F );
+                    note_rect.Y         = body_s.Y + ( item.Item1 * DrawSet.NoteTermHeightSize ) 
+                                        + ( ( DrawSet.NoteTermHeightSize - note_rect.Height ) / 2.0F );
 
                     if ( volume != 0F )
                     {
@@ -367,7 +397,8 @@ public class PlayerSurface : PlayerSurfaceBase
                             note_rect._y,
                             note_rect._width,
                             note_rect._height,
-                            DrawSet.NoteRect,
+                            //DrawSet.NoteRect,
+                            _MidiMapNoteFormatList[ midiMap.MidiMapKey ],
                             item.Item2
                         );
 
@@ -409,6 +440,8 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             return true;
         }
+
+        var note_text_flag  = DrawSet.NoteTextOn;
 
         var body            = _ScoreBodyRange;
         var note_pos        = _NotePositionX;
@@ -454,6 +487,11 @@ public class PlayerSurface : PlayerSurfaceBase
                     {
                         _MeasureLineList [ index ].Draw( args.DrawingSession, diff_x, diff_y );
                     }
+
+                    if ( ( measure_no + 1 ) % measure_x == 0 )
+                    {
+                        _MeasureLineList [ 0 ].Draw( args.DrawingSession, diff_x + measure_size, diff_y );
+                    }
                 }
                 #endregion
 
@@ -488,7 +526,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     {
                         foreach ( var note in notes )
                         {
-                            note.Draw( args.DrawingSession, diff_x, diff_y );
+                            note.Draw( args.DrawingSession, diff_x, diff_y, note_text_flag );
                         }
                     }
                 }

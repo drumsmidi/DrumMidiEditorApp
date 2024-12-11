@@ -65,7 +65,6 @@ public class ConfigPlayer
     public enum PlayerSurfaceMode : int
     {
         Sequence = 0,
-        Score,
         Simuration,
         ScoreType2,
     }
@@ -74,7 +73,7 @@ public class ConfigPlayer
     /// プレイヤー描画モード
     /// </summary>
     [JsonInclude]
-    public PlayerSurfaceMode PlayerSurfaceModeSelect = PlayerSurfaceMode.Sequence;
+    public PlayerSurfaceMode PlayerSurfaceModeSelect = PlayerSurfaceMode.ScoreType2;
 
     /// <summary>
     /// プレイヤー描画モード
@@ -199,7 +198,7 @@ public class ConfigPlayer
     /// 解像度リスト選択インデックス
     /// </summary>
     [JsonInclude]
-    public int ResolutionScreenIndex { get; set; } = 1;
+    public int ResolutionScreenIndex { get; set; } = 2;
 
     /// <summary>
     /// 解像度：横幅
@@ -253,19 +252,31 @@ public class ConfigPlayer
     /// プレイヤー描画モード別設定
     /// </summary>
     [JsonInclude]
-    public ConfigPlayerScore Score { get; set; } = new();
-
-    /// <summary>
-    /// プレイヤー描画モード別設定
-    /// </summary>
-    [JsonInclude]
     public ConfigPlayerSimuration Simuration { get; set; } = new();
 
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
+    [JsonIgnore]
+    public Dictionary<string,ConfigPlayerScoreType2> ScoreType2 { get; set; } = new()
+    {
+        { "White", new( false ) },
+        { "Dark" , new( true  ) },
+    };
+
+    /// <summary>
+    /// プレイヤー描画モード別設定
+    /// </summary>
     [JsonInclude]
-    public ConfigPlayerScoreType2 ScoreType2 { get; set; } = new();
+    public string ScoreType2SelectTypeKey { get; set; } = "Dark";
+
+    /// <summary>
+    /// プレイヤー描画モード別設定
+    /// </summary>
+    [JsonIgnore]
+    public ConfigPlayerScoreType2 ScoreType2SelectType 
+        => ScoreType2[ ScoreType2SelectTypeKey ];
+
 
     #endregion
 }

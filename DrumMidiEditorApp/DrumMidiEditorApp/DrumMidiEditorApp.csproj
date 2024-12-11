@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
     <RootNamespace>DrumMidiEditorApp</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -31,7 +31,6 @@
     <None Remove="pView\pConfig\PageConfigDevice.xaml" />
     <None Remove="pView\pConfig\PageConfigEditer.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayer.xaml" />
-    <None Remove="pView\pConfig\PageConfigPlayerScore.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSequence.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSimuration.xaml" />
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
@@ -51,12 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.2.0" />
-    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.3.0" />
+    <PackageReference Include="Microsoft.ML" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20240616" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,10 +84,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="pView\pConfig\PageConfigPlayerSimuration.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pConfig\PageConfigPlayerScore.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

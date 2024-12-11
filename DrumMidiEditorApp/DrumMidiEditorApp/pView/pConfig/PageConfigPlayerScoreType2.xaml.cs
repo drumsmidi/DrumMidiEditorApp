@@ -16,7 +16,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
+    private ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2SelectType;
 
     /// <summary>
     /// Media設定

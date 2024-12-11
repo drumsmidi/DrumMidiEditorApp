@@ -541,4 +541,7 @@ BPMノートを含める</value>
   <data name="NaviSetting.Icon" xml:space="preserve">
     <value>Setting</value>
   </data>
+  <data name="InputNoteTextDisplay.Header" xml:space="preserve">
+    <value>ノートテキスト表示</value>
+  </data>
 </root>

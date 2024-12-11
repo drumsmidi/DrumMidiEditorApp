@@ -71,7 +71,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
     /// <param name="aGraphics">グラフィック</param>
     /// <param name="aDiffX">描画差分X</param>
     /// <param name="aDiffY">描画差分Y</param>
-    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
+    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY, bool aTextFlag )
     {
         if ( _FormatRect == null )
         {
@@ -83,7 +83,7 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
         rect.Y += aDiffY;
 
         // テキスト
-        if ( _LabelText.Length != 0 )
+        if ( aTextFlag && _LabelText.Length != 0 )
         {
             aGraphics.DrawText
                 (
@@ -92,20 +92,9 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
                     rect._y - rect._height,
                     rect._width,
                     rect._height,
-                    _FormatRect.Text.TextColor.Color,
+                    _FormatRect.Background.Color,
                     _FormatRect.Text.TextFormat
                 );
-
-            //aGraphics.DrawEllipse
-            //    (
-            //        rect._x,
-            //        rect._y,
-            //        rect._width,
-            //        rect._height,
-            //        _FormatRect.Line.LineColor.Color,
-            //        _FormatRect.Line.LineSize
-            //    );
-
         }
         else
         {
@@ -113,33 +102,13 @@ internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemN
             aGraphics.FillEllipse
                 (
                     rect._x,
-                    rect._y,
+                    rect._y - rect._height / 2.0f,
                     rect._width,
                     rect._height,
                     _FormatRect.Background.Color
                 );
-
-            //_StopImage ??= CanvasBitmap.LoadAsync( aGraphics, new Uri( "ms-appx:///Images/test.png" ) );
-            //if ( _StopImage.Status == AsyncStatus.Completed )
-            //{
-            //    rect.Width *= 4;
-            //    rect.Height *= 4;
-            //    rect._x -= ( rect._width / 2F );
-            //    rect._y -= rect._height;
-
-
-            //    aGraphics.DrawImage
-            //        (
-            //            _StopImage.GetResults(),
-            //            rect
-            //        );
-            //}
-
         }
     }
-
-    //private static IAsyncOperation<CanvasBitmap>? _StopImage;
-
 
     /// <summary>
     /// ノート描画順 並替用

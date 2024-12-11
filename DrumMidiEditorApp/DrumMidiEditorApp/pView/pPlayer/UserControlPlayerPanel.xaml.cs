@@ -859,9 +859,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
             case ConfigPlayer.PlayerSurfaceMode.Sequence:
                 _PlayerSurface = new pSurface.pSequence.PlayerSurface();
                 break;
-            case ConfigPlayer.PlayerSurfaceMode.Score:
-                _PlayerSurface = new pSurface.pScore.PlayerSurface();
-                break;
             case ConfigPlayer.PlayerSurfaceMode.Simuration:
                 _PlayerSurface = new pSurface.pSimuration.PlayerSurface();
                 break;

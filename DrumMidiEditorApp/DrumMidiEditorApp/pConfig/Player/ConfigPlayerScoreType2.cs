@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// プレイヤー設定
 /// </summary>
-public class ConfigPlayerScoreType2
+public class ConfigPlayerScoreType2( bool aDarkMode )
 {
     #region Sheet
 
@@ -22,7 +22,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Color = Color.FromArgb( 255, 255, 255, 255 ),
+        Color = aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
     };
 
     #endregion
@@ -56,9 +56,9 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background  = new( Color.FromArgb(   0,  0,  0, 0 ) ),
-        Line        = new( Color.FromArgb(   0, 60, 60, 0 ), 0F ),
-        Text        = new( Color.FromArgb( 255,  0,  0, 0 ),
+        Background  = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ) ),
+        Line        = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ), 0F ),
+        Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255,  0,  0, 0 ),
                             new()
                             {
                                 FontFamily          = "system-ui",
@@ -87,9 +87,9 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background  = new( Color.FromArgb( 255, 100, 100, 100 ) ),
-        Line        = new( Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
+        Background  = new( aDarkMode ? Color.FromArgb( 255, 150, 150, 150 ) : Color.FromArgb( 255, 100, 100, 100 ) ),
+        Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+        Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
                             new()
                             {
                                 FontFamily          = "system-ui",
@@ -108,9 +108,9 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line        = new( Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
+        Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+        Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
                             new()
                             {
                                 FontFamily          = "system-ui",
@@ -133,7 +133,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineColor = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize = 1.0F,
     };
 
@@ -146,7 +146,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+        LineColor = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 80, 80, 80 ) ),
         LineSize = 0.4F,
     };
 
@@ -163,9 +163,9 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line        = new( Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
-        Text        = new( Color.FromArgb( 255, 0, 0, 0 ),
+        Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+        Line        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
+        Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ),
                             new()
                             {
                                 FontFamily          = "system-ui",
@@ -180,13 +180,13 @@ public class ConfigPlayerScoreType2
     /// ノート高さ
     /// </summary>
     [JsonInclude]
-    public float NoteHeightSize { get; set; } = 8F;
+    public float NoteHeightSize { get; set; } = 10F;
 
     /// <summary>
     /// ノート横幅
     /// </summary>
     [JsonInclude]
-    public float NoteWidthSize { get; set; } = 8F;
+    public float NoteWidthSize { get; set; } = 10F;
 
     /// <summary>
     /// 音量ゼロノート表示フラグ
@@ -201,6 +201,12 @@ public class ConfigPlayerScoreType2
     public bool NoteVolumeSizeOn { get; set; } = true;
 
     /// <summary>
+    /// ノートテキスト表示フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool NoteTextOn { get; set; } = true;
+
+    /// <summary>
     /// ノート間隔：横
     /// </summary>
     [JsonInclude]
@@ -210,7 +216,7 @@ public class ConfigPlayerScoreType2
     /// ノート間隔：縦
     /// </summary>
     [JsonInclude]
-    public float NoteTermHeightSize { get; set; } = 12F;
+    public float NoteTermHeightSize { get; set; } = 18.2F;
 
     #endregion
 
@@ -225,7 +231,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize    = 1.0F,
     };
 
@@ -238,7 +244,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize    = 1.0F,
     };
 
@@ -251,7 +257,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize    = 0.5F,
     };
 
@@ -264,7 +270,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
         LineSize    = 0.3F,
     };
 
@@ -277,7 +283,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 200, 200, 200 ) : Color.FromArgb( 255, 50, 50, 50 ) ),
         LineSize    = 0.0F,
     };
 
@@ -290,7 +296,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 190, 190, 190 ) : Color.FromArgb( 255, 40, 40, 40 ) ),
         LineSize    = 0.0F,
     };
 
@@ -303,7 +309,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 180, 180, 180 ) : Color.FromArgb( 255, 30, 30, 30 ) ),
         LineSize    = 0.0F,
     };
 
@@ -316,7 +322,7 @@ public class ConfigPlayerScoreType2
         get; set;
     } = new()
     {
-        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 20, 20, 20 ) ),
         LineSize    = 0.0F,
     };
 
@@ -388,17 +394,18 @@ public class ConfigPlayerScoreType2
     [JsonIgnore]
     private readonly List<ScaleItem> _ScaleList =
     [
-        new( "DUMMY", "", false   ),
+        new( "DUMMY", "", true   ),
         new( "CY"   , "", false   ),
         new( "RD"   , "", true    ),
         new( "HH"   , "", false   ),
         new( "SD"   , "", false   ),
-        new( "HT"   , "", true    ),
-        new( "MT"   , "", false   ),
-        new( "LT"   , "", false   ),
-        new( "FT1"  , "", false   ),
-        new( "FT2"  , "", true    ),
-        new( "BD"   , "", false   ),
+        new( "TM"   , "", false    ),
+        //new( "HT"   , "", true    ),
+        //new( "MT"   , "", false   ),
+        //new( "LT"   , "", false   ),
+        //new( "FT1"  , "", false   ),
+        //new( "FT2"  , "", true    ),
+        new( "BD"   , "", true   ),
         new( "PC"   , "", false   ),
     ];
 

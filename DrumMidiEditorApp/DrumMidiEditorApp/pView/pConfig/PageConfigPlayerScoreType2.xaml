@@ -26,6 +26,10 @@
                 IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
                 Toggled="ToggleSwitch_Toggled" />
 
+            <ToggleSwitch x:Uid="InputNoteTextDisplay"
+                IsOn="{x:Bind DrawSet.NoteTextOn, Mode=TwoWay}"
+                Toggled="ToggleSwitch_Toggled" />
+
             <NumberBox x:Name="_MeasureNoHeightSizeNumberBox" x:Uid="InputMeasureNoHeightSize"
                 Value="{x:Bind DrawSet.MeasureNoHeightSize, Mode=TwoWay}" 
                 Style="{StaticResource PanelItemSizeStyle}"

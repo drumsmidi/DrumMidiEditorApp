@@ -1,4 +1,6 @@
-﻿using DrumMidiEditorApp.pLog;
+﻿using System;
+using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pView;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
