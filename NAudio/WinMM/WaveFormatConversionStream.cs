@@ -10,7 +10,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// WaveStream that passes through an ACM Codec
 /// </summary>
-public class WaveFormatConversionStream : WaveStream
+public partial class WaveFormatConversionStream : WaveStream
 {
     private readonly WaveFormatConversionProvider conversionProvider;
     private readonly WaveFormat targetFormat;

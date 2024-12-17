@@ -11,7 +11,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// Alternative WaveOut class, making use of the Event callback
 /// </summary>
-public class WaveOutEvent : IWavePlayer, IWavePosition
+public partial class WaveOutEvent : IWavePlayer, IWavePosition
 {
     private readonly object waveOutLock;
     private readonly SynchronizationContext syncContext;

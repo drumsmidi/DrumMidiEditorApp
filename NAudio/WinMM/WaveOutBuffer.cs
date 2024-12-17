@@ -10,7 +10,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// A buffer of Wave samples for streaming to a Wave Output device
 /// </summary>
-public class WaveOutBuffer : DisposeBaseClass
+public partial class WaveOutBuffer : DisposeBaseClass
 {
     private readonly WaveHeader header;
     private readonly byte[] buffer;

@@ -4,7 +4,7 @@ using NAudio.Core;
 
 namespace NAudio.WinMM.Compression;
 
-internal class AcmStreamHeader : IDisposable
+internal partial class AcmStreamHeader : IDisposable
 {
     private readonly AcmStreamHeaderStruct streamHeader;
     private GCHandle hSourceBuffer;

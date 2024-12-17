@@ -9,7 +9,7 @@ namespace NAudio.WinMM.Compression;
 /// AcmStream encapsulates an Audio Compression Manager Stream
 /// used to convert audio from one format to another
 /// </summary>
-public class AcmStream : IDisposable
+public partial class AcmStream : IDisposable
 {
     private nint streamHandle;
     private nint driverHandle;

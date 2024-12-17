@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using NAudio.Core.Wave.SampleProviders;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
@@ -17,14 +18,14 @@ namespace NAudio;
 /// ISampleProvider, making it possibly the only stage in your audio
 /// pipeline necessary for simple playback scenarios
 /// </summary>
-public class AudioFileReader : WaveStream, ISampleProvider
+public partial class AudioFileReader : WaveStream, ISampleProvider
 {
     private WaveStream readerStream; // the waveStream which we will use for all positioning
     private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
     private readonly int destBytesPerSample;
     private readonly int sourceBytesPerSample;
     private readonly long length;
-    private readonly object lockObject;
+    private readonly Lock lockObject;
 
     /// <summary>
     /// Initializes a new instance of AudioFileReader
@@ -32,7 +33,7 @@ public class AudioFileReader : WaveStream, ISampleProvider
     /// <param name="fileName">The file to open</param>
     public AudioFileReader( string fileName )
     {
-        lockObject              = new object();
+        lockObject              = new Lock();
         FileName                = fileName;
         CreateReaderStream( fileName );
         sourceBytesPerSample    = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;

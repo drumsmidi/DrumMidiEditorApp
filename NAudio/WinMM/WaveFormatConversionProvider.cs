@@ -10,7 +10,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// IWaveProvider that passes through an ACM Codec
 /// </summary>
-public class WaveFormatConversionProvider : IWaveProvider, IDisposable
+public partial class WaveFormatConversionProvider : IWaveProvider, IDisposable
 {
     private readonly AcmStream conversionStream;
     private readonly IWaveProvider sourceProvider;

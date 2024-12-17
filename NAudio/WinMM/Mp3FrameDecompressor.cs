@@ -8,7 +8,7 @@ namespace NAudio.WinMM;
 /// <summary>
 /// MP3 Frame Decompressor using ACM
 /// </summary>
-public class AcmMp3FrameDecompressor : IMp3FrameDecompressor
+public partial class AcmMp3FrameDecompressor : IMp3FrameDecompressor
 {
     private readonly AcmStream conversionStream;
     private bool disposed;
