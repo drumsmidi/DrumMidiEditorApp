@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤー描画アイテム：小節線
 /// </summary>
-internal class DmsItemLine : DisposeBaseClass
+internal partial class DmsItemLine : DisposeBaseClass
 {
     /// <summary>
     /// 描画範囲

@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// MidiMapSet
 /// </summary>
-public class MidiMapSet : DisposeBaseClass
+public partial class MidiMapSet : DisposeBaseClass
 {
     /// <summary>
     /// MidiMapGroupリスト（主データ）
@@ -414,7 +414,7 @@ public class MidiMapSet : DisposeBaseClass
 
         foreach ( var group in MidiMapGroups )
         {
-            foreach ( PlayerSurfaceMode mode in Enum.GetValues( typeof( PlayerSurfaceMode ) ) )
+            foreach ( var mode in Enum.GetValues<PlayerSurfaceMode>() )
             {
                 if ( !MidiMapGroupPositions.TryGetValue( mode, out var list ) )
                 {

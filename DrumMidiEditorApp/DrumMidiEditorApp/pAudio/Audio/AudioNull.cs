@@ -3,7 +3,7 @@
 /// <summary>
 /// オーディオダミー
 /// </summary>
-internal class AudioNull : AudioBase
+internal partial class AudioNull : AudioBase
 {
     /// <summary>
     /// コンストラクタ

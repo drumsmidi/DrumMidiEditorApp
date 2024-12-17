@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤー描画アイテム：ラベル
 /// </summary>
-internal class DmsItemLabel : DisposeBaseClass
+internal partial class DmsItemLabel : DisposeBaseClass
 {
     /// <summary>
     /// 描画範囲

@@ -110,7 +110,7 @@ public static class MLControl
     /// <returns>小節開始～終了間のデータセット</returns>
     private static IDataView? CreateDataSet( MLContext aMLContext, bool aPrediction, int aStartMeasureNo, int aEndMeasureNo )
     {
-        var bgm = DmsControl.AudioData;
+        var bgm = new NAudioData( DMS.SCORE.BgmFilePath, true );
 
         if ( !( bgm?.IsEnableFFT() ?? false ) )
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using DrumMidiEditorApp.pLog;
 using Windows.Devices.Midi;
 using Windows.Storage.Streams;
@@ -14,7 +15,7 @@ internal static partial class MidiNet
     /// <summary>
     /// ロック用
     /// </summary>
-    private static readonly object _LockObj = new();
+    private static readonly Lock _LockObj = new();
 
     /// <summary>
     /// MIDI-OUTデバイス

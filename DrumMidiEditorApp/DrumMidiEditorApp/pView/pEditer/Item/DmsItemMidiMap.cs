@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：ドラム
 /// </summary>
-public class DmsItemMidiMap : DisposeBaseClass
+public partial class DmsItemMidiMap : DisposeBaseClass
 {
     /// <summary>
     /// MidiMapGroup

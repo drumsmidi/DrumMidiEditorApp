@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤー描画アイテム：小節ヘッダ
 /// </summary>
-internal class DmsItemMeasure : DisposeBaseClass
+internal partial class DmsItemMeasure : DisposeBaseClass
 {
     /// <summary>
     /// 描画範囲

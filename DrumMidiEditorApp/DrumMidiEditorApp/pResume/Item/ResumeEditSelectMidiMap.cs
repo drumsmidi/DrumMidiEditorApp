@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pResume;
 /// コンストラクタ
 /// </remarks>
 /// <param name="aMidiMap">編集対象のMidiMap</param>
-internal class ResumeEditSelectMidiMap( MidiMap aMidiMap ) : DisposeBaseClass, IResume
+internal partial class ResumeEditSelectMidiMap( MidiMap aMidiMap ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 編集対象のMidiMap

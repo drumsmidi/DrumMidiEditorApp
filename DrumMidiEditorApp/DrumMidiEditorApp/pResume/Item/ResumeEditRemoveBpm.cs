@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pResume;
 /// コンストラクタ
 /// </remarks>
 /// <param name="aInfoBef">変更前 BPM情報</param>
-internal class ResumeEditRemoveBpm( InfoBpm aInfoBef ) : DisposeBaseClass, IResume
+internal partial class ResumeEditRemoveBpm( InfoBpm aInfoBef ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 変更前 BPM情報

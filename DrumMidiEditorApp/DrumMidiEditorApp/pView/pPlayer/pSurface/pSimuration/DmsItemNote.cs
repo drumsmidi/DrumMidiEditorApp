@@ -13,7 +13,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 /// <param name="aNotePosX">１小節内のノート描画位置X座標</param>
 /// <param name="aFormatRect">描画書式</param>
 /// <param name="aDmsItemMidiMap">ヘッダアイテム</param>
-internal class DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
+internal partial class DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
 {
     /// <summary>
     /// １小節内のノート描画位置X座標

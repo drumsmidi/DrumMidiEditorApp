@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：音量選択範囲
 /// </summary>
-public class DmsItemVolumeRange : DisposeBaseClass
+public partial class DmsItemVolumeRange : DisposeBaseClass
 {
     /// <summary>
     /// 表示フラグ

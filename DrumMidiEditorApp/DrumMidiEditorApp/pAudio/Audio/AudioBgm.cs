@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pAudio;
 /// コンストラクタ
 /// </remarks>
 /// <param name="aFilepath">Audioファイルパス</param>
-internal class AudioBgm( GeneralPath aFilepath ) : AudioBase
+internal partial class AudioBgm( GeneralPath aFilepath ) : AudioBase
 {
     /// <summary>
     /// AudioData

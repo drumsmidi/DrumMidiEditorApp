@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScoreType2;
 /// <summary>
 /// プレイヤー描画アイテム：ノート
 /// </summary>
-internal class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
+internal partial class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
 {
     /// <summary>
     /// 描画範囲

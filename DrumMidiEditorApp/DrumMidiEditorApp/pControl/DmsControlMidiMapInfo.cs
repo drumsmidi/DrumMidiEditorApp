@@ -14,7 +14,7 @@ namespace DrumMidiEditorApp.pControl;
 /// <param name="aChannel">MIDIチャンネル番号(0-15)</param>
 /// <param name="aMidi">MIDIノート番号</param>
 /// <param name="aVolumeAdd">音量増減値</param>
-internal class DmsControlMidiMapInfo( byte aChannel, byte aMidi, int aVolumeAdd ) : DisposeBaseClass
+internal partial class DmsControlMidiMapInfo( byte aChannel, byte aMidi, int aVolumeAdd ) : DisposeBaseClass
 {
     /// <summary>
     /// ノート再生

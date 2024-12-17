@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pIO.pVideo;
 /// <summary>
 /// MP4出力
 /// </summary>
-public class Mp4IO : DisposeBaseClass
+public partial class Mp4IO : DisposeBaseClass
 {
     /// <summary>
     /// Video書込

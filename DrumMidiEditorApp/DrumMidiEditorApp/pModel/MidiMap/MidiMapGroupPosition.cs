@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// MidiMapGroupプレイヤー表示情報
 /// </summary>
-public class MidiMapGroupPosition : DisposeBaseClass
+public partial class MidiMapGroupPosition : DisposeBaseClass
 {
     /// <summary>
     /// プレイヤー表示位置X座標

@@ -13,7 +13,7 @@ namespace DrumMidiEditorApp.pModel;
 /// コンストラクタ
 /// </remarks>
 /// <param name="aChannelNo">チャンネル番号(0-15)</param>
-public class Channel( byte aChannelNo ) : DisposeBaseClass
+public partial class Channel( byte aChannelNo ) : DisposeBaseClass
 {
     #region Member
 

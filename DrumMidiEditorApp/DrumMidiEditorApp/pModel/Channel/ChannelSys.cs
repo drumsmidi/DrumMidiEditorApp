@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// システムチャンネル情報
 /// </summary>
-public class ChannelSys : DisposeBaseClass
+public partial class ChannelSys : DisposeBaseClass
 {
     #region Member
 

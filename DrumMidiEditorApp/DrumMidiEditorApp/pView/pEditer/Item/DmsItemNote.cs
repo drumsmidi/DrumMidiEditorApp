@@ -22,7 +22,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <param name="aHeight">高さ</param>
 /// <param name="aInfo">NOTE情報</param>
 /// <param name="aFormatRect">描画書式</param>
-public class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
+public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
 {
     /// <summary>
     /// 描画範囲

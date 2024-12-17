@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：ノート範囲選択
 /// </summary>
-public class DmsItemNoteRange : DisposeBaseClass
+public partial class DmsItemNoteRange : DisposeBaseClass
 {
     /// <summary>
     /// 範囲選択開始ノート位置（絶対値）

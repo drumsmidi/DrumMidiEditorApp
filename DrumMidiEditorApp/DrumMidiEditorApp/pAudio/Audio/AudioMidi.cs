@@ -8,7 +8,7 @@
 /// </remarks>
 /// <param name="aChannel">MIDIチャンネル(0-15)</param>
 /// <param name="aMidi">MIDIノート番号</param>
-internal class AudioMidi( byte aChannel, byte aMidi ) : AudioBase
+internal partial class AudioMidi( byte aChannel, byte aMidi ) : AudioBase
 {
     /// <summary>
     /// MIDIチャンネル(0-15)

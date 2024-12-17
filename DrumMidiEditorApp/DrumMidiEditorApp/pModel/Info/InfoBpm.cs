@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// BPM情報
 /// </summary>
-public class InfoBpm : InfoBase
+public partial class InfoBpm : InfoBase
 {
     #region Member
 

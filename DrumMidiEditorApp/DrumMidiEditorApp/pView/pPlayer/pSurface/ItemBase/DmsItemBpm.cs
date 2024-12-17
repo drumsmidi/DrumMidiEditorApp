@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤー描画アイテム：BPM
 /// </summary>
-internal class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
+internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
 {
     /// <summary>
     /// 描画範囲

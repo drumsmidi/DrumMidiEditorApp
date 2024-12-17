@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// スコア情報
 /// </summary>
-public class Score : DisposeBaseClass
+public partial class Score : DisposeBaseClass
 {
     /// <summary>
     /// スコアロック用オブジェクト

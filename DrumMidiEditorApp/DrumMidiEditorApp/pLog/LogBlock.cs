@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pLog;
 /// ログブロック出力
 /// 使い方：using var _ = LogBlock( "ブロック名" );
 /// </summary>
-public class LogBlock : DisposeBaseClass
+public partial class LogBlock : DisposeBaseClass
 {
     /// <summary>
     /// ブロック名

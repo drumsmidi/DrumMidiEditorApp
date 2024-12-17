@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 /// <summary>
 /// プレイヤー描画アイテム：MidiMapヘッダ
 /// </summary>
-internal class DmsItemMidiMap : DisposeBaseClass
+internal partial class DmsItemMidiMap : DisposeBaseClass
 {
     /// <summary>
     /// 描画対象のMidiMapGroup

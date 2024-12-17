@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pResume;
 /// </remarks>
 /// <param name="aInfo">BPM情報</param>
 /// <param name="aSelectAft">選択状態</param>
-internal class ResumeEditSelectBpm( InfoBpm aInfo, bool aSelectAft ) : DisposeBaseClass, IResume
+internal partial class ResumeEditSelectBpm( InfoBpm aInfo, bool aSelectAft ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// BPM情報

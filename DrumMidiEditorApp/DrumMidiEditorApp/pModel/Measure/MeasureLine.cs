@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// 小節ライン
 /// </summary>
-public class MeasureLine<T> : DisposeBaseClass where T : InfoBase
+public partial class MeasureLine<T> : DisposeBaseClass where T : InfoBase
 {
     #region Member
 

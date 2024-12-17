@@ -16,7 +16,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <param name="aBottom">描画位置 底位置</param>
 /// <param name="aInfo">NOTE情報</param>
 /// <param name="aFormatRect">書式設定</param>
-public class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass
+public partial class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass
 {
     /// <summary>
     /// 描画位置

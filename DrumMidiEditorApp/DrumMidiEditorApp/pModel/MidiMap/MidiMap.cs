@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// MidiMap
 /// </summary>
-public class MidiMap : DisposeBaseClass
+public partial class MidiMap : DisposeBaseClass
 {
     /// <summary>
     /// 所属するMidiMapGroup

@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pResume;
 /// </remarks>
 /// <param name="aInfo">NOTE情報</param>
 /// <param name="aSelectAft">選択状態</param>
-internal class ResumeEditSelectNote( InfoNote aInfo, bool aSelectAft ) : DisposeBaseClass, IResume
+internal partial class ResumeEditSelectNote( InfoNote aInfo, bool aSelectAft ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// NOTE情報

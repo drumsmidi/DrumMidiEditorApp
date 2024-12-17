@@ -11,7 +11,7 @@ namespace DrumMidiEditorApp.pResume;
 /// コンストラクタ
 /// </remarks>
 /// <param name="aInfoBef">変更前 NOTE情報</param>
-internal class ResumeEditRemoveNote( InfoNote aInfoBef ) : DisposeBaseClass, IResume
+internal partial class ResumeEditRemoveNote( InfoNote aInfoBef ) : DisposeBaseClass, IResume
 {
     /// <summary>
     /// 変更前 NOTE情報

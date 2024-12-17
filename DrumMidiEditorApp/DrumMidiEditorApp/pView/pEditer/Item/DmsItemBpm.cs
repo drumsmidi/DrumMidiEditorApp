@@ -10,7 +10,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：BPM
 /// </summary>
-public class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
+public partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
 {
     /// <summary>
     /// 描画範囲

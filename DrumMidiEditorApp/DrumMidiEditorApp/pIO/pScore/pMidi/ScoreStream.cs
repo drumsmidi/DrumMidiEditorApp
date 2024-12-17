@@ -310,7 +310,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         {
                             pos += 1;
                             Log.Warning( $"◆◆◆Unsupported event.System support required◆◆◆" );
-                            Log.Warning( $"command: {Convert.ToHexString( new byte [] { (byte)( command + channel ) } )}" );
+                            Log.Warning( $"command: {Convert.ToHexString( [(byte)( command + channel )] )}" );
                         }
                         break;
                 }

@@ -8,7 +8,7 @@ using Windows.Devices.Midi;
 
 namespace DrumMidiEditorApp.pAudio;
 
-internal class MidiOutDeviceWatcher : DisposeBaseClass
+internal partial class MidiOutDeviceWatcher : DisposeBaseClass
 {
     /// <summary>
     /// MIDI-OUTデバイス全検索文字列

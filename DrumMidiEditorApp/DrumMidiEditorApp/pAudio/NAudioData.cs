@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil;
@@ -16,12 +17,12 @@ namespace DrumMidiEditorApp.pAudio;
 /// <summary>
 /// NAudioData
 /// </summary>
-public class NAudioData : DisposeBaseClass
+public partial class NAudioData : DisposeBaseClass
 {
     /// <summary>
     /// ロック用
     /// </summary>
-    private readonly object _LockObj = new();
+    private readonly Lock _LockObj = new();
 
     /// <summary>
     /// Audioファイル読込
@@ -493,7 +494,7 @@ public class NAudioData : DisposeBaseClass
     /// FFT解析。
     /// refer: https://qiita.com/takesyhi/items/a0f03447bb893c9ab937
     /// </summary>
-    public async void CalcFFT()
+    public void CalcFFT()
     {
         if ( _Reader == null )
         {
@@ -509,53 +510,47 @@ public class NAudioData : DisposeBaseClass
         var fftLength   = FFTLength; // (int)Math.Pow( 2d, 10d ); // 10=1024,11=2048,12=4096,13=8192,14=16394,15=32798
         var fftPos      = 0;
 
-        var hzPerOne = (float)GetSampleRate() / ( fftLength / 2 * Channels );
+        //var hzPerOne = (float)GetSampleRate() / ( fftLength / 2 * Channels );
 
         _FFTBuffer = new float [ sampleNum / fftLength, fftLength / 2 ];
 
         var buffer = new Complex[ fftLength ];
 
-        await Task.Run
-            (
-                () =>
+        for ( var i = 0; i < sampleNum; i++ )
+        {
+        //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
+            buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
+        //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
+            buffer [ fftPos ].Y = 0.0f;
+
+            fftPos++;
+
+            if ( fftLength <= fftPos )
+            {
+                fftPos = 0;
+
+                // 高速フーリエ変換
+                FastFourierTransform.FFT( true, (int)Math.Log( fftLength, 2.0d ), buffer );
+
+                for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
                 {
-                    for ( var i = 0; i < sampleNum; i++ )
-                    {
-                    //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.BlackmannHarrisWindow( fftPos, fftLength ) );
-                        buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HammingWindow( fftPos, fftLength ) );
-                    //  buffer [ fftPos ].X = (float)( samples[ i ] * FastFourierTransform.HannWindow( fftPos, fftLength ) );
-                        buffer [ fftPos ].Y = 0.0f;
+                    var c = buffer[ k ];
 
-                        fftPos++;
+                    var diagonal    = Math.Sqrt( (c.X * c.X) + (c.Y * c.Y) );
+                    var intensityDB = 10d * Math.Log10( diagonal );
 
-                        if ( fftLength <= fftPos )
-                        {
-                            fftPos = 0;
+                    var minDB = -90.0d;
 
-                            // 高速フーリエ変換
-                            FastFourierTransform.FFT( true, (int)Math.Log( fftLength, 2.0d ), buffer );
+                    var percent = intensityDB < minDB ? 1d : intensityDB / minDB;
 
-                            for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
-                            {
-                                var c = buffer[ k ];
-
-                                var diagonal    = Math.Sqrt( (c.X * c.X) + (c.Y * c.Y) );
-                                var intensityDB = 10d * Math.Log10( diagonal );
-
-                                var minDB = -90.0d;
-
-                                var percent = intensityDB < minDB ? 1d : intensityDB / minDB;
-
-                                _FFTBuffer [ i / fftLength, k ] = (float)( 1d - percent );
-                            //  _FFTBuffer [ i / fftLength, k ] = (float)percent;
-                            }
-                        }
-                    }
-
-                    _IsFFTLoad = true;
+                    _FFTBuffer [ i / fftLength, k ] = (float)( 1d - percent );
+                //  _FFTBuffer [ i / fftLength, k ] = (float)percent;
                 }
-            );
-    }
+            }
+        }
+
+        _IsFFTLoad = true;
+}
 
     #endregion
 
@@ -615,7 +610,7 @@ public class NAudioData : DisposeBaseClass
     /// コンストラクタ
     /// </remarks>
     /// <param name="aSourceProvider"></param>
-    private class Sampling( ISampleProvider aSourceProvider ) : DisposeBaseClass, ISampleProvider
+    private partial class Sampling( ISampleProvider aSourceProvider ) : DisposeBaseClass, ISampleProvider
     {
         /// <summary>
         /// サンプリングプロバイダー

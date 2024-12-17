@@ -8,7 +8,7 @@ namespace DrumMidiEditorApp.pControl;
 /// <summary>
 /// DmsControlNoteInfo⇒DmsControlMidiMapInfoを通してMIDI再生
 /// </summary>
-internal class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComparable<DmsControlNoteInfo>
+internal partial class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComparable<DmsControlNoteInfo>
 {
     /// <summary>
     /// ノート音量（127基準）

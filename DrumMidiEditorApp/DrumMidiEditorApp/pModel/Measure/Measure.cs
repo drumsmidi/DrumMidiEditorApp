@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// 小節情報
 /// </summary>
-public class Measure : DisposeBaseClass
+public partial class Measure : DisposeBaseClass
 {
     #region Member
 

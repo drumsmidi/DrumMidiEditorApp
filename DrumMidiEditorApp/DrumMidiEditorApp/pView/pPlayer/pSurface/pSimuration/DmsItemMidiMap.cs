@@ -17,7 +17,7 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 /// <param name="aWidth">横幅</param>
 /// <param name="aHeight">高さ</param>
 /// <param name="aFormatRect">描画書式</param>
-internal class DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect ) : DisposeBaseClass
+internal partial class DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect ) : DisposeBaseClass
 {
     /// <summary>
     /// 描画対象のMidiMapGroup

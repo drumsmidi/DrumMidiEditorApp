@@ -6,7 +6,7 @@ namespace DrumMidiEditorApp.pModel;
 /// <summary>
 /// NOTE情報
 /// </summary>
-public class InfoNote : InfoBase
+public partial class InfoNote : InfoBase
 {
     #region Member
 

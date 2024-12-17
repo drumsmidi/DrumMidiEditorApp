@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pResume;
 /// <summary>
 /// レジューム：ノート範囲設定
 /// </summary>
-internal class ResumeEditNoteRange : DisposeBaseClass, IResume
+internal partial class ResumeEditNoteRange : DisposeBaseClass, IResume
 {
     /// <summary>
     /// Editタブのノート範囲オブジェクトへの参照

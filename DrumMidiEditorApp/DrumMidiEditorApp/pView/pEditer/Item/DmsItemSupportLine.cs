@@ -9,7 +9,7 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：サポート線
 /// </summary>
-public class DmsItemSupportLine : DisposeBaseClass
+public partial class DmsItemSupportLine : DisposeBaseClass
 {
     /// <summary>
     /// サポート線表示フラグ
