@@ -28,6 +28,7 @@
                 <NavigationViewItem Tag="PageMidiMap" x:Uid="NaviMidiMap" />
                 <NavigationViewItem Tag="PageEdit"    x:Uid="NaviEdit" />
                 <NavigationViewItem Tag="PageScore"   x:Uid="NaviScore" />
+                <NavigationViewItem Tag="PageML"      x:Uid="NaviML" />
                 <NavigationViewItemSeparator />
                 <NavigationViewItem Tag="PageConfig"  x:Uid="NaviSetting" />
                 <NavigationViewItemSeparator />

@@ -54,7 +54,7 @@
     <PackageReference Include="Microsoft.ML" Version="4.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20240616" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
@@ -140,6 +140,12 @@
     </Page>
     <Page Update="pView\pMidiMap\UserControlMidiMapPanel.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pScore - コピー\PageScore.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="pView\pScore - コピー\UserControlScore.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pStatusBar\PageStatusBar.xaml">

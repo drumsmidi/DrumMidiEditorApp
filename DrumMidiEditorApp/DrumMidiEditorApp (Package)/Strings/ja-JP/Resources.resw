@@ -544,4 +544,14 @@ BPMノートを含める</value>
   <data name="InputNoteTextDisplay.Header" xml:space="preserve">
     <value>ノートテキスト表示</value>
   </data>
+  <data name="NaviML.Content" xml:space="preserve">
+    <value>Mathin Learning</value>
+  </data>
+  <data name="NaviML.Icon" xml:space="preserve">
+    <value>SwitchApps</value>
+  </data>
+  <data name="ButtonLeftAlignNoteOfRange.Content" xml:space="preserve">
+    <value>範囲内のノート
+左寄せ(16分割)</value>
+  </data>
 </root>

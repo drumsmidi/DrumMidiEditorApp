@@ -214,6 +214,16 @@ public static class EventManage
     }
 
     /// <summary>
+    /// 範囲選択内のノートを左寄せに移動リクエスト
+    /// </summary>
+    public static void EventEditLeftAlignNoteOfRangeSelect()
+    {
+        Config.Editer.UpdateLeftAlignNoteOfRangeSelectFlag = true;
+
+        ControlAccess.PageEdit?.Refresh();
+    }
+
+    /// <summary>
     /// 範囲選択解除リクエスト
     /// </summary>
     public static void EventEditClearRangeSelect()
@@ -223,6 +233,7 @@ public static class EventManage
         ControlAccess.PageEdit?.ReloadConfigEditer();
         ControlAccess.PageEdit?.Refresh();
     }
+
 
     /// <summary>
     /// 波形表示画像更新リクエスト

@@ -229,7 +229,7 @@ public class ConfigSystem
     /// ドキュメントベースフォルダパス
     /// </summary>
     [JsonInclude]
-    public GeneralPath FolderDocBase { get; private set; } = new( $"{HelperAppDirectory.AppBaseDirectory}\\" );
+    public GeneralPath FolderDocBase { get; private set; } = new( $"{HelperAppDirectory.LocalFolder.Path}\\" );
 
     /// <summary>
     /// Configフォルダ（アプリの設定ファイル格納）
@@ -243,7 +243,8 @@ public class ConfigSystem
     /// </summary>
     [JsonIgnore]
     public GeneralPath FolderModel
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model\\" ) );
+        => new( FolderDocBase.AbsoulteFolderPath );
+     // => new (FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model\\" ) );
 
     /// <summary>
     /// Bgmフォルダ（BGM格納）

@@ -253,12 +253,6 @@
                     Height="50"
                     Click="WaveForm_Click" />
 
-                <Button x:Uid="ButtonEditerMachineLearning" 
-                    Style="{ThemeResource AccentButtonStyle}"
-                    IsEnabled="True"
-                    Height="50"
-                    Click="MachineLearning_Click" />
-
             </StackPanel>
 
         </Grid>
@@ -357,6 +351,12 @@
                     IsChecked="{x:Bind DrawSet.IsRangeSelect, Mode=TwoWay}"
                     IsEnabled="{x:Bind DrawSet.IsRangeSelect, Mode=OneWay}"
                     Unchecked="SelectRangeToggleButton_Unchecked" />
+
+                <ToggleButton x:Name="_SelectRangeNoteLeftAlignmentToggleButton" x:Uid="ButtonLeftAlignNoteOfRange"
+                    Height="100"
+                    IsChecked="{x:Bind DrawSet.IsRangeSelect, Mode=TwoWay}"
+                    IsEnabled="{x:Bind DrawSet.IsRangeSelect, Mode=OneWay}"
+                    Unchecked="SelectRangeNoteLeftAlignmentToggleButton_Unchecked" />
 
                 <ToggleButton x:Name="_IncludeBpmToggleButton" x:Uid="ButtonIncludeBpm"
                     Height="100"

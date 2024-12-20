@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="DrumMidiEditorApp.pView.pML.PageML"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DrumMidiEditorApp.pView.pML"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid 
+            Grid.Column="0" 
+            Padding="10"
+            BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+            BorderThickness="0 0 2 0" >
+
+            <StackPanel Orientation="Vertical" Spacing="6">
+
+                <Button x:Uid="ButtonEditerMachineLearning" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    IsEnabled="True"
+                    Height="50"
+                    Click="MachineLearning_Click" />
+
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Page>

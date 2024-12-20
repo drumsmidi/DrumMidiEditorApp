@@ -1558,34 +1558,34 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         #endregion
 
-        #region Remove bpms before and after the move
+        if ( DrawSet.IncludeBpm )
         {
-            foreach ( var info_old in Score.SysChannel.BpmInfoList.Values )
+            #region Remove bpms before and after the move
             {
-                if ( info_old.Selected )
+                foreach ( var info_old in Score.SysChannel.BpmInfoList.Values )
                 {
-                    // Before
-                    rs.RemoveBpm( info_old );
-
-                    // After
-                    a = info_old.AbsoluteNotePos + mv_x;
-
-                    measure_no = a / ConfigSystem.MeasureNoteNumber;
-                    note_pos   = a % ConfigSystem.MeasureNoteNumber;
-
-                    var info_new = Score.SysChannel.GetBpm( measure_no, note_pos );
-
-                    if ( info_new != null )
+                    if ( info_old.Selected )
                     {
-                        rs.RemoveBpm( info_new );
+                        // Before
+                        rs.RemoveBpm( info_old );
+
+                        // After
+                        a = info_old.AbsoluteNotePos + mv_x;
+
+                        measure_no = a / ConfigSystem.MeasureNoteNumber;
+                        note_pos   = a % ConfigSystem.MeasureNoteNumber;
+
+                        var info_new = Score.SysChannel.GetBpm( measure_no, note_pos );
+
+                        if ( info_new != null )
+                        {
+                            rs.RemoveBpm( info_new );
+                        }
                     }
                 }
             }
-        }
-        #endregion
+            #endregion
 
-        if ( DrawSet.IncludeBpm )
-        {
             #region Add bpms to move
             {
                 foreach ( var info_old in Score.SysChannel.BpmInfoList.Values )
@@ -1603,6 +1603,53 @@ public sealed partial class UserControlEditerPanel : UserControl
             }
             #endregion
         }
+
+        if ( rs.Count > 0 )
+        {
+            _EditResumeMng.ExcuteAndResume( rs );
+        }
+    }
+
+    /// <summary>
+    /// 範囲選択内のノートを左寄せに移動
+    /// </summary>
+    private void EditMoveNoteRangeLeftAlign()
+    {
+        var rs = new ResumeMultiple();
+
+        int a;
+        int measure_no;
+        int note_pos;
+
+        #region Remove notes before and after the move
+        {
+            foreach ( var info_old in Score.EditChannel.NoteInfoList.Values )
+            {
+                if ( info_old.Selected && info_old.NotePos % 16 != 0 )
+                {
+                    // Before
+                    rs.RemoveNote( info_old );
+
+                    // After
+                    a = info_old.AbsoluteNotePos - info_old.NotePos % 16;
+
+                    measure_no = a / ConfigSystem.MeasureNoteNumber;
+                    note_pos   = a % ConfigSystem.MeasureNoteNumber;
+
+                    var info_new = Score.EditChannel.GetNote( info_old.MidiMapKey, measure_no, note_pos );
+
+                    if ( info_new != null )
+                    {
+                        rs.RemoveNote( info_new );
+                    }
+                    else
+                    {
+                        rs.AddNote( null, new( info_old.ChannelNo, info_old.MidiMapKey, measure_no, note_pos, info_old.Volume, info_old.NoteOn, info_old.NoteOff, true ) );
+                    }
+                }
+            }
+        }
+        #endregion
 
         if ( rs.Count > 0 )
         {
@@ -2023,6 +2070,17 @@ public sealed partial class UserControlEditerPanel : UserControl
             ClearSelectNoteRange();
 
             DrawSet.UpdateClearRangeFlag = false;
+        }
+
+        #endregion
+
+        #region LeftAlignNoteOfRangeSelect
+
+        if ( DrawSet.UpdateLeftAlignNoteOfRangeSelectFlag )
+        {
+            EditMoveNoteRangeLeftAlign();
+
+            DrawSet.UpdateLeftAlignNoteOfRangeSelectFlag = false;
         }
 
         #endregion

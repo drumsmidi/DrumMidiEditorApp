@@ -6,6 +6,7 @@ using DrumMidiEditorApp.pView.pConfig;
 using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMidiMap;
+using DrumMidiEditorApp.pView.pML;
 using DrumMidiEditorApp.pView.pMusic;
 using DrumMidiEditorApp.pView.pScore;
 using Microsoft.UI.Xaml;
@@ -53,8 +54,9 @@ public sealed partial class PageNavigation : Page
             ( "PageMidiMap"  , typeof( PageMidiMap ) ),
             ( "PageEdit"     , typeof( PageEdit )    ),
             ( "PageScore"    , typeof( PageScore )   ),
+            ( "PageML"       , typeof( PageML )      ),
             ( "PageConfig"   , typeof( PageConfig )  ),
-            ( "PageDebug"    , typeof( PageDebug )  ),
+            ( "PageDebug"    , typeof( PageDebug )   ),
         ];
 
     /// <summary>

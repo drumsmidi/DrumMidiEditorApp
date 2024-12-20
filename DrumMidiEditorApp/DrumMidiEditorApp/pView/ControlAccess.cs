@@ -1,6 +1,7 @@
 ﻿using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMenuBar;
 using DrumMidiEditorApp.pView.pMidiMap;
+using DrumMidiEditorApp.pView.pML;
 using DrumMidiEditorApp.pView.pMusic;
 using DrumMidiEditorApp.pView.pPlayer;
 using DrumMidiEditorApp.pView.pScore;
@@ -19,6 +20,8 @@ public static class ControlAccess
     public static PageMusic? PageMusic { get; set; } = null;
 
     public static PageEdit? PageEdit { get; set; } = null;
+
+    public static PageML? PageML { get; set; } = null;
 
     public static PageStatusBar? PageStatusBar { get; set; } = null;
 

@@ -88,6 +88,12 @@ public class ConfigEditer
     public bool UpdateClearRangeFlag { get; set; } = false;
 
     /// <summary>
+    /// 範囲選択内のノートを左寄せに移動リクエストフラグ
+    /// </summary>
+    [JsonIgnore]
+    public bool UpdateLeftAlignNoteOfRangeSelectFlag { get; set; } = false;
+
+    /// <summary>
     /// 更新対象の小節番号リスト：BPM
     /// </summary>
     public List<int> UpdateScoreBpmMeasureNoList { get; private set; } = [];

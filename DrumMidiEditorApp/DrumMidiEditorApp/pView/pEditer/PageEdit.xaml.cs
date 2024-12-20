@@ -450,6 +450,24 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// 範囲選択内ノートを16分割線で左寄せする
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void SelectRangeNoteLeftAlignmentToggleButton_Unchecked( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            EventManage.EventEditLeftAlignNoteOfRangeSelect();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+
     #endregion
 
     #region Note
@@ -706,23 +724,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
 
     #endregion
-
-    /// <summary>
-    /// 再生停止
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MachineLearning_Click( object sender, RoutedEventArgs args )
-    {
-        try
-        {
-            MLControl.Start();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
 
     /// <summary>
     /// EditerPanel描画更新

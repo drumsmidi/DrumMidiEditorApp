@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Storage;
 
 namespace DrumMidiEditorApp.pUtil;
 
@@ -37,5 +38,5 @@ public static class HelperAppDirectory
     /// 参考URL: https://tera1707.com/entry/2022/04/26/224338
     ///   C:\Users\<ユーザー名>\AppData\Local\Packages\<数字の羅列>\LocalState
     /// </summary>
-    //public static StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
+    public static StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
 }

@@ -166,8 +166,8 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
             (
                 DrawRect.X + aDiffX,
                 DrawRect.Y + aDiffY,
-                DrawRect.Width,
-                DrawRect.Height
+                DrawRect.Width + 3,
+                DrawRect.Height + 3
             );
 
         HelperXaml.DrawFormatRectOutlineEllipse( aGraphics, rect, Config.Editer.NotePredictRect );
