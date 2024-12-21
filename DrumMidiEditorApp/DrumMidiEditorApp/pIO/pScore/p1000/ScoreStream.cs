@@ -34,6 +34,8 @@ internal class ScoreStream : IScoreReader, IScoreWriter
     private const string ATR_MIDI               = "MIDI";
     private const string ATR_COLOR              = "COLOR";
     private const string ATR_SCALE              = "SCALE";
+    private const string ATR_SCALEKEY           = "SCALEKEY";
+    private const string ATR_SCALEKEYTEXT       = "SCALEKEYTEXT";
     private const string ATR_MODE               = "MODE";
     private const string ATR_X                  = "X";
     private const string ATR_Y                  = "Y";
@@ -86,19 +88,21 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         $"<xsd:sequence>" +
                             $"<xsd:element name='{TAG_MIDIMAP}' type='{TAG_MIDIMAP}_Type' minOccurs='1' maxOccurs='{Config.System.MidiMapMaxNumber}' />" +
                         $"</xsd:sequence>" +
-                        $"<xsd:attribute name='{ATR_DISPLAY}' type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_KEY}'     type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_NAME}'    type='xsd:string' use='required' />" +
-                        $"<xsd:attribute name='{ATR_VOLUME}'  type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_DISPLAY}'  type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_KEY}'      type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_NAME}'     type='xsd:string' use='required' />" +
+                        $"<xsd:attribute name='{ATR_VOLUME}'   type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_SCALEKEY}' type='xsd:string' use='optional' />" +
                     $"</xsd:complexType>" +
                     $"<xsd:complexType name='{TAG_MIDIMAP}_Type'>" +
-                        $"<xsd:attribute name='{ATR_DISPLAY}' type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_KEY}'     type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_NAME}'    type='xsd:string' use='required' />" +
-                        $"<xsd:attribute name='{ATR_VOLUME}'  type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_MIDI}'    type='xsd:int'    use='required' />" +
-                        $"<xsd:attribute name='{ATR_COLOR}'   type='xsd:string' use='required' />" +
-                        $"<xsd:attribute name='{ATR_SCALE}'   type='xsd:string' use='optional' />" +
+                        $"<xsd:attribute name='{ATR_DISPLAY}'      type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_KEY}'          type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_NAME}'         type='xsd:string' use='required' />" +
+                        $"<xsd:attribute name='{ATR_VOLUME}'       type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_MIDI}'         type='xsd:int'    use='required' />" +
+                        $"<xsd:attribute name='{ATR_COLOR}'        type='xsd:string' use='required' />" +
+                        $"<xsd:attribute name='{ATR_SCALE}'        type='xsd:string' use='optional' />" +
+                        $"<xsd:attribute name='{ATR_SCALEKEYTEXT}' type='xsd:string' use='optional' />" +
                     $"</xsd:complexType>" +
                     $"<xsd:complexType name='{TAG_PLAYER}_Type'>" +
                         $"<xsd:sequence>" +
@@ -232,6 +236,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                 Display     = Convert.ToInt32( aReader.GetAttribute( ATR_DISPLAY ) ?? string.Empty ) != 0,
                                 GroupName   = aReader.GetAttribute( ATR_NAME ) ?? string.Empty,
                                 VolumeAdd   = Convert.ToInt32( aReader.GetAttribute( ATR_VOLUME ) ?? string.Empty ),
+                                ScaleKey    = aReader.GetAttribute( ATR_SCALEKEY ) ?? string.Empty,
                             };
                             midiMapSet.AddMidiMapGroup( group );
 
@@ -267,6 +272,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                             VolumeAdd   = Convert.ToInt32( aReader.GetAttribute( ATR_VOLUME ) ?? string.Empty ),
                                             Color       = ColorHelper.GetColor( aReader.GetAttribute( ATR_COLOR ) ?? string.Empty ),
                                             Scale       = aReader.GetAttribute( ATR_SCALE ) ?? string.Empty,
+                                            ScaleKeyText= aReader.GetAttribute( ATR_SCALEKEYTEXT ) ?? string.Empty,
                                         };
 
                                         midiMapSet.AddMidiMap( group_count, midiMap );
@@ -467,6 +473,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                 aWriter.WriteAttributeString( ATR_KEY, $"{group.GroupKey}" );
                 aWriter.WriteAttributeString( ATR_NAME, $"{group.GroupName}" );
                 aWriter.WriteAttributeString( ATR_VOLUME, $"{group.VolumeAdd}" );
+                aWriter.WriteAttributeString( ATR_SCALEKEY, $"{group.ScaleKey}" );
                 {
                     foreach ( var midiMap in group.MidiMaps )
                     {
@@ -479,6 +486,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         aWriter.WriteAttributeString( ATR_VOLUME, $"{midiMap.VolumeAdd}" );
                         aWriter.WriteAttributeString( ATR_COLOR, $"{ColorHelper.GetColor( midiMap.Color )}" );
                         aWriter.WriteAttributeString( ATR_SCALE, $"{midiMap.Scale}" );
+                        aWriter.WriteAttributeString( ATR_SCALEKEYTEXT, $"{midiMap.ScaleKeyText}" );
                         aWriter.WriteEndElement();
                         #endregion
                     }
