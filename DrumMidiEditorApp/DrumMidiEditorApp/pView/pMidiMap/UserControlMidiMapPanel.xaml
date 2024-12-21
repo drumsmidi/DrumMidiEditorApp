@@ -49,6 +49,7 @@
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="140" />
                 <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -90,11 +91,14 @@
             <Grid Grid.Row="1" Grid.Column="3" Style="{StaticResource TableHeader}">
                 <TextBlock x:Uid="ColumnMidiMapVolume" />
             </Grid>
+            <Grid Grid.Row="1" Grid.Column="4" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapScaleKey" />
+            </Grid>
 
             <ScrollViewer
                 Grid.Row="2"
                 Grid.Column="0"
-                Grid.ColumnSpan="4" >
+                Grid.ColumnSpan="5" >
 
                 <GridView x:Name="_MidiMapGroupGridView"
                     ItemsSource="{x:Bind _TmpMidiMapGroupList, Mode=OneWay}"
@@ -118,6 +122,7 @@
                                     <ColumnDefinition Width="70" />
                                     <ColumnDefinition Width="50" />
                                     <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="90" />
                                     <ColumnDefinition Width="90" />
                                 </Grid.ColumnDefinitions>
 
@@ -143,6 +148,12 @@
                                         Value="{x:Bind VolumeAdd, Mode=TwoWay}"
                                         Height="30"
                                         ValueChanged="VolumeAddNumberBox_ValueChanged" />
+                                </Grid>
+                                <Grid Grid.Column="4" Style="{StaticResource TableCell}">
+                                    <TextBox 
+                                        Text="{x:Bind ScaleKey, Mode=TwoWay}"
+                                        Height="30"
+                                        TextAlignment="Left" />
                                 </Grid>
                             </Grid>
                         </DataTemplate>
@@ -175,6 +186,7 @@
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="90" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -185,7 +197,7 @@
             <Grid 
                 Grid.Row="0" 
                 Grid.Column="0" 
-                Grid.ColumnSpan="7"
+                Grid.ColumnSpan="8"
                 Padding="6"
                 BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
                 BorderThickness="0 0 0 4" >
@@ -225,11 +237,14 @@
             <Grid Grid.Row="1" Grid.Column="6" Style="{StaticResource TableHeader}">
                 <TextBlock x:Uid="ColumnMidiMapScale" />
             </Grid>
+            <Grid Grid.Row="1" Grid.Column="7" Style="{StaticResource TableHeader}">
+                <TextBlock x:Uid="ColumnMidiMapScaleKeyText" />
+            </Grid>
 
             <ScrollViewer
                 Grid.Row="2"
                 Grid.Column="0"
-                Grid.ColumnSpan="7" >
+                Grid.ColumnSpan="8" >
 
                 <GridView x:Name="_MidiMapGridView"
                     ItemsSource="{x:Bind _TmpMidiMapList, Mode=OneWay}"
@@ -253,6 +268,7 @@
                                     <ColumnDefinition Width="140" />
                                     <ColumnDefinition Width="90" />
                                     <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="90" />
                                     <ColumnDefinition Width="90" />
                                     <ColumnDefinition Width="90" />
                                 </Grid.ColumnDefinitions>
@@ -296,6 +312,11 @@
                                 <Grid Grid.Column="6" Style="{StaticResource TableCell}">
                                     <TextBox
                                         Text="{x:Bind Scale, Mode=TwoWay}"
+                                        Height="30" />
+                                </Grid>
+                                <Grid Grid.Column="7" Style="{StaticResource TableCell}">
+                                    <TextBox
+                                        Text="{x:Bind ScaleKeyText, Mode=TwoWay}"
                                         Height="30" />
                                 </Grid>
                             </Grid>

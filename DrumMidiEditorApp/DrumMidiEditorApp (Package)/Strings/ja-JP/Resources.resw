@@ -554,4 +554,10 @@ BPMノートを含める</value>
     <value>範囲内のノート
 左寄せ(16分割)</value>
   </data>
+  <data name="ColumnMidiMapScaleKey.Text" xml:space="preserve">
+    <value>ScaleKey</value>
+  </data>
+  <data name="ColumnMidiMapScaleKeyText.Text" xml:space="preserve">
+    <value>ScaleText</value>
+  </data>
 </root>

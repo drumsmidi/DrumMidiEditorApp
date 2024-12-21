@@ -63,10 +63,10 @@ public partial class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, bool aNoteOn, bool aNoteOff )
         : base( aMeasureNo, aNotePos, false )
     {
-        ChannelNo = aChannelNo;
-        MidiMapKey = aMidiMapKey;
-        NoteOn = aNoteOn;
-        NoteOff = aNoteOff;
+        ChannelNo   = aChannelNo;
+        MidiMapKey  = aMidiMapKey;
+        NoteOn      = aNoteOn;
+        NoteOff     = aNoteOff;
     }
 
     /// <summary>
@@ -82,11 +82,11 @@ public partial class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aNoteOn, bool aNoteOff )
         : base( aMeasureNo, aNotePos, false )
     {
-        ChannelNo = aChannelNo;
-        MidiMapKey = aMidiMapKey;
-        Volume = aVolume;
-        NoteOn = aNoteOn;
-        NoteOff = aNoteOff;
+        ChannelNo   = aChannelNo;
+        MidiMapKey  = aMidiMapKey;
+        Volume      = aVolume;
+        NoteOn      = aNoteOn;
+        NoteOff     = aNoteOff;
     }
 
     /// <summary>
@@ -103,11 +103,11 @@ public partial class InfoNote : InfoBase
     public InfoNote( byte aChannelNo, int aMidiMapKey, int aMeasureNo, int aNotePos, int aVolume, bool aNoteOn, bool aNoteOff, bool aSelected )
         : base( aMeasureNo, aNotePos, aSelected )
     {
-        ChannelNo = aChannelNo;
-        MidiMapKey = aMidiMapKey;
-        Volume = aVolume;
-        NoteOn = aNoteOn;
-        NoteOff = aNoteOff;
+        ChannelNo   = aChannelNo;
+        MidiMapKey  = aMidiMapKey;
+        Volume      = aVolume;
+        NoteOn      = aNoteOn;
+        NoteOff     = aNoteOff;
     }
 
     /// <summary>
@@ -123,11 +123,11 @@ public partial class InfoNote : InfoBase
             throw new InvalidCastException();
         }
 
-        ChannelNo = info.ChannelNo;
-        MidiMapKey = info.MidiMapKey;
-        Volume = info.Volume;
-        NoteOn = info.NoteOn;
-        NoteOff = info.NoteOff;
+        ChannelNo   = info.ChannelNo;
+        MidiMapKey  = info.MidiMapKey;
+        Volume      = info.Volume;
+        NoteOn      = info.NoteOn;
+        NoteOff     = info.NoteOff;
     }
 
     /// <summary>
@@ -138,14 +138,14 @@ public partial class InfoNote : InfoBase
     {
         return new InfoNote()
         {
-            MeasureNo = MeasureNo,
-            NotePos = NotePos,
-            Selected = Selected,
-            ChannelNo = ChannelNo,
-            MidiMapKey = MidiMapKey,
-            Volume = Volume,
-            NoteOn = NoteOn,
-            NoteOff = NoteOff,
+            MeasureNo   = MeasureNo,
+            NotePos     = NotePos,
+            Selected    = Selected,
+            ChannelNo   = ChannelNo,
+            MidiMapKey  = MidiMapKey,
+            Volume      = Volume,
+            NoteOn      = NoteOn,
+            NoteOff     = NoteOff,
         };
     }
 }

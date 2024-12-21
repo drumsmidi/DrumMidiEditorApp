@@ -266,8 +266,8 @@ public class PlayerSurface : PlayerSurfaceBase
                     // TODO: 線の色とか情報追加が必要
                     var formatRect = new FormatRect
                     {
-                        Background = new( midiMap.Color ),
-                        Text = DrawSet.NoteRect.Text,
+                        Background  = new( midiMap.Color ),
+                        Text        = DrawSet.NoteRect.Text,
                     };
 
                     _MidiMapNoteFormatList.Add( midiMap.MidiMapKey, formatRect );
@@ -340,7 +340,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     continue;
                 }
 
-                var item = DrawSet.GetScaleListIndex( midiMap.Scale );
+                var item = DrawSet.GetScaleListIndex( midiMap.Group.ScaleKey, midiMap.ScaleKeyText );
 
                 if ( item.Item1 == -1 )
                 {

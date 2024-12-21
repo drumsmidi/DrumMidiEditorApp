@@ -76,8 +76,8 @@ public sealed partial class PageImportMidiMap : Page
                         (
                             new()
                             {
-                                BeforeName = before,
-                                AfterName = after,
+                                BeforeName  = before,
+                                AfterName   = after,
                             }
                         );
                 }

@@ -39,6 +39,11 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// </summary>
     public bool Selected { get; set; } = false;
 
+    /// <summary>
+    /// 音階キー
+    /// </summary>
+    public string ScaleKey { get; set; } = string.Empty;
+
     protected override void Dispose( bool aDisposing )
     {
         if ( !_Disposed )
@@ -115,6 +120,7 @@ public partial class MidiMapGroup : DisposeBaseClass
             GroupName   = GroupName,
             VolumeAdd   = VolumeAdd,
         //  Selected	= Selected,
+            ScaleKey    = ScaleKey,
         };
 
         foreach ( var midiMap in MidiMaps )

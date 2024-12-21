@@ -412,18 +412,15 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// <summary>
     /// 音階リストのインデックス番号取得
     /// </summary>
-    /// <param name="aScaleText">[音階] ( 例: "CY-1" )</param>
+    /// <param name="aScaleKey">[音階キー] ( 例: "CY" )</param>
+    /// <param name="aScaleKeyText">[音階テキスト] ( 例: "1" )</param>
     /// <returns>階リストのインデックス番号</returns>
-    public (int, string) GetScaleListIndex( string aScaleText )
+    public (int, string) GetScaleListIndex( string aScaleKey, string aScaleKeyText )
     {
-        if ( aScaleText.Length == 0 )
+        if ( aScaleKey.Length == 0 )
         {
-            return (-1, "");
+            return ( -1, string.Empty );
         }
-
-        var items = aScaleText.Split( "-", System.StringSplitOptions.RemoveEmptyEntries );
-        var key   = items.Length >= 1 ? items[ 0 ] ?? "" : "" ;
-        var text  = items.Length >= 2 ? items[ 1 ] ?? "" : "" ;
 
         var index = -1;
 
@@ -431,13 +428,13 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
         {
             index++;
 
-            if ( item.Name.Equals( key ) )
+            if ( item.Name.Equals( aScaleKey ) )
             {
-                return (index, text);
+                return ( index, aScaleKeyText );
             }
         }
 
-        return (-1, "");
+        return ( -1, string.Empty );
     }
 
     #endregion

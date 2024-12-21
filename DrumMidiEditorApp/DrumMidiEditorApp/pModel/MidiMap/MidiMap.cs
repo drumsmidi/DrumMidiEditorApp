@@ -73,6 +73,11 @@ public partial class MidiMap : DisposeBaseClass
     /// </summary>
     public string Scale { get; set; } = Config.System.DefaultMidiMapScale;
 
+    /// <summary>
+    /// 音階キーテキスト
+    /// </summary>
+    public string ScaleKeyText { get; set; } = string.Empty;
+
     protected override void Dispose( bool aDisposing )
     {
         if ( !_Disposed )
@@ -117,6 +122,7 @@ public partial class MidiMap : DisposeBaseClass
             Color       = Color,
         //  Selected    = Selected,
             Scale       = Scale,
+            ScaleKeyText= ScaleKeyText,
         };
     }
 }
