@@ -1625,13 +1625,10 @@ public sealed partial class UserControlEditerPanel : UserControl
         {
             foreach ( var info_old in Score.EditChannel.NoteInfoList.Values )
             {
-                if ( info_old.Selected && info_old.NotePos % 16 != 0 )
+                if ( info_old.Selected && info_old.NotePos % 8 != 0 )
                 {
-                    // Before
-                    rs.RemoveNote( info_old );
-
                     // After
-                    a = info_old.AbsoluteNotePos - info_old.NotePos % 16;
+                    a = info_old.AbsoluteNotePos - info_old.NotePos % 8;
 
                     measure_no = a / ConfigSystem.MeasureNoteNumber;
                     note_pos   = a % ConfigSystem.MeasureNoteNumber;
@@ -1640,12 +1637,37 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     if ( info_new != null )
                     {
-                        rs.RemoveNote( info_new );
+                        continue;
                     }
-                    else
+
+                    // Before
+                    rs.RemoveNote( info_old );
+                }
+            }
+        }
+        #endregion
+
+        #region Add notes to move
+        {
+            foreach ( var info_old in Score.EditChannel.NoteInfoList.Values )
+            {
+                if ( info_old.Selected && info_old.NotePos % 8 != 0 )
+                {
+                    // After
+                    a = info_old.AbsoluteNotePos - info_old.NotePos % 8;
+
+                    measure_no = a / ConfigSystem.MeasureNoteNumber;
+                    note_pos = a % ConfigSystem.MeasureNoteNumber;
+
+                    var info_new = Score.EditChannel.GetNote( info_old.MidiMapKey, measure_no, note_pos );
+
+                    if ( info_new != null )
                     {
-                        rs.AddNote( null, new( info_old.ChannelNo, info_old.MidiMapKey, measure_no, note_pos, info_old.Volume, info_old.NoteOn, info_old.NoteOff, true ) );
+                        continue;
                     }
+
+                    // After
+                    rs.AddNote( null, new( info_old.ChannelNo, info_old.MidiMapKey, measure_no, note_pos, info_old.Volume, info_old.NoteOn, info_old.NoteOff, true ) );
                 }
             }
         }
