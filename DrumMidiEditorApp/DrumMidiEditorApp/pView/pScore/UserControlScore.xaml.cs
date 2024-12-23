@@ -58,9 +58,9 @@ public sealed partial class UserControlScore : UserControl
         try
         {
             // スコア更新
-            if ( DrawSet.UpdateScoreFlag )
+            if ( DrawSet.FlagUpdateScore )
             {
-                DrawSet.UpdateScoreFlag = false;
+                DrawSet.FlagUpdateScore = false;
 
                 _ScoreBitmap?.Dispose();
                 _ScoreBitmap = CreateScoreBitmap();
@@ -87,8 +87,8 @@ public sealed partial class UserControlScore : UserControl
             return null;
         }
 
-        var tmp_width  = ActualSize.X - (DrawSet.NoteWidthSize  * 2);
-        var tmp_height = ActualSize.Y - (DrawSet.NoteHeightSize * 2);
+        var tmp_width  = ActualSize.X - DrawSet.NoteWidthSize  * 2;
+        var tmp_height = ActualSize.Y - DrawSet.NoteHeightSize * 2;
 
         if ( tmp_width < 0 || tmp_height < 0 )
         {
@@ -158,7 +158,7 @@ public sealed partial class UserControlScore : UserControl
                 CanvasDevice.GetSharedDevice(),
                 ActualSize.X,
                 ActualSize.Y,
-                96
+                Config.Media.DefaultDpi
             );
 
         using var g = offscreen.CreateDrawingSession();
@@ -229,10 +229,10 @@ public sealed partial class UserControlScore : UserControl
                             volume = 1F;
                         }
 
-                        note_rect.X = body.X + ( measure_no % w_cnt * m_w ) + ( info.NotePos * t_w );
-                        note_rect.Y = body.Y + ( measure_no / w_cnt * m_h ) + ( group_index * t_h );
-                        note_rect.Width = DrawSet.NoteWidthSize * volume / 2;
-                        note_rect.Height = DrawSet.NoteHeightSize * volume / 2;
+                        note_rect.X         = body.X + ( measure_no % w_cnt * m_w ) + ( info.NotePos * t_w );
+                        note_rect.Y         = body.Y + ( measure_no / w_cnt * m_h ) + ( group_index  * t_h );
+                        note_rect.Width     = DrawSet.NoteWidthSize  * volume / 2;
+                        note_rect.Height    = DrawSet.NoteHeightSize * volume / 2;
 
                         if ( note_rect.Width > 0 && note_rect.Height > 0 )
                         {
@@ -261,7 +261,7 @@ public sealed partial class UserControlScore : UserControl
                 (int)offscreen.SizeInPixels.Width,
                 (int)offscreen.SizeInPixels.Height,
                 DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
-                96,
+                Config.Media.DefaultDpi,
                 CanvasAlphaMode.Premultiplied
             );
     }

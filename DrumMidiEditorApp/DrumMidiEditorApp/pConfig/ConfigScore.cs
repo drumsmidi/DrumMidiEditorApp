@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -15,7 +15,7 @@ public class ConfigScore
     /// スコア更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreFlag { get; set; } = false;
+    public bool FlagUpdateScore { get; set; } = false;
 
     #endregion
 
@@ -46,8 +46,8 @@ public class ConfigScore
         get; set;
     } = new()
     {
-        LineColor = new( Color.FromArgb( 255, 200, 200, 200 ) ),
-        LineSize = 1.0F,
+        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+        LineSize    = 1.0F,
     };
 
     #endregion

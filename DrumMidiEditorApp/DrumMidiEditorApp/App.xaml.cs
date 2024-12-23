@@ -1,9 +1,11 @@
-﻿using System;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pView;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Windows.ApplicationModel.Activation;
+using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 namespace DrumMidiEditorApp;
 
@@ -49,10 +51,6 @@ public partial class App : Application
     /// <param name="args">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs args )
     {
-        // TODO:起動ファイルのパス取得（Windows App SDKはまだサポートされていないっぽい）
-        //Config.System.AppStartParameter = args.Arguments ?? "";
-        //Config.System.AppStartParameter = Environment.GetCommandLineArgs().ToString() ?? "";
-
         #region デバッグ設定
 #if DEBUG
         // [エラーになる]フレーム レートとフレームごとの CPU 使用率情報を表示するかどうか
@@ -67,6 +65,28 @@ public partial class App : Application
         // テキスト パフォーマンス視覚化機能
         //DebugSettings.IsTextPerformanceVisualizationEnabled = true;
 #endif
+        #endregion
+
+        // Configファイル読込
+        FileIO.LoadConfig();
+
+        #region 起動元ファイルのパス取得
+        {
+            var active_event_args = AppInstance.GetCurrent().GetActivatedEventArgs();
+
+            if ( active_event_args.Kind == ExtendedActivationKind.File )
+            {
+                if ( active_event_args.Data is IFileActivatedEventArgs data )
+                {
+                    if ( data.Files.Count > 0 )
+                    {
+                        Config.System.AppStartDmsPath = new( data.Files [ 0 ].Path ?? string.Empty );
+
+                        Log.Info( $"起動ファイル={Config.System.AppStartDmsPath.AbsoulteFilePath}" );
+                    }
+                }
+            }
+        }
         #endregion
 
         // メインウィンドウ作成

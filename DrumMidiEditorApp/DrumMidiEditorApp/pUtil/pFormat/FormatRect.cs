@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pFormat;
 
 /// <summary>
 /// グラフィックアイテム：四角

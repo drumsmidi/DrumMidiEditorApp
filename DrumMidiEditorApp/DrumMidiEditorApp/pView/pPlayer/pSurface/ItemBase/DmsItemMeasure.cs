@@ -1,5 +1,7 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -24,7 +26,6 @@ internal partial class DmsItemMeasure : DisposeBaseClass
     /// 描画書式
     /// </summary>
     private FormatRect? _FormatSelectRect = null;
-
 
     /// <summary>
     /// コンストラクタ

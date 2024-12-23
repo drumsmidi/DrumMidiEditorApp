@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using DrumMidiEditorApp.pConfig;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pFormat;
 
 /// <summary>
 /// グラフィックアイテム：テキスト
@@ -23,12 +24,12 @@ public class FormatText
     {
         get; set;
     } = new()
-    {
-        FontFamily          = "system-ui",
-        FontSize            = 8,
-        HorizontalAlignment = CanvasHorizontalAlignment.Center,
-        VerticalAlignment   = CanvasVerticalAlignment.Center,
-    };
+        {
+            FontFamily          = Config.Media.DefaultFontFamily,
+            FontSize            = 8,
+            HorizontalAlignment = CanvasHorizontalAlignment.Center,
+            VerticalAlignment   = CanvasVerticalAlignment.Center,
+        };
 
     /// <summary>
     /// コンストラクタ
@@ -44,7 +45,7 @@ public class FormatText
     /// <param name="aTextFormat"></param>
     public FormatText( Color aTextColor, CanvasTextFormat aTextFormat )
     {
-        TextColor  = new( aTextColor );
-        TextFormat = aTextFormat;
+        TextColor   = new( aTextColor );
+        TextFormat  = aTextFormat;
     }
 }

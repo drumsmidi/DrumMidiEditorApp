@@ -13,6 +13,7 @@ using DrumMidiEditorApp.pIO;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage.Pickers;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 
@@ -76,19 +77,17 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
         #endregion
 
-        if ( Config.System.AppStartParameter.Length > 0 )
+        Log.Info( $"{Log.GetThisMethodName}:{Config.System.AppStartDmsPath.AbsoulteFilePath}" );
+
+        if ( Config.System.AppStartDmsPath.IsExistFile )
         {
-            var filepath = new GeneralPath( Config.System.AppStartParameter );
+            if ( FileIO.LoadScore( Config.System.AppStartDmsPath, out var score ) )
+            {
+                DMS.SCORE           = score;
+                DMS.OpenFilePath    = Config.System.AppStartDmsPath;
 
-            Log.Info( $"{Log.GetThisMethodName}:{filepath}", true );
-
-            FileIO.LoadScore( filepath, out var score );
-            //FileIO.SaveScore( filepath, score );
-
-            DMS.SCORE = score;
-            DMS.OpenFilePath = filepath;
-
-            ApplyScore();
+                ApplyScore();
+            }
         }
     }
 
@@ -609,7 +608,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                 return;
             }
 
-            EventManage.EventPlayerUpdateDisplay( item?.IsOn ?? false );
+            EventManage.EventPlayer_ChangeDisplay( item?.IsOn ?? false );
         }
         catch ( Exception e )
         {

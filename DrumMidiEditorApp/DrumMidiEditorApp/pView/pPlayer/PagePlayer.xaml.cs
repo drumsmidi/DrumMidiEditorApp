@@ -70,7 +70,7 @@ public sealed partial class PagePlayer : Page
             }
 
             var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-            //var p = args.GetCurrentPoint( sender as FrameworkElement );
+        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
             {
@@ -82,7 +82,7 @@ public sealed partial class PagePlayer : Page
             else if ( p.Properties.IsRightButtonPressed )
             {
                 // 非表示
-                EventManage.EventPlayerUpdateDisplay( false );
+                EventManage.EventPlayer_ChangeDisplay( false );
             }
         }
         catch ( Exception e )
@@ -108,7 +108,7 @@ public sealed partial class PagePlayer : Page
             }
 
             var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-            //var p = args.GetCurrentPoint( sender as FrameworkElement );
+        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -142,7 +142,7 @@ public sealed partial class PagePlayer : Page
             }
 
             var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-            //var p = args.GetCurrentPoint( sender as FrameworkElement );
+        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -171,8 +171,8 @@ public sealed partial class PagePlayer : Page
     /// <param name="aMousePoint"></param>
     private void SetPagePosition( Point aMousePoint )
     {
-        _PageMargin.Left += aMousePoint.X - _BeforePos.X;
-        _PageMargin.Top += aMousePoint.Y - _BeforePos.Y;
+        _PageMargin.Left    += aMousePoint.X - _BeforePos.X;
+        _PageMargin.Top     += aMousePoint.Y - _BeforePos.Y;
 
         _BeforePos = aMousePoint;
 
@@ -186,8 +186,8 @@ public sealed partial class PagePlayer : Page
     {
         try
         {
-            Width = DrawSet.ResolutionScreenWidth;
-            Height = DrawSet.ResolutionScreenHeight;
+            Width   = DrawSet.ResolutionScreenWidth;
+            Height  = DrawSet.ResolutionScreenHeight;
         }
         catch ( Exception e )
         {

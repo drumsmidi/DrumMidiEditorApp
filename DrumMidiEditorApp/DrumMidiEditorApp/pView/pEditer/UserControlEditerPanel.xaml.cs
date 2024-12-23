@@ -22,6 +22,8 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiEditorApp.pUtil.pFormat;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -2896,7 +2898,8 @@ public sealed partial class UserControlEditerPanel : UserControl
                         // BGM読込
                         if ( Score.BgmFilePath.IsExistFile )
                         {
-                            _ScaleBgm = new NAudioData( Score.BgmFilePath, true );
+                            _ScaleBgm = new NAudioData( Score.BgmFilePath );
+                            _ScaleBgm.CalcFFT();
                         }
 
                         DrawSet.UpdateScoreBgmScaleFlag = true;
@@ -3018,7 +3021,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 CanvasDevice.GetSharedDevice(),
                 body._width,
                 body._height,
-                96
+                Config.Media.DefaultDpi
             );
 
         using var g = offscreen.CreateDrawingSession();
@@ -3037,7 +3040,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     (int)offscreen.SizeInPixels.Width,
                     (int)offscreen.SizeInPixels.Height,
                     DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
-                    96,
+                    Config.Media.DefaultDpi,
                     CanvasAlphaMode.Premultiplied
                 );
 

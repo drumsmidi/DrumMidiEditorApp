@@ -50,8 +50,8 @@ public partial class MidiMap : DisposeBaseClass
     /// </summary>
     public string ColorText
     {
-        get => ColorHelper.GetColor( Color );
-        set => Color = ColorHelper.GetColor( value );
+        get => HelperColor.GetColor( Color );
+        set => Color = HelperColor.GetColor( value );
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public partial class MidiMap : DisposeBaseClass
     public Brush ColorBrush
     {
         get => new SolidColorBrush( Color );
-        set => Color = ( value as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor;
+        set => Color = ( value as SolidColorBrush )?.Color ?? HelperColor.EmptyColor;
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public partial class MidiMap : DisposeBaseClass
     /// <summary>
     /// 音階キーテキスト
     /// </summary>
-    public string ScaleKeyText { get; set; } = string.Empty;
+    public string ScaleKeyText { get; set; } = Config.System.DefaultMidiMapScaleKey;
 
     protected override void Dispose( bool aDisposing )
     {
@@ -102,7 +102,8 @@ public partial class MidiMap : DisposeBaseClass
     /// 音量増減値を取得
     /// （MidiMapの音量増減＋MidiMapGroupの音量増減）
     /// </summary>
-    public int VolumeAddIncludeGroup => VolumeAdd + Group?.VolumeAdd ?? 0;
+    public int VolumeAddIncludeGroup 
+        => VolumeAdd + Group?.VolumeAdd ?? Config.System.DefaultMidiMapGroupVolumeAdd ;
 
     /// <summary>
     /// MidiMapを複製。

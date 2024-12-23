@@ -1,5 +1,7 @@
 ﻿using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -106,16 +108,12 @@ internal partial class DmsItemMidiMap : DisposeBaseClass
     /// <param name="aGraphics">グラフィック</param>
     /// <param name="aDiffX">描画差分X</param>
     /// <param name="aDiffY">描画差分Y</param>
-    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
+    public void Draw( CanvasDrawingSession aGraphics )
     {
-        var rect = DrawRect;
-        rect.X += aDiffX;
-        rect.Y += aDiffY;
-
         HelperXaml.DrawFormatRect
             (
                 aGraphics,
-                rect,
+                DrawRect,
                 _FormatRect,
                 _MidiMapGroup?.GroupName ?? _MidiMap?.MidiMapName ?? string.Empty
             );

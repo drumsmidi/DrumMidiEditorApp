@@ -16,6 +16,8 @@ namespace DrumMidiEditorApp.pIO.pScore.p1000;
 /// </summary>
 internal class ScoreStream : IScoreReader, IScoreWriter
 {
+    #region タグ、属性、固定値
+
     private const string TAG_DMS                = "DMS";
     private const string ATR_VERSION            = "VERSION";
     private const string VAL_VERSION            = "1.0";
@@ -57,6 +59,8 @@ internal class ScoreStream : IScoreReader, IScoreWriter
     private const string ATR_SCORE_NOTEVOLUME   = "V";
     private const string ATR_SCORE_NOTEONOFF    = "F";
     private const string ATR_SCORE_BPM          = "V";
+
+    #endregion
 
     #region Reader
 
@@ -186,11 +190,12 @@ internal class ScoreStream : IScoreReader, IScoreWriter
         ReadScore( reader, out var score );
 
         aMidiMapSet = score.GetFirstMidiMapSet()?.Clone() ?? throw new Exception( $"Can't find MidiMapSet" );
-        ;
     }
 
     public static void ReadScore( XmlReader aReader, out Score aScore )
     {
+        // TODO:整合性チェックが必要
+
         aScore = new();
 
         var group_count = -1;
@@ -270,7 +275,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                             MidiMapName = aReader.GetAttribute( ATR_NAME ) ?? string.Empty,
                                             Midi        = (byte)Convert.ToInt32( aReader.GetAttribute( ATR_MIDI ) ?? string.Empty ),
                                             VolumeAdd   = Convert.ToInt32( aReader.GetAttribute( ATR_VOLUME ) ?? string.Empty ),
-                                            Color       = ColorHelper.GetColor( aReader.GetAttribute( ATR_COLOR ) ?? string.Empty ),
+                                            Color       = HelperColor.GetColor( aReader.GetAttribute( ATR_COLOR ) ?? string.Empty ),
                                             Scale       = aReader.GetAttribute( ATR_SCALE ) ?? string.Empty,
                                             ScaleKeyText= aReader.GetAttribute( ATR_SCALEKEYTEXT ) ?? string.Empty,
                                         };
@@ -285,7 +290,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         #region <PLAYER>
                         else if ( aReader.LocalName.Equals( TAG_PLAYER ) )
                         {
-                            if ( !Enum.TryParse( typeof( PlayerSurfaceMode ), aReader.GetAttribute( ATR_MODE ), out var mode ) || mode == null )
+                            if ( !Enum.TryParse( typeof( ConfigPlayer.PlayerSurfaceMode ), aReader.GetAttribute( ATR_MODE ), out var mode ) || mode == null )
                             {
                                 continue;
                             }
@@ -308,8 +313,8 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                 }
                                 else if ( aReader.NodeType == XmlNodeType.Element )
                                 {
-                                    #region <MIDIMAPGROUP/>
-                                    if ( aReader.LocalName.Equals( TAG_MIDIMAPGROUP ) )
+                                    #region <TAG_PLAYERGROUP />
+                                    if ( aReader.LocalName.Equals( TAG_PLAYERGROUP ) )
                                     {
                                         var group_key = Convert.ToInt32( aReader.GetAttribute( ATR_KEY ) ?? string.Empty );
 
@@ -320,7 +325,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                             Magnification   = Convert.ToSingle( aReader.GetAttribute( ATR_MAGNIFICATION ) ?? string.Empty ),
                                         };
 
-                                        midiMapSet.AddMidiMapGroupPosition( (PlayerSurfaceMode)mode, group_key, dgp );
+                                        midiMapSet.AddMidiMapGroupPosition( (ConfigPlayer.PlayerSurfaceMode)mode, group_key, dgp );
                                     }
                                     #endregion
                                 }
@@ -469,24 +474,24 @@ internal class ScoreStream : IScoreReader, IScoreWriter
             {
                 #region <MIDIMAPGROUP>
                 aWriter.WriteStartElement( TAG_MIDIMAPGROUP );
-                aWriter.WriteAttributeString( ATR_DISPLAY, $"{( group.Display ? "1" : "0" )}" );
-                aWriter.WriteAttributeString( ATR_KEY, $"{group.GroupKey}" );
-                aWriter.WriteAttributeString( ATR_NAME, $"{group.GroupName}" );
-                aWriter.WriteAttributeString( ATR_VOLUME, $"{group.VolumeAdd}" );
-                aWriter.WriteAttributeString( ATR_SCALEKEY, $"{group.ScaleKey}" );
+                aWriter.WriteAttributeString( ATR_DISPLAY   , $"{( group.Display ? "1" : "0" )}" );
+                aWriter.WriteAttributeString( ATR_KEY       , $"{group.GroupKey}" );
+                aWriter.WriteAttributeString( ATR_NAME      , $"{group.GroupName}" );
+                aWriter.WriteAttributeString( ATR_VOLUME    , $"{group.VolumeAdd}" );
+                aWriter.WriteAttributeString( ATR_SCALEKEY  , $"{group.ScaleKey}" );
                 {
                     foreach ( var midiMap in group.MidiMaps )
                     {
                         #region <MIDIMAP />
                         aWriter.WriteStartElement( TAG_MIDIMAP );
-                        aWriter.WriteAttributeString( ATR_DISPLAY, $"{( midiMap.Display ? "1" : "0" )}" );
-                        aWriter.WriteAttributeString( ATR_KEY, $"{midiMap.MidiMapKey}" );
-                        aWriter.WriteAttributeString( ATR_NAME, $"{midiMap.MidiMapName}" );
-                        aWriter.WriteAttributeString( ATR_MIDI, $"{midiMap.Midi}" );
-                        aWriter.WriteAttributeString( ATR_VOLUME, $"{midiMap.VolumeAdd}" );
-                        aWriter.WriteAttributeString( ATR_COLOR, $"{ColorHelper.GetColor( midiMap.Color )}" );
-                        aWriter.WriteAttributeString( ATR_SCALE, $"{midiMap.Scale}" );
-                        aWriter.WriteAttributeString( ATR_SCALEKEYTEXT, $"{midiMap.ScaleKeyText}" );
+                        aWriter.WriteAttributeString( ATR_DISPLAY       , $"{( midiMap.Display ? "1" : "0" )}" );
+                        aWriter.WriteAttributeString( ATR_KEY           , $"{midiMap.MidiMapKey}" );
+                        aWriter.WriteAttributeString( ATR_NAME          , $"{midiMap.MidiMapName}" );
+                        aWriter.WriteAttributeString( ATR_MIDI          , $"{midiMap.Midi}" );
+                        aWriter.WriteAttributeString( ATR_VOLUME        , $"{midiMap.VolumeAdd}" );
+                        aWriter.WriteAttributeString( ATR_COLOR         , $"{HelperColor.GetColor( midiMap.Color )}" );
+                        aWriter.WriteAttributeString( ATR_SCALE         , $"{midiMap.Scale}" );
+                        aWriter.WriteAttributeString( ATR_SCALEKEYTEXT  , $"{midiMap.ScaleKeyText}" );
                         aWriter.WriteEndElement();
                         #endregion
                     }
@@ -505,10 +510,10 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                     {
                         #region <PLAYERGROUP />
                         aWriter.WriteStartElement( TAG_PLAYERGROUP );
-                        aWriter.WriteAttributeString( ATR_KEY, $"{pos.Key}" );
-                        aWriter.WriteAttributeString( ATR_X, $"{pos.Value.X}" );
-                        aWriter.WriteAttributeString( ATR_Y, $"{pos.Value.Y}" );
-                        aWriter.WriteAttributeString( ATR_MAGNIFICATION, $"{pos.Value.Magnification}" );
+                        aWriter.WriteAttributeString( ATR_KEY           , $"{pos.Key}" );
+                        aWriter.WriteAttributeString( ATR_X             , $"{pos.Value.X}" );
+                        aWriter.WriteAttributeString( ATR_Y             , $"{pos.Value.Y}" );
+                        aWriter.WriteAttributeString( ATR_MAGNIFICATION , $"{pos.Value.Magnification}" );
                         aWriter.WriteEndElement();
                         #endregion
                     }
@@ -535,27 +540,27 @@ internal class ScoreStream : IScoreReader, IScoreWriter
         aWriter.WriteStartElement( TAG_SCORE );
         {
             // <INFO />
-            aWriter.WriteElementString( TAG_SCORE_INFO, $"{aScore.Info.Replace( "\r\n", "\n" )}" );
+            aWriter.WriteElementString( TAG_SCORE_INFO      , $"{aScore.Info.Replace( "\r\n", "\n" )}" );
 
             // <FILEPATH />
-            aWriter.WriteElementString( TAG_SCORE_FILEPATH, $"{aScore.BgmFilePath.RelativeFilePath}" );
+            aWriter.WriteElementString( TAG_SCORE_FILEPATH  , $"{aScore.BgmFilePath.RelativeFilePath}" );
 
             // <RPP />
-            aWriter.WriteElementString( TAG_SCORE_RPP, $"{aScore.BgmPlaybackStartPosition}" );
+            aWriter.WriteElementString( TAG_SCORE_RPP       , $"{aScore.BgmPlaybackStartPosition}" );
 
             // <BASEBPM />
-            aWriter.WriteElementString( TAG_SCORE_BASEBPM, $"{aScore.Bpm}" );
+            aWriter.WriteElementString( TAG_SCORE_BASEBPM   , $"{aScore.Bpm}" );
 
             // <VOLUME />
-            aWriter.WriteElementString( TAG_SCORE_VOLUME, $"{aScore.BgmVolume}" );
+            aWriter.WriteElementString( TAG_SCORE_VOLUME    , $"{aScore.BgmVolume}" );
 
             foreach ( var info in aScore.SysChannel.BpmInfoList.Values )
             {
                 #region <BPM />
                 aWriter.WriteStartElement( TAG_SCORE_BPM );
-                aWriter.WriteAttributeString( ATR_SCORE_MEASURENO, $"{info.MeasureNo}" );
-                aWriter.WriteAttributeString( ATR_SCORE_NOTEPOS, $"{info.NotePos}" );
-                aWriter.WriteAttributeString( ATR_SCORE_BPM, $"{info.Bpm}" );
+                aWriter.WriteAttributeString( ATR_SCORE_MEASURENO   , $"{info.MeasureNo}" );
+                aWriter.WriteAttributeString( ATR_SCORE_NOTEPOS     , $"{info.NotePos}" );
+                aWriter.WriteAttributeString( ATR_SCORE_BPM         , $"{info.Bpm}" );
                 aWriter.WriteEndElement();
                 #endregion
             }
@@ -582,12 +587,12 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                     {
                         #region <NOTE/>
                         aWriter.WriteStartElement( TAG_SCORE_NOTE );
-                        aWriter.WriteAttributeString( ATR_SCORE_CHANNELNO, $"{channel.ChannelNo}" );
-                        aWriter.WriteAttributeString( ATR_SCORE_MIDIMAPKEY, $"{info.MidiMapKey}" );
-                        aWriter.WriteAttributeString( ATR_SCORE_MEASURENO, $"{info.MeasureNo}" );
-                        aWriter.WriteAttributeString( ATR_SCORE_NOTEPOS, $"{info.NotePos}" );
-                        aWriter.WriteAttributeString( ATR_SCORE_NOTEVOLUME, $"{info.Volume}" );
-                        aWriter.WriteAttributeString( ATR_SCORE_NOTEONOFF, $"{noteOnOff}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_CHANNELNO   , $"{channel.ChannelNo}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_MIDIMAPKEY  , $"{info.MidiMapKey}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_MEASURENO   , $"{info.MeasureNo}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_NOTEPOS     , $"{info.NotePos}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_NOTEVOLUME  , $"{info.Volume}" );
+                        aWriter.WriteAttributeString( ATR_SCORE_NOTEONOFF   , $"{noteOnOff}" );
                         aWriter.WriteEndElement();
                         #endregion
                     }

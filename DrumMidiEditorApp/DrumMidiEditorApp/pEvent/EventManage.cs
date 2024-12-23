@@ -18,7 +18,7 @@ public static class EventManage
     /// </summary>
     public static void EventUpdateMidiOutLatency() =>
         // Musicスレッドで更新
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
     #endregion
 
@@ -59,7 +59,7 @@ public static class EventManage
     public static void EventReloadBgm()
     {
         // Musicスレッドで更新
-        Config.Media.UpdateDmsControlBgm = true;
+        Config.Media.FlagUpdateDmsControlBgm = true;
 
         // BGMの再読み込み後、波形を読み込む
         Config.Editer.UpdateScoreBgmFlag = true;
@@ -75,7 +75,7 @@ public static class EventManage
         DmsControl.RefreshTimeTable();
 
         // BPM変更に伴うスコア更新リクエスト
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ public static class EventManage
     /// </summary>
     public static void EventEditBgmPlaybackStartPosition() =>
         // スコア更新リクエスト（専用のフラグを用意していない為）
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
     #endregion
 
@@ -94,8 +94,8 @@ public static class EventManage
     /// </summary>
     public static void EventReloadMidiMapSet()
     {
-        Config.Media.UpdateDmsControlScore = true;
-        Config.Media.UpdateDmsControlMidiMap = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlMidiMap = true;
 
         // MidiMapSet再読み込み
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
@@ -107,7 +107,7 @@ public static class EventManage
         EventEditUpdateLayout();
 
         // スコアタブ表示更新リクエスト
-        EventScoreUpdateTab();
+        EventScore_UpdateTab();
 
         // プレイヤスコア更新リクエスト
         EventPlayerUpdateScore();
@@ -119,7 +119,7 @@ public static class EventManage
     public static void EventChangeMidiMapKey()
     {
         // スコア更新
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
         // キー変更対象一覧再読み込み
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
@@ -128,7 +128,7 @@ public static class EventManage
         EventEditUpdateLayout();
 
         // スコアタブ表示更新リクエスト
-        EventScoreUpdateTab();
+        EventScore_UpdateTab();
 
         // プレイヤスコア更新リクエスト
         EventPlayerUpdateScore();
@@ -273,7 +273,7 @@ public static class EventManage
     public static void EventEditNote( int aMeasureNo )
     {
         // 音量変更に伴いスコア再読み込みリクエスト
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
         // NOTE表示更新リクエスト
         Config.Editer.UpdateScoreNoteFlag = true;
@@ -285,7 +285,7 @@ public static class EventManage
         }
 
         // スコアタブ表示更新リクエスト
-        EventScoreUpdateTab();
+        EventScore_UpdateTab();
 
         // プレイヤスコア更新リクエスト
         EventPlayerUpdateScore();
@@ -299,7 +299,7 @@ public static class EventManage
     {
         // BPM変更に伴うタイムテーブル再計算およびスコア再読み込みリクエスト
         DmsControl.RefreshTimeTable();
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
         // BPM表示更新リクエスト
         Config.Editer.UpdateScoreBpmFlag = true;
@@ -321,7 +321,7 @@ public static class EventManage
     public static void EventEditNoteVolume( int aMeasureNo )
     {
         // 音量変更に伴いスコア再読み込みリクエスト
-        Config.Media.UpdateDmsControlScore = true;
+        Config.Media.FlagUpdateDmsControlScore = true;
 
         // ノート音量表示更新リクエスト
         Config.Editer.UpdateScoreNoteVolumeFlag = true;
@@ -333,7 +333,7 @@ public static class EventManage
         }
 
         // スコアタブ表示更新リクエスト
-        EventScoreUpdateTab();
+        EventScore_UpdateTab();
 
         // プレイヤスコア更新リクエスト
         EventPlayerUpdateScore();
@@ -390,9 +390,9 @@ public static class EventManage
     /// <summary>
     /// Scoreタブ更新リクエスト
     /// </summary>
-    public static void EventScoreUpdateTab()
+    public static void EventScore_UpdateTab()
     {
-        Config.Score.UpdateScoreFlag = true;
+        Config.Score.FlagUpdateScore = true;
 
         // 描画時に更新
         ControlAccess.UCScore?.Refresh();
@@ -405,9 +405,9 @@ public static class EventManage
     /// <summary>
     /// プレイヤー描画モード更新リクエスト
     /// </summary>
-    public static void EventPlayerUpdateSufaceMode() =>
+    public static void EventPlayer_UpdateSufaceMode() =>
         // 描画ループ処理内で更新フラグを見て更新
-        Config.Player.UpdateSurfaceModoFlag = true;
+        Config.Player.FlagUpdateSurfaceModo = true;
 
     /// <summary>
     /// プレイヤースクリーンサイズ更新通知
@@ -418,7 +418,7 @@ public static class EventManage
         ControlAccess.PagePlayer?.UpdatePageSize();
 
         // Panel用フラグ更新：描画ループ処理内で更新フラグを見て更新
-        Config.Player.UpdateSizeFlag = true;
+        Config.Player.FlagUpdateSize = true;
 
         // スクリーンサイズ変更に伴う更新
         EventPlayerUpdateScore();
@@ -427,13 +427,13 @@ public static class EventManage
     /// <summary>
     /// Playerスコア更新リクエスト
     /// </summary>
-    public static void EventPlayerUpdateScore() => Config.Player.UpdateScoreFlag = true;
+    public static void EventPlayerUpdateScore() => Config.Player.FlagUpdateScore = true;
 
     /// <summary>
     /// Player表示切替リクエスト
     /// </summary>
     /// <param name="aDisplayPlayer"></param>
-    public static void EventPlayerUpdateDisplay( bool aDisplayPlayer )
+    public static void EventPlayer_ChangeDisplay( bool aDisplayPlayer )
     {
         Config.Player.DisplayPlayer = aDisplayPlayer;
 
@@ -457,7 +457,7 @@ public static class EventManage
         EventEditPanelResize();
 
         // スコアタブ表示更新リクエスト
-        EventScoreUpdateTab();
+        EventScore_UpdateTab();
     }
 
     #endregion

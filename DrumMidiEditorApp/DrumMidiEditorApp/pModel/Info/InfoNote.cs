@@ -1,4 +1,5 @@
 ﻿using System;
+using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
 
 namespace DrumMidiEditorApp.pModel;
@@ -13,7 +14,7 @@ public partial class InfoNote : InfoBase
     /// <summary>
     /// チェンネル番号
     /// </summary>
-    public byte ChannelNo { get; private set; } = 0;
+    public byte ChannelNo { get; private set; } = MidiNet.ChannelDrum;
 
     /// <summary>
     /// MidiMapキー
@@ -23,7 +24,7 @@ public partial class InfoNote : InfoBase
     /// <summary>
     /// 音量（127基準）
     /// </summary>
-    public int Volume { get; set; } = 0;
+    public int Volume { get; set; } = MidiNet.MidiMinVolume;
 
     /// <summary>
     /// ノートON有無

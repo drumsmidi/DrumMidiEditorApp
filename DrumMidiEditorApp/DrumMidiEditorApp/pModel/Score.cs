@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Threading;
 using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
@@ -14,7 +14,7 @@ public partial class Score : DisposeBaseClass
     /// <summary>
     /// スコアロック用オブジェクト
     /// </summary>
-    public readonly object LockObj = new();
+    public readonly Lock LockObj = new();
 
     /// <summary>
     /// ファイルパス（現状未使用）
@@ -59,7 +59,7 @@ public partial class Score : DisposeBaseClass
     /// <summary>
     /// 編集中のチャンネル番号
     /// </summary>
-    public byte EditChannelNo { get; set; } = 0;
+    public byte EditChannelNo { get; set; } = MidiNet.ChannelMinNo;
 
     /// <summary>
     /// 編集中のチャンネル情報

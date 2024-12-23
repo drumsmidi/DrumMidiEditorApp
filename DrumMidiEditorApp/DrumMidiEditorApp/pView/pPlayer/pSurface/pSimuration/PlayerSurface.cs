@@ -4,7 +4,8 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
@@ -110,7 +111,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
             if ( p.Properties.IsLeftButtonPressed )
             {
-                _MousePosBef = p.Position;
+                _MousePosBef    = p.Position;
                 _MoveMidiMapKey = ConfigSystem.MidiMapKeyNotSelect;
 
                 foreach ( var header in _HeaderList )
@@ -192,7 +193,7 @@ public class PlayerSurface : PlayerSurfaceBase
                             );
 
                         var dgp = Score.EditMidiMapSet
-                            .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+                            .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
 
                         dgp.X = _HeaderList [ _MoveMidiMapKey ].DrawRect._x;
                         dgp.Y = _HeaderList [ _MoveMidiMapKey ].DrawRect._y;
@@ -202,7 +203,7 @@ public class PlayerSurface : PlayerSurfaceBase
                         lock ( DMS.SCORE.LockObj )
                         {
                             var dgp2 = DMS.SCORE.EditMidiMapSet
-                                .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+                                .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
 
                             dgp2.X = _HeaderList [ _MoveMidiMapKey ].DrawRect._x;
                             dgp2.Y = _HeaderList [ _MoveMidiMapKey ].DrawRect._y;
@@ -234,26 +235,28 @@ public class PlayerSurface : PlayerSurfaceBase
         base.UpdateScore();
 
         // bpm
-        _NowBpmRange.X = 0;
-        _NowBpmRange.Y = 0;
-        _NowBpmRange.Width = DrawSet.BpmNowWidthSize;
-        _NowBpmRange.Height = DrawSet.BpmNowHeightSize;
+        _NowBpmRange.X              = 0;
+        _NowBpmRange.Y              = 0;
+        _NowBpmRange.Width          = DrawSet.BpmNowWidthSize;
+        _NowBpmRange.Height         = DrawSet.BpmNowHeightSize;
 
         // measure no
-        _NowMeasureNoRange.X = _ScreenSize.Width - DrawSet.MeasureNoWidthSize;
-        _NowMeasureNoRange.Y = 0;
-        _NowMeasureNoRange.Width = DrawSet.MeasureNoWidthSize;
-        _NowMeasureNoRange.Height = DrawSet.MeasureNoHeightSize;
+        _NowMeasureNoRange.X        = _ScreenSize.Width - DrawSet.MeasureNoWidthSize;
+        _NowMeasureNoRange.Y        = 0;
+        _NowMeasureNoRange.Width    = DrawSet.MeasureNoWidthSize;
+        _NowMeasureNoRange.Height   = DrawSet.MeasureNoHeightSize;
 
         // score
-        _ScoreRange.X = 0;
-        _ScoreRange.Y = 0;
-        _ScoreRange.Width = _ScreenSize.Width;
-        _ScoreRange.Height = _ScreenSize.Height;
+        _ScoreRange.X               = 0;
+        _ScoreRange.Y               = 0;
+        _ScoreRange.Width           = _ScreenSize.Width;
+        _ScoreRange.Height          = _ScreenSize.Height;
     }
 
     protected override void UpdateScoreHeader()
     {
+        base.UpdateScoreHeader();
+
         _HeaderList.Clear();
 
         var body = _ScoreRange;
@@ -268,7 +271,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 }
 
                 var dgp = Score.EditMidiMapSet
-                    .GetMidiMapGroupPosition( PlayerSurfaceMode.Simuration, group.GroupKey );
+                    .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, group.GroupKey );
 
                 var obj = new DmsItemMidiMap
                     (
@@ -339,6 +342,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void ClearMeasure()
     {
+        base.ClearMeasure();
+
         foreach ( var nList in _NoteList )
         {
             nList.Value.Clear();
@@ -348,6 +353,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreMeasure( int aMeasureNo )
     {
+        base.UpdateScoreMeasure( aMeasureNo );
+
         #region Clear note
         {
             if ( _NoteList.TryGetValue( aMeasureNo, out var nList ) )

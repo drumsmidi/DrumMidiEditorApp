@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.Storage;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pHelper;
 
 public static class HelperAppDirectory
 {

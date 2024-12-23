@@ -5,7 +5,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml.Controls;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 

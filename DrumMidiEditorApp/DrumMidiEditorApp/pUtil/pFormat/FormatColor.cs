@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pFormat;
 
 /// <summary>
 /// グラフィックアイテム：色
@@ -13,7 +13,7 @@ public class FormatColor
     /// 色
     /// </summary>
     [JsonInclude]
-    public Color Color = ColorHelper.EmptyColor;
+    public Color Color = HelperColor.EmptyColor;
 
     /// <summary>
     /// 色
@@ -21,8 +21,8 @@ public class FormatColor
     [JsonIgnore]
     public string ColorText
     {
-        get => ColorHelper.GetColor( Color );
-        set => Color = ColorHelper.GetColor( value );
+        get => HelperColor.GetColor( Color );
+        set => Color = HelperColor.GetColor( value );
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class FormatColor
     public Brush ColorBrush
     {
         get => new SolidColorBrush( Color );
-        set => Color = (value as SolidColorBrush)?.Color ?? ColorHelper.EmptyColor;
+        set => Color = ( value as SolidColorBrush )?.Color ?? HelperColor.EmptyColor;
     }
 
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Windows.UI;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pFormat;
 
 /// <summary>
 /// グラフィックアイテム：線
@@ -34,7 +34,7 @@ public class FormatLine
     /// <param name="aLineSize"></param>
     public FormatLine( Color aLineColor, float aLineSize )
     {
-        LineColor = new( aLineColor );
-        LineSize  = aLineSize;
+        LineColor   = new( aLineColor );
+        LineSize    = aLineSize;
     }
 }

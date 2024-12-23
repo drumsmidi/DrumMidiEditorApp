@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -179,7 +180,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
             HelperXaml.ColorDialog
                 (
                     item,
-                    ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
+                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
                     ( color ) =>
                     {
                         item.Background = new SolidColorBrush( color );

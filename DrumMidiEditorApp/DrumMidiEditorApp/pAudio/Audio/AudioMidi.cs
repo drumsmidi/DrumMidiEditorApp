@@ -23,7 +23,7 @@ internal partial class AudioMidi( byte aChannel, byte aMidi ) : AudioBase
     /// <summary>
     /// 音量（127基準）
     /// </summary>
-	private byte _Volume = 0;
+	private byte _Volume = (byte)MidiNet.MidiMinVolume;
 
     /// <summary>
     /// 音量取得

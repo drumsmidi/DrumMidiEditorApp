@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -59,37 +60,43 @@ public class ConfigSystem
     public int MidiMapGroupKeyNotSelect { get; private set; } = -1;
 
     /// <summary>
-    /// MidiMap初期値：ラベル名称
+    /// MidiMapGroup初期値：ラベル名称
     /// </summary>
     [JsonInclude]
     public string DefaultMidiMapGroupName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// MidiMap初期値：表示状態
+    /// MidiMapGroup初期値：表示状態
     /// </summary>
     [JsonInclude]
     public bool DefaultMidiMapGroupDisplay { get; private set; } = true;
 
     /// <summary>
-    /// MidiMap初期値：音量増減値
+    /// MidiMapGroup初期値：音量増減値
     /// </summary>
     [JsonInclude]
     public int DefaultMidiMapGroupVolumeAdd { get; private set; } = 0;
 
     /// <summary>
-    /// MidiMap初期値：プレイヤー表示位置X座業
+    /// MidiMapGroup初期値：音階キー
+    /// </summary>
+    [JsonInclude]
+    public string DefaultMidiMapGroupScaleKey { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// MidiMapGroup初期値：プレイヤー表示位置X座業
     /// </summary>
     [JsonInclude]
     public float DefaultMidiMapGroupPositionX { get; private set; } = 100;
 
     /// <summary>
-    /// MidiMap初期値：プレイヤー表示位置X座業
+    /// MidiMapGroup初期値：プレイヤー表示位置X座業
     /// </summary>
     [JsonInclude]
     public float DefaultMidiMapGroupPositionY { get; private set; } = 100;
 
     /// <summary>
-    /// MidiMap初期値：プレイヤー表示位置X座業
+    /// MidiMapGroup初期値：プレイヤー表示位置X座業
     /// </summary>
     [JsonInclude]
     public float DefaultMidiMapGroupMagnification { get; private set; } = 1;
@@ -140,6 +147,12 @@ public class ConfigSystem
     [JsonInclude]
     public string DefaultMidiMapScale { get; private set; } = string.Empty;
 
+    /// <summary>
+    /// MidiMap初期値：音階キーテキスト
+    /// </summary>
+    [JsonInclude]
+    public string DefaultMidiMapScaleKey { get; private set; } = string.Empty;
+
     #endregion
 
     #region Log
@@ -161,10 +174,10 @@ public class ConfigSystem
     public string AppName { get; private set; } = $"DrumMidiEditor";
 
     /// <summary>
-    /// アプリケーション起動パラメータ
+    /// アプリケーション起動元のDMSファイルパス
     /// </summary>
     [JsonIgnore]
-    public string AppStartParameter { get; set; } = $"";
+    public GeneralPath AppStartDmsPath { get; set; } = new();
 
     /// <summary>
     /// エディターウィンドウ初期サイズ：横幅

@@ -7,7 +7,7 @@ namespace DrumMidiEditorApp.pUtil;
 /// <summary>
 /// 色変換補助
 /// </summary>
-public static partial class ColorHelper
+public static partial class HelperColor
 {
     /// <summary>
     /// 空色

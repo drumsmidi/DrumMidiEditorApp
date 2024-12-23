@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.UI.Xaml;
 using Windows.Foundation;
 using Windows.UI;
@@ -19,19 +19,19 @@ public class ConfigPlayer
     /// スコア更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreFlag { get; set; } = false;
+    public bool FlagUpdateScore { get; set; } = false;
 
     /// <summary>
     /// プレイヤー描画モード更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateSurfaceModoFlag { get; set; } = false;
+    public bool FlagUpdateSurfaceModo { get; set; } = false;
 
     /// <summary>
     /// サイズ更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateSizeFlag { get; set; } = false;
+    public bool FlagUpdateSize { get; set; } = false;
 
     #endregion
 
@@ -170,8 +170,6 @@ public class ConfigPlayer
         set => PlayerSurfaceEffectModeSelect = (PlayerSurfaceEffectMode)value;
     }
 
-
-
     #endregion
 
     #region 解像度/FPS
@@ -224,13 +222,25 @@ public class ConfigPlayer
     {
         get; set;
     } = new()
-    {
-        Color = Color.FromArgb( 255, 0, 0, 0 ),
-    };
+        {
+            Color = Color.FromArgb( 255, 0, 0, 0 ),
+        };
 
     #endregion
 
     #region 再生リクエスト
+
+    /// <summary>
+    /// プレイヤー再生リクエスト一覧
+    /// </summary>
+    public enum PlayRequest : int
+    {
+        None = 0,
+        PreStop,
+        PrePlay,
+        PreLoopPlay,
+        PreRecord,
+    }
 
     /// <summary>
     /// プレイヤー再生リクエスト
@@ -276,7 +286,6 @@ public class ConfigPlayer
     [JsonIgnore]
     public ConfigPlayerScoreType2 ScoreType2SelectType 
         => ScoreType2[ ScoreType2SelectTypeKey ];
-
 
     #endregion
 }

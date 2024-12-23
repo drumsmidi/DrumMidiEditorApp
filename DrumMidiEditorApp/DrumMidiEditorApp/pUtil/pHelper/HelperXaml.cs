@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 using Microsoft.UI.Dispatching;
@@ -13,7 +14,7 @@ using Windows.Storage.Pickers;
 using Windows.UI;
 using WinRT.Interop;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pHelper;
 
 /// <summary>
 /// XAMLユーティリティ
@@ -288,7 +289,7 @@ public static class HelperXaml
             }
             else
             {
-                picker.FileTypeChoices.Add( "", ["*"] );
+                picker.FileTypeChoices.Add( "", [ "*" ] );
             }
 
             InitializeWithWindow.Initialize( picker, WindowNative.GetWindowHandle( aOwnerWindow ) );
@@ -382,9 +383,9 @@ public static class HelperXaml
 
         aGraphics.FillEllipse
             (
-                (float)( aDrawRect.X + ( aDrawRect.Width  / 2 ) ),
-                (float)( aDrawRect.Y + ( aDrawRect.Height / 2 ) ),
-                aDrawRect._width  / 2,
+                (float)( aDrawRect.X +  aDrawRect.Width / 2  ),
+                (float)( aDrawRect.Y +  aDrawRect.Height / 2  ),
+                aDrawRect._width / 2,
                 aDrawRect._height / 2,
                 aFormatRect.Background.Color
             );
@@ -424,12 +425,12 @@ public static class HelperXaml
 
         aGraphics.DrawEllipse
             (
-                (float)( aDrawRect.X + ( aDrawRect.Width  / 2 ) ),
-                (float)( aDrawRect.Y + ( aDrawRect.Height / 2 ) ),
-                aDrawRect._width  / 2,
+                (float)( aDrawRect.X +  aDrawRect.Width / 2  ),
+                (float)( aDrawRect.Y +  aDrawRect.Height / 2  ),
+                aDrawRect._width / 2,
                 aDrawRect._height / 2,
-                aFormatRect.Line.LineColor.Color, 
-                aFormatRect.Line.LineSize 
+                aFormatRect.Line.LineColor.Color,
+                aFormatRect.Line.LineSize
             );
     }
 
@@ -572,15 +573,15 @@ public static class HelperXaml
 
         return new DecimalFormatter
         {
-            IntegerDigits   = aIntegerDigits,
-            FractionDigits  = aFractionDigits,
-            NumberRounder   = new IncrementNumberRounder
+            IntegerDigits = aIntegerDigits,
+            FractionDigits = aFractionDigits,
+            NumberRounder = new IncrementNumberRounder
             {
-                Increment           = aIncrement,                
-                RoundingAlgorithm   = RoundingAlgorithm.RoundHalfToEven,
+                Increment = aIncrement,
+                RoundingAlgorithm = RoundingAlgorithm.RoundHalfToEven,
             },
-            IsGrouped       = true,
-            IsZeroSigned    = true,
+            IsGrouped = true,
+            IsZeroSigned = true,
         };
     }
 

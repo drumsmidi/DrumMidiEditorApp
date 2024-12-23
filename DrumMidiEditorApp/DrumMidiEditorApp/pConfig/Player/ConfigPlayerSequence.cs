@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 
@@ -21,11 +21,13 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        Color = Color.FromArgb( 255, 0, 0, 0 ),
-    };
+        {
+            Color = Color.FromArgb( 255, 0, 0, 0 ),
+        };
 
     #endregion
+
+    #region 描画モード
 
     /// <summary>
     /// 描画方向モード
@@ -52,6 +54,8 @@ public class ConfigPlayerSequence
         set => DrawDirectionModeSelect = (DrawDirectionMode)value;
     }
 
+    #endregion
+
     #region Bpm
 
     /// <summary>
@@ -74,18 +78,18 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 255, 0, 200, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 0, 200, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     /// <summary>
     /// 現在のBPM値表示フラグ
@@ -101,18 +105,18 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -132,18 +136,18 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -188,18 +192,18 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -331,10 +335,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize = 1.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+            LineSize    = 1.0F,
+        };
 
     /// <summary>
     /// 小節64分間隔の線ペン
@@ -344,10 +348,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 70, 70, 70 ) ),
-        LineSize = 0.1F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
+            LineSize    = 0.1F,
+        };
 
     /// <summary>
     /// 小節32分間隔の線ペン
@@ -357,10 +361,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-        LineSize = 0.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節16分間隔の線ペン
@@ -370,10 +374,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 50, 50, 50 ) ),
-        LineSize = 0.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節8分間隔の線ペン
@@ -383,10 +387,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 40, 40, 40 ) ),
-        LineSize = 0.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節4分間隔の線ペン
@@ -396,10 +400,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize = 0.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節1分間隔の線ペン
@@ -409,10 +413,10 @@ public class ConfigPlayerSequence
     {
         get; set;
     } = new()
-    {
-        LineColor = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-        LineSize = 0.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+            LineSize    = 0.0F,
+        };
 
     #endregion
 

@@ -42,7 +42,7 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// <summary>
     /// 音階キー
     /// </summary>
-    public string ScaleKey { get; set; } = string.Empty;
+    public string ScaleKey { get; set; } = Config.System.DefaultMidiMapGroupScaleKey;
 
     protected override void Dispose( bool aDisposing )
     {

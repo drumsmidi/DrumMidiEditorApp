@@ -45,7 +45,6 @@ public sealed partial class PageDebug : Page
     private readonly List<(string Tag, Type Page)> _Pages =
         [
             ( "PageDebugShell"  , typeof( PageDebugShell ) ),
-            ( "PageDebugStyle"  , typeof( PageDebugStyle ) ),
         ];
 
     /// <summary>

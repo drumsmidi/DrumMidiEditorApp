@@ -48,7 +48,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 new CanvasDevice(),
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                96, // DisplayInformation.GetForCurrentView().LogicalDpi
+                Config.Media.DefaultDpi, // DisplayInformation.GetForCurrentView().LogicalDpi
                 DirectXPixelFormat.B8G8R8A8UIntNormalized,
                 2,
                 CanvasAlphaMode.Premultiplied
@@ -67,7 +67,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// .描画タスク停止フラグ
     /// </summary>
-    private bool _IdleTaskStop = true;
+    private bool _FlagIdleTaskStop = true;
 
     /// <summary>
     /// 描画タスク開始
@@ -78,9 +78,9 @@ public sealed partial class UserControlPlayerPanel : UserControl
         {
             DrawTaskStop();
 
-            EventManage.EventPlayerUpdateSufaceMode();
+            EventManage.EventPlayer_UpdateSufaceMode();
 
-            _IdleTaskStop = false;
+            _FlagIdleTaskStop = false;
 
             // 粒度の細かいシステムではなく、タスクが長時間実行され、
             // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
@@ -89,7 +89,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
             // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
             _IdleTask = Task.Factory.StartNew( DrawTaskAsync, TaskCreationOptions.LongRunning );
-            // _IdleTask = Task.Run( () => DrawTaskAsync() );
+        //  _IdleTask = Task.Run( () => DrawTaskAsync() );
         }
         catch ( Exception e )
         {
@@ -106,37 +106,35 @@ public sealed partial class UserControlPlayerPanel : UserControl
         {
             var fps = new Fps();
             fps.Set( 1, 0 );
-            //fps.Set( 2, DrawSet.Fps );
+        //  fps.Set( 2, DrawSet.Fps );
             fps.Start();
 
-            while ( !_IdleTaskStop )
+            while ( !_FlagIdleTaskStop )
             {
                 // サイズ変更
-                if ( DrawSet.UpdateSizeFlag )
+                if ( DrawSet.FlagUpdateSize )
                 {
-                    DrawSet.UpdateSizeFlag = false;
+                    DrawSet.FlagUpdateSize = false;
                     UpdatePanelSize();
                 }
 
                 // プレイヤー描画モード変更
-                if ( DrawSet.UpdateSurfaceModoFlag )
+                if ( DrawSet.FlagUpdateSurfaceModo )
                 {
-                    DrawSet.UpdateSurfaceModoFlag = false;
+                    DrawSet.FlagUpdateSurfaceModo = false;
                     UpdateSurfaceMode();
 
                     EventManage.EventPlayerUpdateScore();
                 }
 
-                // フレーム更新＆描画処理
+                // フレーム更新
                 fps.Tick();
 
-                // フレーム更新
                 _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) ) );
 
+                // 描画処理
+                using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
 
-                var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
-
-                //// 描画処理
                 using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
                 using var drawSessionB = cl.CreateDrawingSession();
 
@@ -144,26 +142,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
                 _ = ( _PlayerSurface?.OnDraw( args ) );
 
-
-                var blur = GetEffectImage( cl );
+                using var blur = GetEffectImage( cl );
                 if ( blur != null )
                 {
                     drawSessionA.DrawImage( blur );
                 }
 
                 _PlayerCanvas.SwapChain.Present();
-
-                //// 描画処理
-                //using var drawSession = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
-
-                //_PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
-
-                //_PlayerCanvas.SwapChain.Present();
-
-                // 垂直同期
-                //_PlayerCanvas.SwapChain.WaitForVerticalBlank();
-
-                //await Task.Delay( 1 );
             }
         }
         catch ( Exception e )
@@ -706,7 +691,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
         return blur;
     }
 
-
     /// <summary>
     /// 描画タスク停止
     /// </summary>
@@ -714,7 +698,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
     {
         try
         {
-            _IdleTaskStop = true;
+            _FlagIdleTaskStop = true;
             _IdleTask?.Wait();
             _IdleTask?.Dispose();
             _IdleTask = null;
@@ -756,7 +740,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     CanvasDevice.GetSharedDevice(),
                     DrawSet.ResolutionScreenWidth,
                     DrawSet.ResolutionScreenHeight,
-                    96
+                    Config.Media.DefaultDpi
                 );
         }
         catch ( Exception e )
@@ -781,7 +765,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             // フレーム処理
             _ = ( _PlayerSurface?.OnMove( aFrameTime ) );
 
-            var cl = new CanvasCommandList( _Offscreen );
+            using var cl = new CanvasCommandList( _Offscreen );
 
             //// 描画処理
             using var drawSessionA = _Offscreen.CreateDrawingSession();
@@ -793,18 +777,11 @@ public sealed partial class UserControlPlayerPanel : UserControl
 
             drawSessionA.Clear( DrawSet.SheetColor.Color );
 
-            var blur = GetEffectImage( cl );
+            using var blur = GetEffectImage( cl );
             if ( blur != null )
             {
                 drawSessionA.DrawImage( blur );
             }
-
-            //// 描画処理
-            //using var drawSession = _Offscreen.CreateDrawingSession();
-
-            //drawSession.Clear( DrawSet.SheetColor.Color );
-
-            //_PlayerSurface?.OnDraw( new CanvasDrawEventArgs( drawSession ) );
 
             // Bitmap作成
             return CanvasBitmap.CreateFromBytes
@@ -814,7 +791,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     (int)_Offscreen.SizeInPixels.Width,
                     (int)_Offscreen.SizeInPixels.Height,
                     DirectXPixelFormat.R8G8B8A8UIntNormalized,
-                    96,
+                    Config.Media.DefaultDpi,
                     CanvasAlphaMode.Premultiplied
                 );
         }
@@ -877,7 +854,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             (
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                96
+                Config.Media.DefaultDpi
             );
     }
 

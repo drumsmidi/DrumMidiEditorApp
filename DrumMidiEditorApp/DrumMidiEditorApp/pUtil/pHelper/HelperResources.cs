@@ -1,6 +1,6 @@
 ﻿using Windows.ApplicationModel.Resources;
 
-namespace DrumMidiEditorApp.pUtil;
+namespace DrumMidiEditorApp.pUtil.pHelper;
 
 public static class HelperResources
 {
@@ -22,6 +22,6 @@ public static class HelperResources
     /// </summary>
     /// <param name="aKey"></param>
     /// <returns></returns>
-    public static string GetString( string aKey, params object[] aParams )
+    public static string GetString( string aKey, params object [] aParams )
         => string.Format( GetString( aKey ), aParams );
 }

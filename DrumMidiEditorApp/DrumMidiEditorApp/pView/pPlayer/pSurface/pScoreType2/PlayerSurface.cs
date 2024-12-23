@@ -4,7 +4,7 @@ using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;
 
@@ -117,6 +117,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreLine()
     {
+        base.UpdateScoreLine();
+
         var body            = _ScoreBodyRange;
         var measure_size    = DrawSet.MeasureSize;
 
@@ -221,6 +223,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreHeader()
     {
+        base.UpdateScoreHeader();
+
         _HeaderList.Clear();
 
         var body = _ScoreBodyRange;
@@ -297,6 +301,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void ClearMeasure()
     {
+        base.ClearMeasure();
+
         foreach ( var nList in _NoteList )
         {
             nList.Value.Clear();
@@ -306,6 +312,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreMeasure( int aMeasureNo )
     {
+        base.UpdateScoreMeasure( aMeasureNo );
+
         #region Clear note
         {
             if ( _NoteList.TryGetValue( aMeasureNo, out var nList ) )

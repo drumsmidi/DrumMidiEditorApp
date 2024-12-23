@@ -1,6 +1,7 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -52,7 +53,7 @@ public sealed partial class PageConfigPlayerSimuration : Page
             HelperXaml.ColorDialog
                 (
                     item,
-                    ( item.Background as SolidColorBrush )?.Color ?? ColorHelper.EmptyColor,
+                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
                     ( color ) =>
                     {
                         item.Background = new SolidColorBrush( color );

@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 
@@ -20,9 +20,9 @@ public class ConfigPlayerSimuration
     {
         get; set;
     } = new()
-    {
-        Color = Color.FromArgb( 255, 0, 0, 0 ),
-    };
+        {
+            Color = Color.FromArgb( 255, 0, 0, 0 ),
+        };
 
     #endregion
 
@@ -54,18 +54,18 @@ public class ConfigPlayerSimuration
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 18F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 18F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -97,18 +97,18 @@ public class ConfigPlayerSimuration
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 18F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 18F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -140,18 +140,18 @@ public class ConfigPlayerSimuration
     {
         get; set;
     } = new()
-    {
-        Background = new( Color.FromArgb( 0, 0, 0, 0 ) ),
-        Line = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-        Text = new( Color.FromArgb( 255, 100, 200, 100 ),
-                            new()
-                            {
-                                FontFamily = "system-ui",
-                                FontSize = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 0, 0, 0, 0 ) ),
+            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
+            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -167,7 +167,7 @@ public class ConfigPlayerSimuration
     /// １回の描画で描画する小節数
     /// </summary>
     [JsonInclude]
-    public int DrawMeasureCount { get; set; } = 300;
+    public int DrawMeasureCount { get; set; } = 2;
 
     #endregion
 

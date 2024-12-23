@@ -29,7 +29,7 @@ internal class ColorConverter : JsonConverter<Color>
                 switch ( prop )
                 {
                     case "ColorArgb":
-                        c = ColorHelper.GetColor( aReader.GetString() ?? string.Empty );
+                        c = HelperColor.GetColor( aReader.GetString() ?? string.Empty );
                         break;
                 }
             }
@@ -42,7 +42,7 @@ internal class ColorConverter : JsonConverter<Color>
     {
         aWriter.WriteStartObject();
         aWriter.WritePropertyName( "ColorArgb" );
-        aWriter.WriteStringValue( ColorHelper.GetColor( aValue ) );
+        aWriter.WriteStringValue( HelperColor.GetColor( aValue ) );
         aWriter.WriteEndObject();
     }
 }

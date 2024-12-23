@@ -6,7 +6,7 @@ using DrumMidiEditorApp.pAudio;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;
 
@@ -160,6 +160,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreLine()
     {
+        base.UpdateScoreLine();
+
         var body            = _ScoreBodyRange;
         var measure_size    = DrawSet.MeasureSize;
 
@@ -250,6 +252,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreHeader()
     {
+        base.UpdateScoreHeader();
+
         _HeaderGroupList.Clear();
         _HeaderMidiMapList.Clear();
 
@@ -359,6 +363,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void ClearMeasure()
     {
+        base.ClearMeasure();
+
         foreach ( var nList in _NoteList )
         {
             nList.Value.Clear();
@@ -375,6 +381,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateScoreMeasure( int aMeasureNo )
     {
+        base.UpdateScoreMeasure( aMeasureNo  );
+
         #region Clear note
         {
             if ( _NoteList.TryGetValue( aMeasureNo, out var nList ) )
@@ -442,8 +450,8 @@ public class PlayerSurface : PlayerSurfaceBase
                         volume = 1F;
                     }
 
-                    note_rect.Width = DrawSet.NoteWidthSize * volume;
-                    note_rect.Height = DrawSet.NoteHeightSize * volume;
+                    note_rect.Width     = DrawSet.NoteWidthSize  * volume;
+                    note_rect.Height    = DrawSet.NoteHeightSize * volume;
 
                     if ( volume != 0F )
                     {
@@ -457,13 +465,11 @@ public class PlayerSurface : PlayerSurfaceBase
                         }
                     }
 
-                    var distanceToNextNoteOff = Score.EditChannel.GetNotePosDistanceToNextNoteOff( info );
+                    var distanceToNextNoteOff       = Score.EditChannel.GetNotePosDistanceToNextNoteOff( info );
+                    var distanceToNextNoteOffWidth  = distanceToNextNoteOff * DrawSet.NoteTermWidthSize;
 
-                    var distanceToNextNoteOffWidth = distanceToNextNoteOff * DrawSet.NoteTermWidthSize;
-
-                    note_rect.X = ( info.NotePos * DrawSet.NoteTermWidthSize ) - ( note_rect.Width / 2.0F );
-
-                    note_rect.Width += distanceToNextNoteOffWidth;
+                    note_rect.X                     = ( info.NotePos * DrawSet.NoteTermWidthSize ) - ( note_rect.Width / 2.0F );
+                    note_rect.Width                += distanceToNextNoteOffWidth;
 
                     var obj = new DmsItemNote
                         (
@@ -508,6 +514,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
     protected override void UpdateBpmMeasure( int aMeasureNo )
     {
+        base.UpdateBpmMeasure( aMeasureNo );
+
         #region Clear
         {
             if ( _BpmList.TryGetValue( aMeasureNo, out var nList ) )
@@ -615,8 +623,8 @@ public class PlayerSurface : PlayerSurfaceBase
 
             for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
             {
-                diff_x = ( measure_size * measure_no ) - sheet_pos_x;
-                cnt = _MeasureLineList.Count;
+                diff_x  = ( measure_size * measure_no ) - sheet_pos_x;
+                cnt     = _MeasureLineList.Count;
 
                 for ( var index = 0; index < cnt; index++ )
                 {
@@ -659,12 +667,12 @@ public class PlayerSurface : PlayerSurfaceBase
         {
             foreach ( var obj in _HeaderGroupList.Values )
             {
-                obj.Draw( args.DrawingSession, 0, 0 );
+                obj.Draw( args.DrawingSession );
             }
 
             foreach ( var obj in _HeaderMidiMapList.Values )
             {
-                obj.Draw( args.DrawingSession, 0, 0 );
+                obj.Draw( args.DrawingSession );
             }
         }
         #endregion

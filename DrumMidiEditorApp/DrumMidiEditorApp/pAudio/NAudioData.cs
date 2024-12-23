@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil;
 using NAudio;
@@ -19,6 +18,8 @@ namespace DrumMidiEditorApp.pAudio;
 /// </summary>
 public partial class NAudioData : DisposeBaseClass
 {
+    #region Member
+
     /// <summary>
     /// ロック用
     /// </summary>
@@ -54,6 +55,8 @@ public partial class NAudioData : DisposeBaseClass
     /// </summary>
     private readonly Dictionary<int, EqualizerBand> _EqualizerBand = [];
 
+    #endregion
+
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -61,23 +64,6 @@ public partial class NAudioData : DisposeBaseClass
     public NAudioData( GeneralPath aFilePath )
     {
         CreateStreamFromFile( aFilePath.AbsoulteFilePath );
-    }
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aFilePath">オーディオファイルパス</param>
-    /// <param name="aFFT">True:FFT解析用、False:オーディオ再生用</param>
-    public NAudioData( GeneralPath aFilePath, bool aFFT )
-    {
-        if ( aFFT )
-        {
-            CreateStreamFromFileFFT( aFilePath.AbsoulteFilePath );
-        }
-        else
-        {
-            CreateStreamFromFile( aFilePath.AbsoulteFilePath );
-        }
     }
 
     protected override void Dispose( bool aDisposing )
@@ -113,26 +99,6 @@ public partial class NAudioData : DisposeBaseClass
             _Wave   = new WaveOutEvent();
 
             _Wave.Init( _Sample );
-
-            //CalcFFT();
-        }
-    }
-
-    /// <summary>
-    /// オーディオファイルストリーム作成（FFT解析用）
-    /// </summary>
-    /// <param name="aFilePath">オーディオファイルパス</param>
-    private void CreateStreamFromFileFFT( string aFilePath )
-    {
-        lock ( _LockObj )
-        {
-            _Reader = new AudioFileReader( aFilePath );
-            _Sample = new Sampling( _Reader );
-            _Wave   = new WaveOutEvent();
-
-            _Wave.Init( _Sample );
-
-            CalcFFT();
         }
     }
 
@@ -496,7 +462,7 @@ public partial class NAudioData : DisposeBaseClass
     /// </summary>
     public void CalcFFT()
     {
-        if ( _Reader == null )
+        if ( _Reader == null || _IsFFTLoad )
         {
             return;
         }
@@ -536,7 +502,7 @@ public partial class NAudioData : DisposeBaseClass
                 {
                     var c = buffer[ k ];
 
-                    var diagonal    = Math.Sqrt( (c.X * c.X) + (c.Y * c.Y) );
+                    var diagonal    = Math.Sqrt( c.X * c.X + c.Y * c.Y );
                     var intensityDB = 10d * Math.Log10( diagonal );
 
                     var minDB = -90.0d;
@@ -550,7 +516,7 @@ public partial class NAudioData : DisposeBaseClass
         }
 
         _IsFFTLoad = true;
-}
+    }
 
     #endregion
 

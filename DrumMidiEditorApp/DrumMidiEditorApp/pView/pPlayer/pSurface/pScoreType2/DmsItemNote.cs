@@ -1,5 +1,6 @@
 ﻿using System;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -23,8 +24,7 @@ internal partial class DmsItemNote : DisposeBaseClass, IComparable, IComparable<
     /// <summary>
     /// ラベルテキスト
     /// </summary>
-    private readonly string _LabelText = "";
-
+    private readonly string _LabelText = string.Empty;
 
     /// <summary>
     /// コンストラクタ
@@ -88,7 +88,7 @@ internal partial class DmsItemNote : DisposeBaseClass, IComparable, IComparable<
             aGraphics.DrawText
                 (
                     _LabelText,
-                    rect._x - ( rect._width / 2F ),
+                    rect._x - rect._width / 2F,
                     rect._y - rect._height,
                     rect._width,
                     rect._height,

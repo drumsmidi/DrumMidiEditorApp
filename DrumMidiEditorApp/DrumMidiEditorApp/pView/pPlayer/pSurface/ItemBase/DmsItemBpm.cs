@@ -1,6 +1,8 @@
 ﻿using System;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -14,7 +16,7 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
     /// <summary>
     /// 描画範囲
     /// </summary>
-    private Rect _DrawRect;
+    private Rect _DrawRect = new();
 
     /// <summary>
     /// BPM情報
@@ -65,6 +67,13 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
         }
     }
     private bool _Disposed = false;
+
+    /// <summary>
+    /// 描画
+    /// </summary>
+    /// <param name="aGraphics">グラフィック</param>
+    public void Draw( CanvasDrawingSession aGraphics )
+        => Draw( aGraphics, 0, 0 );
 
     /// <summary>
     /// 描画

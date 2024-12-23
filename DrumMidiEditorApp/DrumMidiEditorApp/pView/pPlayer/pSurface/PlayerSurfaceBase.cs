@@ -112,29 +112,29 @@ public class PlayerSurfaceBase : IPlayerSurface
         {
             switch ( DrawSetCom.PlayReq )
             {
-                case PlayRequest.PrePlay:
+                case ConfigPlayer.PlayRequest.PrePlay:
                     _DmsPlayState = PlayState.PrePlayStart;
                     break;
-                case PlayRequest.PreLoopPlay:
+                case ConfigPlayer.PlayRequest.PreLoopPlay:
                     _DmsPlayState = PlayState.PreLoopPlayStart;
                     break;
-                case PlayRequest.PreStop:
+                case ConfigPlayer.PlayRequest.PreStop:
                     _DmsPlayState = PlayState.Stop;
                     break;
-                case PlayRequest.PreRecord:
+                case ConfigPlayer.PlayRequest.PreRecord:
                     _DmsPlayState = PlayState.PreRecord;
                     break;
             }
 
-            DrawSetCom.PlayReq = PlayRequest.None;
+            DrawSetCom.PlayReq = ConfigPlayer.PlayRequest.None;
 
             switch ( _DmsPlayState )
             {
                 case PlayState.Playing:
                     {
-                        if ( DrawSetCom.UpdateScoreFlag )
+                        if ( DrawSetCom.FlagUpdateScore )
                         {
-                            DrawSetCom.UpdateScoreFlag = false;
+                            DrawSetCom.FlagUpdateScore = false;
 
                             CloneScore();
 

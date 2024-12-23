@@ -7,7 +7,8 @@ using DrumMidiEditorApp.pIO;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiEditorApp.pModel;
 
 namespace DrumMidiEditorApp.pView;
 
@@ -32,11 +33,6 @@ public sealed partial class WindowEditer : Window
     /// </summary>
     public WindowEditer()
     {
-#if !DEBUG_DEFAULT
-        // Configファイル読込
-        FileIO.LoadConfig();
-#endif
-
         // Midiデバイス初期化
         MidiNet.MidiOutDeviceWatcher();
         MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
@@ -53,7 +49,7 @@ public sealed partial class WindowEditer : Window
         // 独自のタイトルバー設定
         ExtendsContentIntoTitleBar = true;
         SetTitleBar( _AppTitleBar );
-        SetSubTitle( "[]" );
+        SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
 
         // ウィンドウ初期サイズ変更
         if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )

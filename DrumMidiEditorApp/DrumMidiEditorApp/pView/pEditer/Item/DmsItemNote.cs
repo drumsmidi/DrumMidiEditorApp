@@ -7,6 +7,8 @@ using Windows.Foundation;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
+using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiEditorApp.pUtil.pFormat;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

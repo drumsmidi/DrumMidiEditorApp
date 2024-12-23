@@ -23,7 +23,6 @@
                         SelectionChanged="NaviLinkListView_SelectionChanged">
 
                         <TextBlock Tag="PageDebugShell" Text="Shell" />
-                        <TextBlock Tag="PageDebugStyle" Text="Style" />
                     </ListView>
                 </Grid>
             </SplitView.Pane>

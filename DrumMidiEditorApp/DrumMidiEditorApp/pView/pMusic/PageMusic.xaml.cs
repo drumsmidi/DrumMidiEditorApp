@@ -8,7 +8,7 @@ using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage.Pickers;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 

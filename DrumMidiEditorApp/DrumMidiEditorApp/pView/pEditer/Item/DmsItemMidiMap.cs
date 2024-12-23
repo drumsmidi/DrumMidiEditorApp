@@ -3,6 +3,7 @@ using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pConfig;
 using Windows.Foundation;
 using Microsoft.Graphics.Canvas;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

@@ -11,6 +11,8 @@ namespace DrumMidiEditorApp.pModel;
 /// </summary>
 public partial class MidiMapSet : DisposeBaseClass
 {
+    #region Member
+
     /// <summary>
     /// MidiMapGroupリスト（主データ）
     /// </summary>
@@ -19,7 +21,7 @@ public partial class MidiMapSet : DisposeBaseClass
     /// <summary>
     /// MidiMapGroup位置情報リスト（サブデータ）（描画モード、MidiMapGroupキー、位置情報）
     /// </summary>
-    public Dictionary<PlayerSurfaceMode, Dictionary<int, MidiMapGroupPosition>> MidiMapGroupPositions
+    public Dictionary<ConfigPlayer.PlayerSurfaceMode, Dictionary<int, MidiMapGroupPosition>> MidiMapGroupPositions
     {
         get; private set;
     } = [];
@@ -73,6 +75,8 @@ public partial class MidiMapSet : DisposeBaseClass
     /// MidiMapキーリスト（DisplayMidiMaps順）
     /// </summary>
     public List<int> DisplayMidiMapKeys { get; private set; } = [];
+
+    #endregion
 
     protected override void Dispose( bool aDisposing )
     {
@@ -150,7 +154,7 @@ public partial class MidiMapSet : DisposeBaseClass
     /// <param name="aMode">プレイヤー描画モード</param>
     /// <param name="aGroupKey">MidiMapGroupキー</param>
     /// <returns>MidiMapGroupPosition</returns>
-    public MidiMapGroupPosition GetMidiMapGroupPosition( PlayerSurfaceMode aMode, int aGroupKey )
+    public MidiMapGroupPosition GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode aMode, int aGroupKey )
     {
         if ( !MidiMapGroupPositions.TryGetValue( aMode, out var _ ) )
         {
@@ -414,7 +418,7 @@ public partial class MidiMapSet : DisposeBaseClass
 
         foreach ( var group in MidiMapGroups )
         {
-            foreach ( var mode in Enum.GetValues<PlayerSurfaceMode>() )
+            foreach ( var mode in Enum.GetValues<ConfigPlayer.PlayerSurfaceMode>() )
             {
                 if ( !MidiMapGroupPositions.TryGetValue( mode, out var list ) )
                 {
@@ -560,7 +564,7 @@ public partial class MidiMapSet : DisposeBaseClass
     /// <param name="aMode">描画モード</param>
     /// <param name="aGroupKey">追加するMidiMapGroupキー</param>
     /// <param name="aMidiMapGroupPosition">追加するMidiMapGroupPosition</param>
-    public void AddMidiMapGroupPosition( PlayerSurfaceMode aMode, int aGroupKey, MidiMapGroupPosition aMidiMapGroupPosition )
+    public void AddMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode aMode, int aGroupKey, MidiMapGroupPosition aMidiMapGroupPosition )
     {
         if ( !MidiMapGroupPositions.TryGetValue( aMode, out var list ) )
         {
@@ -651,7 +655,8 @@ public partial class MidiMapSet : DisposeBaseClass
     /// 選択中のMidiMapGroup/MidiMap有無判定
     /// </summary>
     public bool IsSelectMidiMap() 
-        => DisplayMidiMapGroups.Where( item => item.Selected ).Any() || DisplayMidiMaps.Where( item => item.Selected ).Any();
+        => DisplayMidiMapGroups.Where( item => item.Selected ).Any() 
+        || DisplayMidiMaps.Where( item => item.Selected ).Any();
 
     #endregion
 }

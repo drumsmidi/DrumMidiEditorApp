@@ -5,6 +5,7 @@ using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pConfig;
 using Windows.Foundation;
 using Microsoft.Graphics.Canvas;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -291,7 +292,7 @@ public partial class DmsItemVolumeRange : DisposeBaseClass
 
             for ( var i = 0; i <= sa; i++ )
             {
-                var vol = MathHelper.GetBezierCurvePosition
+                var vol = HelperMath.GetBezierCurvePosition
                     (
                         StartVolume,
                         c1,

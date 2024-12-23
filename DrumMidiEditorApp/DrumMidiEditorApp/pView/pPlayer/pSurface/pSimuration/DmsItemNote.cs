@@ -1,5 +1,6 @@
 ﻿using System;
 using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
@@ -76,18 +77,18 @@ internal partial class DmsItemNote( float aNotePosX, FormatRect aFormatRect, Dms
             }
 
             var rect = _DmsItemMidiMap.DrawRect;
-            rect.Width *= sa;
+            rect.Width  *= sa;
             rect.Height *= sa;
-            rect.X -= ( rect.Width - _DmsItemMidiMap.DrawRect.Width ) / 2.0F;
-            rect.Y -= ( rect.Height - _DmsItemMidiMap.DrawRect.Height ) / 2.0F;
+            rect.X      -= ( rect.Width  - _DmsItemMidiMap.DrawRect.Width  ) / 2.0F;
+            rect.Y      -= ( rect.Height - _DmsItemMidiMap.DrawRect.Height ) / 2.0F;
 
             // 背景色
             aGraphics.DrawEllipse
                 (
-                    rect._x + ( rect._width / 2 ),
-                    rect._y + ( rect._height / 2 ),
-                    rect._width / 2,
-                    rect._height / 2,
+                    rect._x + ( rect._width  / 2F ),
+                    rect._y + ( rect._height / 2F ),
+                    rect._width  / 2F,
+                    rect._height / 2F,
                     _FormatRect.Line.LineColor.Color,
                     _FormatRect.Line.LineSize
                 );

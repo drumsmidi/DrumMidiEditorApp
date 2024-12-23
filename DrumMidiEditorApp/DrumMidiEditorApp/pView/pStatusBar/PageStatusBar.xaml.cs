@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
@@ -75,10 +75,10 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
             switch ( aLevel )
             {
                 case 0:
-                    SetStatusText( "Informational", aText, InfoBarSeverity.Informational );
+                    SetStatusText( "Info", aText, InfoBarSeverity.Informational );
                     break;
                 case 1:
-                    SetStatusText( "Warning", aText, InfoBarSeverity.Warning );
+                    SetStatusText( "Warn", aText, InfoBarSeverity.Warning );
                     break;
                 case 2:
                     SetStatusText( "Error", aText, InfoBarSeverity.Error );

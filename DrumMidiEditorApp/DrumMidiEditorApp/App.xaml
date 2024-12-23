@@ -12,7 +12,7 @@
                     <x:Double x:Key="ContentDialogMaxHeight">960</x:Double>
                     <x:Double x:Key="ContentDialogMaxWidth">1280</x:Double>
                 </ResourceDictionary>
-                <ResourceDictionary Source="pView/Styles.xaml" />
+                <ResourceDictionary Source="ms-appx:///pView/Styles.xaml" />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>

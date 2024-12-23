@@ -36,7 +36,6 @@
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
     <None Remove="pView\pDebug\PageDebug.xaml" />
     <None Remove="pView\pDebug\PageDebugShell.xaml" />
-    <None Remove="pView\pDebug\PageDebugStyle.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
     <None Remove="pView\pMenuBar\PageImportMidi.xaml" />
     <None Remove="pView\pMidiMap\PageImportMidiMap.xaml" />
@@ -108,10 +107,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pDebug\PageDebugShell.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pDebug\PageDebugStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

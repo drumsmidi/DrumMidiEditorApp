@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 
@@ -21,9 +21,9 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        Color = aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-    };
+        {
+            Color = aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
+        };
 
     #endregion
 
@@ -55,18 +55,18 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        Background  = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ) ),
-        Line        = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ), 0F ),
-        Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255,  0,  0, 0 ),
-                            new()
-                            {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ) ),
+            Line        = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ), 0F ),
+            Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255,  0,  0, 0 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -86,18 +86,18 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        Background  = new( aDarkMode ? Color.FromArgb( 255, 150, 150, 150 ) : Color.FromArgb( 255, 100, 100, 100 ) ),
-        Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-        Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-                            new()
-                            {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( aDarkMode ? Color.FromArgb( 255, 150, 150, 150 ) : Color.FromArgb( 255, 100, 100, 100 ) ),
+            Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+            Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     /// <summary>
     /// 小節番号描画アイテム
@@ -107,18 +107,18 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-        Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-                            new()
-                            {
-                                FontFamily          = "system-ui",
-                                FontSize            = 14F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
+            Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 14F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -132,10 +132,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize = 1.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            LineSize    = 1.0F,
+        };
 
     /// <summary>
     /// ヘッダー描画アイテム
@@ -145,10 +145,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 80, 80, 80 ) ),
-        LineSize = 0.4F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 80, 80, 80 ) ),
+            LineSize    = 0.4F,
+        };
 
     #endregion
 
@@ -162,18 +162,18 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        Line        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
-        Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ),
-                            new()
-                            {
-                                FontFamily          = "system-ui",
-                                FontSize            = 24F,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            Line        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
+            Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 24F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
 
     /// <summary>
@@ -230,10 +230,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize    = 1.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            LineSize    = 1.0F,
+        };
 
     /// <summary>
     /// 小節128分間隔の線ペン
@@ -243,10 +243,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize    = 1.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            LineSize    = 1.0F,
+        };
 
     /// <summary>
     /// 小節64分間隔の線ペン
@@ -256,10 +256,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize    = 0.5F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            LineSize    = 0.5F,
+        };
 
     /// <summary>
     /// 小節32分間隔の線ペン
@@ -269,10 +269,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-        LineSize    = 0.3F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
+            LineSize    = 0.3F,
+        };
 
     /// <summary>
     /// 小節16分間隔の線ペン
@@ -282,10 +282,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 200, 200, 200 ) : Color.FromArgb( 255, 50, 50, 50 ) ),
-        LineSize    = 0.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 200, 200, 200 ) : Color.FromArgb( 255, 50, 50, 50 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節8分間隔の線ペン
@@ -295,10 +295,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 190, 190, 190 ) : Color.FromArgb( 255, 40, 40, 40 ) ),
-        LineSize    = 0.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 190, 190, 190 ) : Color.FromArgb( 255, 40, 40, 40 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節4分間隔の線ペン
@@ -308,10 +308,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 180, 180, 180 ) : Color.FromArgb( 255, 30, 30, 30 ) ),
-        LineSize    = 0.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 180, 180, 180 ) : Color.FromArgb( 255, 30, 30, 30 ) ),
+            LineSize    = 0.0F,
+        };
 
     /// <summary>
     /// 小節1分間隔の線ペン
@@ -321,10 +321,10 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 20, 20, 20 ) ),
-        LineSize    = 0.0F,
-    };
+        {
+            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 20, 20, 20 ) ),
+            LineSize    = 0.0F,
+        };
 
     #endregion
 

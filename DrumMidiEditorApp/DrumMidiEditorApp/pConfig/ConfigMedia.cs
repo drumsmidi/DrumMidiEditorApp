@@ -14,19 +14,19 @@ public class ConfigMedia
     /// シーケンス ＢＧＭ再読込フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateDmsControlBgm { get; set; } = false;
+    public bool FlagUpdateDmsControlBgm { get; set; } = false;
 
     /// <summary>
     /// ノート再生情報 再読込フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateDmsControlScore { get; set; } = false;
+    public bool FlagUpdateDmsControlScore { get; set; } = false;
 
     /// <summary>
     /// MidiMap情報 再読込フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateDmsControlMidiMap { get; set; } = false;
+    public bool FlagUpdateDmsControlMidiMap { get; set; } = false;
 
     #endregion
 
@@ -79,6 +79,22 @@ public class ConfigMedia
     /// </summary>
     [JsonInclude]
     public int RandomVolume { get; set; } = 0;
+
+    #endregion
+
+    #region Graphic
+
+    /// <summary>
+    /// 初期値：フォント
+    /// </summary>
+    [JsonIgnore]
+    public string DefaultFontFamily { get; private set; } = $"system-ui";
+
+    /// <summary>
+    /// DPI
+    /// </summary>
+    [JsonInclude]
+    public float DefaultDpi { get; set; } = 96;
 
     #endregion
 

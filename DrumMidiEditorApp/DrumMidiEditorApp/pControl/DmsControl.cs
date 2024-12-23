@@ -26,7 +26,7 @@ public static class DmsControl
     /// <summary>
     /// 音楽再生タスク 停止フラグ
     /// </summary>
-    private static bool _MusicTaskStop = true;
+    private static bool _FlagStopMusicTask = true;
 
     /// <summary>
     /// 音楽再生タスク開始
@@ -40,7 +40,7 @@ public static class DmsControl
             _TimeTable.Refresh();
             _TimeTable.Update( _TmpScore );
 
-            _MusicTaskStop = false;
+            _FlagStopMusicTask = false;
 
             // 粒度の細かいシステムではなく、タスクが長時間実行され、
             // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
@@ -67,7 +67,7 @@ public static class DmsControl
     {
         try
         {
-            _MusicTaskStop = true;
+            _FlagStopMusicTask = true;
 
             if ( _MusicTask != null )
             {
@@ -227,7 +227,7 @@ public static class DmsControl
     /// プレイヤーフォームへのリクエスト設定
     /// </summary>
     /// <param name="aRequest">リクエスト</param>
-    public delegate void SetPlayerRequest( PlayRequest aRequest );
+    public delegate void SetPlayerRequest( ConfigPlayer.PlayRequest aRequest );
 
     /// <summary>
     /// プレイヤーフォームへのリクエスト設定コールバック
@@ -241,20 +241,20 @@ public static class DmsControl
     /// <summary>
     /// 描画側準備完了フラグ
     /// </summary>
-    private static bool _UpdatePlayer = false;
+    private static bool _FlagUpdatePlayer = false;
 
     /// <summary>
     /// 音楽再生準備完了フラグ
     /// </summary>
-    private static bool _UpdateAudio = false;
+    private static bool _FlagUpdateAudio = false;
 
     /// <summary>
     /// 待機フラグリセット
     /// </summary>
     private static void WaitFlagReset()
     {
-        _UpdatePlayer   = false;
-        _UpdateAudio    = false;
+        _FlagUpdatePlayer = false;
+        _FlagUpdateAudio  = false;
     }
 
     /// <summary>
@@ -265,7 +265,7 @@ public static class DmsControl
     {
         var cnt = 3000;
 
-        while ( !_UpdatePlayer && !_UpdateAudio && cnt-- > 0 )
+        while ( !_FlagUpdatePlayer && !_FlagUpdateAudio && cnt-- > 0 )
         {
             Thread.Sleep( 1 );
         }
@@ -279,9 +279,9 @@ public static class DmsControl
     {
         var cnt = 3000;
 
-        _UpdateAudio = true;
+        _FlagUpdateAudio = true;
 
-        while ( !_UpdatePlayer && cnt-- > 0 )
+        while ( !_FlagUpdatePlayer && cnt-- > 0 )
         {
             Thread.Sleep( 1 );
         }
@@ -295,9 +295,9 @@ public static class DmsControl
     {
         var cnt = 3000;
 
-        _UpdatePlayer = true;
+        _FlagUpdatePlayer = true;
 
-        while ( !_UpdateAudio && cnt-- > 0 )
+        while ( !_FlagUpdateAudio && cnt-- > 0 )
         {
             Thread.Sleep( 1 );
         }
@@ -373,7 +373,7 @@ public static class DmsControl
             _State = DmsState.DmsState_Stop;
 
             // スレッドプール
-            while ( !_MusicTaskStop )
+            while ( !_FlagStopMusicTask )
             {
                 //Thread.Sleep( sleeptime );
                 await Task.Delay( sleeptime );
@@ -391,26 +391,26 @@ public static class DmsControl
                                 {
                                     WaitFlagReset();
 
-                                    SetPlayerRequestCallback?.Invoke( PlayRequest.PrePlay );
+                                    SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PrePlay );
                                 }
                                 break;
                             case DmsState.DmsState_PreLoopPlay:
                                 {
                                     WaitFlagReset();
 
-                                    SetPlayerRequestCallback?.Invoke( PlayRequest.PreLoopPlay );
+                                    SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PreLoopPlay );
                                 }
                                 break;
                             case DmsState.DmsState_PreStop:
                                 {
-                                    SetPlayerRequestCallback?.Invoke( PlayRequest.PreStop );
+                                    SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PreStop );
                                 }
                                 break;
                             case DmsState.DmsState_PreRecord:
                                 {
                                     WaitFlagReset();
 
-                                    SetPlayerRequestCallback?.Invoke( PlayRequest.PreRecord );
+                                    SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PreRecord );
                                 }
                                 break;
                         }
@@ -585,7 +585,7 @@ public static class DmsControl
                 note_play_on = Config.Media.NotePlayOn;
 
                 // ＢＧＭの音量設定
-                _BgmAudio?.SetVolume( bgm_play_on ? Config.Media.BgmVolume : 0 );
+                _BgmAudio?.SetVolume( bgm_play_on ? Config.Media.BgmVolume : Config.Media.BgmMinVolume );
 
                 // 現在の再生時間（秒）を取得
                 playtime = PlayTime;
@@ -644,7 +644,7 @@ public static class DmsControl
                     {
                         _State = DmsState.DmsState_PreLoopPlay;
 
-                        SetPlayerRequestCallback?.Invoke( PlayRequest.PreLoopPlay );
+                        SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PreLoopPlay );
                     }
                 }
                 else
@@ -653,7 +653,7 @@ public static class DmsControl
                     {
                         _State = DmsState.DmsState_PreStop;
 
-                        SetPlayerRequestCallback?.Invoke( PlayRequest.PrePlay );
+                        SetPlayerRequestCallback?.Invoke( ConfigPlayer.PlayRequest.PrePlay );
                     }
                 }
 
@@ -662,7 +662,7 @@ public static class DmsControl
         }
         catch ( Exception )
         {
-            _MusicTaskStop = true;
+            _FlagStopMusicTask = true;
 
             throw;
         }
@@ -680,7 +680,7 @@ public static class DmsControl
     {
         try
         {
-            if ( Config.Media.UpdateDmsControlBgm || Config.Media.UpdateDmsControlMidiMap || Config.Media.UpdateDmsControlScore )
+            if ( Config.Media.FlagUpdateDmsControlBgm || Config.Media.FlagUpdateDmsControlMidiMap || Config.Media.FlagUpdateDmsControlScore )
             {
                 // スコア情報コピー
                 _TmpScore.Dispose();
@@ -715,13 +715,13 @@ public static class DmsControl
             // その場合は再度BGMを読み込むようにする。
             if ( !( ( _BgmAudio?.GetAudioData() as NAudioData )?.IsPlaying() ?? false ) )
             {
-                Config.Media.UpdateDmsControlBgm = true;
+                Config.Media.FlagUpdateDmsControlBgm = true;
             }
 
             // ＢＧＭ再読み込み
-            if ( Config.Media.UpdateDmsControlBgm )
+            if ( Config.Media.FlagUpdateDmsControlBgm )
             {
-                Config.Media.UpdateDmsControlBgm = false;
+                Config.Media.FlagUpdateDmsControlBgm = false;
 
                 AudioFactory.Release( _BgmAudio );
 
@@ -752,11 +752,11 @@ public static class DmsControl
     /// </summary>
     private static void UpdateMidiMapSet()
     {
-        if ( !Config.Media.UpdateDmsControlMidiMap )
+        if ( !Config.Media.FlagUpdateDmsControlMidiMap )
         {
             return;
         }
-        Config.Media.UpdateDmsControlMidiMap = false;
+        Config.Media.FlagUpdateDmsControlMidiMap = false;
 
         #region Create MidiMapInfo
 
@@ -799,11 +799,11 @@ public static class DmsControl
     /// </summary>
     private static void UpdateScore()
     {
-        if ( !Config.Media.UpdateDmsControlScore )
+        if ( !Config.Media.FlagUpdateDmsControlScore )
         {
             return;
         }
-        Config.Media.UpdateDmsControlScore = false;
+        Config.Media.FlagUpdateDmsControlScore = false;
 
         var rnd     = new Random();
         var s_list  = new List<DmsControlNoteInfo>();

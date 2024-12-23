@@ -12,8 +12,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Windows.Foundation;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pMachineLearning;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

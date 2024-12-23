@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pFormat;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;

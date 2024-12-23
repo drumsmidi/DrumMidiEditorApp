@@ -4,7 +4,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
@@ -32,7 +32,7 @@ public sealed partial class PageScore : Page
     /// <summary>
     /// スコア更新フラグ設定
     /// </summary>
-    private static void UpdateScore() => EventManage.EventScoreUpdateTab();
+    private static void UpdateScore() => EventManage.EventScore_UpdateTab();
 
     /// <summary>
     /// 共通：トグル切替

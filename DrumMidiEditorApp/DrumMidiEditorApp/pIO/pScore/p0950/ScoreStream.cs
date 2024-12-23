@@ -264,7 +264,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                             MidiMapName = aReader.GetAttribute( ATR_NAME ) ?? string.Empty,
                                             Midi        = (byte)Convert.ToInt32( aReader.GetAttribute( ATR_MIDI ) ?? string.Empty ),
                                             VolumeAdd   = Convert.ToInt32( aReader.GetAttribute( ATR_VOLUME ) ?? string.Empty ),
-                                            Color       = ColorHelper.GetColor( aReader.GetAttribute( ATR_COLOR ) ?? string.Empty ),
+                                            Color       = HelperColor.GetColor( aReader.GetAttribute( ATR_COLOR ) ?? string.Empty ),
                                             Scale       = aReader.GetAttribute( ATR_SCALE ) ?? string.Empty,
                                         };
 
@@ -278,7 +278,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         #region <PLAYER>
                         else if ( aReader.LocalName.Equals( TAG_PLAYER ) )
                         {
-                            if ( !Enum.TryParse( typeof( PlayerSurfaceMode ), aReader.GetAttribute( ATR_MODE ), out var mode ) || mode == null )
+                            if ( !Enum.TryParse( typeof( ConfigPlayer.PlayerSurfaceMode ), aReader.GetAttribute( ATR_MODE ), out var mode ) || mode == null )
                             {
                                 continue;
                             }
@@ -313,7 +313,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                                             Magnification   = Convert.ToSingle( aReader.GetAttribute( ATR_SCALE ) ?? string.Empty ),
                                         };
 
-                                        midiMapSet.AddMidiMapGroupPosition( (PlayerSurfaceMode)mode, group_key, dgp );
+                                        midiMapSet.AddMidiMapGroupPosition( (ConfigPlayer.PlayerSurfaceMode)mode, group_key, dgp );
                                     }
                                     #endregion
                                 }
@@ -476,7 +476,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
                         aWriter.WriteAttributeString( ATR_NAME, $"{midiMap.MidiMapName}" );
                         aWriter.WriteAttributeString( ATR_MIDI, $"{midiMap.Midi}" );
                         aWriter.WriteAttributeString( ATR_VOLUME, $"{midiMap.VolumeAdd}" );
-                        aWriter.WriteAttributeString( ATR_COLOR, $"{ColorHelper.GetColor( midiMap.Color )}" );
+                        aWriter.WriteAttributeString( ATR_COLOR, $"{HelperColor.GetColor( midiMap.Color )}" );
                         aWriter.WriteAttributeString( ATR_SCALE, $"{midiMap.Scale}" );
                         aWriter.WriteEndElement();
                         #endregion

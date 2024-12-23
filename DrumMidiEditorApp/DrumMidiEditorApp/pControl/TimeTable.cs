@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 
@@ -14,12 +14,12 @@ internal class TimeTable
     /// <summary>
     /// 排他制御用ロックオブジェクト
     /// </summary>
-    public readonly object LockObj = new();
+    public readonly Lock LockObj = new();
 
     /// <summary>
     /// TimeTable更新フラグ
     /// </summary>
-    private bool _UpdateFlag = true;
+    private bool _FlagUpdate = true;
 
     /// <summary>
     /// TimeTable
@@ -144,7 +144,7 @@ internal class TimeTable
     /// TimeTable更新フラグを立てます。
     /// TimeTable.Update実行時にTimeTableを更新します。
     /// </summary>
-    public void Refresh() => _UpdateFlag = true;
+    public void Refresh() => _FlagUpdate = true;
 
     /// <summary>
     /// TimeTableを更新します。
@@ -154,11 +154,11 @@ internal class TimeTable
     /// <param name="aScore"></param>
     public void Update( Score aScore )
     {
-        if ( !_UpdateFlag )
+        if ( !_FlagUpdate )
         {
             return;
         }
-        _UpdateFlag = false;
+        _FlagUpdate = false;
 
         lock ( LockObj )
         {
