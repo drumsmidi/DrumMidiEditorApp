@@ -83,7 +83,7 @@ public sealed partial class PageConfigDevice : Page
                 return;
             }
 
-            EventManage.EventUpdateMidiOutLatency();
+            EventManage.Event_Device_UpdateMidiOutLatency();
         }
         catch ( Exception e )
         {

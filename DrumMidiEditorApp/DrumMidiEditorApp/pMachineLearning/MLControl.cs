@@ -435,6 +435,6 @@ public static class MLControl
             Log.Info( $"{en.Current.AbsoultNotePos / Config.System.MeasureNoteNumber}-{en.Current.AbsoultNotePos % Config.System.MeasureNoteNumber}-{result.DrumPattern}" );
         }
 
-        EventManage.EventEditUpdateScorePredict();
+        EventManage.Event_Editer_UpdateScorePredict();
     }
 }

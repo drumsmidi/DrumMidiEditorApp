@@ -77,5 +77,5 @@ internal partial class ResumeEditAddBpm( InfoBpm? aInfoBef, InfoBpm aInfoAft ) :
     /// Undo/Redo共通処理
     /// </summary>
     /// <param name="aMeasureNo">小節番号</param>
-    private static void Update( int aMeasureNo ) => EventManage.EventEditBpm( aMeasureNo );
+    private static void Update( int aMeasureNo ) => EventManage.Event_Score_EditBpm( aMeasureNo );
 }

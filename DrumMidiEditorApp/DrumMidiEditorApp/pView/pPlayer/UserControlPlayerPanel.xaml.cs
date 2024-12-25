@@ -78,7 +78,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         {
             DrawTaskStop();
 
-            EventManage.EventPlayer_UpdateSufaceMode();
+            EventManage.Event_Player_UpdateSufaceMode();
 
             _FlagIdleTaskStop = false;
 
@@ -124,7 +124,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     DrawSet.FlagUpdateSurfaceModo = false;
                     UpdateSurfaceMode();
 
-                    EventManage.EventPlayerUpdateScore();
+                    EventManage.Event_Player_UpdateScore();
                 }
 
                 // フレーム更新

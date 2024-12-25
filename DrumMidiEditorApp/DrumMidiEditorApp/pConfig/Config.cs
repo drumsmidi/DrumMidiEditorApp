@@ -41,11 +41,6 @@ public static class Config
     public static ConfigScore Score { get; set; } = new();
 
     /// <summary>
-    /// Scoreタブ設定
-    /// </summary>
-    public static ConfigML ML { get; set; } = new();
-
-    /// <summary>
     /// Scaleタブ設定
     /// </summary>
     public static ConfigScale Scale { get; set; } = new();

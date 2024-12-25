@@ -32,7 +32,7 @@ public sealed partial class PageScore : Page
     /// <summary>
     /// スコア更新フラグ設定
     /// </summary>
-    private static void UpdateScore() => EventManage.EventScore_UpdateTab();
+    private static void UpdateScore() => EventManage.Event_ScoreTab_UpdateScore();
 
     /// <summary>
     /// 共通：トグル切替

@@ -77,17 +77,9 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
         #endregion
 
-        Log.Info( $"{Log.GetThisMethodName}:{Config.System.AppStartDmsPath.AbsoulteFilePath}" );
-
         if ( Config.System.AppStartDmsPath.IsExistFile )
         {
-            if ( FileIO.LoadScore( Config.System.AppStartDmsPath, out var score ) )
-            {
-                DMS.SCORE           = score;
-                DMS.OpenFilePath    = Config.System.AppStartDmsPath;
-
-                ApplyScore();
-            }
+            LoadSocre( Config.System.AppStartDmsPath );
         }
     }
 
@@ -118,6 +110,57 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     #endregion
 
     /// <summary>
+    /// スコアファイルを読込
+    /// </summary>
+    /// <param name="aFilePath">スコアファイルパス</param>
+    private void LoadSocre( GeneralPath aFilePath )
+    {
+        try
+        {
+            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoulteFilePath}" );
+
+            if ( FileIO.LoadScore( aFilePath, out var score ) )
+            {
+                DMS.SCORE           = score;
+                DMS.OpenFilePath    = aFilePath;
+
+                ApplyScore();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// スコアファイルを保存
+    /// </summary>
+    /// <param name="aFilePath">スコアファイルパス</param>
+    private void SaveSocre( GeneralPath aFilePath )
+    {
+        try
+        {
+            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoulteFilePath}" );
+
+            aFilePath.Extension = ConfigSystem.ExtentionDms;
+
+            if ( !FileIO.SaveScore( aFilePath, DMS.SCORE ) )
+            {
+                return;
+            }
+
+            DMS.OpenFilePath = aFilePath;
+
+            SetSubTitle();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
     /// スコアをシステム全体に反映
     /// </summary>
     private void ApplyScore()
@@ -130,13 +173,14 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
             SetSubTitle();
 
-            EventManage.EventReloadScore();
+            EventManage.Event_Score_ReloadScore();
         }
         catch ( Exception e )
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
+
 
     #region Menu
 
@@ -171,12 +215,12 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     HelperResources.GetString( "Dialog/Yes" ),
                     HelperResources.GetString( "Dialog/No" ),
                     new( () =>
-                    {
-                        DMS.SCORE = new();
-                        DMS.OpenFilePath = new();
+                        {
+                            DMS.SCORE           = new();
+                            DMS.OpenFilePath    = new();
 
-                        ApplyScore();
-                    } )
+                            ApplyScore();
+                        } )
                 );
         }
         catch ( Exception e )
@@ -202,21 +246,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     ConfigSystem.SupportDmsOpen,
                     PickerLocationId.DocumentsLibrary,
                     ConfigSystem.FolderDms,
-                    ( filepath ) =>
-                    {
-                        if ( !FileIO.LoadScore( filepath, out var score ) )
-                        {
-                            return;
-                        }
-
-                        lock ( DMS.SCORE.LockObj )
-                        {
-                            DMS.SCORE = score;
-                            DMS.OpenFilePath = filepath;
-                        }
-
-                        ApplyScore();
-                    }
+                    ( filepath ) => LoadSocre( filepath )
                 );
         }
         catch ( Exception e )
@@ -247,19 +277,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                         edit_filepath.FileNameWithoutExtension,
                         PickerLocationId.DocumentsLibrary,
                         ConfigSystem.FolderDms,
-                        ( filepath ) =>
-                        {
-                            filepath.Extension = ConfigSystem.ExtentionDms;
-
-                            if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-                            {
-                                return;
-                            }
-
-                            DMS.OpenFilePath = filepath;
-
-                            SetSubTitle();
-                        }
+                        ( filepath ) => SaveSocre( filepath )
                     );
             }
             else
@@ -294,19 +312,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
                     ConfigSystem.FolderDms,
-                    ( filepath ) =>
-                    {
-                        filepath.Extension = ConfigSystem.ExtentionDms;
-
-                        if ( !FileIO.SaveScore( filepath, DMS.SCORE ) )
-                        {
-                            return;
-                        }
-
-                        DMS.OpenFilePath = filepath;
-
-                        SetSubTitle();
-                    }
+                    ( filepath ) => SaveSocre( filepath )
                 );
         }
         catch ( Exception e )
@@ -450,7 +456,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             Score.EditChannelNo = (byte)_ChannelNoComboBox.SelectedItem;
 
-            EventManage.EventChangeChannel();
+            EventManage.Event_Score_ChangeChannel();
         }
         catch ( Exception e )
         {
@@ -608,7 +614,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                 return;
             }
 
-            EventManage.EventPlayer_ChangeDisplay( item?.IsOn ?? false );
+            EventManage.Event_Player_ChangeDisplay( item?.IsOn ?? false );
         }
         catch ( Exception e )
         {

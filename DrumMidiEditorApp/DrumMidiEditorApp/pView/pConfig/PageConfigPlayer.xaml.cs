@@ -93,7 +93,7 @@ public sealed partial class PageConfigPlayer : Page
                 return;
             }
 
-            EventManage.EventPlayer_UpdateSufaceMode();
+            EventManage.Event_Player_UpdateSufaceMode();
         }
         catch ( Exception e )
         {
@@ -116,7 +116,7 @@ public sealed partial class PageConfigPlayer : Page
                 return;
             }
 
-            EventManage.EventPlayer_UpdateSufaceMode();
+            EventManage.Event_Player_UpdateSufaceMode();
         }
         catch ( Exception e )
         {
@@ -139,7 +139,7 @@ public sealed partial class PageConfigPlayer : Page
                 return;
             }
 
-            EventManage.EventPlayerUpdateScreenSize();
+            EventManage.Event_Player_UpdateScreenSize();
         }
         catch ( Exception e )
         {

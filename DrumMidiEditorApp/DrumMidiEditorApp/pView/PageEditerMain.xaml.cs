@@ -49,7 +49,7 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventResizeWindow();
+            EventManage.Event_Window_ResizeWindow();
         }
         catch ( Exception e )
         {

@@ -16,60 +16,56 @@ public static class EventManage
     /// <summary>
     /// MIDI-OUT 遅延時間更新通知
     /// </summary>
-    public static void EventUpdateMidiOutLatency() =>
+    public static void Event_Device_UpdateMidiOutLatency() =>
         // Musicスレッドで更新
         Config.Media.FlagUpdateDmsControlScore = true;
 
     #endregion
 
-    #region Event.
+    #region Event.Score
 
     /// <summary>
     /// フラグ更新：スコア再読込
     /// </summary>
-    public static void EventReloadScore()
+    public static void Event_Score_ReloadScore()
     {
         // Musicページ再読み込み
         ControlAccess.PageMusic?.ReloadMusicInfo();
 
         // ベースBPM設定
-        EventEditBaseBpm();
+        Event_Score_EditBaseBpm();
 
         // チャンネル切替通知
-        EventChangeChannel();
+        Event_Score_ChangeChannel();
 
         // BGM再読み込み
-        EventReloadBgm();
+        Event_Score_ReloadBgm();
     }
 
     /// <summary>
     /// チャンネル切替通知
     /// </summary>
-    public static void EventChangeChannel() =>
+    public static void Event_Score_ChangeChannel() =>
         // MidiMap再読み込みリクエスト
-        EventReloadMidiMapSet();
-
-    #endregion
-
-    #region Event.MusicInfo
+        Event_Score_ReloadMidiMapSet();
 
     /// <summary>
     /// BGM変更／再読込リクエスト
     /// </summary>
-    public static void EventReloadBgm()
+    public static void Event_Score_ReloadBgm()
     {
         // Musicスレッドで更新
-        Config.Media.FlagUpdateDmsControlBgm = true;
+        Config.Media.FlagUpdateDmsControlBgm    = true;
 
         // BGMの再読み込み後、波形を読み込む
-        Config.Editer.UpdateScoreBgmFlag = true;
-        Config.Editer.UpdateScoreBgmScaleFlag = false;
+        Config.Editer.FlagUpdateScoreBgm        = true;
+        Config.Editer.FlagUpdateScoreBgmScale   = false;
     }
 
     /// <summary>
     /// ベースBPM更新通知
     /// </summary>
-    public static void EventEditBaseBpm()
+    public static void Event_Score_EditBaseBpm()
     {
         // タイムテーブル更新リクエスト
         DmsControl.RefreshTimeTable();
@@ -81,21 +77,17 @@ public static class EventManage
     /// <summary>
     /// BGM再生開始位置更新通知
     /// </summary>
-    public static void EventEditBgmPlaybackStartPosition() =>
+    public static void Event_Score_EditBgmPlaybackStartPosition() =>
         // スコア更新リクエスト（専用のフラグを用意していない為）
         Config.Media.FlagUpdateDmsControlScore = true;
-
-    #endregion
-
-    #region Event.MidiMap
 
     /// <summary>
     /// MidiMapSet再読込通知
     /// </summary>
-    public static void EventReloadMidiMapSet()
+    public static void Event_Score_ReloadMidiMapSet()
     {
-        Config.Media.FlagUpdateDmsControlScore = true;
-        Config.Media.FlagUpdateDmsControlMidiMap = true;
+        Config.Media.FlagUpdateDmsControlScore      = true;
+        Config.Media.FlagUpdateDmsControlMidiMap    = true;
 
         // MidiMapSet再読み込み
         ControlAccess.UCMidiMapPanel?.ReloadMidiMapSet();
@@ -104,19 +96,19 @@ public static class EventManage
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
 
         // エディタパネル更新リクエスト
-        EventEditUpdateLayout();
+        Event_Editer_UpdateLayout();
 
         // スコアタブ表示更新リクエスト
-        EventScore_UpdateTab();
+        Event_ScoreTab_UpdateScore();
 
         // プレイヤスコア更新リクエスト
-        EventPlayerUpdateScore();
+        Event_Player_UpdateScore();
     }
 
     /// <summary>
     /// MidiMapKey変更通知
     /// </summary>
-    public static void EventChangeMidiMapKey()
+    public static void Event_Score_ChangeMidiMapKey()
     {
         // スコア更新
         Config.Media.FlagUpdateDmsControlScore = true;
@@ -125,42 +117,109 @@ public static class EventManage
         ControlAccess.UCKeyChangePanel?.ReloadMidiMapNoteList();
 
         // エディタパネル更新リクエスト
-        EventEditUpdateLayout();
+        Event_Editer_UpdateLayout();
 
         // スコアタブ表示更新リクエスト
-        EventScore_UpdateTab();
+        Event_ScoreTab_UpdateScore();
 
         // プレイヤスコア更新リクエスト
-        EventPlayerUpdateScore();
+        Event_Player_UpdateScore();
+    }
+
+    /// <summary>
+    /// ノート設定／削除
+    /// </summary>
+    /// <param name="aMeasureNo">小節番号</param>
+    public static void Event_Score_EditNote( int aMeasureNo )
+    {
+        // 音量変更に伴いスコア再読み込みリクエスト
+        Config.Media.FlagUpdateDmsControlScore = true;
+
+        // NOTE表示更新リクエスト
+        Config.Editer.FlagUpdateScoreNote = true;
+
+        // 表示更新対象の小節番号を登録
+        if ( !Config.Editer.UpdateScoreNoteMeasureNoList.Contains( aMeasureNo ) )
+        {
+            Config.Editer.UpdateScoreNoteMeasureNoList.Add( aMeasureNo );
+        }
+
+        // スコアタブ表示更新リクエスト
+        Event_ScoreTab_UpdateScore();
+
+        // プレイヤスコア更新リクエスト
+        Event_Player_UpdateScore();
+    }
+
+    /// <summary>
+    /// BPM設定／削除
+    /// </summary>
+    /// <param name="aMeasureNo">小節番号</param>
+    public static void Event_Score_EditBpm( int aMeasureNo )
+    {
+        // BPM変更に伴うタイムテーブル再計算およびスコア再読み込みリクエスト
+        DmsControl.RefreshTimeTable();
+        Config.Media.FlagUpdateDmsControlScore = true;
+
+        // BPM表示更新リクエスト
+        Config.Editer.FlagUpdateScoreBpm = true;
+
+        // 表示更新対象の小節番号を登録
+        if ( !Config.Editer.UpdateScoreBpmMeasureNoList.Contains( aMeasureNo ) )
+        {
+            Config.Editer.UpdateScoreBpmMeasureNoList.Add( aMeasureNo );
+        }
+
+        // プレイヤスコア更新リクエスト
+        Event_Player_UpdateScore();
+    }
+
+    /// <summary>
+    /// フラグ更新：ノートボリューム更新通知
+    /// </summary>
+    /// <param name="aMeasureNo">小節番号</param>
+    public static void Event_Score_EditNoteVolume( int aMeasureNo )
+    {
+        // 音量変更に伴いスコア再読み込みリクエスト
+        Config.Media.FlagUpdateDmsControlScore = true;
+
+        // ノート音量表示更新リクエスト
+        Config.Editer.FlagUpdateScoreNoteVolume = true;
+
+        // 表示更新対象の小節番号を登録
+        if ( !Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Contains( aMeasureNo ) )
+        {
+            Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Add( aMeasureNo );
+        }
+
+        // スコアタブ表示更新リクエスト
+        Event_ScoreTab_UpdateScore();
+
+        // プレイヤスコア更新リクエスト
+        Event_Player_UpdateScore();
     }
 
     #endregion
 
-    #region Event.Edit
+    #region Event.Editer
 
     /// <summary>
     /// レイアウト更新リクエスト
     /// </summary>
-    private static void EventEditUpdateLayout()
+    private static void Event_Editer_UpdateLayout()
     {
         // 編集履歴クリア
-        EventEditClearResume();
+        Event_Resume_Redo();
 
         // 範囲選択解除
-        EventEditClearRangeSelect();
+        Event_Editer_ClearRangeSelect();
 
-        Config.Editer.UpdateScoreLayoutFlag     = true;
-        Config.Editer.UpdateCameraFlag          = true;
-        Config.Editer.UpdateScoreLineFlag       = true;
-        Config.Editer.UpdateScoreHeaderFlag     = true;
-        Config.Editer.UpdateScoreFlag           = true;
-        Config.Editer.UpdateScoreBgmScaleFlag   = true;
-
-        //Config.Editer.UpdateScoreNoteFlag         = true;
-        //Config.Editer.UpdateScoreNotePredictFlag  = true;
-        //Config.Editer.UpdateScoreBgmFlag          = true;
-        //Config.Editer.UpdateScoreBpmFlag          = true;
-        //Config.Editer.UpdateScoreNoteVolumeFlag   = true;
+        Config.Editer.FlagUpdateScoreLayout         = true;
+        Config.Editer.FlagUpdateCamera              = true;
+        Config.Editer.FlagUpdateScoreLine           = true;
+        Config.Editer.FlagUpdateScoreHeader         = true;
+        Config.Editer.FlagUpdateScore               = true;
+        Config.Editer.FlagUpdateScoreBgmScale       = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -168,12 +227,12 @@ public static class EventManage
     /// <summary>
     /// エディタパネルリサイズ通知
     /// </summary>
-    private static void EventEditPanelResize()
+    private static void Event_Editer_ResizePanel()
     {
-        Config.Editer.UpdateScoreLayoutFlag = true;
-        Config.Editer.UpdateCameraFlag = true;
-        Config.Editer.UpdateScoreLineFlag = true;
-        Config.Editer.UpdateScoreHeaderFlag = true;
+        Config.Editer.FlagUpdateScoreLayout         = true;
+        Config.Editer.FlagUpdateCamera              = true;
+        Config.Editer.FlagUpdateScoreLine           = true;
+        Config.Editer.FlagUpdateScoreHeader         = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -181,13 +240,13 @@ public static class EventManage
     /// <summary>
     /// エディタパネル内のアイテムリサイズ通知
     /// </summary>
-    public static void EventEditItemResize()
+    public static void Event_Editer_ResizeItem()
     {
-        Config.Editer.UpdateScoreLayoutFlag = true;
-        Config.Editer.UpdateCameraFlag = true;
-        Config.Editer.UpdateScoreLineFlag = true;
-        Config.Editer.UpdateScoreHeaderFlag = true;
-        Config.Editer.UpdateScoreFlag = true;
+        Config.Editer.FlagUpdateScoreLayout         = true;
+        Config.Editer.FlagUpdateCamera              = true;
+        Config.Editer.FlagUpdateScoreLine           = true;
+        Config.Editer.FlagUpdateScoreHeader         = true;
+        Config.Editer.FlagUpdateScore               = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -195,9 +254,9 @@ public static class EventManage
     /// <summary>
     /// シート移動通知
     /// </summary>
-    public static void EventEditUpdateSheetPos()
+    public static void Event_Editer_UpdateSheetPos()
     {
-        Config.Editer.UpdateCameraFlag = true;
+        Config.Editer.FlagUpdateCamera = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -206,7 +265,7 @@ public static class EventManage
     /// 範囲選択状態更新通知
     /// </summary>
     /// <param name="aRangeSelect"></param>
-    public static void EventEditUpdateRangeSelect( bool aRangeSelect )
+    public static void Event_Editer_UpdateRangeSelect( bool aRangeSelect )
     {
         Config.Editer.IsRangeSelect = aRangeSelect;
 
@@ -216,9 +275,9 @@ public static class EventManage
     /// <summary>
     /// 範囲選択内のノートを左寄せに移動リクエスト
     /// </summary>
-    public static void EventEditLeftAlignNoteOfRangeSelect()
+    public static void Event_Editer_LeftAlignNoteOfRangeSelect()
     {
-        Config.Editer.UpdateLeftAlignNoteOfRangeSelectFlag = true;
+        Config.Editer.FlagUpdateLeftAlignNoteOfRangeSelect = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -226,21 +285,20 @@ public static class EventManage
     /// <summary>
     /// 範囲選択解除リクエスト
     /// </summary>
-    public static void EventEditClearRangeSelect()
+    public static void Event_Editer_ClearRangeSelect()
     {
-        Config.Editer.UpdateClearRangeFlag = true;
+        Config.Editer.FlagUpdateClearRange = true;
 
         ControlAccess.PageEdit?.ReloadConfigEditer();
         ControlAccess.PageEdit?.Refresh();
     }
 
-
     /// <summary>
     /// 波形表示画像更新リクエスト
     /// </summary>
-    public static void EventEditUpdateWaveForm()
+    public static void Event_Editer_UpdateWaveForm()
     {
-        Config.Editer.UpdateScoreBgmScaleFlag = true;
+        Config.Editer.FlagUpdateScoreBgmScale = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -249,9 +307,9 @@ public static class EventManage
     /// 音量入力エリア表示更新フラグ
     /// （MidiMapGroup/MidiMap 選択など）
     /// </summary>
-    public static void EventEditUpdateDisplayNoteVolume()
+    public static void Event_Editer_UpdateDisplayNoteVolume()
     {
-        Config.Editer.UpdateScoreNoteVolumeFlag = true;
+        Config.Editer.FlagUpdateScoreNoteVolume = true;
 
         ControlAccess.PageEdit?.Refresh();
     }
@@ -259,84 +317,11 @@ public static class EventManage
     /// <summary>
     /// 機械学習 予測更新通知
     /// </summary>
-    public static void EventEditUpdateScorePredict()
+    public static void Event_Editer_UpdateScorePredict()
     {
-        Config.Editer.UpdateScoreNotePredictFlag = true;
+        Config.Editer.FlagUpdateScoreNotePredict = true;
 
         ControlAccess.PageEdit?.Refresh();
-    }
-
-    /// <summary>
-    /// ノート設定／削除
-    /// </summary>
-    /// <param name="aMeasureNo">小節番号</param>
-    public static void EventEditNote( int aMeasureNo )
-    {
-        // 音量変更に伴いスコア再読み込みリクエスト
-        Config.Media.FlagUpdateDmsControlScore = true;
-
-        // NOTE表示更新リクエスト
-        Config.Editer.UpdateScoreNoteFlag = true;
-
-        // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreNoteMeasureNoList.Contains( aMeasureNo ) )
-        {
-            Config.Editer.UpdateScoreNoteMeasureNoList.Add( aMeasureNo );
-        }
-
-        // スコアタブ表示更新リクエスト
-        EventScore_UpdateTab();
-
-        // プレイヤスコア更新リクエスト
-        EventPlayerUpdateScore();
-    }
-
-    /// <summary>
-    /// BPM設定／削除
-    /// </summary>
-    /// <param name="aMeasureNo">小節番号</param>
-    public static void EventEditBpm( int aMeasureNo )
-    {
-        // BPM変更に伴うタイムテーブル再計算およびスコア再読み込みリクエスト
-        DmsControl.RefreshTimeTable();
-        Config.Media.FlagUpdateDmsControlScore = true;
-
-        // BPM表示更新リクエスト
-        Config.Editer.UpdateScoreBpmFlag = true;
-
-        // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreBpmMeasureNoList.Contains( aMeasureNo ) )
-        {
-            Config.Editer.UpdateScoreBpmMeasureNoList.Add( aMeasureNo );
-        }
-
-        // プレイヤスコア更新リクエスト
-        EventPlayerUpdateScore();
-    }
-
-    /// <summary>
-    /// フラグ更新：ノートボリューム更新通知
-    /// </summary>
-    /// <param name="aMeasureNo">小節番号</param>
-    public static void EventEditNoteVolume( int aMeasureNo )
-    {
-        // 音量変更に伴いスコア再読み込みリクエスト
-        Config.Media.FlagUpdateDmsControlScore = true;
-
-        // ノート音量表示更新リクエスト
-        Config.Editer.UpdateScoreNoteVolumeFlag = true;
-
-        // 表示更新対象の小節番号を登録
-        if ( !Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Contains( aMeasureNo ) )
-        {
-            Config.Editer.UpdateScoreNoteVolumeMeasureNoList.Add( aMeasureNo );
-        }
-
-        // スコアタブ表示更新リクエスト
-        EventScore_UpdateTab();
-
-        // プレイヤスコア更新リクエスト
-        EventPlayerUpdateScore();
     }
 
     #endregion
@@ -361,7 +346,7 @@ public static class EventManage
     /// <summary>
     /// Undoリクエスト
     /// </summary>
-    public static void EventEditUndo()
+    public static void Event_Resume_Undo()
     {
         ResumeRequestQueue.Enqueue( EResumeAction.Undo );
 
@@ -371,7 +356,7 @@ public static class EventManage
     /// <summary>
     /// Redoリクエスト
     /// </summary>
-    public static void EventEditRedo()
+    public static void Event_Resume_Redo()
     {
         ResumeRequestQueue.Enqueue( EResumeAction.Redo );
 
@@ -381,16 +366,17 @@ public static class EventManage
     /// <summary>
     /// Resumeクリアリクエスト
     /// </summary>
-    public static void EventEditClearResume() => ResumeRequestQueue.Enqueue( EResumeAction.Clear );
+    public static void Event_Resume_ClearResume() 
+        => ResumeRequestQueue.Enqueue( EResumeAction.Clear );
 
     #endregion
 
-    #region Event.Score
+    #region Event.ScoreTab
 
     /// <summary>
     /// Scoreタブ更新リクエスト
     /// </summary>
-    public static void EventScore_UpdateTab()
+    public static void Event_ScoreTab_UpdateScore()
     {
         Config.Score.FlagUpdateScore = true;
 
@@ -405,14 +391,14 @@ public static class EventManage
     /// <summary>
     /// プレイヤー描画モード更新リクエスト
     /// </summary>
-    public static void EventPlayer_UpdateSufaceMode() =>
+    public static void Event_Player_UpdateSufaceMode() =>
         // 描画ループ処理内で更新フラグを見て更新
         Config.Player.FlagUpdateSurfaceModo = true;
 
     /// <summary>
     /// プレイヤースクリーンサイズ更新通知
     /// </summary>
-    public static void EventPlayerUpdateScreenSize()
+    public static void Event_Player_UpdateScreenSize()
     {
         // Page側のサイズ更新
         ControlAccess.PagePlayer?.UpdatePageSize();
@@ -421,19 +407,20 @@ public static class EventManage
         Config.Player.FlagUpdateSize = true;
 
         // スクリーンサイズ変更に伴う更新
-        EventPlayerUpdateScore();
+        Event_Player_UpdateScore();
     }
 
     /// <summary>
     /// Playerスコア更新リクエスト
     /// </summary>
-    public static void EventPlayerUpdateScore() => Config.Player.FlagUpdateScore = true;
+    public static void Event_Player_UpdateScore() 
+        => Config.Player.FlagUpdateScore = true;
 
     /// <summary>
     /// Player表示切替リクエスト
     /// </summary>
     /// <param name="aDisplayPlayer"></param>
-    public static void EventPlayer_ChangeDisplay( bool aDisplayPlayer )
+    public static void Event_Player_ChangeDisplay( bool aDisplayPlayer )
     {
         Config.Player.DisplayPlayer = aDisplayPlayer;
 
@@ -446,18 +433,18 @@ public static class EventManage
 
     #endregion
 
-    #region Event.Common
+    #region Event.Window
 
     /// <summary>
     /// Windowリサイズ通知
     /// </summary>
-    public static void EventResizeWindow()
+    public static void Event_Window_ResizeWindow()
     {
         // エディタパネルリサイズ
-        EventEditPanelResize();
+        Event_Editer_ResizePanel();
 
         // スコアタブ表示更新リクエスト
-        EventScore_UpdateTab();
+        Event_ScoreTab_UpdateScore();
     }
 
     #endregion

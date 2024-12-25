@@ -53,6 +53,6 @@ internal partial class ResumeEditSelectMidiMap( MidiMap aMidiMap ) : DisposeBase
         }
         _MidiMap.Selected = !_MidiMap.Selected;
 
-        EventManage.EventEditUpdateDisplayNoteVolume();
+        EventManage.Event_Editer_UpdateDisplayNoteVolume();
     }
 }

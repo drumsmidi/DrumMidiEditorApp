@@ -115,7 +115,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     {
         try
         {
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {
@@ -132,7 +132,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     {
         try
         {
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {
@@ -155,7 +155,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
                 return;
             }
 
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {
@@ -205,7 +205,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
             DrawSet.HeaderGroupOn = item.IsOn;
 
             ReloadConfig();
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {

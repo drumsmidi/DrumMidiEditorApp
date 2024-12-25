@@ -120,7 +120,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventReloadBgm();
+            EventManage.Event_Score_ReloadBgm();
         }
         catch ( Exception e )
         {
@@ -143,7 +143,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
                 return;
             }
 
-            EventManage.EventEditBaseBpm();
+            EventManage.Event_Score_EditBaseBpm();
         }
         catch ( Exception e )
         {
@@ -166,7 +166,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
                 return;
             }
 
-            EventManage.EventEditBgmPlaybackStartPosition();
+            EventManage.Event_Score_EditBgmPlaybackStartPosition();
         }
         catch ( Exception e )
         {

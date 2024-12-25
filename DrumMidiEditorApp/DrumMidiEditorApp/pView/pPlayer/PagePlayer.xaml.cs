@@ -82,7 +82,7 @@ public sealed partial class PagePlayer : Page
             else if ( p.Properties.IsRightButtonPressed )
             {
                 // 非表示
-                EventManage.EventPlayer_ChangeDisplay( false );
+                EventManage.Event_Player_ChangeDisplay( false );
             }
         }
         catch ( Exception e )

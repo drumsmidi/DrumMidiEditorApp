@@ -724,7 +724,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
 
-            EventManage.EventEditUpdateSheetPos();
+            EventManage.Event_Editer_UpdateSheetPos();
         }
     }
 
@@ -1213,7 +1213,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <param name="aResume">履歴</param>
 	private void ClearSelectNoteRange( ref ResumeMultiple aResume )
     {
-        EventManage.EventEditUpdateRangeSelect( false );
+        EventManage.Event_Editer_UpdateRangeSelect( false );
 
         if ( !_NoteRange.Selected )
         {
@@ -1414,7 +1414,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             _EditResumeMng.ExcuteAndResume( rs );
         }
 
-        EventManage.EventEditUpdateRangeSelect( true );
+        EventManage.Event_Editer_UpdateRangeSelect( true );
     }
 
     /// <summary>
@@ -1953,47 +1953,47 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Score size
 
-        if ( DrawSet.UpdateScoreLayoutFlag )
+        if ( DrawSet.FlagUpdateScoreLayout )
         {
             UpdateScore();
-            DrawSet.UpdateScoreLayoutFlag = false;
+            DrawSet.FlagUpdateScoreLayout = false;
         }
 
         #endregion
 
         #region Sheet potition
 
-        if ( DrawSet.UpdateCameraFlag )
+        if ( DrawSet.FlagUpdateCamera )
         {
             UpdateSheetPosition();
-            DrawSet.UpdateCameraFlag = false;
+            DrawSet.FlagUpdateCamera = false;
         }
 
         #endregion
 
         #region Line
 
-        if ( DrawSet.UpdateScoreLineFlag )
+        if ( DrawSet.FlagUpdateScoreLine )
         {
             UpdateScoreLine();
-            DrawSet.UpdateScoreLineFlag = false;
+            DrawSet.FlagUpdateScoreLine = false;
         }
 
         #endregion
 
         #region Score header
 
-        if ( DrawSet.UpdateScoreHeaderFlag )
+        if ( DrawSet.FlagUpdateScoreHeader )
         {
             UpdateMidiMapHeader();
-            DrawSet.UpdateScoreHeaderFlag = false;
+            DrawSet.FlagUpdateScoreHeader = false;
         }
 
         #endregion
 
         #region Score All
 
-        if ( DrawSet.UpdateScoreFlag )
+        if ( DrawSet.FlagUpdateScore )
         {
             UpdateBpmMeasure();
             UpdateNoteMeasure();
@@ -2005,18 +2005,18 @@ public sealed partial class UserControlEditerPanel : UserControl
             DrawSet.UpdateScoreNoteMeasureNoList.Clear();
             DrawSet.UpdateScoreNoteVolumeMeasureNoList.Clear();
 
-            DrawSet.UpdateScoreFlag             = false;
-            DrawSet.UpdateScoreBpmFlag          = false;
-            DrawSet.UpdateScoreNoteFlag         = false;
-            DrawSet.UpdateScoreNoteVolumeFlag   = false;
-            DrawSet.UpdateScoreNotePredictFlag  = false;
+            DrawSet.FlagUpdateScore             = false;
+            DrawSet.FlagUpdateScoreBpm          = false;
+            DrawSet.FlagUpdateScoreNote         = false;
+            DrawSet.FlagUpdateScoreNoteVolume   = false;
+            DrawSet.FlagUpdateScoreNotePredict  = false;
         }
 
         #endregion
 
         #region Note
 
-        if ( DrawSet.UpdateScoreNoteFlag )
+        if ( DrawSet.FlagUpdateScoreNote )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreNoteMeasureNoList )
             {
@@ -2026,59 +2026,59 @@ public sealed partial class UserControlEditerPanel : UserControl
             UpdateNoteOnOff();
 
             DrawSet.UpdateScoreNoteMeasureNoList.Clear();
-            DrawSet.UpdateScoreNoteFlag = false;
+            DrawSet.FlagUpdateScoreNote = false;
         }
 
         #endregion
 
         #region Note Predict
 
-        if ( DrawSet.UpdateScoreNotePredictFlag )
+        if ( DrawSet.FlagUpdateScoreNotePredict )
         {
             // TODO: 機械学習結果反映用：自動採譜を試してみるときに使うかも
             UpdateNotePredictListMeasure();
-            DrawSet.UpdateScoreNotePredictFlag = false;
+            DrawSet.FlagUpdateScoreNotePredict = false;
         }
 
         #endregion
 
         #region Bpm
 
-        if ( DrawSet.UpdateScoreBpmFlag )
+        if ( DrawSet.FlagUpdateScoreBpm )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreBpmMeasureNoList )
             {
                 UpdateBpmMeasure( measure_no );
             }
             DrawSet.UpdateScoreBpmMeasureNoList.Clear();
-            DrawSet.UpdateScoreBpmFlag = false;
+            DrawSet.FlagUpdateScoreBpm = false;
         }
 
         #endregion
 
         #region Note Volume
 
-        if ( DrawSet.UpdateScoreNoteVolumeFlag )
+        if ( DrawSet.FlagUpdateScoreNoteVolume )
         {
             foreach ( var measure_no in DrawSet.UpdateScoreNoteVolumeMeasureNoList )
             {
                 UpdateNoteVolumeMeasure( measure_no );
             }
             DrawSet.UpdateScoreNoteVolumeMeasureNoList.Clear();
-            DrawSet.UpdateScoreNoteVolumeFlag = false;
+            DrawSet.FlagUpdateScoreNoteVolume = false;
         }
 
         #endregion
 
         #region Bgm
 
-        if ( DrawSet.UpdateScoreBgmFlag )
+        if ( DrawSet.FlagUpdateScoreBgm )
         {
             UpdateScaleBgm();
-            DrawSet.UpdateScoreBgmFlag = false;
+            DrawSet.FlagUpdateScoreBgm = false;
         }
 
-        if ( DrawSet.UpdateScoreBgmScaleFlag )
+        if ( DrawSet.FlagUpdateScoreBgmScale )
         {
             UpdateScaleBgmBitmapAsync();
         }
@@ -2087,24 +2087,24 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Clear range
 
-        if ( DrawSet.UpdateClearRangeFlag )
+        if ( DrawSet.FlagUpdateClearRange )
         {
             _NoteRangeBef.Set( _NoteRange );
 
             ClearSelectNoteRange();
 
-            DrawSet.UpdateClearRangeFlag = false;
+            DrawSet.FlagUpdateClearRange = false;
         }
 
         #endregion
 
         #region LeftAlignNoteOfRangeSelect
 
-        if ( DrawSet.UpdateLeftAlignNoteOfRangeSelectFlag )
+        if ( DrawSet.FlagUpdateLeftAlignNoteOfRangeSelect )
         {
             EditMoveNoteRangeLeftAlign();
 
-            DrawSet.UpdateLeftAlignNoteOfRangeSelectFlag = false;
+            DrawSet.FlagUpdateLeftAlignNoteOfRangeSelect = false;
         }
 
         #endregion
@@ -2902,7 +2902,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             _ScaleBgm.CalcFFT();
                         }
 
-                        DrawSet.UpdateScoreBgmScaleFlag = true;
+                        DrawSet.FlagUpdateScoreBgmScale = true;
 
                         Log.Info( $"BGM読込OK" );
                     }
@@ -2938,7 +2938,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     if ( _ScaleBgm == null )
                     {
-                        DrawSet.UpdateScoreBgmScaleFlag = false;
+                        DrawSet.FlagUpdateScoreBgmScale = false;
 
                         Refresh();
                         return;
@@ -2949,7 +2949,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         return;
                     }
 
-                    DrawSet.UpdateScoreBgmScaleFlag = false;
+                    DrawSet.FlagUpdateScoreBgmScale = false;
 
                     try
                     {

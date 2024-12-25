@@ -173,7 +173,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
                                         Score.EditChannel.KeyChange( bef_key, aft_key );
                                     }
 
-                                    EventManage.EventChangeMidiMapKey();
+                                    EventManage.Event_Score_ChangeMidiMapKey();
                                 } )
                             );
                     }

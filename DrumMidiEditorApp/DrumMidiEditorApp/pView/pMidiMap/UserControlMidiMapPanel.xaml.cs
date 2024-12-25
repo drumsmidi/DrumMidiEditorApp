@@ -193,7 +193,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 Score.EditMidiMapSet.UpdateInfo();
             }
 
-            EventManage.EventReloadMidiMapSet();
+            EventManage.Event_Score_ReloadMidiMapSet();
         }
         catch ( Exception e )
         {
@@ -251,7 +251,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                                         Score.EditMidiMapSet.UpdateInfo();
                                     }
 
-                                    EventManage.EventReloadMidiMapSet();
+                                    EventManage.Event_Score_ReloadMidiMapSet();
                                 }
                             );
                     }
@@ -276,20 +276,20 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 (
                     ControlAccess.MainWindow,
                     ConfigSystem.SupportMidiMapSet,
-                    "",
+                    string.Empty,
                     PickerLocationId.DocumentsLibrary,
                     ConfigSystem.FolderMidiMapSet,
                     ( filepath ) =>
-                    {
-                        filepath.Extension = ConfigSystem.ExtentionDms;
-
-                        var midiMapSet = CreateMidiMapSet();
-
-                        if ( !FileIO.SaveMidiMapSet( filepath, midiMapSet ) )
                         {
-                            return;
+                            filepath.Extension = ConfigSystem.ExtentionDms;
+
+                            var midiMapSet = CreateMidiMapSet();
+
+                            if ( !FileIO.SaveMidiMapSet( filepath, midiMapSet ) )
+                            {
+                                return;
+                            }
                         }
-                    }
                 );
         }
         catch ( Exception e )
@@ -473,7 +473,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                         _TmpMidiMapSet.UpdateInfo();
 
                         // 選択中のアイテムをドラッグ＆ドロップすると
-                        // SelectionChanged が先に呼ばれる為
+                        // SelectionChanged が先に呼ばれ
                         // 移動前の情報が読み込まれてしまうので
                         // ここでも再読み込みしておく
                         if ( _MidiMapGroupSelectIndex == afterMoveIndex )
@@ -713,9 +713,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                     item,
                     ( item.Background as SolidColorBrush )?.Color ?? ConfigSystem.DefaultMidiMapColor,
                     ( color ) =>
-                    {
-                        item.Background = new SolidColorBrush( color );
-                    }
+                        {
+                            item.Background = new SolidColorBrush( color );
+                        }
                 );
         }
         catch ( Exception e )

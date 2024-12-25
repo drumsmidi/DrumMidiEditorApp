@@ -79,7 +79,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
     {
         try
         {
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {
@@ -102,7 +102,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
                 return;
             }
 
-            EventManage.EventPlayerUpdateScore();
+            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {

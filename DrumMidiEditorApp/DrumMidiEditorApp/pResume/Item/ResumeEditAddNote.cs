@@ -76,5 +76,5 @@ internal partial class ResumeEditAddNote( InfoNote? aInfoBef, InfoNote aInfoAft 
     /// <summary>
     /// Undo/Redo共通処理
     /// </summary>
-    private static void Update( int aMeasureNo ) => EventManage.EventEditNote( aMeasureNo );
+    private static void Update( int aMeasureNo ) => EventManage.Event_Score_EditNote( aMeasureNo );
 }

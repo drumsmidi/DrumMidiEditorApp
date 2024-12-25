@@ -12,7 +12,7 @@ public sealed partial class PageML : Page
     /// <summary>
     /// スコア設定
     /// </summary>
-    private ConfigML DrawSet => Config.ML;
+    private ConfigMachine DrawSet => Config.Machine;
 
     /// <summary>
     /// コンストラクタ

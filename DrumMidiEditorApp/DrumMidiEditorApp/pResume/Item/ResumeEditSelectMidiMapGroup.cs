@@ -53,6 +53,6 @@ internal partial class ResumeEditSelectMidiMapGroup( MidiMapGroup aGroup ) : Dis
         }
         _MidiMapGroup.Selected = !_MidiMapGroup.Selected;
 
-        EventManage.EventEditUpdateDisplayNoteVolume();
+        EventManage.Event_Editer_UpdateDisplayNoteVolume();
     }
 }

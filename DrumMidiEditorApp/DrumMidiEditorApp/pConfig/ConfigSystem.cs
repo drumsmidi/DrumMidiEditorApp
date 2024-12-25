@@ -364,11 +364,10 @@ public class ConfigSystem
     public List<string> SupportBgm
     {
         get; private set;
-    } =
-    [
-        ".mp3",
-        ".wav",
-    ];
+    } = [
+            ".mp3",
+            ".wav",
+        ];
 
     /// <summary>
     /// Dms保存フィルタ
@@ -377,10 +376,9 @@ public class ConfigSystem
     public List<string> SupportDmsSave
     {
         get; private set;
-    } =
-    [
-        ".dms",
-    ];
+    } = [
+            ".dms",
+        ];
 
     /// <summary>
     /// Dms開くフィルタ
@@ -389,12 +387,11 @@ public class ConfigSystem
     public List<string> SupportDmsOpen
     {
         get; private set;
-    } =
-    [
-        ".dms",
-        ".mid",
-        ".dtx",
-    ];
+    } = [
+            ".dms",
+            ".mid",
+            ".dtx",
+        ];
 
     /// <summary>
     /// MidiMapSetフィルタ
@@ -403,10 +400,9 @@ public class ConfigSystem
     public List<string> SupportMidiMapSet
     {
         get; private set;
-    } =
-    [
-        ".dms",
-    ];
+    } = [
+            ".dms",
+        ];
 
     /// <summary>
     /// Midi開くフィルタ
@@ -415,10 +411,9 @@ public class ConfigSystem
     public List<string> SupportMidi
     {
         get; private set;
-    } =
-    [
-        ".mid",
-    ];
+    } = [
+            ".mid",
+        ];
 
     /// <summary>
     /// Video保存フィルタ
@@ -427,10 +422,9 @@ public class ConfigSystem
     public List<string> SupportVideo
     {
         get; private set;
-    } =
-    [
-        ".mp4",
-    ];
+    } = [
+            ".mp4",
+        ];
 
     #endregion
 }

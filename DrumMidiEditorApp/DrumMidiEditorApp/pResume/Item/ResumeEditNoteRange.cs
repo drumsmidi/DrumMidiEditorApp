@@ -85,5 +85,6 @@ internal partial class ResumeEditNoteRange : DisposeBaseClass, IResume
     /// <summary>
     /// Undo/Redo共通処理
     /// </summary>
-    private void Update() => EventManage.EventEditUpdateRangeSelect( _RangeRef?.Selected ?? false );
+    private void Update() 
+        => EventManage.Event_Editer_UpdateRangeSelect( _RangeRef?.Selected ?? false );
 }

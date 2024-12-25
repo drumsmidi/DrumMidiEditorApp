@@ -599,7 +599,7 @@ public sealed partial class UserControlEqualizer : UserControl
         _EqulizerBodyRange.Height   = DrawSet.DbTotalHeight;
 
         // イコライザキャンバスのサイズ調整
-        _EqualizerCanvas.Width      = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width + DrawSet.EqulizerBodyMarginRightBottom.X;
+        _EqualizerCanvas.Width      = DrawSet.EqulizerBodyMarginLeftTop.X + _EqulizerBodyRange.Width  + DrawSet.EqulizerBodyMarginRightBottom.X;
         _EqualizerCanvas.Height     = DrawSet.EqulizerBodyMarginLeftTop.Y + _EqulizerBodyRange.Height + DrawSet.EqulizerBodyMarginRightBottom.Y;
     }
 

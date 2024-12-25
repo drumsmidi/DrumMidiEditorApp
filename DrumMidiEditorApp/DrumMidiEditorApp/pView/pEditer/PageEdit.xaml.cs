@@ -201,7 +201,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
-        EventManage.EventEditUpdateSheetPos();
+        EventManage.Event_Editer_UpdateSheetPos();
     }
 
     #endregion
@@ -424,7 +424,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
             DrawSet.NotePosition = new( (int)note_pos.X, (int)note_pos.Y );
 
-            EventManage.EventEditUpdateSheetPos();
+            EventManage.Event_Editer_UpdateSheetPos();
         }
     }
 
@@ -441,7 +441,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventEditClearRangeSelect();
+            EventManage.Event_Editer_ClearRangeSelect();
         }
         catch ( Exception e )
         {
@@ -458,7 +458,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventEditLeftAlignNoteOfRangeSelect();
+            EventManage.Event_Editer_LeftAlignNoteOfRangeSelect();
         }
         catch ( Exception e )
         {
@@ -486,7 +486,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                 return;
             }
 
-            EventManage.EventEditItemResize();
+            EventManage.Event_Editer_ResizeItem();
         }
         catch ( Exception e )
         {
@@ -507,7 +507,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventEditUndo();
+            EventManage.Event_Resume_Undo();
         }
         catch ( Exception e )
         {
@@ -524,7 +524,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     {
         try
         {
-            EventManage.EventEditRedo();
+            EventManage.Event_Resume_Redo();
         }
         catch ( Exception e )
         {
@@ -685,7 +685,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 音量レベル設定
     /// </summary>
-    private void UpdateVolumeLevel() => EventManage.EventEditUpdateWaveForm();
+    private void UpdateVolumeLevel() => EventManage.Event_Editer_UpdateWaveForm();
 
     /// <summary>
     /// 感度設定

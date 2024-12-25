@@ -20,79 +20,79 @@ public class ConfigEditer
     /// シート移動フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateCameraFlag { get; set; } = false;
+    public bool FlagUpdateCamera { get; set; } = false;
 
     /// <summary>
     /// スコア全体更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreFlag { get; set; } = false;
+    public bool FlagUpdateScore { get; set; } = false;
 
     /// <summary>
     /// 表示レイアウト更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreLayoutFlag { get; set; } = false;
+    public bool FlagUpdateScoreLayout { get; set; } = false;
 
     /// <summary>
     /// 小節線更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreLineFlag { get; set; } = false;
+    public bool FlagUpdateScoreLine { get; set; } = false;
 
     /// <summary>
     /// BGM更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreBgmFlag { get; set; } = false;
+    public bool FlagUpdateScoreBgm { get; set; } = false;
 
     /// <summary>
     /// BGM音階画像更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreBgmScaleFlag { get; set; } = false;
+    public bool FlagUpdateScoreBgmScale { get; set; } = false;
 
     /// <summary>
     /// BPM更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreBpmFlag { get; set; } = false;
+    public bool FlagUpdateScoreBpm { get; set; } = false;
 
     /// <summary>
     /// ノート編集フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreNoteFlag { get; set; } = false;
+    public bool FlagUpdateScoreNote { get; set; } = false;
 
     /// <summary>
     /// 機械学習 予測ノート更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreNotePredictFlag { get; set; } = false;
+    public bool FlagUpdateScoreNotePredict { get; set; } = false;
 
     /// <summary>
     /// ノート音量更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreNoteVolumeFlag { get; set; } = false;
+    public bool FlagUpdateScoreNoteVolume { get; set; } = false;
 
     /// <summary>
     /// ヘッダ更新フラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateScoreHeaderFlag { get; set; } = false;
+    public bool FlagUpdateScoreHeader { get; set; } = false;
 
     /// <summary>
     /// ノート範囲選択クリアフラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateClearRangeFlag { get; set; } = false;
+    public bool FlagUpdateClearRange { get; set; } = false;
 
     /// <summary>
     /// 範囲選択内のノートを左寄せに移動リクエストフラグ
     /// </summary>
     [JsonIgnore]
-    public bool UpdateLeftAlignNoteOfRangeSelectFlag { get; set; } = false;
+    public bool FlagUpdateLeftAlignNoteOfRangeSelect { get; set; } = false;
 
     /// <summary>
     /// 更新対象の小節番号リスト：BPM
