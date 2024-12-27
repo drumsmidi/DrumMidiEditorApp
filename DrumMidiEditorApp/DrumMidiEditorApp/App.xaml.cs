@@ -1,6 +1,7 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pLog;
+using DrumMidiEditorApp.pUtil.pHelper;
 using DrumMidiEditorApp.pView;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
@@ -25,7 +26,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        Log.SetLogFile( new( "TraceLog.log" ) );
+        Log.SetLogFile( new( $"{HelperAppDirectory.LocalFolder.Path}\\TraceLog.log" ) );
 
         #region インスタンス管理
 

@@ -249,7 +249,8 @@ public class ConfigSystem
     /// </summary>
     [JsonIgnore]
     public GeneralPath FolderConfig
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config\\" ) );
+        => new( FolderDocBase.AbsoulteFolderPath );
+     // => new ( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config\\" ) );
 
     /// <summary>
     /// Modelフォルダ（機械学習用データ格納）
