@@ -802,8 +802,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( ( aMousePos.X - head.X ) / (DrawSet.HeaderWidthSize / 2 ) ),
-            Y = (int)( note_pos.Y + (( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize) )
+            X = (int)( ( aMousePos.X - head.X ) / ( DrawSet.HeaderWidthSize / 2 ) ),
+            Y = (int)( note_pos.Y + ( ( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize ) )
         };
 
         if ( pos.X is < 0 or >= 2 )
@@ -843,8 +843,8 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
-            Y = (int)( note_pos.Y + (( aMousePos.Y - body.Y ) / DrawSet.NoteHeightSize) ),
+            X = (int)( note_pos.X + ( ( aMousePos.X - body.X + ( DrawSet.NoteWidthSize / 2 ) ) / DrawSet.NoteWidthSize ) ),
+            Y = (int)( note_pos.Y + ( ( aMousePos.Y - body.Y ) / DrawSet.NoteHeightSize) ),
         };
 
         pos.X = CalcNotePosition( pos.X );
@@ -874,7 +874,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
+            X = (int)( note_pos.X + ( ( aMousePos.X - body.X + ( DrawSet.NoteWidthSize / 2 ) ) / DrawSet.NoteWidthSize ) ),
             Y = 0
         };
 
@@ -900,7 +900,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
+            X = (int)( note_pos.X + ( ( aMousePos.X - body.X + ( DrawSet.NoteWidthSize / 2 ) ) / DrawSet.NoteWidthSize ) ),
             Y = 0
         };
 
@@ -926,7 +926,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( note_pos.X + (( aMousePos.X - body.X + (DrawSet.NoteWidthSize / 2) ) / DrawSet.NoteWidthSize) ),
+            X = (int)( note_pos.X + ( ( aMousePos.X - body.X + ( DrawSet.NoteWidthSize / 2 ) ) / DrawSet.NoteWidthSize ) ),
             Y = (int)( body.Bottom - aMousePos.Y ),
         };
 
