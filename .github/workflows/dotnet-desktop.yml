@@ -104,8 +104,8 @@ jobs:
         Appx_Bundle: Always
         Appx_Bundle_Platforms: x64
         #Appx_Bundle_Platforms: x86|x64
-        #Appx_Package_Build_Mode: SideloadOnly
-        Appx_Package_Build_Mode: StoreUpload
+        Appx_Package_Build_Mode: SideloadOnly
+        #Appx_Package_Build_Mode: StoreUpload
         Configuration: ${{ matrix.configuration }}
         Platform: ${{ matrix.platform }}
 
