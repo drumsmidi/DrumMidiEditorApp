@@ -100,8 +100,8 @@ jobs:
     - name: Create the app package
       run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        #Appx_Bundle: Never
-        Appx_Bundle: Always
+        Appx_Bundle: Never
+        #Appx_Bundle: Always
         Appx_Bundle_Platforms: x64
         #Appx_Bundle_Platforms: x86|x64
         Appx_Package_Build_Mode: SideloadOnly
@@ -117,5 +117,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: MSIX Package
+        name: DrumMidiEditorApp(MSIX Package)
         path: ${{ env.Wap_Project_Directory }}\AppPackages
