@@ -10,7 +10,7 @@
 
   <Identity
     Name="23decd71-f473-4f36-9587-55b7cbb62f47"
-    Publisher="CN=kukidake"
+    Publisher="CN=drumsmidi"
     Version="0.3.0.0" />
 
   <Properties>
