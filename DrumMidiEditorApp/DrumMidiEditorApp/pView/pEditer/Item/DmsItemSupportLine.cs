@@ -101,7 +101,7 @@ public partial class DmsItemSupportLine : DisposeBaseClass
 
         if ( interval_x == 0 )
         {
-            var x = _NoteColumnRect._x + (( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width);
+            var x = _NoteColumnRect._x + (( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width );
 
             HelperXaml.DrawFormatLine
                 (

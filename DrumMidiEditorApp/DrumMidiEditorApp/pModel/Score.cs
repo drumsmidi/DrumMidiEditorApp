@@ -59,7 +59,7 @@ public partial class Score : DisposeBaseClass
     /// <summary>
     /// 編集中のチャンネル番号
     /// </summary>
-    public byte EditChannelNo { get; set; } = MidiNet.ChannelMinNo;
+    public byte EditChannelNo { get; set; } = MidiNet.ChannelDrum;
 
     /// <summary>
     /// 編集中のチャンネル情報

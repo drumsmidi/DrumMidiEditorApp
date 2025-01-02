@@ -309,7 +309,8 @@ public partial class MidiMapSet : DisposeBaseClass
     {
         foreach ( var group in MidiMapGroups )
         {
-            group.Selected = false;
+            group.Selected          = false;
+            group.ScaleKeySelected  = false;
         }
         foreach ( var midiMap in MidiMaps )
         {
@@ -655,8 +656,7 @@ public partial class MidiMapSet : DisposeBaseClass
     /// 選択中のMidiMapGroup/MidiMap有無判定
     /// </summary>
     public bool IsSelectMidiMap() 
-        => DisplayMidiMapGroups.Where( item => item.Selected ).Any() 
-        || DisplayMidiMaps.Where( item => item.Selected ).Any();
+        => DisplayMidiMaps.Where( item => item.AnySelected ).Any();
 
     #endregion
 }

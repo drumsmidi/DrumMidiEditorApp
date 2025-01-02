@@ -13,6 +13,11 @@ namespace DrumMidiEditorApp.pView.pEditer;
 public partial class DmsItemMidiMap : DisposeBaseClass
 {
     /// <summary>
+    /// true:MidiMapGroup, false:MidiMapGroup ScaleKey
+    /// </summary>
+	private readonly bool _MidiMapGroupFlag = false;
+
+    /// <summary>
     /// MidiMapGroup
     /// </summary>
 	private MidiMapGroup? _MidiMapGroup = null;
@@ -35,9 +40,11 @@ public partial class DmsItemMidiMap : DisposeBaseClass
 	/// <param name="aWidth">横幅</param>
 	/// <param name="aHeight">高さ</param>
     /// <param name="aGroup">MidiMapGroup</param>
-    public DmsItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMapGroup aGroup )
+    /// <param name="aMidiMapGroupFlag">true:MidiMapGroup, false:MidiMapGroup ScaleKey</param>
+    public DmsItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMapGroup aGroup, bool aMidiMapGroupFlag )
     {
-        _MidiMapGroup = aGroup;
+        _MidiMapGroupFlag   = aMidiMapGroupFlag;
+        _MidiMapGroup       = aGroup;
 
         SetValue( aX, aY, aWidth, aHeight );
     }
@@ -111,8 +118,16 @@ public partial class DmsItemMidiMap : DisposeBaseClass
         }
         else if ( _MidiMapGroup != null )
         {
-            text    = _MidiMapGroup.GroupName;
-            select  = _MidiMapGroup.Selected;
+            if ( _MidiMapGroupFlag )
+            {
+                text    = _MidiMapGroup.GroupName;
+                select  = _MidiMapGroup.Selected;
+            }
+            else
+            {
+                text    = _MidiMapGroup.ScaleKey;
+                select  = _MidiMapGroup.ScaleKeySelected;
+            }
         }
         else
         {

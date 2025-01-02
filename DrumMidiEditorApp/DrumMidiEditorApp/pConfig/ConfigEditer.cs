@@ -286,18 +286,18 @@ public class ConfigEditer
     {
         get; set;
     } = new()
-    {
-        Background  = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
-                            new()
-                            {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+            Line        = new( _BassLineColor, _BassLineSize ),
+            Text        = new( _BassTextColor,
+                                new()
+                                {
+                                    FontFamily          = _BassFontFamily,
+                                    FontSize            = _BassFontSize,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     /// <summary>
     /// 小節番号ボディ背景色
@@ -307,18 +307,18 @@ public class ConfigEditer
     {
         get; set;
     } = new()
-    {
-        Background  = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
-                            new()
-                            {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+            Line        = new( _BassLineColor, _BassLineSize ),
+            Text        = new( _BassTextColor,
+                                new()
+                                {
+                                    FontFamily          = _BassFontFamily,
+                                    FontSize            = _BassFontSize,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 
@@ -328,7 +328,25 @@ public class ConfigEditer
     /// ヘッダー横幅
     /// </summary>
     [JsonInclude]
-    public float HeaderWidthSize { get; set; } = 200F;
+    public float HeaderScaleWidthSize { get; set; } = 30F;
+
+    /// <summary>
+    /// ヘッダー横幅
+    /// </summary>
+    [JsonInclude]
+    public float HeaderMidiMapGroupWidthSize { get; set; } = 100F;
+
+    /// <summary>
+    /// ヘッダー横幅
+    /// </summary>
+    [JsonInclude]
+    public float HeaderMidiMapWidthSize { get; set; } = 100F;
+
+    /// <summary>
+    /// ヘッダー横幅
+    /// </summary>
+    public float HeaderWidthSize 
+        => HeaderScaleWidthSize + HeaderMidiMapGroupWidthSize + HeaderMidiMapWidthSize;
 
     /// <summary>
     /// ヘッダー非選択時の書式
@@ -338,18 +356,18 @@ public class ConfigEditer
     {
         get; set;
     } = new()
-    {
-        Background  = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
-                            new()
-                            {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+            Line        = new( _BassLineColor, _BassLineSize ),
+            Text        = new( _BassTextColor,
+                                new()
+                                {
+                                    FontFamily          = _BassFontFamily,
+                                    FontSize            = _BassFontSize,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     /// <summary>
     /// ヘッダー選択時の書式
@@ -359,18 +377,18 @@ public class ConfigEditer
     {
         get; set;
     } = new()
-    {
-        Background  = new( Color.FromArgb( 255, 80, 40, 40 ) ),
-        Line        = new( _BassLineColor, _BassLineSize ),
-        Text        = new( _BassTextColor,
-                            new()
-                            {
-                                FontFamily          = _BassFontFamily,
-                                FontSize            = _BassFontSize,
-                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                VerticalAlignment   = CanvasVerticalAlignment.Center,
-                            } ),
-    };
+        {
+            Background  = new( Color.FromArgb( 255, 80, 40, 40 ) ),
+            Line        = new( _BassLineColor, _BassLineSize ),
+            Text        = new( _BassTextColor,
+                                new()
+                                {
+                                    FontFamily          = _BassFontFamily,
+                                    FontSize            = _BassFontSize,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
 
     #endregion
 

@@ -50,6 +50,14 @@ public class ResumeMultiple : IResume
         => _ResumeList.Add( new ResumeEditRemoveBpm( aInfo ) );
 
     /// <summary>
+    /// MidiMapScale選択
+    /// </summary>
+    /// <param name="aChannelNo">編集対象のチェンネル番号</param>
+    /// <param name="aScaleKey">編集対象のMidiMapGroupの音階キー</param>
+    public void SelectMidiMapGroupScale( byte aChannelNo, string aScaleKey )
+        => _ResumeList.Add( new ResumeEditSelectMidiMapGroupScale( aChannelNo, aScaleKey ) );
+
+    /// <summary>
     /// MidiMapGroup選択
     /// </summary>
     /// <param name="aMidiMapGroup">編集対象のMidiMapGroup</param>

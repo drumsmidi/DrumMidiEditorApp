@@ -69,6 +69,11 @@ public partial class MidiMap : DisposeBaseClass
     public bool Selected { get; set; } = false;
 
     /// <summary>
+    /// 選択状態（MidiMapGroupScale, MidiMapGroup, MidiMapのいずれかがtrueの場合true) 
+    /// </summary>
+    public bool AnySelected => Selected || ( Group?.AnySelected ?? false );
+
+    /// <summary>
     /// 音階名称（ピッチ＋音階）
     /// </summary>
     public string Scale { get; set; } = Config.System.DefaultMidiMapScale;

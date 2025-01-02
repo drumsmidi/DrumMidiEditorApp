@@ -794,7 +794,7 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// MidiMap位置取得
     /// </summary>
     /// <param name="aMousePos">マウス位置</param>
-    /// <returns>X=-1:未取得、0:MidiMapGroup、1:MidiMap、Y=-1:未取得、0-n=MidiMapGroup/MidiMap表示連番</returns>
+    /// <returns>X=-1:未取得、0:Scale, 1:MidiMapGroup、2:MidiMap、Y=-1:未取得、0-n=MidiMapGroup/MidiMap表示連番</returns>
     private PointInt CalcMidiMapPosition( Point aMousePos )
     {
         var head        = _ScoreHeadRange;
@@ -802,13 +802,23 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         var pos = new PointInt()
         {
-            X = (int)( ( aMousePos.X - head.X ) / ( DrawSet.HeaderWidthSize / 2 ) ),
+            X = -1,
             Y = (int)( note_pos.Y + ( ( aMousePos.Y - head.Y ) / DrawSet.NoteHeightSize ) )
         };
 
-        if ( pos.X is < 0 or >= 2 )
+        var x = aMousePos.X - head.X;
+
+        if ( ( x -= DrawSet.HeaderScaleWidthSize ) <= 0 )
         {
-            pos.X = -1;
+            pos.X = 0;
+        }
+        else if ( ( x -= DrawSet.HeaderMidiMapGroupWidthSize ) <= 0 )
+        {
+            pos.X = 1;
+        }
+        else if ( ( x -= DrawSet.HeaderMidiMapWidthSize ) <= 0 )
+        {
+            pos.X = 2;
         }
 
         if ( pos.Y < 0 || Score.EditMidiMapSet.DisplayMidiMapAllCount <= pos.Y )
@@ -1077,9 +1087,12 @@ public sealed partial class UserControlEditerPanel : UserControl
         switch ( pos.X )
         {
             case 0:
-                rs.SelectMidiMapGroup( midiMap.Group );
+                rs.SelectMidiMapGroupScale( Score.EditChannelNo, midiMap.Group.ScaleKey );
                 break;
             case 1:
+                rs.SelectMidiMapGroup( midiMap.Group );
+                break;
+            case 2:
                 rs.SelectMidiMap( midiMap );
                 break;
             default:
@@ -1851,7 +1864,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
                 {
                     // 未選択の場合
-                    if ( !( midiMap.Group?.Selected ?? false ) && !midiMap.Selected )
+                    if ( !midiMap.AnySelected )
                     {
                         continue;
                     }
@@ -2116,31 +2129,31 @@ public sealed partial class UserControlEditerPanel : UserControl
     private void UpdateScore()
     {
         // Screen
-        _ScreenSize.Width       = ActualSize.X;
-        _ScreenSize.Height      = ActualSize.Y;
+        _ScreenSize.Width           = ActualSize.X;
+        _ScreenSize.Height          = ActualSize.Y;
 
         // Infomation
-        _InfoRange.X            = 0;
-        _InfoRange.Y            = 0;
-        _InfoRange.Width        = DrawSet.HeaderWidthSize / 2;
-        _InfoRange.Height       = DrawSet.BpmHeightSize + DrawSet.MeasureNoHeightSize;
+        _InfoRange.X                = 0;
+        _InfoRange.Y                = 0;
+        _InfoRange.Width            = DrawSet.HeaderScaleWidthSize + DrawSet.HeaderMidiMapGroupWidthSize;
+        _InfoRange.Height           = DrawSet.BpmHeightSize + DrawSet.MeasureNoHeightSize;
 
         // Bpm header
-        _BpmHeadRange.X         = _InfoRange.Right;
-        _BpmHeadRange.Y         = 0;
-        _BpmHeadRange.Width     = DrawSet.HeaderWidthSize / 2;
-        _BpmHeadRange.Height    = DrawSet.BpmHeightSize;
+        _BpmHeadRange.X             = _InfoRange.Right;
+        _BpmHeadRange.Y             = 0;
+        _BpmHeadRange.Width         = DrawSet.HeaderMidiMapWidthSize;
+        _BpmHeadRange.Height        = DrawSet.BpmHeightSize;
 
         // Bpm body
-        _BpmBodyRange.X         = _BpmHeadRange.Right;
-        _BpmBodyRange.Y         = _BpmHeadRange.Top;
-        _BpmBodyRange.Width     = _ScreenSize.Width - _BpmHeadRange.Right > 0 ? _ScreenSize.Width - _BpmHeadRange.Right : 0;
-        _BpmBodyRange.Height    = _BpmHeadRange.Height;
+        _BpmBodyRange.X             = _BpmHeadRange.Right;
+        _BpmBodyRange.Y             = _BpmHeadRange.Top;
+        _BpmBodyRange.Width         = _ScreenSize.Width - _BpmHeadRange.Right > 0 ? _ScreenSize.Width - _BpmHeadRange.Right : 0;
+        _BpmBodyRange.Height        = _BpmHeadRange.Height;
 
         // Measure number header
         _MeasureNoHeadRange.X       = _InfoRange.Right;
         _MeasureNoHeadRange.Y       = _BpmBodyRange.Bottom;
-        _MeasureNoHeadRange.Width   = DrawSet.HeaderWidthSize / 2;
+        _MeasureNoHeadRange.Width   = DrawSet.HeaderMidiMapWidthSize;
         _MeasureNoHeadRange.Height  = DrawSet.MeasureNoHeightSize;
 
         // Measure number body
@@ -2150,28 +2163,28 @@ public sealed partial class UserControlEditerPanel : UserControl
         _MeasureNoBodyRange.Height  = _MeasureNoHeadRange.Height;
 
         // Score sheet header
-        _ScoreHeadRange.X       = 0;
-        _ScoreHeadRange.Y       = _MeasureNoBodyRange.Bottom;
-        _ScoreHeadRange.Width   = DrawSet.HeaderWidthSize;
-        _ScoreHeadRange.Height  = DrawSet.ScoreMaxHeight;
+        _ScoreHeadRange.X           = 0;
+        _ScoreHeadRange.Y           = _MeasureNoBodyRange.Bottom;
+        _ScoreHeadRange.Width       = DrawSet.HeaderWidthSize;
+        _ScoreHeadRange.Height      = DrawSet.ScoreMaxHeight;
 
         // Score sheet body
-        _ScoreBodyRange.X       = _ScoreHeadRange.Right;
-        _ScoreBodyRange.Y       = _ScoreHeadRange.Top;
-        _ScoreBodyRange.Width   = _ScreenSize.Width - _ScoreHeadRange.Right > 0 ? _ScreenSize.Width - _ScoreHeadRange.Right : 0;
-        _ScoreBodyRange.Height  = _ScoreHeadRange.Height;
+        _ScoreBodyRange.X           = _ScoreHeadRange.Right;
+        _ScoreBodyRange.Y           = _ScoreHeadRange.Top;
+        _ScoreBodyRange.Width       = _ScreenSize.Width - _ScoreHeadRange.Right > 0 ? _ScreenSize.Width - _ScoreHeadRange.Right : 0;
+        _ScoreBodyRange.Height      = _ScoreHeadRange.Height;
 
         // Volume header
-        _VolumeHeadRange.X      = 0;
-        _VolumeHeadRange.Y      = _ScreenSize.Height - DrawSet.VolumeHeightSize > 0 ? _ScreenSize.Height - DrawSet.VolumeHeightSize : 0;
-        _VolumeHeadRange.Width  = DrawSet.HeaderWidthSize;
-        _VolumeHeadRange.Height = DrawSet.VolumeHeightSize;
+        _VolumeHeadRange.X          = 0;
+        _VolumeHeadRange.Y          = _ScreenSize.Height - DrawSet.VolumeHeightSize > 0 ? _ScreenSize.Height - DrawSet.VolumeHeightSize : 0;
+        _VolumeHeadRange.Width      = DrawSet.HeaderWidthSize;
+        _VolumeHeadRange.Height     = DrawSet.VolumeHeightSize;
 
         // Volume body
-        _VolumeBodyRange.X      = _VolumeHeadRange.Right;
-        _VolumeBodyRange.Y      = _VolumeHeadRange.Top;
-        _VolumeBodyRange.Width  = _ScreenSize.Width - _VolumeHeadRange.Right > 0 ? _ScreenSize.Width - _VolumeHeadRange.Right : 0;
-        _VolumeBodyRange.Height = _VolumeHeadRange.Height;
+        _VolumeBodyRange.X          = _VolumeHeadRange.Right;
+        _VolumeBodyRange.Y          = _VolumeHeadRange.Top;
+        _VolumeBodyRange.Width      = _ScreenSize.Width - _VolumeHeadRange.Right > 0 ? _ScreenSize.Width - _VolumeHeadRange.Right : 0;
+        _VolumeBodyRange.Height     = _VolumeHeadRange.Height;
 
         // スコア表示範囲
         {
@@ -2427,11 +2440,10 @@ public sealed partial class UserControlEditerPanel : UserControl
         float w;
         float h;
 
-        #region MidiMapGroup
+        #region MidiMapScale / MidiMapGroup
         {
             x = head._x;
             y = head._y;
-            w = head._width / 2;
 
             for ( var index = 0; index < Score.EditMidiMapSet.DisplayGroupCount; index++ )
             {
@@ -2442,7 +2454,9 @@ public sealed partial class UserControlEditerPanel : UserControl
                 if ( group != null )
                 {
                     // ヘッダ情報追加
-                    _HeaderList.Add( new( x, y, w, h, group ) );
+                    _HeaderList.Add( new( x, y, DrawSet.HeaderScaleWidthSize, h, group, false ) );
+
+                    _HeaderList.Add( new( x + DrawSet.HeaderScaleWidthSize, y, DrawSet.HeaderMidiMapGroupWidthSize, h, group, true ) );
                 }
 
                 y += h;
@@ -2452,9 +2466,9 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region MidiMap
         {
-            x = head._x + w;
+            x = head._x + DrawSet.HeaderScaleWidthSize + DrawSet.HeaderMidiMapGroupWidthSize;
             y = tmp_y;
-            w = head._width - w;
+            w = DrawSet.HeaderMidiMapWidthSize;
             h = DrawSet.NoteHeightSize;
 
             foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
@@ -2729,7 +2743,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
             {
                 // 未選択の場合
-                if ( !( midiMap.Group?.Selected ?? false ) && !midiMap.Selected )
+                if ( !midiMap.AnySelected )
                 {
                     continue;
                 }

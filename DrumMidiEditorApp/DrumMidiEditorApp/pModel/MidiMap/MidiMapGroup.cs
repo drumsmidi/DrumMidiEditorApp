@@ -35,7 +35,7 @@ public partial class MidiMapGroup : DisposeBaseClass
     public List<MidiMap> MidiMaps { get; private set; } = [];
 
     /// <summary>
-    /// 選択状態
+    /// MidiMapGroup選択状態
     /// </summary>
     public bool Selected { get; set; } = false;
 
@@ -43,6 +43,16 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// 音階キー
     /// </summary>
     public string ScaleKey { get; set; } = Config.System.DefaultMidiMapGroupScaleKey;
+
+    /// <summary>
+    /// ScaleKey選択状態
+    /// </summary>
+    public bool ScaleKeySelected { get; set; } = false;
+
+    /// <summary>
+    /// 選択状態（Selected, ScaleKeySelectedのいずれかがtrueの場合true）
+    /// </summary>
+    public bool AnySelected => Selected || ScaleKeySelected;
 
     protected override void Dispose( bool aDisposing )
     {
@@ -115,12 +125,13 @@ public partial class MidiMapGroup : DisposeBaseClass
     {
         var group = new MidiMapGroup
         {
-            Display     = Display,
-            GroupKey    = GroupKey,
-            GroupName   = GroupName,
-            VolumeAdd   = VolumeAdd,
-        //  Selected	= Selected,
-            ScaleKey    = ScaleKey,
+            Display             = Display,
+            GroupKey            = GroupKey,
+            GroupName           = GroupName,
+            VolumeAdd           = VolumeAdd,
+        //  Selected	        = Selected,
+            ScaleKey            = ScaleKey,
+        //  ScaleKeySelected	= ScaleKeySelected,
         };
 
         foreach ( var midiMap in MidiMaps )
