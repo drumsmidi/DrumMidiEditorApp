@@ -2656,7 +2656,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         #region Note
         {
-            foreach ( var midiMap in ScorePredict.EditMidiMapSet.DisplayMidiMaps )
+            foreach ( var midiMap in Score.EditMidiMapSet.DisplayMidiMaps )
             {
                 if ( measure.NoteLines.TryGetValue( midiMap.MidiMapKey, out var measure_line ) )
                 {

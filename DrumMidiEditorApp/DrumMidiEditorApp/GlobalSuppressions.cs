@@ -12,3 +12,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pResume" )]
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pView.pEditer" )]
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pView.pPlayer.pSurface" )]
+[assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pMachineLearning" )]

@@ -5,7 +5,7 @@ namespace DrumMidiEditorApp.pMachineLearning;
 /// <summary>
 /// ドラムモデル
 /// </summary>
-internal class DrumModel
+internal class ModelFFTData
 {
     /// <summary>
     /// ドラムパターン
@@ -30,16 +30,4 @@ internal class DrumModel
     /// </summary>
     [LoadColumn( 3, 2 + 1024 ), VectorType( 1024 )]
     public float [] FFTBuffer { get; set; } = new float [ 1024 ];
-}
-
-/// <summary>
-/// ドラム予測
-/// </summary>
-internal class DrumPrediction
-{
-    /// <summary>
-    /// ドラムパターン予測結果
-    /// </summary>
-    [ColumnName( "PredictedLabel" )]
-    public string DrumPattern { get; set; } = string.Empty;
 }
