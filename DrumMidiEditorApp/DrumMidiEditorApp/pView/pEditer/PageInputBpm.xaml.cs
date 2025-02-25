@@ -2,6 +2,7 @@
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil.pHelper;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pEditer;
@@ -12,6 +13,11 @@ public sealed partial class PageInputBpm : Page
     /// メディア設定
     /// </summary>
     private ConfigMedia ConfigMedia => Config.Media;
+
+    /// <summary>
+    /// エディター設定
+    /// </summary>
+    private ConfigEditer ConfigEditer => Config.Editer;
 
     /// <summary>
     /// BPM入力値
@@ -44,6 +50,48 @@ public sealed partial class PageInputBpm : Page
             {
                 return;
             }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ＢＰＭ変更
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void BpmRadioButtons_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    {
+        try
+        {
+            var obj = sender as RadioButtons;
+            ConfigEditer.BpmChangeIndex = obj?.SelectedIndex ?? 0;
+
+            double s, l;
+            switch ( ConfigEditer.BpmChangeIndex )
+            {
+                case 0:
+                    s = 1;
+                    l = 10;
+                    break;
+                case 1:
+                    s = 0.1;
+                    l = 1;
+                    break;
+                case 2:
+                    s = 0.01;
+                    l = 0.1;
+                    break;
+                default:
+                    s = 1;
+                    l = 10;
+                    break;
+            }
+
+            _BpmNumberBox.SmallChange = s;
+            _BpmNumberBox.LargeChange = l;
         }
         catch ( Exception e )
         {

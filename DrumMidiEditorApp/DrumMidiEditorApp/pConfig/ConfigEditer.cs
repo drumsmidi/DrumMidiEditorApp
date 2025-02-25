@@ -179,6 +179,12 @@ public class ConfigEditer
     #region Bpm
 
     /// <summary>
+    /// BPM入力：増減値インデックス
+    /// </summary>
+    [JsonIgnore]
+    public int BpmChangeIndex { get; set; } = 0;
+
+    /// <summary>
     /// BPM行：高さ
     /// </summary>
     [JsonInclude]

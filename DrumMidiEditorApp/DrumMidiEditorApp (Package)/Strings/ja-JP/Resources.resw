@@ -560,4 +560,7 @@ BPMノートを含める</value>
   <data name="ColumnMidiMapScaleKeyText.Text" xml:space="preserve">
     <value>ScaleText</value>
   </data>
+  <data name="InputBpmChange.Header" xml:space="preserve">
+    <value>増減値</value>
+  </data>
 </root>

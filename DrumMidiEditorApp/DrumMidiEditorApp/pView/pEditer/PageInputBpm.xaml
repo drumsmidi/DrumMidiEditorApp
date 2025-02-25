@@ -8,12 +8,25 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm"
-            Value="{x:Bind Bpm, Mode=TwoWay}" 
-            Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
-            Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
-            SmallChange="1" 
-            LargeChange="10"                       
-            ValueChanged="BpmNumberBox_ValueChanged" />
+        <StackPanel Orientation="Vertical" Spacing="6">
+
+            <NumberBox x:Name="_BpmNumberBox" x:Uid="InputBpm"
+                Value="{x:Bind Bpm, Mode=TwoWay}" 
+                Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
+                Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                SmallChange="1" 
+                LargeChange="10"                       
+                ValueChanged="BpmNumberBox_ValueChanged" />
+
+            <RadioButtons x:Name="_BpmRadioButton" x:Uid="InputBpmChange"
+                SelectedIndex="{x:Bind ConfigEditer.BpmChangeIndex, Mode=TwoWay}"
+                SelectionChanged="BpmRadioButtons_SelectionChanged">
+
+                <x:Double>1.00</x:Double>
+                <x:Double>0.10</x:Double>
+                <x:Double>0.01</x:Double>
+            </RadioButtons>
+            
+        </StackPanel>
     </Grid>
 </Page>
