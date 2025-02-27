@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pUtil.pFormat;
 using Microsoft.UI.Xaml;
 using Windows.Foundation;

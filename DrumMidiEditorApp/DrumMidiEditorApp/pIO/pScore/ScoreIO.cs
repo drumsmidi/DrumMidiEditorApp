@@ -15,9 +15,7 @@ internal static class ScoreIO
     /// <summary>
     /// 書込
     /// </summary>
-#pragma warning disable CA1859 // 可能な場合は具象型を使用してパフォーマンスを向上させる
     private static readonly IScoreWriter _Writer = new p1000.ScoreStream();
-#pragma warning restore CA1859 // 可能な場合は具象型を使用してパフォーマンスを向上させる
 
     /// <summary>
     /// 読込（上から順番に読込できるバージョンで処理）

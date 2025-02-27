@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using NAudio.Core.Utils;
 using NAudio.Core.Wave.WaveFormats;
 
@@ -20,7 +21,7 @@ public class BlockAlignReductionStream( WaveStream sourceStream ) : WaveStream
     private readonly CircularBuffer circularBuffer = new( sourceStream.WaveFormat.AverageBytesPerSecond * 4 );
     private long bufferStartPosition;
     private byte[] sourceBuffer;
-    private readonly object lockObject = new();
+    private readonly Lock lockObject = new();
 
     private byte [] GetSourceBuffer( int size )
     {

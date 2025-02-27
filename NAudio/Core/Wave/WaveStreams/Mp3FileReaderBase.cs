@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using NAudio.Core.FileFormats.Mp3;
 using NAudio.Core.Wave.WaveFormats;
 
@@ -65,7 +66,7 @@ public class Mp3FileReaderBase : WaveStream
 
     private long position; // decompressed data position tracker
 
-    private readonly object repositionLock = new();
+    private readonly Lock repositionLock = new();
 
 
 

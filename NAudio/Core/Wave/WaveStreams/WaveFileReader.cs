@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.FileFormats.Wav;
+using System.Threading;
 
 namespace NAudio.Core.Wave.WaveStreams;
 
@@ -16,7 +17,7 @@ public class WaveFileReader : WaveStream
     private readonly bool ownInput;
     private readonly long dataPosition;
     private readonly long dataChunkLength;
-    private readonly object lockObject = new();
+    private readonly Lock lockObject = new();
     private Stream waveStream;
 
     /// <summary>Supports opening a WAV file</summary>

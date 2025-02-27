@@ -632,7 +632,9 @@ public partial class MidiMapSet : DisposeBaseClass
 
         var midiMap = GetMidiMap( index );
 
-        return $"{midiMap?.Group?.GroupName,-20} {midiMap?.MidiMapName,-20}";
+        var display = ( midiMap?.Group?.Display ?? false ) && ( midiMap?.Display ?? false ) ? "〇" : "✕" ;
+
+        return $"{midiMap?.Group?.GroupName,-20} {midiMap?.MidiMapName,-20} {display}";
     }
 
     /// <summary>
