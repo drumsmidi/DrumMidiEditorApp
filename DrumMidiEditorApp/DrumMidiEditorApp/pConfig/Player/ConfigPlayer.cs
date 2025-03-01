@@ -266,25 +266,25 @@ public class ConfigPlayer
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
-    [JsonIgnore]
-    public Dictionary<string,ConfigPlayerScoreType2> ScoreType2 { get; set; } = new()
+    [JsonInclude]
+    public Dictionary<bool, ConfigPlayerScoreType2> ScoreType2 { get; set; } = new()
     {
-        { "White", new( false ) },
-        { "Dark" , new( true  ) },
+        { false, new( false ) },  // White
+        { true , new( true  ) },  // Dart
     };
 
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
     [JsonInclude]
-    public string ScoreType2SelectTypeKey { get; set; } = "Dark";
+    public bool ScoreType2DarkModeFlag { get; set; } = true;
 
     /// <summary>
     /// プレイヤー描画モード別設定
     /// </summary>
     [JsonIgnore]
     public ConfigPlayerScoreType2 ScoreType2SelectType 
-        => ScoreType2[ ScoreType2SelectTypeKey ];
+        => ScoreType2[ ScoreType2DarkModeFlag ];
 
     #endregion
 }

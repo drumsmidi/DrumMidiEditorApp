@@ -541,8 +541,6 @@ public static class HelperXaml
             );
     }
 
-
-
     #endregion
 
     #region UserControl

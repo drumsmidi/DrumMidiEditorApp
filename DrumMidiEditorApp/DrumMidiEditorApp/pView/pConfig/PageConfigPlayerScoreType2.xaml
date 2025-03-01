@@ -10,7 +10,11 @@
     <Grid Padding="10">
         <StackPanel Orientation="Vertical" Spacing="6">
 
-            <Button x:Uid="InputBackgroudColor"
+            <ToggleSwitch x:Uid="InputDarkMode"
+                IsOn="{x:Bind DrawSetPlayer.ScoreType2DarkModeFlag, Mode=TwoWay}"
+                Toggled="DarkModeToggleSwitch_Toggled" />
+
+            <Button x:Name="_BackgroundColorButton" x:Uid="InputBackgroudColor"
                 Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
                 Click="ColorButton_Click" />
 

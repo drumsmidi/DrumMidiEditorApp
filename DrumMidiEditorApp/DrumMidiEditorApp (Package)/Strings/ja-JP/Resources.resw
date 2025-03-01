@@ -563,4 +563,7 @@ BPMノートを含める</value>
   <data name="InputBpmChange.Header" xml:space="preserve">
     <value>増減値</value>
   </data>
+  <data name="InputDarkMode.Header" xml:space="preserve">
+    <value>DarkMode</value>
+  </data>
 </root>

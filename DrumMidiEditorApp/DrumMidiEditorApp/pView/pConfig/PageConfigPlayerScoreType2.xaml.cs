@@ -7,12 +7,21 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using DrumMidiEditorApp.pUtil;
 using DrumMidiEditorApp.pUtil.pHelper;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Reflection;
+using System.Xml.Linq;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
-public sealed partial class PageConfigPlayerScoreType2 : Page
+public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyChanged
 {
     #region Member
+
+    /// <summary>
+    /// 描画設定
+    /// </summary>
+    private ConfigPlayer DrawSetPlayer => Config.Player;
 
     /// <summary>
     /// 描画設定
@@ -68,6 +77,72 @@ public sealed partial class PageConfigPlayerScoreType2 : Page
             = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
 
         #endregion
+    }
+
+    /// <summary>
+    /// 共通：トグル切替(DarkMode)
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void DarkModeToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            NotifyAllPropertiesUsingReflection();
+            EventManage.Event_Player_UpdateScore();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+    public void NotifyAllPropertiesUsingReflection()
+    {
+        // NOTE: DarkMode切り替え時に、Bindingを再定義したいがWinUI3ではGetBindingExpression未実装？やり方が間違っている？
+
+        if ( Content is not Grid grid )
+        {
+            return;
+        }
+
+        foreach ( var item in grid.Children )
+        {
+
+            if ( item is not StackPanel stackpanel )
+            {
+                return;
+            }
+
+            foreach ( var item2 in stackpanel.Children )
+            {
+                var prop = item2.GetType().GetProperty( "Name", BindingFlags.Public | BindingFlags.Instance );
+
+                var val = prop?.GetValue( item2 )?.ToString();
+
+                Log.Info( $"{val}" );
+
+                if ( val != null && val.Length != 0 )
+                {
+                    if ( item2 is NumberBox num )
+                    {
+                        var bind = num.GetBindingExpression( NumberBox.ValueProperty );
+                        bind?.UpdateSource();
+                    }
+                    else if ( item2 is Button btn )
+                    {
+                        var bind = btn.GetBindingExpression( Button.BackgroundProperty );
+                        bind?.UpdateSource();
+                    }
+                    OnPropertyChanged( val );
+                }
+            }
+        }
     }
 
     /// <summary>
