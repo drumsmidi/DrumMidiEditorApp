@@ -105,42 +105,30 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     public void NotifyAllPropertiesUsingReflection()
     {
         // NOTE: DarkMode切り替え時に、Bindingを再定義したいがWinUI3ではGetBindingExpression未実装？やり方が間違っている？
+        // x:bindでは更新するすべが現状ない？
+        // https://github.com/microsoft/microsoft-ui-xaml/issues/5473
 
-        if ( Content is not Grid grid )
+        foreach ( var item2 in _SettingStackPanel.Children )
         {
-            return;
-        }
+            var prop = item2.GetType().GetProperty( "Name", BindingFlags.Public | BindingFlags.Instance );
 
-        foreach ( var item in grid.Children )
-        {
+            var val = prop?.GetValue( item2 )?.ToString();
 
-            if ( item is not StackPanel stackpanel )
+            //Log.Info( $"{val}" );
+
+            if ( val != null && val.Length != 0 )
             {
-                return;
-            }
-
-            foreach ( var item2 in stackpanel.Children )
-            {
-                var prop = item2.GetType().GetProperty( "Name", BindingFlags.Public | BindingFlags.Instance );
-
-                var val = prop?.GetValue( item2 )?.ToString();
-
-                Log.Info( $"{val}" );
-
-                if ( val != null && val.Length != 0 )
+                if ( item2 is NumberBox num )
                 {
-                    if ( item2 is NumberBox num )
-                    {
-                        var bind = num.GetBindingExpression( NumberBox.ValueProperty );
-                        bind?.UpdateSource();
-                    }
-                    else if ( item2 is Button btn )
-                    {
-                        var bind = btn.GetBindingExpression( Button.BackgroundProperty );
-                        bind?.UpdateSource();
-                    }
-                    OnPropertyChanged( val );
+                    var bind = num.GetBindingExpression( NumberBox.ValueProperty );
+                    bind?.UpdateSource();
                 }
+                else if ( item2 is Button btn )
+                {
+                    var bind = btn.GetBindingExpression( Button.BackgroundProperty );
+                    bind?.UpdateSource();
+                }
+                OnPropertyChanged( val );
             }
         }
     }

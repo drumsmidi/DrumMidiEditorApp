@@ -8,7 +8,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Padding="10">
-        <StackPanel Orientation="Vertical" Spacing="6">
+        <StackPanel x:Name="_SettingStackPanel" Orientation="Vertical" Spacing="6">
 
             <ToggleSwitch x:Uid="InputDarkMode"
                 IsOn="{x:Bind DrawSetPlayer.ScoreType2DarkModeFlag, Mode=TwoWay}"
