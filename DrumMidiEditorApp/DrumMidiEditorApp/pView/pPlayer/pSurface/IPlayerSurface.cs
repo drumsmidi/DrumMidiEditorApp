@@ -41,4 +41,10 @@ internal interface IPlayerSurface
     /// </summary>
     /// <returns>True:処理続行、False:処理中断</returns>
     bool OnDraw( CanvasDrawEventArgs args );
+
+    /// <summary>
+    /// 1ページ当たりの小節描画数取得
+    /// </summary>
+    /// <returns>1ページ当たりの小節描画数</returns>
+    int GetNumberOfMeasureNoPerPage();
 }

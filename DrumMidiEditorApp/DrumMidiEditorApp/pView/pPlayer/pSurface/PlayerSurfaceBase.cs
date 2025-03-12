@@ -376,4 +376,6 @@ public class PlayerSurfaceBase : IPlayerSurface
 
         return _DmsPlayState is PlayState.Playing or PlayState.Recording;
     }
+
+    public virtual int GetNumberOfMeasureNoPerPage() => 0;
 }

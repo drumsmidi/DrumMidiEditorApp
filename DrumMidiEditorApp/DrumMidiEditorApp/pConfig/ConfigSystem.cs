@@ -353,6 +353,12 @@ public class ConfigSystem
     public string ExtentionMidi { get; private set; } = ".mid";
 
     /// <summary>
+    /// 拡張子：PDF
+    /// </summary>
+    [JsonIgnore]
+    public string ExtentionPdf { get; private set; } = ".pdf";
+
+    /// <summary>
     /// 拡張子：VIDEO
     /// </summary>
     [JsonIgnore]
@@ -414,6 +420,17 @@ public class ConfigSystem
         get; private set;
     } = [
             ".mid",
+        ];
+
+    /// <summary>
+    /// Pdf保存フィルタ
+    /// </summary>
+    [JsonIgnore]
+    public List<string> SupportPdf
+    {
+        get; private set;
+    } = [
+            ".pdf",
         ];
 
     /// <summary>

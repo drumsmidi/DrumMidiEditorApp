@@ -258,6 +258,98 @@ public static class FileIO
         }
     }
 
+    /// <summary>
+    /// スコア - Pdf保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static async void SavePdf( GeneralPath aFilePath )
+    {
+        _ = new LogBlock( Log.GetThisMethodName );
+
+        try
+        {
+            ControlAccess.UCPlayerPanel?.GetFrameStart();
+
+            using var frameSize = ControlAccess.UCPlayerPanel?.GetFrame( 0 );
+
+            if ( frameSize == null )
+            {
+                Log.Error( $"get frame failure.", true );
+                return;
+            }
+
+            // NOTEが存在する最大小節番号
+            var measureMaxNo = DMS.SCORE.GetMaxMeasureNo();
+
+            // 1ページ当たりの小節描画数
+            var measurePerPage = ControlAccess.UCPlayerPanel?.GetNumberOfMeasureNoPerPage() ?? 0 ;
+            if ( measurePerPage == 0 )
+            {
+                Log.Error( $"no measures to draw.", true );
+                return;
+            }
+
+            // 最終ページ
+            var pageMax = measureMaxNo / measurePerPage + 1;
+
+            using var pdf = new PdfIO();
+
+            var bmp = pdf.Open
+                (
+                    aFilePath,
+                    pageMax,
+                    (int)frameSize.Size.Width,
+                    (int)frameSize.Size.Height
+                );
+
+            if ( bmp == null )
+            {
+                Log.Error( $"open video file failure.", true );
+                return;
+            }
+
+            for ( var page = 1; page <= pageMax; page++ )
+            {
+                var frametime = DmsControl.GetMeasureStartTime( page * measurePerPage );
+
+                using var frame = ControlAccess.UCPlayerPanel?.GetFrame( frametime );
+
+                if ( frame == null )
+                {
+                    Log.Error( $"frame read error.[{page}]" );
+                    continue;
+                }
+
+                var buffer = frame.GetPixelBytes();
+
+                var bmpData = bmp.LockBits
+                (
+                    new( 0, 0, bmp.Width, bmp.Height ),
+                    ImageLockMode.WriteOnly,
+                    bmp.PixelFormat
+                );
+
+                Marshal.Copy( buffer, 0, bmpData.Scan0, buffer.Length );
+
+                bmp.UnlockBits( bmpData );
+
+                _ = pdf.AddFrame();
+            }
+
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+
+            ControlAccess.UCPlayerPanel?.GetFrameEnd();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            ControlAccess.UCPlayerPanel?.GetFrameEnd();
+        }
+    }
+
     #region Create sub folder
 
     /// <summary>

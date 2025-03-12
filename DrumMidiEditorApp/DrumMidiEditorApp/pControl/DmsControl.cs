@@ -166,6 +166,21 @@ public static class DmsControl
     public static double GetBpm( int aAbsoluteNotePos ) => _TimeTable.GetBpm( aAbsoluteNotePos );
 
     /// <summary>
+    /// 指定したノート位置（絶対値）の開始時間を取得
+    /// </summary>
+    /// <param name="aMeasureNo">小節番号</param>
+    /// <returns>BPM値</returns>
+    public static double GetMeasureStartTime( int aMeasureNo ) 
+    {
+        if ( aMeasureNo >= Config.System.MeasureCount )
+        {
+            return 0;
+        }
+        return _TimeTable [ aMeasureNo * Config.System.MeasureNoteNumber ];
+    }
+
+
+    /// <summary>
     /// ＢＧＭデータ取得
     /// </summary>
     public static NAudioData? AudioData => _BgmAudio?.GetAudioData() as NAudioData;

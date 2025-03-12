@@ -388,6 +388,38 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     }
 
     /// <summary>
+    /// メニュー：Export - Pdf
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void MenuItemExportPdf_Click( object sender, RoutedEventArgs args )
+    {
+        try
+        {
+            PlayerStop();
+
+            HelperXaml.SaveDialogAsync
+                (
+                    ControlAccess.MainWindow,
+                    ConfigSystem.SupportPdf,
+                    DMS.OpenFilePath.FileNameWithoutExtension,
+                    PickerLocationId.DocumentsLibrary,
+                    ConfigSystem.FolderExport,
+                    ( filepath ) =>
+                    {
+                        filepath.Extension = ConfigSystem.ExtentionPdf;
+
+                        FileIO.SavePdf( filepath );
+                    }
+                );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
     /// メニュー：Import - Midi
     /// </summary>
     /// <param name="sender"></param>

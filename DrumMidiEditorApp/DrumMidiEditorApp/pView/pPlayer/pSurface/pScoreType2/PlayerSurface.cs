@@ -566,4 +566,26 @@ public class PlayerSurface : PlayerSurfaceBase
 
         return true;
     }
+
+    public override int GetNumberOfMeasureNoPerPage()
+    {
+        var section = _SectionRange;
+
+        if ( section.Width <= 0 || section.Height <= 0 )
+        {
+            return 0;
+        }
+
+        var body            = _ScoreBodyRange;
+        var measure_size    = DrawSet.MeasureSize;
+        var measure_x       = (int)( body.Width / measure_size );
+        var measure_y       = (int)( ( _ScreenSize.Height - section.Top ) / section.Height );
+
+        if ( measure_x <= 0 || measure_y <= 0 )
+        {
+            return 0;
+        }
+
+        return measure_x * measure_y;
+    }
 }

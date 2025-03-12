@@ -65,6 +65,7 @@
                 <MenuFlyoutSeparator />
                 <MenuFlyoutSubItem  x:Uid="MenuItemExport" >
                     <MenuFlyoutItem x:Uid="MenuItemExportMidi"  Click="MenuItemExportMidi_Click" />
+                    <MenuFlyoutItem x:Uid="MenuItemExportPdf"   Click="MenuItemExportPdf_Click" />
                     <MenuFlyoutItem x:Uid="MenuItemExportVideo" Click="MenuItemExportVideo_Click" />
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSeparator />

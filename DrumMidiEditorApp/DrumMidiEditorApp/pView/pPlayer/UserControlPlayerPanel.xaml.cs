@@ -822,6 +822,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
     }
 
+    /// <summary>
+    /// 1ページ当たりの小節描画数取得
+    /// </summary>
+    /// <returns>1ページ当たりの小節描画数</returns>
+    public int GetNumberOfMeasureNoPerPage()
+        => _PlayerSurface?.GetNumberOfMeasureNoPerPage() ?? 0 ;
+
     #endregion
 
     #region Update

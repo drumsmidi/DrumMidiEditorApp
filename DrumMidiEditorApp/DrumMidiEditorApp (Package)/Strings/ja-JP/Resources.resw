@@ -566,4 +566,7 @@ BPMノートを含める</value>
   <data name="InputDarkMode.Header" xml:space="preserve">
     <value>DarkMode</value>
   </data>
+  <data name="MenuItemExportPdf.Text" xml:space="preserve">
+    <value>Pdf</value>
+  </data>
 </root>
