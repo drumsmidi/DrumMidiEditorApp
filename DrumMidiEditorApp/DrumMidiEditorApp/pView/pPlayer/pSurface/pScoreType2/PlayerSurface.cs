@@ -252,10 +252,7 @@ public class PlayerSurface : PlayerSurfaceBase
                             item.LineDrawFlag ? DrawSet.HeaderLineA : DrawSet.HeaderLineB
                         );
 
-                    if ( !_HeaderList.ContainsKey( item.ScaleKey ) )
-                    {
-                        _HeaderList.Add( item.ScaleKey, obj );
-                    }
+                    _HeaderList.TryAdd( item.ScaleKey, obj );
                 }
 
                 y += h;
