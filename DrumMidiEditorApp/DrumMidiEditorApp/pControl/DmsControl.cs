@@ -500,8 +500,8 @@ public static class DmsControl
                                 UpdateScore();
 
                                 _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition;
-                                StartPlayTime   = _TimeTable [ ( loop_start == 0 ) ? 0 : loop_start * Config.System.MeasureNoteNumber ];
-                                EndPlayTime     = _TimeTable [ ( loop_end == 0 ) ? 0 : ( loop_end * Config.System.MeasureNoteNumber ) + 1 ];
+                                StartPlayTime   = _TimeTable [ loop_start * Config.System.MeasureNoteNumber ];
+                                EndPlayTime     = _TimeTable [ loop_end   * Config.System.MeasureNoteNumber + 1 ];
                                 _NoteSecPos     = loop_start * Config.System.MeasureNoteNumber;
                                 pos             = 0;
                                 seq_cnt         = _SequenceInfoList.Count;
@@ -562,7 +562,7 @@ public static class DmsControl
 
                                 _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition;
                                 StartPlayTime   = 0;
-                                EndPlayTime     = _TimeTable [ ( loop_end * Config.System.MeasureNoteNumber ) + 1 ];
+                                EndPlayTime     = _TimeTable [ loop_end * Config.System.MeasureNoteNumber + 1 ];
                                 _NoteSecPos     = 0;
                                 pos             = 0;
                                 seq_cnt         = _SequenceInfoList.Count;

@@ -7,8 +7,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="10" >
-        
+    <Grid>
         <StackPanel Orientation="Vertical" Spacing="6">
             
             <ListView x:Uid="InputMidiOutDevice" 

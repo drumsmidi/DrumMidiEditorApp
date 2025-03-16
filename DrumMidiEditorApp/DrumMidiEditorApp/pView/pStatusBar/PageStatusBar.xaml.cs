@@ -29,6 +29,11 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 
     #region INotifyPropertyChanged
 
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
     /// <summary>
     /// プログレスバー再読み込み
     /// 
@@ -53,11 +58,6 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 

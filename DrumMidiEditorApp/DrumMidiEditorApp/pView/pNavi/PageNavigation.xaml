@@ -35,7 +35,7 @@
                 <NavigationViewItem Tag="PageDebug"   x:Uid="NaviDebug" />
             </NavigationView.MenuItems>
         </NavigationView>
-        
+                
         <Frame x:Name="_ContentFrame"
             Grid.Column="1"
             Margin="0"

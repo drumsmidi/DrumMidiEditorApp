@@ -331,7 +331,7 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// <summary>
     /// スコア最大高さ
     /// </summary>
-    public float ScoreMaxHeight => NoteTermHeightSize * _ScaleList.Count;
+    public float ScoreMaxHeight => NoteTermHeightSize * ScaleList.Count;
 
     /// <summary>
     /// １小節の横幅
@@ -342,72 +342,37 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     #region 音階
 
     /// <summary>
-    /// 音階アイテム
-    /// </summary>
-    /// <remarks>
-    /// コンストラクタ
-    /// </remarks>
-    /// <param name="aName">音階名称</param>
-    /// <param name="aLabel">ラベル</param>
-    /// <param name="aLineDrawFlag">ライン描画フラグ</param>
-    public class ScaleItem( string aName, string aLabel, bool aLineDrawFlag )
-    {
-        /// <summary>
-        /// 音階名称
-        /// </summary>
-        public string Name
-        {
-            get; private set;
-        } = aName;
-
-        /// <summary>
-        /// ラベル
-        /// </summary>
-        public string Label
-        {
-            get; private set;
-        } = aLabel;
-
-        /// <summary>
-        /// ライン描画フラグ
-        /// </summary>
-        public bool LineDrawFlag
-        {
-            get; private set;
-        } = aLineDrawFlag;
-
-        /// <summary>
-        /// 音階名称＋ラベル
-        /// </summary>
-        public string NameLabel => $"{Name}-{Label}";
-    }
-
-    /// <summary>
     /// 音階リスト
     /// </summary>
-    [JsonIgnore]
-    public List<ScaleItem> ScaleList => _ScaleList;
+    [JsonInclude]
+    public List<ConfigPlayerScoreType2ScaleItem> ScaleList =
+    [
+        new ( "DUMMY", "", true    ),
+        new ( "CY"   , "", false   ),
+        new ( "RD"   , "", true    ),
+        new ( "HH"   , "", false   ),
+        new ( "SD"   , "", false   ),
+        new ( "TM"   , "", false   ),
+      //new( "HT"   , "", true    ),
+      //new( "MT"   , "", false   ),
+      //new( "LT"   , "", false   ),
+      //new( "FT1"  , "", false   ),
+      //new( "FT2"  , "", true    ),
+        new ( "BD"   , "", true    ),
+        new ( "PC"   , "", false   ),
+    ];
 
     /// <summary>
-    /// 音階リスト。
+    /// 音階リスト更新
     /// </summary>
-    [JsonIgnore]
-    private readonly List<ScaleItem> _ScaleList =
-    [
-        new( "DUMMY", "", true   ),
-        new( "CY"   , "", false   ),
-        new( "RD"   , "", true    ),
-        new( "HH"   , "", false   ),
-        new( "SD"   , "", false   ),
-        new( "TM"   , "", false    ),
-        //new( "HT"   , "", true    ),
-        //new( "MT"   , "", false   ),
-        //new( "LT"   , "", false   ),
-        //new( "FT1"  , "", false   ),
-        //new( "FT2"  , "", true    ),
-        new( "BD"   , "", true   ),
-        new( "PC"   , "", false   ),
-    ];
+    public void UpdateScaleList( List<ConfigPlayerScoreType2ScaleItem> aScaleList )
+    {
+        lock ( ScaleList )
+        {
+            ScaleList.Clear();
+            aScaleList.ForEach( item => ScaleList.Add( new( item ) ) );
+        }
+    }
 
     /// <summary>
     /// 音階リストのインデックス番号取得
@@ -424,13 +389,16 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
 
         var index = -1;
 
-        foreach ( var item in _ScaleList )
+        lock ( ScaleList )
         {
-            index++;
-
-            if ( item.Name.Equals( aScaleKey ) )
+            foreach ( var item in ScaleList )
             {
-                return ( index, aScaleKeyText );
+                index++;
+
+                if ( item.ScaleKey.Equals( aScaleKey ) )
+                {
+                    return ( index, aScaleKeyText );
+                }
             }
         }
 

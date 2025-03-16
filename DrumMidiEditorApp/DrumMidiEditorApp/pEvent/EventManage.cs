@@ -431,6 +431,15 @@ public static class EventManage
         ControlAccess.PageEditerMain?.ReloadPlayer();
     }
 
+    /// <summary>
+    /// ScaleItem再読込通知
+    /// </summary>
+    public static void Event_Player_ReloadScaleItem()
+    {
+        // プレイヤスコア更新リクエスト
+        Event_Player_UpdateScore();
+    }
+
     #endregion
 
     #region Event.Window

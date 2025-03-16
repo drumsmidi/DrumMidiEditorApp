@@ -8,6 +8,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Media.Animation;
 using Windows.Foundation;
 using Windows.Globalization.NumberFormatting;
 using Windows.Storage.Pickers;
@@ -601,6 +602,8 @@ public static class HelperXaml
 
     #endregion
 
+    #region その他
+
     /// <summary>
     /// aMousePos が aRange の範囲内かどうか判定
     /// </summary>
@@ -643,4 +646,6 @@ public static class HelperXaml
 
         return ret;
     }
+
+    #endregion
 }

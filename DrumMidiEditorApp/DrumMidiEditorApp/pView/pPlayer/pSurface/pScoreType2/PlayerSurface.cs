@@ -235,6 +235,7 @@ public class PlayerSurface : PlayerSurfaceBase
         var h = DrawSet.NoteTermHeightSize;
 
         #region MidiMapGroup
+        lock ( DrawSet.ScaleList )
         {
             var cnt = 0;
 
@@ -251,7 +252,10 @@ public class PlayerSurface : PlayerSurfaceBase
                             item.LineDrawFlag ? DrawSet.HeaderLineA : DrawSet.HeaderLineB
                         );
 
-                    _HeaderList.Add( item.Name, obj );
+                    if ( !_HeaderList.ContainsKey( item.ScaleKey ) )
+                    {
+                        _HeaderList.Add( item.ScaleKey, obj );
+                    }
                 }
 
                 y += h;

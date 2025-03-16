@@ -217,6 +217,8 @@ public static class FileIO
                                 Log.Info( $"{(int)time}/{(int)DmsControl.EndPlayTime}({Math.Round( time * 100 / DmsControl.EndPlayTime, 2 )}%)", true );
                             }
 
+                            #region Frame描画
+
                             using var frame = ControlAccess.UCPlayerPanel?.GetFrame( time );
 
                             if ( frame == null )
@@ -239,6 +241,8 @@ public static class FileIO
                             bmp.UnlockBits( bmpData );
 
                             _ = mp4.AddFrame();
+
+                            #endregion
                         }
 
                         Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
@@ -263,7 +267,7 @@ public static class FileIO
     /// </summary>
     /// <param name="aFilePath">出力先ファイルパス</param>
     /// <returns>True:保存成功、False:保存失敗</returns>
-    public static async void SavePdf( GeneralPath aFilePath )
+    public static void SavePdf( GeneralPath aFilePath )
     {
         _ = new LogBlock( Log.GetThisMethodName );
 
@@ -309,9 +313,14 @@ public static class FileIO
                 return;
             }
 
+            // NOTE: page=0から処理すると小節番号=000が2回処理されてしまう。
+            // NOTE: 描画の初期化が上手くいっていない？
+
             for ( var page = 1; page <= pageMax; page++ )
             {
                 var frametime = DmsControl.GetMeasureStartTime( page * measurePerPage );
+
+                #region Frame描画
 
                 using var frame = ControlAccess.UCPlayerPanel?.GetFrame( frametime );
 
@@ -335,6 +344,8 @@ public static class FileIO
                 bmp.UnlockBits( bmpData );
 
                 _ = pdf.AddFrame();
+
+                #endregion
             }
 
             Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );

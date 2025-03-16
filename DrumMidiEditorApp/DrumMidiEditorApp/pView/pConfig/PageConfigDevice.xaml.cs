@@ -46,9 +46,7 @@ public sealed partial class PageConfigDevice : Page
     {
         _MidiDeviceList.Clear();
 
-        var list = MidiNet.GetDeviceList();
-
-        list.ForEach( _MidiDeviceList.Add );
+        MidiNet.GetDeviceList().ForEach( _MidiDeviceList.Add );
     }
 
     /// <summary>

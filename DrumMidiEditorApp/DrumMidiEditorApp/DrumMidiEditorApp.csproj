@@ -34,6 +34,7 @@
     <None Remove="pView\pConfig\PageConfigPlayerSequence.xaml" />
     <None Remove="pView\pConfig\PageConfigPlayerSimuration.xaml" />
     <None Remove="pView\pConfig\PageConfigVideo.xaml" />
+    <None Remove="pView\pConfig\UserControlPlayerScoreType2ScaleItem.xaml" />
     <None Remove="pView\pDebug\PageDebug.xaml" />
     <None Remove="pView\pDebug\PageDebugShell.xaml" />
     <None Remove="pView\pEditer\PageInputBpm.xaml" />
@@ -54,12 +55,18 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
-    <PackageReference Include="System.Resources.Extensions" Version="9.0.2" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.3" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\NAudio\NAudio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="pView\pConfig\UserControlPlayerScoreType2ScaleItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
@@ -135,12 +142,6 @@
     </Page>
     <Page Update="pView\pMidiMap\UserControlMidiMapPanel.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pScore - コピー\PageScore.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="pView\pScore - コピー\UserControlScore.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="pView\pStatusBar\PageStatusBar.xaml">

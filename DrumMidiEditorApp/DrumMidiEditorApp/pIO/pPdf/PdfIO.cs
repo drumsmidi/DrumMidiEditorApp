@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -15,6 +14,8 @@ namespace DrumMidiEditorApp.pIO.pVideo;
 /// </summary>
 public partial class PdfIO : DisposeBaseClass
 {
+    #region member
+
     /// <summary>
     /// PDF書込
     /// </summary>
@@ -30,20 +31,30 @@ public partial class PdfIO : DisposeBaseClass
     /// </summary>
     private Bitmap? _Bmp = null;
 
-
+    /// <summary>
+    /// オブジェクト番号
+    /// </summary>
     private int _ObjectNo = 0;
 
     /// <summary>
     /// 改行コード文字列
     /// </summary>
-    private const string CRLF = "\r\n";  
+    private const string CRLF = "\r\n";
 
+    /// <summary>
+    /// バイト配列をPDFストリームへ出力
+    /// </summary>
+    /// <param name="aBuffer"></param>
     private void WriteLine( byte[] aBuffer )
     {
         _Writer?.Write( aBuffer, 0, aBuffer.Length );
         WriteLine( $"" );
     }
 
+    /// <summary>
+    /// 文字列をPDFストリームへ出力
+    /// </summary>
+    /// <param name="aString"></param>
     private void WriteLine( string aString )
     {
         var bytes = GetBytes( aString + CRLF );
@@ -51,15 +62,26 @@ public partial class PdfIO : DisposeBaseClass
         _Writer?.Write( bytes, 0, bytes.Length );
     }
 
+    /// <summary>
+    /// 文字列をバイト配列に変換
+    /// </summary>
+    /// <param name="aString"></param>
+    /// <returns></returns>
     private byte [] GetBytes( string aString )
         => Encoding.ASCII.GetBytes( aString );
 
+    /// <summary>
+    /// オブジェクト位置情報
+    /// </summary>
+    private readonly ArrayList _ObjectXref = [];
 
+    /// <summary>
+    /// オブジェクト位置情報追加
+    /// </summary>
     private void AddObjectXref()
         => _ObjectXref.Add( _Writer?.Length );
 
-
-    private readonly ArrayList _ObjectXref = [];
+    #endregion
 
     /// <summary>
     /// ファイルオープン
@@ -82,8 +104,7 @@ public partial class PdfIO : DisposeBaseClass
 
         _Bmp = new Bitmap( aWidth, aHeight, PixelFormat.Format32bppArgb );
 
-
-        // PDFの使用参考
+        // PDFの仕様参考
         // https://www.pdf-tools.trustss.co.jp/Syntax/catalog.html
 
         _ObjectNo = 0;
@@ -182,13 +203,12 @@ public partial class PdfIO : DisposeBaseClass
         }
 
         using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
-        //      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
-
+    //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
         // オブジェクトの開始バイト位置
         var obj_pos = _Writer?.Length ?? 0 ;
 
-        #region ページ辞書
+        #region ページ
         {
             AddObjectXref();
 
@@ -248,7 +268,7 @@ public partial class PdfIO : DisposeBaseClass
 
             WriteLine( $"{_ObjectNo} 0 obj" );
             WriteLine( $"<<" );
-        //    WriteLine( $"/Filter /FlateDecode" );
+        //  WriteLine( $"/Filter /FlateDecode" );
             WriteLine( $"/Length {pos.LongLength}" );
             WriteLine( $">>" );
             WriteLine( $"stream" );

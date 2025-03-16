@@ -10,34 +10,36 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <SplitView x:Name="splitView" 
-           PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-           IsPaneOpen="True" 
-           OpenPaneLength="260" 
-           DisplayMode="Inline" >
+        <SplitView 
+            PaneBackground="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+            IsPaneOpen="True" 
+            OpenPaneLength="260" 
+            DisplayMode="Inline" >
             
             <SplitView.Pane>
-                <Grid>
-                    <ListView x:Name="_NaviLinkListView" 
-                        SelectionMode="Single" 
-                        SelectionChanged="NaviLinkListView_SelectionChanged">
-                        <TextBlock Tag="PageConfigSystem"   x:Uid="NaviConfigSystem" />
-                        <TextBlock Tag="PageConfigDevice"   x:Uid="NaviConfigDevice" />
-                        <TextBlock Tag="PageConfigVideo"    x:Uid="NaviConfigVideo" />
-                        <TextBlock Tag="PageConfigEditer"   x:Uid="NaviConfigEditer" />
-                        <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayer" />
-                        <TextBlock Tag="PageConfigPlayerA"  x:Uid="NaviConfigPlayerA" />
-                        <TextBlock Tag="PageConfigPlayerD"  x:Uid="NaviConfigPlayerD" />
-                        <TextBlock Tag="PageConfigPlayerE"  x:Uid="NaviConfigPlayerE" />
-                    </ListView>
-                </Grid>
+                <ListView x:Name="_NaviLinkListView" 
+                    SelectionMode="Single" 
+                    SelectionChanged="NaviLinkListView_SelectionChanged">
+                    
+                    <TextBlock Tag="PageConfigSystem"   x:Uid="NaviConfigSystem" />
+                    <TextBlock Tag="PageConfigDevice"   x:Uid="NaviConfigDevice" />
+                    <TextBlock Tag="PageConfigVideo"    x:Uid="NaviConfigVideo" />
+                    <TextBlock Tag="PageConfigEditer"   x:Uid="NaviConfigEditer" />
+                    <TextBlock Tag="PageConfigPlayer"   x:Uid="NaviConfigPlayer" />
+                    <TextBlock Tag="PageConfigPlayerE"  x:Uid="NaviConfigPlayerE" />
+                    <TextBlock Tag="PageConfigPlayerA"  x:Uid="NaviConfigPlayerA" />
+                    <TextBlock Tag="PageConfigPlayerD"  x:Uid="NaviConfigPlayerD" />
+                    
+                </ListView>
             </SplitView.Pane>
 
-            <Grid>
-                <ScrollViewer>
-                    <Frame x:Name="_ContentFrame" />
-                </ScrollViewer>
-            </Grid>
+            <ScrollViewer>
+                <Frame x:Name="_ContentFrame" 
+                    Margin="0"
+                    Padding="10"
+                    BorderBrush="{ThemeResource AccentControlElevationBorderBrush}"
+                    BorderThickness="1 0 0 0" />
+            </ScrollViewer>
         </SplitView>
     </Grid>
 </Page>

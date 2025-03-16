@@ -82,6 +82,11 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
 
     #region INotifyPropertyChanged
 
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
     /// <summary>
     /// Config再読み込み
     /// 
@@ -98,11 +103,6 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 

@@ -4,65 +4,43 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:local="using:DrumMidiEditorApp.pView.pConfig"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="10">
-        <StackPanel x:Name="_SettingStackPanel" Orientation="Vertical" Spacing="6">
+    <Grid>
+        
+        <StackPanel x:Name="_SettingStackPanel" Orientation="Vertical" Spacing="10">
 
-            <ToggleSwitch x:Uid="InputDarkMode"
-                IsOn="{x:Bind DrawSetPlayer.ScoreType2DarkModeFlag, Mode=TwoWay}"
-                Toggled="DarkModeToggleSwitch_Toggled" />
-
-            <Button x:Name="_BackgroundColorButton" x:Uid="InputBackgroudColor"
-                Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
-                Click="ColorButton_Click" />
-
-            <ToggleSwitch x:Uid="InputBpmNowDisplay"
-                IsOn="{x:Bind DrawSet.BpmNowDisplay, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <ToggleSwitch x:Uid="InputVolumeSize"
-                IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <ToggleSwitch x:Uid="InputVolumeZero"
-                IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <ToggleSwitch x:Uid="InputNoteTextDisplay"
-                IsOn="{x:Bind DrawSet.NoteTextOn, Mode=TwoWay}"
-                Toggled="ToggleSwitch_Toggled" />
-
-            <NumberBox x:Name="_MeasureNoHeightSizeNumberBox" x:Uid="InputMeasureNoHeightSize"
-                Value="{x:Bind DrawSet.MeasureNoHeightSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
+            <VariableSizedWrapGrid 
+                Orientation="Horizontal" 
+                MaximumRowsOrColumns="8"
+                Width="800"
                 HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
+                ItemHeight="64"
+                ItemWidth="160" >
 
-            <NumberBox x:Name="_NoteTermHeightNumberBox" x:Uid="InputNoteTermHeight"
-                Value="{x:Bind DrawSet.NoteTermHeightSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
+                <ToggleSwitch x:Uid="InputDarkMode"
+                    IsOn="{x:Bind DrawSetPlayer.ScoreType2DarkModeFlag, Mode=TwoWay}"
+                    Toggled="DarkModeToggleSwitch_Toggled" />
 
-            <NumberBox x:Name="_NoteTermWidthNumberBox" x:Uid="InputNoteTermWidth"
-                Value="{x:Bind DrawSet.NoteTermWidthSize, Mode=TwoWay}"
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
+                <ToggleSwitch x:Uid="InputBpmNowDisplay"
+                    IsOn="{x:Bind DrawSet.BpmNowDisplay, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
 
-            <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
-                Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
+                <ToggleSwitch x:Uid="InputVolumeSize"
+                    IsOn="{x:Bind DrawSet.NoteVolumeSizeOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
 
-            <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
-                Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
-                Style="{StaticResource PanelItemSizeStyle}"
-                HorizontalAlignment="Left"
-                ValueChanged="SizeNumberBox_ValueChanged" />
+                <ToggleSwitch x:Uid="InputVolumeZero"
+                    IsOn="{x:Bind DrawSet.NoteVolumeZeroOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
+
+                <ToggleSwitch x:Uid="InputNoteTextDisplay"
+                    IsOn="{x:Bind DrawSet.NoteTextOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
+
+            </VariableSizedWrapGrid>
 
             <VariableSizedWrapGrid 
                 Orientation="Horizontal" 
@@ -71,7 +49,51 @@
                 HorizontalAlignment="Left"
                 ItemHeight="64"
                 ItemWidth="100" >
-           
+
+                <Button x:Name="_BackgroundColorButton" x:Uid="InputBackgroudColor"
+                    Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
+                    Click="ColorButton_Click" />
+
+                <NumberBox x:Name="_MeasureNoHeightSizeNumberBox" x:Uid="InputMeasureNoHeightSize"
+                    Value="{x:Bind DrawSet.MeasureNoHeightSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <NumberBox x:Name="_NoteTermHeightNumberBox" x:Uid="InputNoteTermHeight"
+                    Value="{x:Bind DrawSet.NoteTermHeightSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <NumberBox x:Name="_NoteTermWidthNumberBox" x:Uid="InputNoteTermWidth"
+                    Value="{x:Bind DrawSet.NoteTermWidthSize, Mode=TwoWay}"
+                    Style="{StaticResource PanelItemSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <NumberBox x:Name="_NoteHeightNumberBox" x:Uid="InputNoteHeight"
+                    Value="{x:Bind DrawSet.NoteHeightSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+                <NumberBox x:Name="_NoteWidthNumberBox" x:Uid="InputNoteWidth"
+                    Value="{x:Bind DrawSet.NoteWidthSize, Mode=TwoWay}" 
+                    Style="{StaticResource PanelItemSizeStyle}"
+                    HorizontalAlignment="Left"
+                    ValueChanged="SizeNumberBox_ValueChanged" />
+
+            </VariableSizedWrapGrid>
+
+            <VariableSizedWrapGrid 
+                Orientation="Horizontal" 
+                MaximumRowsOrColumns="8"
+                Width="800"
+                HorizontalAlignment="Left"
+                ItemHeight="64"
+                ItemWidth="100" >
+
                 <NumberBox x:Name="_Line128NumberBox" x:Uid="InputLine128Size"
                     Value="{x:Bind DrawSet.SheetMeasure128Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -82,7 +104,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure128Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line064NumberBox" x:Uid="InputLine064Size"
                     Value="{x:Bind DrawSet.SheetMeasure064Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -93,7 +115,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure064Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line032NumberBox" x:Uid="InputLine032Size"
                     Value="{x:Bind DrawSet.SheetMeasure032Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -104,7 +126,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure032Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line016NumberBox" x:Uid="InputLine016Size"
                     Value="{x:Bind DrawSet.SheetMeasure016Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -115,7 +137,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure016Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line008NumberBox" x:Uid="InputLine008Size"
                     Value="{x:Bind DrawSet.SheetMeasure008Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -126,7 +148,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure008Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line004NumberBox" x:Uid="InputLine004Size"
                     Value="{x:Bind DrawSet.SheetMeasure004Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -137,7 +159,7 @@
                     Background="{x:Bind DrawSet.SheetMeasure004Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
                 <NumberBox x:Name="_Line001NumberBox" x:Uid="InputLine001Size"
                     Value="{x:Bind DrawSet.SheetMeasure001Line.LineSize, Mode=TwoWay}" 
                     Style="{StaticResource PanelItemLineSizeStyle}"
@@ -148,9 +170,12 @@
                     Background="{x:Bind DrawSet.SheetMeasure001Line.LineColor.ColorBrush, Mode=TwoWay}"
                     VerticalAlignment="Bottom"
                     Click="ColorButton_Click" />
-                
+
             </VariableSizedWrapGrid>
-            
+
+            <local:UserControlPlayerScoreType2ScaleItem />
+
         </StackPanel>
+
     </Grid>
 </Page>

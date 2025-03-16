@@ -179,25 +179,6 @@ public class PlayerSurfaceBase : IPlayerSurface
                         _NotePositionX = (int)note_pos;
                     }
                     break;
-                case PlayState.Recording:
-                    {
-                        // Calc sheet position
-                        _DmsPlayTime = aFrameTime;
-
-                        var note_pos = DmsControl.PlayNote( _DmsPlayTime );
-
-                        _SheetPosX = note_pos;
-
-                        var limit_width = ConfigSystem.NoteCount;
-
-                        if ( _SheetPosX > limit_width )
-                        {
-                            _SheetPosX = limit_width;
-                        }
-
-                        _NotePositionX = (int)note_pos;
-                    }
-                    break;
                 case PlayState.PrePlayStart:
                     {
                         _DmsPlayStatePre = _DmsPlayState;
@@ -278,8 +259,31 @@ public class PlayerSurfaceBase : IPlayerSurface
                         _NotePositionX  = 0;
                         _DmsPlayTime    = DmsControl.StartPlayTime;
                         _DmsPlayState   = PlayState.Recording;
+
+                        // 続けて Recordingの処理を実行する
+                        OnMove( aFrameTime );
                     }
                     break;
+                case PlayState.Recording:
+                    {
+                        // Calc sheet position
+                        _DmsPlayTime = aFrameTime;
+
+                        var note_pos = DmsControl.PlayNote( _DmsPlayTime );
+
+                        _SheetPosX = note_pos;
+
+                        var limit_width = ConfigSystem.NoteCount;
+
+                        if ( _SheetPosX > limit_width )
+                        {
+                            _SheetPosX = limit_width;
+                        }
+
+                        _NotePositionX = (int)note_pos;
+                    }
+                    break;
+
                 case PlayState.Stop:
                     {
                     }
