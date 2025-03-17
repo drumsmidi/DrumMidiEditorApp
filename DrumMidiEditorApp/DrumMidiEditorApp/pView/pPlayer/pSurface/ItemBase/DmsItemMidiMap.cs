@@ -110,7 +110,7 @@ internal partial class DmsItemMidiMap : DisposeBaseClass
     /// <param name="aDiffY">描画差分Y</param>
     public void Draw( CanvasDrawingSession aGraphics )
     {
-        HelperXaml.DrawFormatRect
+        HelperWin2D.DrawFormatRect
             (
                 aGraphics,
                 DrawRect,

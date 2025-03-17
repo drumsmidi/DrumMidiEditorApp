@@ -87,7 +87,7 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        HelperXaml.DrawFormatRect( aGraphics, rect, _FormatRect, _Info?.Bpm.ToString() ?? string.Empty );
+        HelperWin2D.DrawFormatRect( aGraphics, rect, _FormatRect, _Info?.Bpm.ToString() ?? string.Empty );
     }
 
     /// <summary>

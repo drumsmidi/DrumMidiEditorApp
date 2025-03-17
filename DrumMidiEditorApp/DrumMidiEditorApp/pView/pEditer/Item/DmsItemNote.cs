@@ -94,12 +94,12 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
         if ( InfoNote.NoteOn )
         {
             // ノートON描画
-            HelperXaml.DrawFormatRectFillEllipse( aGraphics, rect, _FormatRect );
+            HelperWin2D.DrawFormatRectFillEllipse( aGraphics, rect, _FormatRect );
 
             // ノートON-OFF間の線を描画
             if ( NoteLength > 0 )
             {
-                HelperXaml.DrawFormatLine
+                HelperWin2D.DrawFormatLine
                     (
                         aGraphics,
                         (float)rect.Right,
@@ -122,7 +122,7 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
                 ];
 
             // ノートOFF描画
-            HelperXaml.DrawFormatRectOutlineGeometry
+            HelperWin2D.DrawFormatRectOutlineGeometry
                     (
                         aGraphics,  
                         CanvasGeometry.CreatePolygon( sender, ps ),
@@ -133,7 +133,7 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
         // ノートON-OFF間の線を描画
         if ( NoteOnItem != null )
         {
-            HelperXaml.DrawFormatLine
+            HelperWin2D.DrawFormatLine
                 (
                     aGraphics,
                     (float)( rect.X - NoteOnItem.NoteLength ),
@@ -147,7 +147,7 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
         if ( InfoNote.Selected )
         {
             // ノート選択時の外枠を描画
-            HelperXaml.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteSelectRect );
+            HelperWin2D.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteSelectRect );
         }
     }
 
@@ -172,7 +172,7 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
                 DrawRect.Height + 4
             );
 
-        HelperXaml.DrawFormatRectOutlineEllipse( aGraphics, rect, Config.Editer.NotePredictRect );
+        HelperWin2D.DrawFormatRectOutlineEllipse( aGraphics, rect, Config.Editer.NotePredictRect );
     }
 
     /// <summary>

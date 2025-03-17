@@ -109,7 +109,7 @@ internal partial class DmsItemMeasure : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        HelperXaml.DrawFormatRect
+        HelperWin2D.DrawFormatRect
             ( 
                 aGraphics, 
                 rect,

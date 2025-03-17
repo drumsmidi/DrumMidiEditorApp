@@ -81,13 +81,13 @@ public partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<Dms
         rect.Y += aDiffY;
 
         // 背景色
-        HelperXaml.DrawFormatRectFillRectangle( aGraphics, rect, format );
+        HelperWin2D.DrawFormatRectFillRectangle( aGraphics, rect, format );
 
         rect.X      += rect.Width + 1;
         rect.Width  += 100;
 
         // テキスト描画
-        HelperXaml.DrawFormatRectText( aGraphics, rect, format, $"{_BpmInfo.Bpm}" );
+        HelperWin2D.DrawFormatRectText( aGraphics, rect, format, $"{_BpmInfo.Bpm}" );
     }
 
     /// <summary>

@@ -78,5 +78,5 @@ internal partial class DmsItemMidiMap( MidiMapGroup aGroup, float aX, float aY, 
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
     public void Draw( CanvasDrawingSession aGraphics ) 
-        => HelperXaml.DrawFormatRect( aGraphics, DrawRect, _FormatRect, _MidiMapGroup?.GroupName ?? string.Empty );
+        => HelperWin2D.DrawFormatRect( aGraphics, DrawRect, _FormatRect, _MidiMapGroup?.GroupName ?? string.Empty );
 }

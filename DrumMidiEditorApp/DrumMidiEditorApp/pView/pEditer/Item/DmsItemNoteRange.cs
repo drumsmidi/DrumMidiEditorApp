@@ -298,7 +298,7 @@ public partial class DmsItemNoteRange : DisposeBaseClass
 
         var rect = GetSelectRange( aStartNotePos );
 
-        HelperXaml.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteRangeRect );
+        HelperWin2D.DrawFormatRectOutlineRectangle( aGraphics, rect, Config.Editer.NoteRangeRect );
     }
 
     /// <summary>

@@ -3263,7 +3263,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                             DrawSet.NoteHeightSize
                         );
 
-                    HelperXaml.DrawFormatRectFillRectangle
+                    HelperWin2D.DrawFormatRectFillRectangle
                         (
                             args.DrawingSession,
                             rect,
@@ -3350,7 +3350,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region body
                 {
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _BpmBodyRange,
@@ -3398,7 +3398,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region header
                 {
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _BpmHeadRange,
@@ -3416,7 +3416,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 #region body
                 {
                     // 背景描画
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _VolumeBodyRange,
@@ -3452,7 +3452,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 #region Header
                 {
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _VolumeHeadRange,
@@ -3469,7 +3469,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 #region body
                 {
                     // 背景色
-                    HelperXaml.DrawFormatRectFillRectangle
+                    HelperWin2D.DrawFormatRectFillRectangle
                         (
                             args.DrawingSession,
                             _MeasureNoBodyRange,
@@ -3489,7 +3489,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         rect.X = _MeasureNoBodyRange.X + ( measure_size * measure_no ) - sheet_pos.X;
 
                         // 外枠
-                        HelperXaml.DrawFormatRectOutlineRectangle
+                        HelperWin2D.DrawFormatRectOutlineRectangle
                             (
                                 args.DrawingSession,
                                 rect,
@@ -3499,7 +3499,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         rect.X += 5;
 
                         // テキスト
-                        HelperXaml.DrawFormatRectText
+                        HelperWin2D.DrawFormatRectText
                             (
                                 args.DrawingSession,
                                 rect,
@@ -3512,7 +3512,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 #region header
                 {
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _MeasureNoHeadRange,
@@ -3530,7 +3530,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     var x = body._x + (( _NoteCursorPosition.X - note_pos.X ) * DrawSet.NoteWidthSize);
 
-                    HelperXaml.DrawFormatLine
+                    HelperWin2D.DrawFormatLine
                         (
                             args.DrawingSession,
                             x,
@@ -3547,7 +3547,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 #region header
                 {
-                    HelperXaml.DrawFormatRect
+                    HelperWin2D.DrawFormatRect
                         (
                             args.DrawingSession,
                             _InfoRange,

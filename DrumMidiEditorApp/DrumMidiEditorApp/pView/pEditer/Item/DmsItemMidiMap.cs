@@ -139,7 +139,7 @@ public partial class DmsItemMidiMap : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        HelperXaml.DrawFormatRect
+        HelperWin2D.DrawFormatRect
             (
                 aGraphics,
                 rect,

@@ -103,7 +103,7 @@ public partial class DmsItemSupportLine : DisposeBaseClass
         {
             var x = _NoteColumnRect._x + (( _NotePosXStart - aNotePosX ) * _NoteColumnRect._width );
 
-            HelperXaml.DrawFormatLine
+            HelperWin2D.DrawFormatLine
                 (
                     aGraphics,
                     x,
@@ -126,7 +126,7 @@ public partial class DmsItemSupportLine : DisposeBaseClass
             {
                 x = _NoteColumnRect._x + ( ( i - aNotePosX ) * _NoteColumnRect._width );
 
-                HelperXaml.DrawFormatLine
+                HelperWin2D.DrawFormatLine
                     (
                         aGraphics,
                         x,

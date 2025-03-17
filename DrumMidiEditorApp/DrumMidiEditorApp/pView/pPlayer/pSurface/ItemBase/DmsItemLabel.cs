@@ -84,6 +84,6 @@ internal partial class DmsItemLabel : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        HelperXaml.DrawFormatRect( aGraphics, _DrawRect, _FormatRect, Text ?? string.Empty );
+        HelperWin2D.DrawFormatRect( aGraphics, _DrawRect, _FormatRect, Text ?? string.Empty );
     }
 }

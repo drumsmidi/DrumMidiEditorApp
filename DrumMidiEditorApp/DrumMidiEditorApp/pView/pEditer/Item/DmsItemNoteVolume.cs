@@ -88,7 +88,7 @@ public partial class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo,
             );
 
         // 音量線描画
-        HelperXaml.DrawFormatRectFillRectangle( aGraphics, rect, _FormatRect );
+        HelperWin2D.DrawFormatRectFillRectangle( aGraphics, rect, _FormatRect );
 
         if ( Config.Editer.VolumeValueDisplay )
         {
@@ -98,7 +98,7 @@ public partial class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo,
             rect.Width   = 100;
             rect.Height  = 10;
 
-            HelperXaml.DrawFormatRectText( aGraphics, rect, _FormatRect, $"{_NoteInfo.Volume}" );
+            HelperWin2D.DrawFormatRectText( aGraphics, rect, _FormatRect, $"{_NoteInfo.Volume}" );
         }
     }
 }

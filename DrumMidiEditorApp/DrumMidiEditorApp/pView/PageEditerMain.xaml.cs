@@ -28,15 +28,15 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
 
     #region INotifyPropertyChanged
 
-    /// <summary>
-    /// x:Bind OneWay/TwoWay 再読み込み
-    /// </summary>
-    public void ReloadPlayer() => OnPropertyChanged( "ConfigPlayer" );
-
     public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
     public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
         => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
+    /// <summary>
+    /// x:Bind OneWay/TwoWay 再読み込み
+    /// </summary>
+    public void ReloadPlayer() => OnPropertyChanged( "ConfigPlayer" );
 
     #endregion
 

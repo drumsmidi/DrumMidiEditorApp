@@ -345,7 +345,7 @@ public partial class DmsItemVolumeRange : DisposeBaseClass
             p1.Y = _BottomPoint.Y - _VolumeList [ i ];
             p2.Y = _BottomPoint.Y - _VolumeList [ i + 1 ];
 
-            HelperXaml.DrawFormatLine( aGraphics, p1, p2, format );
+            HelperWin2D.DrawFormatLine( aGraphics, p1, p2, format );
 
             switch ( EditType )
             {
@@ -358,7 +358,7 @@ public partial class DmsItemVolumeRange : DisposeBaseClass
                         p1.Y -= _EndVolume - StartVolume;
                         p2.Y -= _EndVolume - StartVolume;
 
-                        HelperXaml.DrawFormatLine( aGraphics, p1, p2, format );
+                        HelperWin2D.DrawFormatLine( aGraphics, p1, p2, format );
                     }
                     break;
             }

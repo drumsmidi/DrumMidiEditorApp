@@ -77,6 +77,6 @@ internal partial class DmsItemLine : DisposeBaseClass
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
-        HelperXaml.DrawFormatLine( aGraphics, rect, _FormatLine );
+        HelperWin2D.DrawFormatLine( aGraphics, rect, _FormatLine );
     }
 }
