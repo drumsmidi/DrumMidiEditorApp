@@ -202,7 +202,8 @@ public partial class PdfIO : DisposeBaseClass
             return false;
         }
 
-        using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
+        using var mat = Mat.FromImageData( buffer );
+    //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
     //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
         // オブジェクトの開始バイト位置

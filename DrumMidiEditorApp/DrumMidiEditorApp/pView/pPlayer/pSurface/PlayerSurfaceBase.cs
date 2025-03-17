@@ -257,7 +257,7 @@ public class PlayerSurfaceBase : IPlayerSurface
 
                         _SheetPosX      = 0;
                         _NotePositionX  = 0;
-                        _DmsPlayTime    = DmsControl.StartPlayTime;
+                        _DmsPlayTime    = 0;
                         _DmsPlayState   = PlayState.Recording;
 
                         // 続けて Recordingの処理を実行する

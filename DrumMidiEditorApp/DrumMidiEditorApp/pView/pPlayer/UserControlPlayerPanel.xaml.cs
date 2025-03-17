@@ -49,7 +49,8 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
                 Config.Media.DefaultDpi, // DisplayInformation.GetForCurrentView().LogicalDpi
-                DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                DirectXPixelFormat.R8G8B8A8UIntNormalized,
+            //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
                 2,
                 CanvasAlphaMode.Premultiplied
             );

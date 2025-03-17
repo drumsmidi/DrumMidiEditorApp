@@ -428,7 +428,7 @@ public static class FileIO
     #endregion
 
     /// <summary>
-    /// スコア保存
+    /// スコア読込
     /// </summary>
     /// <param name="aFilePath">スコアファイルパス</param>
     /// <param name="aScore">出力スコア</param>
