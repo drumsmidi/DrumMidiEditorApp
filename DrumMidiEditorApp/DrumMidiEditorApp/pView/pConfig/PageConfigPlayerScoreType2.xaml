@@ -15,7 +15,7 @@
             <VariableSizedWrapGrid 
                 Orientation="Horizontal" 
                 MaximumRowsOrColumns="8"
-                Width="800"
+                Width="960"
                 HorizontalAlignment="Left"
                 ItemHeight="64"
                 ItemWidth="160" >
@@ -39,6 +39,11 @@
                 <ToggleSwitch x:Uid="InputNoteTextDisplay"
                     IsOn="{x:Bind DrawSet.NoteTextOn, Mode=TwoWay}"
                     Toggled="ToggleSwitch_Toggled" />
+
+                <ToggleSwitch x:Uid="InputCursorRectDisplay"
+                    IsOn="{x:Bind DrawSet.CursorRectOn, Mode=TwoWay}"
+                    Toggled="ToggleSwitch_Toggled" />
+
 
             </VariableSizedWrapGrid>
 

@@ -175,7 +175,6 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
                                 } ),
         };
 
-
     /// <summary>
     /// ノート高さ
     /// </summary>
@@ -226,7 +225,7 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// カーソルペン
     /// </summary>
     [JsonInclude]
-    public FormatLine CursolLine
+    public FormatLine CursorLine
     {
         get; set;
     } = new()
@@ -234,6 +233,33 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
             LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
             LineSize    = 1.0F,
         };
+
+    /// <summary>
+    /// カーソル位置より前の塗りつぶり用
+    /// </summary>
+    [JsonInclude]
+    public FormatRect CursorRect
+    {
+        get; set;
+    } = new()
+        {
+            Background  = new( aDarkMode ? Color.FromArgb( 160,   0,   0,   0 ) : Color.FromArgb( 160, 255, 255, 255 ) ),
+            Line        = new( aDarkMode ? Color.FromArgb(   0, 255, 255, 255 ) : Color.FromArgb(   0,   0,   0,   0 ), 0.0F ),
+            Text        = new( aDarkMode ? Color.FromArgb(   0, 255, 255, 255 ) : Color.FromArgb(   0,   0,   0,   0 ),
+                                new()
+                                {
+                                    FontFamily          = Config.Media.DefaultFontFamily,
+                                    FontSize            = 24F,
+                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
+                                } ),
+        };
+
+    /// <summary>
+    /// カーソル位置より前の塗りつぶり表示フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool CursorRectOn { get; set; } = true;
 
     /// <summary>
     /// 小節128分間隔の線ペン

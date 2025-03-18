@@ -569,4 +569,7 @@ BPMノートを含める</value>
   <data name="MenuItemExportPdf.Text" xml:space="preserve">
     <value>Pdf</value>
   </data>
+  <data name="InputCursorRectDisplay.Header" xml:space="preserve">
+    <value>カーソル塗潰し</value>
+  </data>
 </root>

@@ -73,9 +73,9 @@ public class PlayerSurface : PlayerSurfaceBase
     private DmsItemLabel? _NowBpm = null;
 
     /// <summary>
-    /// 現在の再生位置ライン
+    /// カーソル表示
     /// </summary>
-    private DmsItemLine? _NowPosition = null;
+    private DmsItemCursor? _NowPosition = null;
 
     #endregion
 
@@ -130,7 +130,8 @@ public class PlayerSurface : PlayerSurfaceBase
                 body._y,
                 0,
                 body._height,
-                DrawSet.CursolLine
+                DrawSet.CursorRect,
+                DrawSet.CursorLine
             );
 
         #endregion
@@ -476,7 +477,6 @@ public class PlayerSurface : PlayerSurfaceBase
 
         var measure_end = measure_start + ( measure_x * measure_y ) - 1;
 
-
         #region Paint section
         {
             int     cnt;
@@ -546,12 +546,22 @@ public class PlayerSurface : PlayerSurfaceBase
 
         #region Cursol
         {
-            var measure_no  = (int)( _SheetPosX / ConfigSystem.MeasureNoteNumber );
+            float   diff_x;
+            float   diff_y;
+            float   div_x;
 
-            var diff_x = ( measure_size  * ( measure_no % measure_x ) ) + ( _SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize );
-            var diff_y = section._height * ( measure_no / measure_x % measure_y );
+            var cur_measure_no  = (int)( _SheetPosX / ConfigSystem.MeasureNoteNumber );
 
-            _NowPosition?.Draw( args.DrawingSession, diff_x, diff_y );
+            for ( var measure_no = measure_start; measure_no <= cur_measure_no; measure_no++ )
+            {
+                diff_x  = measure_size * ( measure_no % measure_x );
+                diff_y  = section._height * ( measure_no / measure_x % measure_y );
+                div_x   = ( measure_no == cur_measure_no )
+                            ? _SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize
+                            : measure_size ;
+
+                _NowPosition?.Draw( args.DrawingSession, diff_x, diff_y, div_x, measure_no == cur_measure_no );
+            }
         }
         #endregion
 
