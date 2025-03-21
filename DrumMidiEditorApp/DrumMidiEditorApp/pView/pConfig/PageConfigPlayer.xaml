@@ -16,6 +16,7 @@
                 SelectionChanged="PlayerSurfaceModeComboBox_SelectionChanged" />
 
             <ComboBox x:Uid="InputPlayerSurfaceEffectMode"
+                IsEnabled="False"
                 ItemsSource="{x:Bind _PlayerSurfaceEffectModeList, Mode=OneTime}"
                 SelectedIndex="{x:Bind DrawSet.PlayerSurfaceEffectModeSelectIndex, Mode=TwoWay}"
                 SelectionChanged="PlayerSurfaceEffectModeComboBox_SelectionChanged" />

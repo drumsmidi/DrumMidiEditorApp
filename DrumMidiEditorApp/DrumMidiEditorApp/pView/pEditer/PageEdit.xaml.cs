@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using Windows.Foundation;
-using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -24,11 +25,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// Editerタブ設定
     /// </summary>
     private ConfigEditer DrawSet => Config.Editer;
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Scale設定
@@ -68,9 +64,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         #region 小節番号リスト作成
 
-        var keta = ConfigSystem.MeasureMaxNumber.ToString().Length;
+        var keta = Config.System.MeasureMaxNumber.ToString().Length;
 
-        for ( var measure_no = 0; measure_no <= ConfigSystem.MeasureMaxNumber; measure_no++ )
+        for ( var measure_no = 0; measure_no <= Config.System.MeasureMaxNumber; measure_no++ )
         {
             _MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
         }
@@ -116,6 +112,11 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
     #region INotifyPropertyChanged
 
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
     /// <summary>
     /// 描画設定再読み込み
     /// 
@@ -132,11 +133,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 
@@ -199,7 +195,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <param name="aMeasureNo">小節番号</param>
     private void JumpMeasure( int aMeasureNo )
     {
-        DrawSet.NotePosition = new( aMeasureNo * ConfigSystem.MeasureNoteNumber, DrawSet.NotePosition.Y );
+        DrawSet.NotePosition = new( aMeasureNo * Config.System.MeasureNoteNumber, DrawSet.NotePosition.Y );
 
         EventManage.Event_Editer_UpdateSheetPos();
     }
@@ -417,7 +413,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
                     (
                         0,
                         0,
-                        ConfigSystem.NoteCount,
+                        Config.System.NoteCount,
                         Score.EditChannel.MidiMapSet.DisplayMidiMapAllCount
                     )
                 );

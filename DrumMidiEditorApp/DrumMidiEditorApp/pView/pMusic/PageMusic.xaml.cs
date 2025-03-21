@@ -1,14 +1,16 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.Storage.Pickers;
-using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMusic;
 
@@ -25,11 +27,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// 設定
     /// </summary>
     private ConfigMedia ConfigMedia => Config.Media;
-
-    /// <summary>
-    /// 設定
-    /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
 
     #endregion
 
@@ -56,6 +53,11 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
 
     #region INotifyPropertyChanged
 
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
+
     /// <summary>
     /// MusicInfo再読み込み
     /// 
@@ -73,11 +75,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
-
     #endregion
 
     #region MusicInfo
@@ -94,9 +91,9 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
             HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportBgm,
+                    Config.File.SupportBgm,
                     PickerLocationId.MusicLibrary,
-                    ConfigSystem.FolderBgm,
+                    ConfigFile.FolderBgm,
                     ( filepath ) =>
                     {
                         MusicInfo.BgmFilePath.AbsoulteFilePath = filepath.AbsoulteFilePath;

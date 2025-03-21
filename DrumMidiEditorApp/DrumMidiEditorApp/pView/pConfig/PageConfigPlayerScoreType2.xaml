@@ -44,7 +44,6 @@
                     IsOn="{x:Bind DrawSet.CursorRectOn, Mode=TwoWay}"
                     Toggled="ToggleSwitch_Toggled" />
 
-
             </VariableSizedWrapGrid>
 
             <VariableSizedWrapGrid 

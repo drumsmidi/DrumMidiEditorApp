@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pView.pEditer;
+﻿using DrumMidiEditorApp.pView.pEditer;
+using DrumMidiLibrary.pModel;
+using System.Collections.Generic;
 
 namespace DrumMidiEditorApp.pResume;
 

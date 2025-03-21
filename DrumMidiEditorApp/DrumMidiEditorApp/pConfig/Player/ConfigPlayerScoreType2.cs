@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas.Text;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -363,7 +363,6 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// １小節の横幅
     /// </summary>
     public float MeasureSize => NoteTermWidthSize * Config.System.MeasureNoteNumber;
-
 
     #region 音階
 

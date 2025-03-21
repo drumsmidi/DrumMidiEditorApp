@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using DrumMidiEditorApp.pAudio;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pConfig;
-using Windows.Foundation;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
-using DrumMidiEditorApp.pUtil.pHelper;
+using System;
+using System.Collections.Generic;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
@@ -284,7 +284,7 @@ public partial class DmsItemVolumeRange : DisposeBaseClass
                     break;
                 case ConfigEditer.VolumeEditType.Curve4:
                     c1 = StartVolume + ( ( _EndVolume - StartVolume ) / 3.0F );
-                    c2 = _EndVolume + ( ( _EndVolume - StartVolume ) / 3.0F * 2.0F );
+                    c2 = _EndVolume  + ( ( _EndVolume - StartVolume ) / 3.0F * 2.0F );
                     break;
             }
 

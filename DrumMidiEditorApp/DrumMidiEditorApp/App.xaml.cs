@@ -1,11 +1,12 @@
-﻿using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pIO;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pUtil.pHelper;
+﻿using DrumMidiEditorApp.pIO;
+using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pView;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
+
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
 
 namespace DrumMidiEditorApp;
@@ -81,9 +82,9 @@ public partial class App : Application
                 {
                     if ( data.Files.Count > 0 )
                     {
-                        Config.System.AppStartDmsPath = new( data.Files [ 0 ].Path ?? string.Empty );
+                        DMS.AppStartDmsPath = new( data.Files [ 0 ].Path ?? string.Empty );
 
-                        Log.Info( $"起動ファイル={Config.System.AppStartDmsPath.AbsoulteFilePath}" );
+                        Log.Info( $"起動ファイル={DMS.AppStartDmsPath.AbsoulteFilePath}" );
                     }
                 }
             }

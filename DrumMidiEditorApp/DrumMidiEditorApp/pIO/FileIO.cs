@@ -1,17 +1,20 @@
-﻿using System;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pView;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pIO.pJson;
+using DrumMidiLibrary.pIO.pScore;
+using DrumMidiLibrary.pIO.pVideo;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
+using DrumMidiLibrary.pIO.pPdf;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pIO.pJson;
-using DrumMidiEditorApp.pIO.pScore;
-using DrumMidiEditorApp.pIO.pVideo;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pView;
 
 namespace DrumMidiEditorApp.pIO;
 
@@ -31,36 +34,48 @@ public static class FileIO
         using var _ = new LogBlock( Log.GetThisMethodName );
 
 #pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
-        var path = new GeneralPath( Config.System.FolderConfig );
+        var path = new GeneralPath( Config.File.FolderConfig );
 #pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
-        path.FileName = Config.System.FileNameConfigSystem;
-        Config.System = LoadConfig<ConfigSystem>( path ) ?? Config.System;
+        path.FileName    = ConfigFile.FileNameConfigSystem;
+        Config.System    = LoadConfig<ConfigSystem>( path ) ?? Config.System;
 
         // ConfigMedia
-        path.FileName = Config.System.FileNameConfigMedia;
-        Config.Media = LoadConfig<ConfigMedia>( path ) ?? Config.Media;
+        path.FileName    = ConfigFile.FileNameConfigMedia;
+        Config.Media     = LoadConfig<ConfigMedia>( path ) ?? Config.Media;
 
         // ConfigEditer
-        path.FileName = Config.System.FileNameConfigEditer;
-        Config.Editer = LoadConfig<ConfigEditer>( path ) ?? Config.Editer;
-
-        // ConfigPlayer
-        path.FileName = Config.System.FileNameConfigPlayer;
-        Config.Player = LoadConfig<ConfigPlayer>( path ) ?? Config.Player;
-
-        // ConfigScore
-        path.FileName = Config.System.FileNameConfigScore;
-        Config.Score = LoadConfig<ConfigScore>( path ) ?? Config.Score;
+        path.FileName    = ConfigFile.FileNameConfigEditer;
+        Config.Editer    = LoadConfig<ConfigEditer>( path ) ?? Config.Editer;
 
         // ConfigEqualizer
-        path.FileName = Config.System.FileNameConfigEqualizer;
+        path.FileName    = ConfigFile.FileNameConfigEqualizer;
         Config.Equalizer = LoadConfig<ConfigEqualizer>( path ) ?? Config.Equalizer;
 
+        // ConfigFile
+        path.FileName    = ConfigFile.FileNameConfigFile;
+        Config.File      = LoadConfig<ConfigFile>( path ) ?? Config.File;
+
+        // ConfigMachine
+        path.FileName    = ConfigFile.FileNameConfigMachine;
+        Config.Machine   = LoadConfig<ConfigMachine>( path ) ?? Config.Machine;
+
         // ConfigScale
-        path.FileName = Config.System.FileNameConfigScale;
-        Config.Scale = LoadConfig<ConfigScale>( path ) ?? Config.Scale;
+        path.FileName    = ConfigFile.FileNameConfigScale;
+        Config.Scale     = LoadConfig<ConfigScale>( path ) ?? Config.Scale;
+
+        // ConfigScore
+        path.FileName    = ConfigFile.FileNameConfigScore;
+        Config.Score     = LoadConfig<ConfigScore>( path ) ?? Config.Score;
+
+        // ConfigWindow
+        path.FileName    = ConfigFile.FileNameConfigWindow;
+        Config.Window    = LoadConfig<ConfigWindow>( path ) ?? Config.Window;
+
+        // ConfigPlayer
+        path.FileName    = ConfigFile.FileNameConfigPlayer;
+        Config.Player    = LoadConfig<ConfigPlayer>( path ) ?? Config.Player;
 
         return true;
     }
@@ -101,36 +116,48 @@ public static class FileIO
         DocumentFolderStructure();
 
 #pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
-        var path = new GeneralPath( Config.System.FolderConfig );
+        var path = new GeneralPath( Config.File.FolderConfig );
 #pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
-        path.FileName = Config.System.FileNameConfigSystem;
-        SaveConfig( path, Config.System );
+        path.FileName = ConfigFile.FileNameConfigSystem;
+        SaveConfig( path, Config.File );
 
         // ConfigMedia
-        path.FileName = Config.System.FileNameConfigMedia;
+        path.FileName = ConfigFile.FileNameConfigMedia;
         SaveConfig( path, Config.Media );
 
         // ConfigEditer
-        path.FileName = Config.System.FileNameConfigEditer;
+        path.FileName = ConfigFile.FileNameConfigEditer;
         SaveConfig( path, Config.Editer );
 
-        // ConfigPlayer
-        path.FileName = Config.System.FileNameConfigPlayer;
-        SaveConfig( path, Config.Player );
-
-        // ConfigScore
-        path.FileName = Config.System.FileNameConfigScore;
-        SaveConfig( path, Config.Score );
-
         // ConfigEqualizer
-        path.FileName = Config.System.FileNameConfigEqualizer;
+        path.FileName = ConfigFile.FileNameConfigEqualizer;
         SaveConfig( path, Config.Equalizer );
 
+        // ConfigFile
+        path.FileName = ConfigFile.FileNameConfigEqualizer;
+        SaveConfig( path, Config.File );
+
+        // ConfigMachine
+        path.FileName = ConfigFile.FileNameConfigMachine;
+        SaveConfig( path, Config.Machine );
+
         // ConfigScale
-        path.FileName = Config.System.FileNameConfigScale;
+        path.FileName = ConfigFile.FileNameConfigScale;
         SaveConfig( path, Config.Scale );
+
+        // ConfigScore
+        path.FileName = ConfigFile.FileNameConfigScore;
+        SaveConfig( path, Config.Score );
+
+        // ConfigWindow
+        path.FileName = ConfigFile.FileNameConfigWindow;
+        SaveConfig( path, Config.Window );
+
+        // ConfigPlayer
+        path.FileName = ConfigFile.FileNameConfigPlayer;
+        SaveConfig( path, Config.Player );
 
         return true;
     }
@@ -370,8 +397,8 @@ public static class FileIO
     {
         var folderList = new List<GeneralPath>()
         {
-            Config.System.FolderConfig,
-            Config.System.FolderModel,
+            Config.File.FolderConfig,
+            Config.File.FolderModel,
         };
 
         var targetFolderList = new List<GeneralPath>();
@@ -443,17 +470,16 @@ public static class FileIO
         {
             var ext = aFilePath.Extension.ToLower();
 
-            if ( ext.Equals( ".dms" ) )
+            if ( ext.Equals( ConfigFile.ExtentionDms ) )
             {
                 ScoreIO.LoadFile( aFilePath, out aScore );
             }
-            else if ( ext.Equals( ".mid" ) )
+            else if ( ext.Equals( ConfigFile.ExtentionMidi ) )
             {
                 ScoreIO.LoadMidiFile( aFilePath, out aScore );
             }
-            else if ( ext.Equals( ".dtx" ) )
+            else if ( ext.Equals( ConfigFile.ExtentionDtx ) )
             {
-                // not recommended
                 ScoreIO.LoadDtxManiaFile( aFilePath, out aScore );
             }
             else

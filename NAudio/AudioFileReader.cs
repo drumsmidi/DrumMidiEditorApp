@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading;
-using NAudio.Core.Wave.SampleProviders;
+﻿using NAudio.Core.Wave.SampleProviders;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.Core.Wave.WaveStreams;
 using NAudio.WinMM;
+using System;
+using System.Threading;
 
-// ReSharper disable once CheckNamespace
 namespace NAudio;
 
 /// <summary>
@@ -18,14 +17,19 @@ namespace NAudio;
 /// ISampleProvider, making it possibly the only stage in your audio
 /// pipeline necessary for simple playback scenarios
 /// </summary>
-public partial class AudioFileReader : WaveStream, ISampleProvider
+public class AudioFileReader : WaveStream, ISampleProvider
 {
-    private WaveStream readerStream; // the waveStream which we will use for all positioning
-    private readonly SampleChannel sampleChannel; // sample provider that gives us most stuff we need
-    private readonly int destBytesPerSample;
-    private readonly int sourceBytesPerSample;
-    private readonly long length;
-    private readonly Lock lockObject;
+    private WaveStream _ReaderStream;
+
+    private readonly SampleChannel _SampleChannel;
+
+    private readonly int _DestBytesPerSample;
+
+    private readonly int _SourceBytesPerSample;
+
+    private readonly long _Length;
+
+    private readonly Lock _LockObj = new();
 
     /// <summary>
     /// Initializes a new instance of AudioFileReader
@@ -33,13 +37,15 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     /// <param name="fileName">The file to open</param>
     public AudioFileReader( string fileName )
     {
-        lockObject              = new Lock();
-        FileName                = fileName;
         CreateReaderStream( fileName );
-        sourceBytesPerSample    = readerStream.WaveFormat.BitsPerSample / 8 * readerStream.WaveFormat.Channels;
-        sampleChannel           = new SampleChannel( readerStream, false );
-        destBytesPerSample      = 4 * sampleChannel.WaveFormat.Channels;
-        length                  = SourceToDest( readerStream.Length );
+
+        _SourceBytesPerSample = _ReaderStream.WaveFormat.BitsPerSample / 8 * _ReaderStream.WaveFormat.Channels;
+
+        _SampleChannel = new( _ReaderStream, false );
+
+        _DestBytesPerSample = 4 * _SampleChannel.WaveFormat.Channels;
+
+        _Length = SourceToDest( _ReaderStream.Length );
     }
 
     /// <summary>
@@ -51,51 +57,45 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     {
         if ( fileName.EndsWith( ".wav", StringComparison.OrdinalIgnoreCase ) )
         {
-            readerStream = new WaveFileReader( fileName );
-            if ( readerStream.WaveFormat.Encoding is not WaveFormatEncoding.Pcm and not WaveFormatEncoding.IeeeFloat )
+            _ReaderStream = new WaveFileReader( fileName );
+
+            if ( _ReaderStream.WaveFormat.Encoding is not WaveFormatEncoding.Pcm and not WaveFormatEncoding.IeeeFloat )
             {
-                readerStream = WaveFormatConversionStream.CreatePcmStream( readerStream );
-                readerStream = new BlockAlignReductionStream( readerStream );
+                _ReaderStream = WaveFormatConversionStream.CreatePcmStream( _ReaderStream );
+                _ReaderStream = new BlockAlignReductionStream( _ReaderStream );
             }
         }
         else if ( fileName.EndsWith( ".mp3", StringComparison.OrdinalIgnoreCase ) )
         {
-            readerStream =  new Mp3FileReader( fileName );
+            _ReaderStream = new Mp3FileReader( fileName );
         }
         else
         {
             throw new NotSupportedException();
         }
     }
-    /// <summary>
-    /// File Name
-    /// </summary>
-    public string FileName
-    {
-        get;
-    }
 
     /// <summary>
     /// WaveFormat of this stream
     /// </summary>
-    public override WaveFormat WaveFormat => sampleChannel.WaveFormat;
+    public override WaveFormat WaveFormat => _SampleChannel.WaveFormat;
 
     /// <summary>
     /// Length of this stream (in bytes)
     /// </summary>
-    public override long Length => length;
+    public override long Length => _Length;
 
     /// <summary>
     /// Position of this stream (in bytes)
     /// </summary>
     public override long Position
     {
-        get => SourceToDest( readerStream.Position );
+        get => SourceToDest( _ReaderStream.Position );
         set
         {
-            lock ( lockObject )
+            lock ( _LockObj )
             {
-                readerStream.Position = DestToSource( value );
+                _ReaderStream.Position = DestToSource( value );
             }
         }
     }
@@ -109,9 +109,10 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     /// <returns>Number of bytes read</returns>
     public override int Read( byte [] buffer, int offset, int count )
     {
-        var waveBuffer      = new WaveBuffer(buffer);
-        var samplesRequired = count / 4;
-        var samplesRead     = Read( waveBuffer.FloatBuffer, offset / 4, samplesRequired );
+        var waveBuffer = new WaveBuffer( buffer );
+
+        var samplesRead = Read( waveBuffer.FloatBuffer, offset / 4, count / 4 );
+
         return samplesRead * 4;
     }
 
@@ -124,9 +125,9 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     /// <returns>Number of samples read</returns>
     public int Read( float [] buffer, int offset, int count )
     {
-        lock ( lockObject )
+        lock ( _LockObj )
         {
-            return sampleChannel.Read( buffer, offset, count );
+            return _SampleChannel.Read( buffer, offset, count );
         }
     }
 
@@ -134,13 +135,13 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     /// Helper to convert source to dest bytes
     /// </summary>
     private long SourceToDest( long sourceBytes ) 
-        => destBytesPerSample * ( sourceBytes / sourceBytesPerSample );
+        => _DestBytesPerSample * ( sourceBytes / _SourceBytesPerSample );
 
     /// <summary>
     /// Helper to convert dest to source bytes
     /// </summary>
     private long DestToSource( long destBytes ) 
-        => sourceBytesPerSample * ( destBytes / destBytesPerSample );
+        => _SourceBytesPerSample * ( destBytes / _DestBytesPerSample );
 
     /// <summary>
     /// Disposes this AudioFileReader
@@ -150,10 +151,10 @@ public partial class AudioFileReader : WaveStream, ISampleProvider
     {
         if ( disposing )
         {
-            if ( readerStream != null )
+            if ( _ReaderStream != null )
             {
-                readerStream.Dispose();
-                readerStream = null;
+                _ReaderStream.Dispose();
+                _ReaderStream = null;
             }
         }
         base.Dispose( disposing );

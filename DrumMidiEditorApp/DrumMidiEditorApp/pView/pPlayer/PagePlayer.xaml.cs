@@ -1,10 +1,10 @@
-﻿using System;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using System;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer;

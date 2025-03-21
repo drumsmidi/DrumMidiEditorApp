@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
+using System.Collections.Generic;
+using System.IO;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pMachineLearning;
@@ -78,10 +78,10 @@ internal class MLProcFFT : MLProcBase
                     (
                         new()
                         {
-                            DrumPattern = aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
-                            AbsoultNotePos = note_pos,
-                            HzCenter = bgm.GetHz( offset_y + ( (int)range.Height / 2 ) ),
-                            FFTBuffer = [ .. bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ) ],
+                            DrumPattern     = aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
+                            AbsoultNotePos  = note_pos,
+                            HzCenter        = bgm.GetHz( offset_y + ( (int)range.Height / 2 ) ),
+                            FFTBuffer       = [ .. bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ) ],
                         }
                     );
             }
@@ -99,8 +99,8 @@ internal class MLProcFFT : MLProcBase
     {
         // トレーニングデータとテストデータに分ける
         var dataSplit  = aMLContext.Data.TrainTestSplit( aTrainingData, 0.2d );
-        var trainData   = dataSplit.TrainSet;
-        var testData    = dataSplit.TestSet;
+        var trainData  = dataSplit.TrainSet;
+        var testData   = dataSplit.TestSet;
 
         #region 書式変換
 
@@ -120,7 +120,7 @@ internal class MLProcFFT : MLProcBase
                 .AppendCacheCheckpoint( aMLContext );
 
         var formatedModel      = formatPipeline.Fit( trainData );
-        var formatedModelData   = formatedModel.Transform( trainData );
+        var formatedModelData  = formatedModel.Transform( trainData );
 
         #endregion
 
@@ -129,8 +129,8 @@ internal class MLProcFFT : MLProcBase
         var retraining_filepath = string.Empty;
 
         IEstimator<ITransformer>? trainingPipeline;
-        ITransformer?               trainedModel = null;
-        IDataView?                  trainedModelData;
+        ITransformer?             trainedModel = null;
+        IDataView?                trainedModelData;
 
         var mode = Config.Machine.TrainingModeTypeSelect;
 
@@ -160,7 +160,7 @@ internal class MLProcFFT : MLProcBase
                         .Append( aMLContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy() );
 
                     // 再トレーニング
-                    retraining_filepath = $"{Config.System.FolderModel.RelativeFolderPath}\\model_retrain_LbfgsMaximumEntropyMulticlassTrainer.zip";
+                    retraining_filepath = $"{Config.File.FolderModel.RelativeFolderPath}\\model_retrain_LbfgsMaximumEntropyMulticlassTrainer.zip";
 
                     if ( File.Exists( retraining_filepath ) )
                     {
@@ -216,10 +216,10 @@ internal class MLProcFFT : MLProcBase
 
         #region 予測用のキー変換処理追加
 
-        var predictPipeline = trainingPipeline
+        var predictPipeline  = trainingPipeline
             .Append( aMLContext.Transforms.Conversion.MapKeyToValue( "PredictedLabel" ) );
 
-        var predictModel    = predictPipeline.Fit( trainedModelData );
+        var predictModel     = predictPipeline.Fit( trainedModelData );
         var predictModelData = predictModel.Transform( trainedModelData );
 
         #endregion
@@ -253,7 +253,7 @@ internal class MLProcFFT : MLProcBase
         }
 
         // 予測用データの保存
-        aMLContext.Model.Save( predictModel, predictModelData.Schema, $"{Config.System.FolderModel.RelativeFolderPath}\\model_predict_{DMS.OpenFilePath.FileName}.zip" );
+        aMLContext.Model.Save( predictModel, predictModelData.Schema, $"{Config.File.FolderModel.RelativeFolderPath}\\model_predict_{DMS.OpenFilePath.FileName}.zip" );
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ internal class MLProcFFT : MLProcBase
     protected override void Predict( MLContext aMLContext, IDataView aPredictInputData )
     {
         // 保存されたモデルを読み込む
-        var loadedModel = aMLContext.Model.Load( $"{Config.System.FolderModel.RelativeFolderPath}\\model_predict_{DMS.OpenFilePath.FileName}.zip", out var modelInputSchema );
+        var loadedModel = aMLContext.Model.Load( $"{Config.File.FolderModel.RelativeFolderPath}\\model_predict_{DMS.OpenFilePath.FileName}.zip", out var modelInputSchema );
 
         DMS.SCORE_PREDICT.EditChannelNo = DMS.SCORE.EditChannelNo;
         DMS.SCORE_PREDICT.EditChannel.ClearAll();

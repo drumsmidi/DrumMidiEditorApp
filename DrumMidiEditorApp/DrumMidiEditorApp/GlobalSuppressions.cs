@@ -13,3 +13,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pView.pEditer" )]
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pView.pPlayer.pSurface" )]
 [assembly: SuppressMessage( "Style", "IDE0130:Namespace がフォルダー構造と一致しません", Justification = "<保留中>", Scope = "namespace", Target = "~N:DrumMidiEditorApp.pMachineLearning" )]
+[assembly: SuppressMessage( "Performance", "CA1859:可能な場合は具象型を使用してパフォーマンスを向上させる", Justification = "<保留中>", Scope = "member", Target = "~M:DrumMidiEditorApp.pView.pPlayer.UserControlPlayerPanel.GetEffectImage(Microsoft.Graphics.Canvas.CanvasCommandList)~Microsoft.Graphics.Canvas.ICanvasImage" )]

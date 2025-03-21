@@ -1,11 +1,13 @@
-﻿using System;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
+using System;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
@@ -108,26 +110,35 @@ public class PlayerSurfaceBase : IPlayerSurface
 
     public virtual bool OnMove( double aFrameTime )
     {
-        #region Request play or loop play or stop
+        #region リクエスト処理
         {
-            switch ( DrawSetCom.PlayReq )
+            var req = DmsControl.PlayReq;
+
+            if (  req != DmsControl.PlayRequest.None )
             {
-                case ConfigPlayer.PlayRequest.PrePlay:
-                    _DmsPlayState = PlayState.PrePlayStart;
-                    break;
-                case ConfigPlayer.PlayRequest.PreLoopPlay:
-                    _DmsPlayState = PlayState.PreLoopPlayStart;
-                    break;
-                case ConfigPlayer.PlayRequest.PreStop:
-                    _DmsPlayState = PlayState.Stop;
-                    break;
-                case ConfigPlayer.PlayRequest.PreRecord:
-                    _DmsPlayState = PlayState.PreRecord;
-                    break;
+                DmsControl.PlayReq = DmsControl.PlayRequest.None;
+
+                switch ( req )
+                {
+                    case DmsControl.PlayRequest.PrePlay:
+                        _DmsPlayState = PlayState.PrePlayStart;
+                        break;
+                    case DmsControl.PlayRequest.PreLoopPlay:
+                        _DmsPlayState = PlayState.PreLoopPlayStart;
+                        break;
+                    case DmsControl.PlayRequest.PreStop:
+                        _DmsPlayState = PlayState.Stop;
+                        break;
+                    case DmsControl.PlayRequest.PreRecord:
+                        _DmsPlayState = PlayState.PreRecord;
+                        break;
+                }
             }
+        }
+        #endregion
 
-            DrawSetCom.PlayReq = ConfigPlayer.PlayRequest.None;
-
+        #region 再生状態に応じた処理
+        {
             switch ( _DmsPlayState )
             {
                 case PlayState.Playing:

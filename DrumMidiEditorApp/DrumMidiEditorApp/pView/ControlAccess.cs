@@ -1,5 +1,4 @@
-﻿using DrumMidiEditorApp.pView.pConfig;
-using DrumMidiEditorApp.pView.pEditer;
+﻿using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMenuBar;
 using DrumMidiEditorApp.pView.pMidiMap;
 using DrumMidiEditorApp.pView.pML;

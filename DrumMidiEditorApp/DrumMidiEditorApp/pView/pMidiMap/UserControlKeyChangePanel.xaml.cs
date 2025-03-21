@@ -1,25 +1,21 @@
-﻿using System;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pEvent;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class UserControlKeyChangePanel : UserControl, INotifyPropertyChanged
 {
     #region Member
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Score情報
@@ -47,6 +43,11 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     }
 
     #region INotifyPropertyChanged
+
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     /// <summary>
     /// MidiMap別ノートリスト再読み込み
@@ -82,11 +83,6 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 
@@ -151,7 +147,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
                     {
                         var aft_key = page.SelectMidiMapKey;
 
-                        if ( bef_key == aft_key || aft_key == ConfigSystem.MidiMapKeyNotSelect )
+                        if ( bef_key == aft_key || aft_key == Config.System.MidiMapKeyNotSelect )
                         {
                             return;
                         }

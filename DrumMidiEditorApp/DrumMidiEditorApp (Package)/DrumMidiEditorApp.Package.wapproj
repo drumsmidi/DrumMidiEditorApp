@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0'">
+    <VisualStudioVersion>15.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup>
+    <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
+    <PathToXAMLWinRTImplementations>DrumMidiEditorApp\</PathToXAMLWinRTImplementations>
+  </PropertyGroup>
+  <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
+  <PropertyGroup>
+    <ProjectGuid>99195e2f-33c7-47db-9529-ab58fed8465f</ProjectGuid>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.22621.0</TargetPlatformMinVersion>
+    <AssetTargetFallback>net6.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
+    <DefaultLanguage>ja-JP</DefaultLanguage>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <EntryPointProjectUniqueName>..\DrumMidiEditorApp\DrumMidiEditorApp.csproj</EntryPointProjectUniqueName>
+    <PackageCertificateThumbprint>E0430C56206B46A5C97662113BDB083C8734EA1D</PackageCertificateThumbprint>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\logo.jpg" />
+    <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Visuals\AppIcon.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Visuals\AppIcon.altform-unplated_targetsize-16.png" />
+    <Content Include="Visuals\AppIcon.altform-unplated_targetsize-24.png" />
+    <Content Include="Visuals\AppIcon.altform-unplated_targetsize-256.png" />
+    <Content Include="Visuals\AppIcon.altform-unplated_targetsize-32.png" />
+    <Content Include="Visuals\AppIcon.altform-unplated_targetsize-48.png" />
+    <Content Include="Visuals\AppIcon.scale-100.png" />
+    <Content Include="Visuals\AppIcon.scale-125.png" />
+    <Content Include="Visuals\AppIcon.scale-150.png" />
+    <Content Include="Visuals\AppIcon.scale-200.png" />
+    <Content Include="Visuals\AppIcon.scale-400.png" />
+    <Content Include="Visuals\AppIcon.targetsize-16.png" />
+    <Content Include="Visuals\AppIcon.targetsize-24.png" />
+    <Content Include="Visuals\AppIcon.targetsize-256.png" />
+    <Content Include="Visuals\AppIcon.targetsize-32.png" />
+    <Content Include="Visuals\AppIcon.targetsize-48.png" />
+    <Content Include="Visuals\BadgeLogo.scale-100.png" />
+    <Content Include="Visuals\BadgeLogo.scale-125.png" />
+    <Content Include="Visuals\BadgeLogo.scale-150.png" />
+    <Content Include="Visuals\BadgeLogo.scale-200.png" />
+    <Content Include="Visuals\BadgeLogo.scale-400.png" />
+    <Content Include="Visuals\LargeTile.scale-100.png" />
+    <Content Include="Visuals\LargeTile.scale-125.png" />
+    <Content Include="Visuals\LargeTile.scale-150.png" />
+    <Content Include="Visuals\LargeTile.scale-200.png" />
+    <Content Include="Visuals\LargeTile.scale-400.png" />
+    <Content Include="Visuals\MediumTile.scale-100.png" />
+    <Content Include="Visuals\MediumTile.scale-125.png" />
+    <Content Include="Visuals\MediumTile.scale-150.png" />
+    <Content Include="Visuals\MediumTile.scale-200.png" />
+    <Content Include="Visuals\MediumTile.scale-400.png" />
+    <Content Include="Visuals\PackageLogo.scale-100.png" />
+    <Content Include="Visuals\PackageLogo.scale-125.png" />
+    <Content Include="Visuals\PackageLogo.scale-150.png" />
+    <Content Include="Visuals\PackageLogo.scale-200.png" />
+    <Content Include="Visuals\PackageLogo.scale-400.png" />
+    <Content Include="Visuals\SmallTile.scale-100.png" />
+    <Content Include="Visuals\SmallTile.scale-125.png" />
+    <Content Include="Visuals\SmallTile.scale-150.png" />
+    <Content Include="Visuals\SmallTile.scale-200.png" />
+    <Content Include="Visuals\SmallTile.scale-400.png" />
+    <Content Include="Visuals\SplashScreen.scale-100.png" />
+    <Content Include="Visuals\SplashScreen.scale-125.png" />
+    <Content Include="Visuals\SplashScreen.scale-150.png" />
+    <Content Include="Visuals\SplashScreen.scale-200.png" />
+    <Content Include="Visuals\SplashScreen.scale-400.png" />
+    <Content Include="Visuals\logo_base.jpg" />
+    <Content Include="Visuals\WideTile.scale-100.png" />
+    <Content Include="Visuals\WideTile.scale-125.png" />
+    <Content Include="Visuals\WideTile.scale-150.png" />
+    <Content Include="Visuals\WideTile.scale-200.png" />
+    <Content Include="Visuals\WideTile.scale-400.png" />
+    <None Include="DrumMidiEditorApp %28Package%29_TemporaryKey.pfx" />
+    <Content Include="Images\stop.jpg" />
+    <PRIResource Include="Strings\ja-JP\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DrumMidiEditorApp\DrumMidiEditorApp.csproj">
+      <SkipGetTargetFrameworkProperties>True</SkipGetTargetFrameworkProperties>
+      <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
+</Project>

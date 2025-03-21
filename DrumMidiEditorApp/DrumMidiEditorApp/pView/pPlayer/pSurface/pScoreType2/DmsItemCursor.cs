@@ -1,11 +1,10 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pFormat;
-using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
+namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScoreType2;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節線
@@ -82,7 +81,7 @@ internal partial class DmsItemCursor : DisposeBaseClass
             return;
         }
 
-        var rect = _DrawRect;
+        var rect     = _DrawRect;
         rect.X      += aDiffX;
         rect.Y      += aDiffY;
         rect.Width   = aCursolX;

@@ -1,11 +1,11 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace DrumMidiEditorApp.pView;
 

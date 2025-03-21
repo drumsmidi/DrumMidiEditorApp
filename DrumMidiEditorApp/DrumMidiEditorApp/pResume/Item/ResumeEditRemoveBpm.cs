@@ -1,6 +1,7 @@
-﻿using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pEvent;
+﻿using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiEditorApp.pResume;
 

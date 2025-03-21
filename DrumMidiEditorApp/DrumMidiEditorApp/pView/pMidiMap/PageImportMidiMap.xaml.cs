@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
@@ -13,11 +14,6 @@ namespace DrumMidiEditorApp.pView.pMidiMap;
 public sealed partial class PageImportMidiMap : Page
 {
     #region Member
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Score情報
@@ -67,7 +63,7 @@ public sealed partial class PageImportMidiMap : Page
 
                     var midiMapKey_new = aMidiMapSet.GetMidiMapKeyForMatchMidi( midiMap.Midi );
 
-                    if ( midiMapKey_new != ConfigSystem.MidiMapKeyNotSelect )
+                    if ( midiMapKey_new != Config.System.MidiMapKeyNotSelect )
                     {
                         after = $"{midiMapKey_new,-3} {aMidiMapSet.GetGroupAndMidiMapName( midiMapKey_new ),-30}";
                     }

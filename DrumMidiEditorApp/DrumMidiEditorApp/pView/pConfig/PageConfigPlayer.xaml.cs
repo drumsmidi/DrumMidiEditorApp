@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pHelper;
+using System;
+using System.Collections.ObjectModel;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
@@ -19,11 +20,6 @@ public sealed partial class PageConfigPlayer : Page
     /// 描画設定
     /// </summary>
     private ConfigPlayer DrawSet => Config.Player;
-
-    /// <summary>
-    /// Media設定
-    /// </summary>
-    //private ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// プレイヤー描画モードリスト
@@ -52,7 +48,7 @@ public sealed partial class PageConfigPlayer : Page
 
         #region プレイヤー描画モードリスト作成
 
-        foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceMode>() )
+        foreach ( var name in Enum.GetNames<ConfigSystem.PlayerSurfaceMode>() )
         {
             _PlayerSurfaceModeList.Add( name );
         }
@@ -152,11 +148,7 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="args"></param>
-#pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
-#pragma warning disable IDE0060 // 未使用のパラメーターを削除します
     private void ColorButton_Click( object sender, RoutedEventArgs args )
-#pragma warning restore IDE0060 // 未使用のパラメーターを削除します
-#pragma warning restore IDE0051 // 使用されていないプライベート メンバーを削除する
     {
         try
         {

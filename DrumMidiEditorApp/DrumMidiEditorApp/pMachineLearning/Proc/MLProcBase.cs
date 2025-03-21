@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pEvent;
+﻿using DrumMidiLibrary.pLog;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers;
-using Windows.Foundation;
+using System;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 

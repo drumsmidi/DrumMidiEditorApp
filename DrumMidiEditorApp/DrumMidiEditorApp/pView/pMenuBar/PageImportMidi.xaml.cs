@@ -1,8 +1,8 @@
-﻿using System;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pUtil.pHelper;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml.Controls;
+using System;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 

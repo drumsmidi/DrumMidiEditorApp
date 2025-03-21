@@ -1,45 +1,26 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pIO;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage.Pickers;
-using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class UserControlMidiMapPanel : UserControl, INotifyPropertyChanged
 {
     #region Member
-
-    /// <summary>
-    /// Player設定
-    /// </summary>
-    //private static ConfigPlayer DrawSet => Config.Player;
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private static ConfigSystem ConfigSystem => Config.System;
-
-    /// <summary>
-    /// Scale設定
-    /// </summary>
-    //private static ConfigScale ConfigScale => Config.Scale;
-
-    /// <summary>
-    /// Media設定
-    /// </summary>
-    private static ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
@@ -87,6 +68,11 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     }
 
     #region INotifyPropertyChanged
+
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     /// <summary>
     /// MidiMapSetの再読み込み
@@ -168,11 +154,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
-
     #endregion
 
     #region Command
@@ -213,9 +194,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportMidiMapSet,
+                    Config.File.SupportMidiMapSet,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderMidiMapSet,
+                    ConfigFile.FolderMidiMapSet,
                     ( filepath ) =>
                     {
                         if ( !FileIO.LoadMidiMapSet( filepath, out var midiMapSet ) )
@@ -275,13 +256,13 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportMidiMapSet,
+                    Config.File.SupportMidiMapSet,
                     string.Empty,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderMidiMapSet,
+                    ConfigFile.FolderMidiMapSet,
                     ( filepath ) =>
                         {
-                            filepath.Extension = ConfigSystem.ExtentionDms;
+                            filepath.Extension = ConfigFile.ExtentionDms;
 
                             var midiMapSet = CreateMidiMapSet();
 
@@ -347,7 +328,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         {
             var new_key = _TmpMidiMapSet.GetMidiMapGroupNewKey();
 
-            if ( new_key == ConfigSystem.MidiMapGroupKeyNotSelect )
+            if ( new_key == Config.System.MidiMapGroupKeyNotSelect )
             {
                 return;
             }
@@ -510,7 +491,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 
             var new_key = _TmpMidiMapSet.GetMidiMapNewKey();
 
-            if ( new_key == ConfigSystem.MidiMapKeyNotSelect )
+            if ( new_key == Config.System.MidiMapKeyNotSelect )
             {
                 return;
             }
@@ -663,7 +644,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
 
-            sender.Value = ConfigMedia.CheckMidiAddVolume( (int)args.NewValue );
+            sender.Value = Config.Media.CheckMidiAddVolume( (int)args.NewValue );
         }
         catch ( Exception e )
         {
@@ -711,7 +692,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             HelperXaml.ColorDialog
                 (
                     item,
-                    ( item.Background as SolidColorBrush )?.Color ?? ConfigSystem.DefaultMidiMapColor,
+                    ( item.Background as SolidColorBrush )?.Color ?? Config.System.DefaultMidiMapColor,
                     ( color ) =>
                         {
                             item.Background = new SolidColorBrush( color );

@@ -1,8 +1,8 @@
-﻿using System;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
+using System;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;

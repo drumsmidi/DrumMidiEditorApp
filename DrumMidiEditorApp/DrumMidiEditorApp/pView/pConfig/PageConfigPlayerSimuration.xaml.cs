@@ -1,7 +1,7 @@
 ﻿using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;

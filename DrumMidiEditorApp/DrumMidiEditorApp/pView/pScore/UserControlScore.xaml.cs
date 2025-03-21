@@ -1,14 +1,16 @@
-﻿using System;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
 using Windows.Graphics.DirectX;
+using System;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
@@ -20,11 +22,6 @@ public sealed partial class UserControlScore : UserControl
     /// スコア設定
     /// </summary>
     private static ConfigScore DrawSet => Config.Score;
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private static ConfigSystem ConfigSystem => Config.System;
 
     /// <summary>
     /// Score情報
@@ -79,7 +76,7 @@ public sealed partial class UserControlScore : UserControl
     private CanvasBitmap? CreateScoreBitmap()
     {
         var m_max = Score.EditChannel.MaxMeasureNo;
-        var w_min = ConfigSystem.MeasureNoteNumber;
+        var w_min = Config.System.MeasureNoteNumber;
         var h_min = Score.EditMidiMapSet.DisplayGroupCount;
 
         if ( w_min * h_min == 0 )

@@ -1,8 +1,7 @@
-﻿using System.Collections.Concurrent;
-
+﻿using DrumMidiLibrary.pControl;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
 using DrumMidiEditorApp.pView;
+using System.Collections.Concurrent;
 
 namespace DrumMidiEditorApp.pEvent;
 

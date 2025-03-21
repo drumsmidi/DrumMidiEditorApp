@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
+using static DrumMidiLibrary.pConfig.ConfigSystem;
 using Microsoft.UI.Xaml;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -57,16 +58,6 @@ public class ConfigPlayer
     /// </summary>
     [JsonIgnore]
     public bool EditModeOn { get; set; } = false;
-
-    /// <summary>
-    /// プレイヤー描画モード
-    /// </summary>
-    public enum PlayerSurfaceMode : int
-    {
-        Sequence = 0,
-        Simuration,
-        ScoreType2,
-    }
 
     /// <summary>
     /// プレイヤー描画モード
@@ -157,7 +148,7 @@ public class ConfigPlayer
     /// プレイヤー描画エフェクトモード
     /// </summary>
     [JsonInclude]
-    public PlayerSurfaceEffectMode PlayerSurfaceEffectModeSelect = PlayerSurfaceEffectMode.AlphaMaskEffect;
+    public PlayerSurfaceEffectMode PlayerSurfaceEffectModeSelect = PlayerSurfaceEffectMode.AtlasEffect;
 
     /// <summary>
     /// プレイヤー描画エフェクトモード
@@ -224,28 +215,6 @@ public class ConfigPlayer
         {
             Color = Color.FromArgb( 255, 0, 0, 0 ),
         };
-
-    #endregion
-
-    #region 再生リクエスト
-
-    /// <summary>
-    /// プレイヤー再生リクエスト一覧
-    /// </summary>
-    public enum PlayRequest : int
-    {
-        None = 0,
-        PreStop,
-        PrePlay,
-        PreLoopPlay,
-        PreRecord,
-    }
-
-    /// <summary>
-    /// プレイヤー再生リクエスト
-    /// </summary>
-    [JsonIgnore]
-    public PlayRequest PlayReq { get; set; } = PlayRequest.None;
 
     #endregion
 

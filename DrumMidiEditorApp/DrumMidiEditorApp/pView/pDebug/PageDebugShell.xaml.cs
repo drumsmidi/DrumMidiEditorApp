@@ -1,11 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppLifecycle;
+using System;
+using System.Diagnostics;
+using System.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;
@@ -28,7 +28,7 @@ public sealed partial class PageDebugShell : Page
 
     private void OpenButton_Click( object sender, RoutedEventArgs args )
     {
-        Process.Start( "EXPLORER.EXE", $"{Config.System.FolderConfig.AbsoulteFolderPath}" );
+        Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoulteFolderPath}" );
     }
 
     private void ToastShowButton_Click( object sender, RoutedEventArgs args )
@@ -420,7 +420,7 @@ public sealed partial class PageDebugShell : Page
 
             if ( commandLineArguments.Length > 1 )
             {
-                commandLineArguments = commandLineArguments.Skip( 1 ).ToArray();
+                commandLineArguments = [ .. commandLineArguments.Skip( 1 ) ];
 
                 restartArgsInput = string.Join( ",", commandLineArguments );
             }
@@ -438,7 +438,7 @@ public sealed partial class PageDebugShell : Page
 
                             if ( argStrings.Length > 1 )
                             {
-                                argStrings = argStrings.Skip( 1 ).ToArray();
+                                argStrings = [ .. argStrings.Skip( 1 ) ];
 
                                 restartArgsInput = string.Join( ",", argStrings.Where( s => !string.IsNullOrEmpty( s ) ) );
                             }

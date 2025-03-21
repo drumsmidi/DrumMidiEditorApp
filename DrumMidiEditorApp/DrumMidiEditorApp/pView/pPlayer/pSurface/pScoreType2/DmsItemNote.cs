@@ -1,7 +1,7 @@
-﻿using System;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
+using System;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pScoreType2;
@@ -79,8 +79,8 @@ internal partial class DmsItemNote : DisposeBaseClass, IComparable, IComparable<
         }
 
         var rect = _DrawRect;
-        rect.X += aDiffX;
-        rect.Y += aDiffY;
+        rect.X  += aDiffX;
+        rect.Y  += aDiffY;
 
         // テキスト
         if ( aTextFlag && _LabelText.Length != 0 )

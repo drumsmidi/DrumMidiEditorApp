@@ -1,19 +1,19 @@
-﻿using System;
-using System.Numerics;
-using System.Threading.Tasks;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pView.pPlayer.pSurface;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Windows.Graphics.DirectX;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using System;
+using System.Threading.Tasks;
+using Windows.Graphics.DirectX;
 
 namespace DrumMidiEditorApp.pView.pPlayer;
 
@@ -48,7 +48,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 new CanvasDevice(),
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                Config.Media.DefaultDpi, // DisplayInformation.GetForCurrentView().LogicalDpi
+                Config.Media.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
                 DirectXPixelFormat.R8G8B8A8UIntNormalized,
             //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
                 2,
@@ -165,6 +165,14 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <returns></returns>
     private static ICanvasImage? GetEffectImage( CanvasCommandList aCanvasCommandList )
     {
+        return new AtlasEffect
+            {
+                Source              = aCanvasCommandList,
+            //  PaddingRectangle    = new( 0, 0, 400, 8000 ),
+            //  SourceRectangle     = new( 0, 0, 400, 700 ),
+            };
+
+#if false // 無効化
         // https://microsoft.github.io/Win2D/WinUI2/html/N_Microsoft_Graphics_Canvas_Effects.htm
 
         ICanvasImage? blur = null;
@@ -688,8 +696,8 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 }
                 break;
         }
-
-        return blur;
+        return blur;            
+#endif
     }
 
     /// <summary>
@@ -841,13 +849,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
     {
         switch ( DrawSet.PlayerSurfaceModeSelect )
         {
-            case ConfigPlayer.PlayerSurfaceMode.Sequence:
+            case ConfigSystem.PlayerSurfaceMode.Sequence:
                 _PlayerSurface = new pSurface.pSequence.PlayerSurface();
                 break;
-            case ConfigPlayer.PlayerSurfaceMode.Simuration:
+            case ConfigSystem.PlayerSurfaceMode.Simuration:
                 _PlayerSurface = new pSurface.pSimuration.PlayerSurface();
                 break;
-            case ConfigPlayer.PlayerSurfaceMode.ScoreType2:
+            case ConfigSystem.PlayerSurfaceMode.ScoreType2:
                 _PlayerSurface = new pSurface.pScoreType2.PlayerSurface();
                 break;
         }

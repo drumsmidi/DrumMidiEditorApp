@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
 using Microsoft.Graphics.Canvas.Text;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Windows.Foundation;
 using Windows.UI;
 
@@ -211,28 +211,19 @@ public class ConfigEqualizer
         /// Hz値
         /// </summary>
         [JsonInclude]
-        public int Hz
-        {
-            get; set;
-        } = aHz;
+        public int Hz { get; set; } = aHz;
 
         /// <summary>
         /// ラベル名称
         /// </summary>
         [JsonInclude]
-        public string LabelName
-        {
-            get; set;
-        } = aLabelName;
+        public string LabelName { get; set; } = aLabelName;
 
         /// <summary>
         /// 横幅
         /// </summary>
         [JsonInclude]
-        public int Width
-        {
-            get; set;
-        } = aWidth;
+        public int Width { get; set; } = aWidth;
     }
 
     /// <summary>

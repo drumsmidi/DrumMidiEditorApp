@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
+using System.Text.Json.Serialization;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -99,11 +99,7 @@ public class ConfigMachine
     /// トレーニングモデル選択
     /// </summary>
     [JsonIgnore]
-    public TrainingModel TrainingModeTypeSelect
-    {
-        get; set;
-    }
-        = TrainingModel.SdcaMaximumEntropyMulticlassTrainer;
+    public TrainingModel TrainingModeTypeSelect { get; set; } = TrainingModel.SdcaMaximumEntropyMulticlassTrainer;
 
     #endregion
 }

@@ -1,19 +1,13 @@
-﻿using System;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pConfig;
+﻿using DrumMidiEditorApp.pMachineLearning;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using DrumMidiEditorApp.pMachineLearning;
+using System;
 
 namespace DrumMidiEditorApp.pView.pML;
 
 public sealed partial class PageML : Page
 {
-    /// <summary>
-    /// スコア設定
-    /// </summary>
-    private ConfigMachine DrawSet => Config.Machine;
-
     /// <summary>
     /// コンストラクタ
     /// </summary>

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil.pFormat;
-using DrumMidiEditorApp.pUtil.pHelper;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
+using System;
+using System.Collections.Generic;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
@@ -193,7 +193,7 @@ public class PlayerSurface : PlayerSurfaceBase
                             );
 
                         var dgp = Score.EditMidiMapSet
-                            .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+                            .GetMidiMapGroupPosition( ConfigSystem.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
 
                         dgp.X = _HeaderList [ _MoveMidiMapKey ].DrawRect._x;
                         dgp.Y = _HeaderList [ _MoveMidiMapKey ].DrawRect._y;
@@ -203,7 +203,7 @@ public class PlayerSurface : PlayerSurfaceBase
                         lock ( DMS.SCORE.LockObj )
                         {
                             var dgp2 = DMS.SCORE.EditMidiMapSet
-                                .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
+                                .GetMidiMapGroupPosition( ConfigSystem.PlayerSurfaceMode.Simuration, _MoveMidiMapKey );
 
                             dgp2.X = _HeaderList [ _MoveMidiMapKey ].DrawRect._x;
                             dgp2.Y = _HeaderList [ _MoveMidiMapKey ].DrawRect._y;
@@ -271,7 +271,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 }
 
                 var dgp = Score.EditMidiMapSet
-                    .GetMidiMapGroupPosition( ConfigPlayer.PlayerSurfaceMode.Simuration, group.GroupKey );
+                    .GetMidiMapGroupPosition( ConfigSystem.PlayerSurfaceMode.Simuration, group.GroupKey );
 
                 var obj = new DmsItemMidiMap
                     (

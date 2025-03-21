@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
+using System.Text.Json.Serialization;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -29,9 +29,9 @@ public class ConfigScore
     {
         get; set;
     } = new()
-    {
-        Color = Color.FromArgb( 255, 0, 0, 0 ),
-    };
+        {
+            Color = Color.FromArgb( 255, 0, 0, 0 ),
+        };
 
     #endregion
 
@@ -45,10 +45,10 @@ public class ConfigScore
     {
         get; set;
     } = new()
-    {
-        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
-        LineSize    = 1.0F,
-    };
+        {
+            LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+            LineSize    = 1.0F,
+        };
 
     #endregion
 

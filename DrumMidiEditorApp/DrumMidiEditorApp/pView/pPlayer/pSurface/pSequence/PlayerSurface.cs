@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pModel;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil.pFormat;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSequence;

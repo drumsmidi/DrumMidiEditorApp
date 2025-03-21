@@ -1,25 +1,16 @@
-﻿using System;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml.Controls;
+using System;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class PageInputMidiMap : Page
 {
     #region Member
-
-    /// <summary>
-    /// System設定
-    /// </summary>
-    private ConfigSystem ConfigSystem => Config.System;
-
-    /// <summary>
-    /// Media設定
-    /// </summary>
-    //private ConfigMedia ConfigMedia => Config.Media;
 
     /// <summary>
     /// Score情報
@@ -76,7 +67,7 @@ public sealed partial class PageInputMidiMap : Page
 
             if ( index == -1 )
             {
-                SelectMidiMapKey = ConfigSystem.MidiMapKeyNotSelect;
+                SelectMidiMapKey = Config.System.MidiMapKeyNotSelect;
                 return;
             }
 

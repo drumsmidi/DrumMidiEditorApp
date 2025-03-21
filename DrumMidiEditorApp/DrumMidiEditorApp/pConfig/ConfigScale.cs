@@ -65,34 +65,22 @@ public class ConfigScale
         /// <summary>
         /// 音階名称
         /// </summary>
-        public string Name
-        {
-            get; private set;
-        } = aName;
+        public string Name { get; private set; } = aName;
 
         /// <summary>
         /// ピッチ
         /// </summary>
-        public int Pitch
-        {
-            get; private set;
-        } = aPitch;
+        public int Pitch { get; private set; } = aPitch;
 
         /// <summary>
         /// MIDIノート番号
         /// </summary>
-        public byte Midi
-        {
-            get; private set;
-        } = aMidi;
+        public byte Midi { get; private set; } = aMidi;
 
         /// <summary>
         /// Hz
         /// </summary>
-        public float Hz
-        {
-            get; private set;
-        } = aHz;
+        public float Hz { get; private set; } = aHz;
 
         /// <summary>
         /// ピッチ＋音階名称

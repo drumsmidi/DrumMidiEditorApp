@@ -1,19 +1,21 @@
-﻿using System;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pEvent;
+using DrumMidiEditorApp.pIO;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
-using DrumMidiEditorApp.pModel;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pEvent;
-using DrumMidiEditorApp.pIO;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Windows.Storage.Pickers;
-using DrumMidiEditorApp.pUtil.pHelper;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
 
@@ -77,13 +79,18 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
         #endregion
 
-        if ( Config.System.AppStartDmsPath.IsExistFile )
+        if ( DMS.AppStartDmsPath.IsExistFile )
         {
-            LoadSocre( Config.System.AppStartDmsPath );
+            LoadSocre( DMS.AppStartDmsPath );
         }
     }
 
     #region INotifyPropertyChanged
+
+    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
+        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     /// <summary>
     /// ConfigPlayer設定再読み込み
@@ -101,11 +108,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-    public void OnPropertyChanged( [CallerMemberName] string? aPropertyName = null )
-        => PropertyChanged?.Invoke( this, new( aPropertyName ) );
 
     #endregion
 
@@ -143,7 +145,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoulteFilePath}" );
 
-            aFilePath.Extension = ConfigSystem.ExtentionDms;
+            aFilePath.Extension = ConfigFile.ExtentionDms;
 
             if ( !FileIO.SaveScore( aFilePath, DMS.SCORE ) )
             {
@@ -243,9 +245,9 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportDmsOpen,
+                    Config.File.SupportDmsOpen,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderDms,
+                    ConfigFile.FolderDms,
                     ( filepath ) => LoadSocre( filepath )
                 );
         }
@@ -273,10 +275,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                 HelperXaml.SaveDialogAsync
                     (
                         ControlAccess.MainWindow,
-                        ConfigSystem.SupportDmsSave,
+                        Config.File.SupportDmsSave,
                         edit_filepath.FileNameWithoutExtension,
                         PickerLocationId.DocumentsLibrary,
-                        ConfigSystem.FolderDms,
+                        ConfigFile.FolderDms,
                         ( filepath ) => SaveSocre( filepath )
                     );
             }
@@ -308,10 +310,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportDmsSave,
+                    Config.File.SupportDmsSave,
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderDms,
+                    ConfigFile.FolderDms,
                     ( filepath ) => SaveSocre( filepath )
                 );
         }
@@ -335,10 +337,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportMidi,
+                    Config.File.SupportMidi,
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderExport,
+                    ConfigFile.FolderExport,
                     ( filepath ) =>
                     {
                         if ( !FileIO.SaveMidi( filepath, DMS.SCORE ) )
@@ -368,15 +370,15 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportVideo,
+                    Config.File.SupportVideo,
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderExport,
+                    ConfigFile.FolderExport,
                     ( filepath ) =>
                     {
-                        filepath.Extension = ConfigSystem.ExtentionVideo;
+                        filepath.Extension = ConfigFile.ExtentionMp4;
 
-                        // TODO: 対応中。非同期処理時に何か操作すると落ちるかも
+                        // TODO: 非同期処理時の操作制限の実装が必要
                         FileIO.SaveVideoAsync( filepath );
                     }
                 );
@@ -401,13 +403,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.SaveDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportPdf,
+                    Config.File.SupportPdf,
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderExport,
+                    ConfigFile.FolderExport,
                     ( filepath ) =>
                     {
-                        filepath.Extension = ConfigSystem.ExtentionPdf;
+                        filepath.Extension = ConfigFile.ExtentionPdf;
 
                         FileIO.SavePdf( filepath );
                     }
@@ -433,9 +435,9 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             HelperXaml.OpenDialogAsync
                 (
                     ControlAccess.MainWindow,
-                    ConfigSystem.SupportMidi,
+                    Config.File.SupportMidi,
                     PickerLocationId.DocumentsLibrary,
-                    ConfigSystem.FolderMidi,
+                    ConfigFile.FolderMidi,
                     ( filepath ) =>
                     {
                         var page = new PageImportMidi

@@ -1,32 +1,23 @@
-﻿using System;
-using DrumMidiEditorApp.pAudio;
-using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pControl;
-using DrumMidiEditorApp.pLog;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pIO;
+using DrumMidiEditorApp.pUtil;
+using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pLog;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
-using DrumMidiEditorApp.pUtil.pHelper;
-using DrumMidiEditorApp.pModel;
+using System;
 
 namespace DrumMidiEditorApp.pView;
 
 public sealed partial class WindowEditer : Window
 {
-    #region Member
-
-    /// <summary>
-    /// システム設定
-    /// </summary>
-    private static ConfigSystem ConfigSystem => Config.System;
-
     /// <summary>
     /// 本ウィンドウへのアクセス
     /// </summary>
     private readonly AppWindow _AppWindow;
-
-    #endregion
 
     /// <summary>
     /// コンストラクタ
@@ -44,7 +35,7 @@ public sealed partial class WindowEditer : Window
         _AppWindow = HelperAppWindow.GetAppWindow( this );
 
         // タイトル初期設定
-        Title = $"{ConfigSystem.AppName}";
+        Title = $"{Config.Window.AppName}";
 
         // 独自のタイトルバー設定
         ExtendsContentIntoTitleBar = true;
@@ -52,13 +43,13 @@ public sealed partial class WindowEditer : Window
         SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
 
         // ウィンドウ初期サイズ変更
-        if ( ConfigSystem.WindowSizeWidth > 0 && ConfigSystem.WindowSizeHeight > 0 )
+        if ( Config.Window.WindowSizeWidth > 0 && Config.Window.WindowSizeHeight > 0 )
         {
             HelperAppWindow.ResizeWindow
                 (
                     _AppWindow,
-                    ConfigSystem.WindowSizeWidth,
-                    ConfigSystem.WindowSizeHeight
+                    Config.Window.WindowSizeWidth,
+                    Config.Window.WindowSizeHeight
                 );
         }
 
@@ -69,9 +60,6 @@ public sealed partial class WindowEditer : Window
 
         // 再生コントロール開始
         DmsControl.Start();
-
-        // プレイヤーリクエスト通知
-        DmsControl.SetPlayerRequestCallback = ( request ) => Config.Player.PlayReq = request;
     }
 
     /// <summary>
@@ -128,7 +116,7 @@ public sealed partial class WindowEditer : Window
     {
         try
         {
-            _AppTitleTextBlock.Text = $"{ConfigSystem.AppName} - {aSubTitle}";
+            _AppTitleTextBlock.Text = $"{Config.Window.AppName} - {aSubTitle}";
         }
         catch ( Exception e )
         {

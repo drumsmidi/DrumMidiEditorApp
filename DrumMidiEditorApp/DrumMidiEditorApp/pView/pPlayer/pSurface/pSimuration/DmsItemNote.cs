@@ -1,7 +1,7 @@
-﻿using System;
-using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pUtil.pFormat;
+﻿using DrumMidiEditorApp.pUtil;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
+using System;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 

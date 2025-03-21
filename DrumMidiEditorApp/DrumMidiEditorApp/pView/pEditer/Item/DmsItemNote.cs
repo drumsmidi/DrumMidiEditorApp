@@ -1,14 +1,13 @@
-﻿using System;
-using System.Numerics;
-using DrumMidiEditorApp.pModel;
+﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pUtil;
-using DrumMidiEditorApp.pConfig;
-using Windows.Foundation;
-using Microsoft.Graphics.Canvas.UI.Xaml;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
-using DrumMidiEditorApp.pUtil.pHelper;
-using DrumMidiEditorApp.pUtil.pFormat;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
+using System.Numerics;
+using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
