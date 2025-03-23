@@ -1,7 +1,7 @@
-﻿using DrumMidiEditorApp.pUtil;
-using Microsoft.Graphics.Canvas.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pUtil;
+using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
 
 namespace DrumMidiEditorApp.pConfig;

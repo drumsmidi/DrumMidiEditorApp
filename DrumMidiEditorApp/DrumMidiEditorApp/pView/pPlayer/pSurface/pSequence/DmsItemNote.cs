@@ -1,7 +1,6 @@
-﻿using DrumMidiEditorApp.pUtil;
+﻿using System;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
-using System;
 using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSequence;

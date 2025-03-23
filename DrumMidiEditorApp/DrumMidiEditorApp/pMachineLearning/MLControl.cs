@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pLog;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using DrumMidiLibrary.pLog;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 

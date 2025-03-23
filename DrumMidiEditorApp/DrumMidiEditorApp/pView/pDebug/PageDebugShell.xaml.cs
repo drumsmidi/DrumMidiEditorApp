@@ -1,11 +1,11 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.AppLifecycle;
-using System;
-using System.Diagnostics;
-using System.Linq;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Xml.Dom;

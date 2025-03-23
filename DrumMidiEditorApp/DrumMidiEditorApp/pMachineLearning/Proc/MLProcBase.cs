@@ -1,7 +1,7 @@
-﻿using DrumMidiLibrary.pLog;
+﻿using System;
+using DrumMidiLibrary.pLog;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using System;
 
 namespace DrumMidiEditorApp.pMachineLearning;
 

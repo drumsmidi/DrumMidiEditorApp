@@ -1,8 +1,8 @@
-﻿using DrumMidiLibrary.pAudio;
+﻿using System.Collections.Generic;
+using System.Threading;
+using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace DrumMidiLibrary.pModel;
 

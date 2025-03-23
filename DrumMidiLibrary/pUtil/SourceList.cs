@@ -1,7 +1,7 @@
-﻿using DrumMidiLibrary.pLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using DrumMidiLibrary.pLog;
 
 namespace DrumMidiLibrary.pUtil;
 

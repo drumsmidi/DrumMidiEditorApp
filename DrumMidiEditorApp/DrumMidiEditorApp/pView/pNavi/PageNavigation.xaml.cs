@@ -1,4 +1,7 @@
-﻿using DrumMidiEditorApp.pView.pConfig;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DrumMidiEditorApp.pView.pConfig;
 using DrumMidiEditorApp.pView.pDebug;
 using DrumMidiEditorApp.pView.pEditer;
 using DrumMidiEditorApp.pView.pMidiMap;
@@ -9,9 +12,6 @@ using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DrumMidiEditorApp.pView.pNavi;
 

@@ -1,7 +1,7 @@
-﻿using DrumMidiLibrary.pUtil;
-using OpenCvSharp;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
+using DrumMidiLibrary.pUtil;
+using OpenCvSharp;
 
 namespace DrumMidiLibrary.pIO.pVideo;
 

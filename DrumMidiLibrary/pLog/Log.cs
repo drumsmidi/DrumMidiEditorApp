@@ -1,9 +1,9 @@
-﻿using DrumMidiLibrary.pUtil;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pLog;
 

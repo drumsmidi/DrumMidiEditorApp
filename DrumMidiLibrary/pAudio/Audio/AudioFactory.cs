@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pLog;
+﻿using System;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
-using System;
 
 namespace DrumMidiLibrary.pAudio;
 

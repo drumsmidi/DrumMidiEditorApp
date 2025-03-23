@@ -1,12 +1,12 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Windows.ApplicationModel.DataTransfer;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;

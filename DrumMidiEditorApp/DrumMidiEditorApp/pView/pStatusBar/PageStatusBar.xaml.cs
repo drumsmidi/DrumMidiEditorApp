@@ -1,9 +1,9 @@
-﻿using DrumMidiEditorApp.pUtil;
-using DrumMidiLibrary.pLog;
-using Microsoft.UI.Xaml.Controls;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
 

@@ -1,4 +1,6 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using System.Threading.Tasks;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pView.pPlayer.pSurface;
 using DrumMidiLibrary.pConfig;
@@ -11,8 +13,6 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System;
-using System.Threading.Tasks;
 using Windows.Graphics.DirectX;
 
 namespace DrumMidiEditorApp.pView.pPlayer;

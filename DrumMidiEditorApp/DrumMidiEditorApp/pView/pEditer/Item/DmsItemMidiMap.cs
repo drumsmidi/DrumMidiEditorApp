@@ -1,5 +1,4 @@
 ﻿using DrumMidiEditorApp.pConfig;
-using DrumMidiEditorApp.pUtil;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;

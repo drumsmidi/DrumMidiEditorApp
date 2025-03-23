@@ -1,7 +1,7 @@
-﻿using DrumMidiLibrary.pLog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using DrumMidiLibrary.pLog;
 using Windows.Devices.Midi;
 using Windows.Storage.Streams;
 

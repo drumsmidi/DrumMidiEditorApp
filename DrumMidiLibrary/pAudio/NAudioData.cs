@@ -1,13 +1,13 @@
-﻿using DrumMidiLibrary.pLog;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using NAudio;
 using NAudio.Core.Dsp;
 using NAudio.Core.Wave.WaveFormats;
 using NAudio.Core.Wave.WaveOutputs;
 using NAudio.WinMM;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Windows.Foundation;
 
 namespace DrumMidiLibrary.pAudio;

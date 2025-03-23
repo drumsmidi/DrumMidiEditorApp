@@ -1,16 +1,21 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pResume;
-using DrumMidiEditorApp.pUtil;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -18,12 +23,6 @@ using Windows.Foundation;
 using Windows.Graphics.DirectX;
 using Windows.System;
 using Windows.UI;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 

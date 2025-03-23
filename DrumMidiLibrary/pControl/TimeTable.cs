@@ -1,8 +1,8 @@
-﻿using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pModel;
 
 namespace DrumMidiLibrary.pControl;
 

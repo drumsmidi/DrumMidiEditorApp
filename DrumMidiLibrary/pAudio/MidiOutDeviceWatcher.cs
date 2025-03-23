@@ -1,8 +1,8 @@
-﻿using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pUtil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pUtil;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Midi;
 

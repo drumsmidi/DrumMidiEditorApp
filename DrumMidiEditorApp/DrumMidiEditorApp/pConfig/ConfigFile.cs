@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pUtil;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiEditorApp.pConfig;
 

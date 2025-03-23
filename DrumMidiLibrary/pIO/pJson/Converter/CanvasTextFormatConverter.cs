@@ -1,7 +1,7 @@
-﻿using Microsoft.Graphics.Canvas.Text;
-using System;
+﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Graphics.Canvas.Text;
 
 namespace DrumMidiLibrary.pIO.pJson;
 

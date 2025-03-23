@@ -1,12 +1,8 @@
-﻿using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pLog;
+﻿using System;
+using System.Xml;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.Schema;
 
 namespace DrumMidiLibrary.pIO.pScore.pDms;
 

@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pConfig;
+﻿using System.Collections.Generic;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
-using System.Collections.Generic;
 
 namespace DrumMidiLibrary.pModel;
 

@@ -1,10 +1,10 @@
-﻿using DrumMidiEditorApp.pUtil;
-using static DrumMidiLibrary.pConfig.ConfigSystem;
-using Microsoft.UI.Xaml;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Windows.Foundation;
 using Windows.UI;
+using static DrumMidiLibrary.pConfig.ConfigSystem;
 
 namespace DrumMidiEditorApp.pConfig;
 

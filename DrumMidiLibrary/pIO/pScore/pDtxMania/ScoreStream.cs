@@ -1,13 +1,13 @@
-﻿using DrumMidiLibrary.pAudio;
-using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
-using DrumMidiLibrary.pUtil;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pIO.pScore.pDtxMania;
 

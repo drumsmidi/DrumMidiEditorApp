@@ -1,8 +1,8 @@
-﻿using DrumMidiEditorApp.pMachineLearning;
+﻿using System;
+using DrumMidiEditorApp.pMachineLearning;
 using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using System;
 
 namespace DrumMidiEditorApp.pView.pML;
 

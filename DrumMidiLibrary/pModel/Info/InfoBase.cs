@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pConfig;
+﻿using System;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
-using System;
 
 namespace DrumMidiLibrary.pModel;
 

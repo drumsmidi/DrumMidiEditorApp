@@ -1,20 +1,20 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pView;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pIO.pJson;
+using DrumMidiLibrary.pIO.pPdf;
 using DrumMidiLibrary.pIO.pScore;
 using DrumMidiLibrary.pIO.pVideo;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
-using DrumMidiLibrary.pIO.pPdf;
-using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace DrumMidiEditorApp.pIO;
 
@@ -136,7 +136,7 @@ public static class FileIO
         SaveConfig( path, Config.Equalizer );
 
         // ConfigFile
-        path.FileName = ConfigFile.FileNameConfigEqualizer;
+        path.FileName = ConfigFile.FileNameConfigFile;
         SaveConfig( path, Config.File );
 
         // ConfigMachine

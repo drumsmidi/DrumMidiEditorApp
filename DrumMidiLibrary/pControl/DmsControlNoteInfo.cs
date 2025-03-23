@@ -1,6 +1,6 @@
-﻿using DrumMidiLibrary.pAudio;
+﻿using System;
+using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pUtil;
-using System;
 
 namespace DrumMidiLibrary.pControl;
 

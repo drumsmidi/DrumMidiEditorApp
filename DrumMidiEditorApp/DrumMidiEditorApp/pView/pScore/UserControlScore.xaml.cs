@@ -1,7 +1,7 @@
-﻿using DrumMidiEditorApp.pConfig;
+﻿using System;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pAudio;
-using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pModel;
 using Microsoft.Graphics.Canvas;
@@ -10,7 +10,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
 using Windows.Graphics.DirectX;
-using System;
 
 namespace DrumMidiEditorApp.pView.pScore;
 
