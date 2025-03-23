@@ -46,7 +46,7 @@ public sealed partial class WindowPlayer : Window
         UpdateWindowsSize();
 
         // 通常ウィンドウのプレゼンター設定
-        //HelperAppWindow.SetPresenterNormalWindow( _AppWindow );
+        HelperAppWindow.SetPresenterFixedWindow( _AppWindow );
 
         ControlAccess.MainWindow = this;
 
@@ -137,15 +137,5 @@ public sealed partial class WindowPlayer : Window
         {
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
-    }
-
-    /// <summary>
-    /// ウィンドウサイズ変更
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Window_SizeChanged( object sender, WindowSizeChangedEventArgs args )
-    {
-        UpdateWindowsSize();
     }
 }

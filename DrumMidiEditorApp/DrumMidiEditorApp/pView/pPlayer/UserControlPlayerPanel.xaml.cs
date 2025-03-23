@@ -134,22 +134,25 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) ) );
 
                 // 描画処理
-                using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
-
-                using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
-                using var drawSessionB = cl.CreateDrawingSession();
-
-                var args = new CanvasDrawEventArgs( drawSessionB );
-
-                _ = ( _PlayerSurface?.OnDraw( args ) );
-
-                using var blur = GetEffectImage( cl );
-                if ( blur != null )
+                if ( DrawSet.DisplayPlayer )
                 {
-                    drawSessionA.DrawImage( blur );
-                }
+                    using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
 
-                _PlayerCanvas.SwapChain.Present();
+                    using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+                    using var drawSessionB = cl.CreateDrawingSession();
+
+                    var args = new CanvasDrawEventArgs( drawSessionB );
+
+                    _ = ( _PlayerSurface?.OnDraw( args ) );
+
+                    using var blur = GetEffectImage( cl );
+                    if ( blur != null )
+                    {
+                        drawSessionA.DrawImage( blur );
+                    }
+
+                    _PlayerCanvas.SwapChain.Present();
+                }
             }
         }
         catch ( Exception e )

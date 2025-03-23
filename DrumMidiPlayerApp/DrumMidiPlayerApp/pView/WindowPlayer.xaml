@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     Activated="Window_Activated"
     Closed="Window_Closed"
-    SizeChanged="Window_SizeChanged"    
     mc:Ignorable="d">
 
     <Grid>

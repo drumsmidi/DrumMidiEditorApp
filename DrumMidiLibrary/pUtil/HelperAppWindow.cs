@@ -57,8 +57,8 @@ public static class HelperAppWindow
     /// （プレイヤー用）
     /// </summary>
     /// <param name="aAppWindow"></param>
-    public static void SetPresenterPlayerWindow( AppWindow aAppWindow )
-        => SetPresenter( aAppWindow, false, false, true, true, false, false, false );
+    public static void SetPresenterFixedWindow( AppWindow aAppWindow )
+        => SetPresenter( aAppWindow, false, true, false, false, false, false, false );
 
     /// <summary>
     /// ウィンドウのプレゼンター設定
@@ -100,15 +100,13 @@ public static class HelperAppWindow
         // 参考URL
         // https://tera1707.com/entry/2022/04/24/220519
 
-        var op = OverlappedPresenter.Create();
-        op.IsMaximizable = aMaximizable;
-        op.IsMinimizable = aMinimizable;
-        op.IsResizable = aResizable;
-        op.IsAlwaysOnTop = aAlwaysOnTop;
-        op.IsModal = aModal;
-        op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
-
-        aAppWindow.SetPresenter( op );
+        var op = aAppWindow.Presenter as OverlappedPresenter;
+        op.IsMaximizable    = aMaximizable;
+        op.IsMinimizable    = aMinimizable;
+        op.IsResizable      = aResizable;
+        op.IsAlwaysOnTop    = aAlwaysOnTop;
+        op.IsModal          = aModal;
+        //op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
     }
 
     #endregion

@@ -176,17 +176,14 @@ public class ConfigPlayer
     [JsonInclude]
     public readonly List<Size> ResolutionScreenList =
     [
-        new(  480,  360 ),
-        new(  640,  480 ),
-        new(  640,  720 ),
-        new(  640, 1024 ),
+        new(  1280, 1024 ),
     ];
 
     /// <summary>
     /// 解像度リスト選択インデックス
     /// </summary>
     [JsonInclude]
-    public int ResolutionScreenIndex { get; set; } = 2;
+    public int ResolutionScreenIndex { get; set; } = 0;
 
     /// <summary>
     /// 解像度：横幅

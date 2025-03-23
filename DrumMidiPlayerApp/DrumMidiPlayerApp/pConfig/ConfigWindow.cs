@@ -17,11 +17,11 @@ public class ConfigWindow
     /// エディターウィンドウ初期サイズ：横幅
     /// </summary>
     [JsonInclude]
-    public int WindowSizeWidth { get; private set; } = 1960;
+    public int WindowSizeWidth => (int)Config.Player.ResolutionScreenWidth;
 
     /// <summary>
     /// エディターウィンドウ初期サイズ：高さ
     /// </summary>
     [JsonInclude]
-    public int WindowSizeHeight { get; private set; } = 1280;
+    public int WindowSizeHeight => (int)Config.Player.ResolutionScreenHeight;
 }
