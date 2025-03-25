@@ -160,7 +160,15 @@ public class SongSelectSurface : ISurface
                                 Background = new( HelperColor.GetColor("#AA666666" ) ),
                             };
 
-                            _Processing ??= new ItemProcessing( 300, 300, 30, format );
+                            
+
+                            _Processing ??= new ItemProcessing
+                            (
+                                Config.Panel.BaseScreenSize._width  / 2F,
+                                Config.Panel.BaseScreenSize._height / 2F, 
+                                30, 
+                                format 
+                            );
 
                             _SongSelectState = SongSelectState.ScoreSearching;
                         }
@@ -278,7 +286,7 @@ public class SongSelectSurface : ISurface
     public virtual bool OnDraw( CanvasDrawEventArgs aArgs )
     {
         // SwapChainの描画セッション作成時に背景色指定済み
-        //args.DrawingSession.Clear( DrawSetCom.SheetColor.Color );
+        //aArgs.DrawingSession.Clear( DrawSetCom.SheetColor.Color );
 
         #region 状態に応じた処理
         {
@@ -296,7 +304,7 @@ public class SongSelectSurface : ISurface
                         _StopImage ??= CanvasBitmap.LoadAsync( aArgs.DrawingSession, new Uri( "ms-appx:///Images/stop.jpg" ) );
                         if ( _StopImage.Status == AsyncStatus.Completed )
                         {
-                            //aArgs.DrawingSession.DrawImage( _StopImage.GetResults() );
+                            aArgs.DrawingSession.DrawImage( _StopImage.GetResults() );
                         }
 
                         _Processing?.Draw( aArgs.DrawingSession );

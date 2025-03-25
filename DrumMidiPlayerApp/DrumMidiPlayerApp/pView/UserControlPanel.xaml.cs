@@ -54,7 +54,7 @@ public sealed partial class UserControlPanel : UserControl
                 new CanvasDevice(),
                 Config.Panel.ResolutionScreenWidth,
                 Config.Panel.ResolutionScreenHeight,
-                Config.Media.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
+                Config.Window.DefaultDpi,
                 DirectXPixelFormat.R8G8B8A8UIntNormalized,
                 2,
                 CanvasAlphaMode.Premultiplied
@@ -170,7 +170,11 @@ public sealed partial class UserControlPanel : UserControl
 
                     _ = ( _CurrentSurface?.OnDraw( args ) );
 
-                    using var blur = new AtlasEffect { Source = cl };
+                    using var blur = new ScaleEffect
+                    { 
+                        Source  = cl,
+                        Scale   = Config.Panel.ScreenMagnification,
+                    };
 
                     if ( blur != null )
                     {
@@ -236,7 +240,7 @@ public sealed partial class UserControlPanel : UserControl
             (
                 Config.Panel.ResolutionScreenWidth,
                 Config.Panel.ResolutionScreenHeight,
-                Config.Media.DefaultDpi
+                Config.Window.DefaultDpi
             );
     }
 

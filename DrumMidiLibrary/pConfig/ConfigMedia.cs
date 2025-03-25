@@ -126,12 +126,6 @@ public class ConfigMedia
     [JsonIgnore]
     public string DefaultFontFamily { get; private set; } = $"system-ui";
 
-    /// <summary>
-    /// DPI
-    /// </summary>
-    [JsonInclude]
-    public float DefaultDpi { get; set; } = 96;
-
     #endregion
 
     #region Audio

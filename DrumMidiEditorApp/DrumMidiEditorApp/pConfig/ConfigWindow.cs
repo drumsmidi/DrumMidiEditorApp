@@ -1,27 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿using DrumMidiLibrary.pConfig;
 
 namespace DrumMidiEditorApp.pConfig;
 
 /// <summary>
 /// Window関連設定
 /// </summary>
-public class ConfigWindow
+public class ConfigWindow : ConfigWindowBase
 {
     /// <summary>
-    /// アプリケーション名
+    /// コンストラクタ
     /// </summary>
-    [JsonIgnore]
-    public string AppName { get; private set; } = $"DrumMidiEditor";
-
-    /// <summary>
-    /// エディターウィンドウ初期サイズ：横幅
-    /// </summary>
-    [JsonInclude]
-    public int WindowSizeWidth { get; private set; } = 1960;
-
-    /// <summary>
-    /// エディターウィンドウ初期サイズ：高さ
-    /// </summary>
-    [JsonInclude]
-    public int WindowSizeHeight { get; private set; } = 1280;
+    public ConfigWindow() : base()
+    {
+        AppName                     = $"DrumMidiEditer";
+        WindowSizeWidthDpiNoScale   = 1600;
+        WindowSizeHeightDpiNoScale  = 900;
+    }
 }

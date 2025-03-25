@@ -1,6 +1,10 @@
-﻿using Microsoft.UI;
+﻿using System;
+using System.Runtime.InteropServices;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 using WinRT.Interop;
 
 namespace DrumMidiLibrary.pUtil;
@@ -41,6 +45,15 @@ public static class HelperAppWindow
     /// <param name="aHeight"></param>
     public static void ResizeWindow( AppWindow aAppWindow, int aWidth, int aHeight )
         => aAppWindow.Resize( new( aWidth, aHeight ) );
+
+    /// <summary>
+    /// Windowリサイズ
+    /// </summary>
+    /// <param name="aAppWindow"></param>
+    /// <param name="aWidth"></param>
+    /// <param name="aHeight"></param>
+    public static void ResizeWindowClient( AppWindow aAppWindow, int aWidth, int aHeight )
+        => aAppWindow.ResizeClient( new( aWidth, aHeight ) );
 
     #region Presenter
 
@@ -97,10 +110,16 @@ public static class HelperAppWindow
     /// <param name="aHasTitleBar"></param>
     public static void SetPresenter( AppWindow aAppWindow, bool aMaximizable, bool aMinimizable, bool aResizable, bool aAlwaysOnTop, bool aModal, bool aHasBorder, bool aHasTitleBar )
     {
+        // OverlappedPresenter.IsMaximizable=falseを設定しても
+        // 拡張タイトルバーをダブルクリックするとサイズ変更できてしまう症状あり
+        // https://github.com/microsoft/microsoft-ui-xaml/issues/8846
+
         // 参考URL
         // https://tera1707.com/entry/2022/04/24/220519
 
-        var op = aAppWindow.Presenter as OverlappedPresenter;
+        //var op = aAppWindow.Presenter as OverlappedPresenter;
+
+        var op = OverlappedPresenter.Create();
         op.IsMaximizable    = aMaximizable;
         op.IsMinimizable    = aMinimizable;
         op.IsResizable      = aResizable;
@@ -108,6 +127,8 @@ public static class HelperAppWindow
         op.IsModal          = aModal;
 
         op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
+
+        aAppWindow.SetPresenter( op );
     }
 
     #endregion

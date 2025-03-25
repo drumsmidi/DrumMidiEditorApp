@@ -125,14 +125,20 @@ public sealed partial class WindowPlayer : Window
     {
         try
         {
-            if ( Config.Window.WindowSizeWidth > 0 && Config.Window.WindowSizeHeight > 0 )
+            // NOTE: DPIスケール取得できない？WindowsAPI仕様が必要？
+            // DPIスケール取得
+            Config.Window.DpiScale = 1.5; // Content.RasterizationScale;
+
+            // パネルの解像度にに合わせてウィンドウサイズを変更する
+            Config.Window.WindowSizeWidthDpiNoScale     = (int)Config.Panel.ResolutionScreenWidth;
+            Config.Window.WindowSizeHeightDpiNoScale    = (int)Config.Panel.ResolutionScreenHeight;
+
+            var width  = Config.Window.WindowSizeWidthDpiScale;
+            var height = Config.Window.WindowSizeHeightDpiScale;
+
+            if ( width > 0 && height > 0 )
             {
-                HelperAppWindow.ResizeWindow
-                    (
-                        _AppWindow,
-                        Config.Window.WindowSizeWidth,
-                        Config.Window.WindowSizeHeight
-                    );
+                HelperAppWindow.ResizeWindowClient( _AppWindow, width, height );
             }
         }
         catch ( Exception e )

@@ -154,7 +154,7 @@ public sealed partial class UserControlScore : UserControl
                 CanvasDevice.GetSharedDevice(),
                 ActualSize.X,
                 ActualSize.Y,
-                Config.Media.DefaultDpi
+                Config.Window.DefaultDpi
             );
 
         using var g = offscreen.CreateDrawingSession();
@@ -257,7 +257,7 @@ public sealed partial class UserControlScore : UserControl
                 (int)offscreen.SizeInPixels.Width,
                 (int)offscreen.SizeInPixels.Height,
                 DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
-                Config.Media.DefaultDpi,
+                Config.Window.DefaultDpi,
                 CanvasAlphaMode.Premultiplied
             );
     }

@@ -15,7 +15,7 @@
             <RowDefinition Height="32" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
+        
         <Grid x:Name="_AppTitleBar">
             <TextBlock x:Name="_AppTitleTextBlock" 
                 Style="{ThemeResource CaptionTextBlockStyle}"

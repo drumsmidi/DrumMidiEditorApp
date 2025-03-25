@@ -1,27 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿using DrumMidiLibrary.pConfig;
 
 namespace DrumMidiPlayerApp.pConfig;
 
 /// <summary>
 /// Window関連設定
 /// </summary>
-public class ConfigWindow
+public class ConfigWindow : ConfigWindowBase
 {
     /// <summary>
-    /// アプリケーション名
+    /// コンストラクタ
     /// </summary>
-    [JsonIgnore]
-    public string AppName { get; private set; } = $"DrumMidiPlayer";
-
-    /// <summary>
-    /// エディターウィンドウ初期サイズ：横幅
-    /// </summary>
-    [JsonInclude]
-    public int WindowSizeWidth => (int)Config.Player.ResolutionScreenWidth;
-
-    /// <summary>
-    /// エディターウィンドウ初期サイズ：高さ
-    /// </summary>
-    [JsonInclude]
-    public int WindowSizeHeight => (int)Config.Player.ResolutionScreenHeight;
+    public ConfigWindow() : base() 
+    {
+        AppName                     = $"DrumMidiPlayer";
+        WindowSizeWidthDpiNoScale   = (int)Config.Panel.ResolutionScreenWidth;
+        WindowSizeHeightDpiNoScale  = (int)Config.Panel.ResolutionScreenHeight;
+    }
 }

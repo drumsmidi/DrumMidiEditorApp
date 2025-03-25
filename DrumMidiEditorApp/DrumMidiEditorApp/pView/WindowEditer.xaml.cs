@@ -43,15 +43,7 @@ public sealed partial class WindowEditer : Window
         SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
 
         // ウィンドウ初期サイズ変更
-        if ( Config.Window.WindowSizeWidth > 0 && Config.Window.WindowSizeHeight > 0 )
-        {
-            HelperAppWindow.ResizeWindow
-                (
-                    _AppWindow,
-                    Config.Window.WindowSizeWidth,
-                    Config.Window.WindowSizeHeight
-                );
-        }
+        UpdateWindowsSize();
 
         // 通常ウィンドウのプレゼンター設定
         //HelperAppWindow.SetPresenterNormalWindow( _AppWindow );
@@ -105,6 +97,31 @@ public sealed partial class WindowEditer : Window
         catch ( Exception )
         {
             //Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ウィンドウサイズ更新
+    /// </summary>
+    public void UpdateWindowsSize()
+    {
+        try
+        {
+            // NOTE: DPIスケール取得できない？WindowsAPI仕様が必要？
+            // DPIスケール取得
+            Config.Window.DpiScale = 1.5; // Content.RasterizationScale;
+
+            var width  = Config.Window.WindowSizeWidthDpiScale;
+            var height = Config.Window.WindowSizeHeightDpiScale;
+
+            if ( width > 0 && height > 0 )
+            {
+                HelperAppWindow.ResizeWindowClient( _AppWindow, width, height );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
 

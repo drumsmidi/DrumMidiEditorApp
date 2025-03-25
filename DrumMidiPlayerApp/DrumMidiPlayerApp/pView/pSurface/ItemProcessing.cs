@@ -12,25 +12,44 @@ namespace DrumMidiPlayerApp.pView.pSurface;
 /// </remarks>
 /// <param name="aX">描画位置＋１小節内での相対X座標</param>
 /// <param name="aY">描画位置＋１小節内での相対Y座標</param>
-/// <param name="aWidth">横幅</param>
-/// <param name="aHeight">高さ</param>
+/// <param name="aRadius">半径</param>
 /// <param name="aFormatRect">描画書式</param>
-/// <param name="aLabelText">ラベル</param>
 internal partial class ItemProcessing( float aX, float aY, float aRadius, FormatRect aFormatRect ) : DisposeBaseClass
 {
+    /// <summary>
+    /// 描画位置：X座標（中心値）
+    /// </summary>
     private readonly float _PositionX = aX;
 
+    /// <summary>
+    /// 描画位置：Y座標（中心値）
+    /// </summary>
     private readonly float _PositionY = aY;
 
+    /// <summary>
+    /// 描画範囲：半径
+    /// </summary>
     private readonly float _PositionRadius = aRadius;
 
-    private float _DrawRadius = 8.0F;
+    /// <summary>
+    /// １アイテムの基準サイズ：半径
+    /// </summary>
+    private readonly float _DrawRadius = 8.0F;
 
+    /// <summary>
+    /// 描画アイテム数
+    /// </summary>
+    private readonly int _ItemCount = 6;
+
+    /// <summary>
+    /// 現在のフレーム時間
+    /// </summary>
     private double _CurrentFrameTime = 0.0F;
 
-    private double _EndFrameTime = 5.0F;
-
-    private int _ItemCount = 6;
+    /// <summary>
+    /// フレーム終了時間
+    /// </summary>
+    private readonly double _EndFrameTime = 5.0F;
 
     /// <summary>
     /// 描画書式

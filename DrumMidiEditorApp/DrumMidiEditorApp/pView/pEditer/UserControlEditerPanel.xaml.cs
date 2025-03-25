@@ -3019,7 +3019,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 CanvasDevice.GetSharedDevice(),
                 body._width,
                 body._height,
-                Config.Media.DefaultDpi
+                Config.Window.DefaultDpi
             );
 
         using var g = offscreen.CreateDrawingSession();
@@ -3038,7 +3038,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     (int)offscreen.SizeInPixels.Width,
                     (int)offscreen.SizeInPixels.Height,
                     DirectXPixelFormat.B8G8R8A8UIntNormalizedSrgb,
-                    Config.Media.DefaultDpi,
+                    Config.Window.DefaultDpi,
                     CanvasAlphaMode.Premultiplied
                 );
 

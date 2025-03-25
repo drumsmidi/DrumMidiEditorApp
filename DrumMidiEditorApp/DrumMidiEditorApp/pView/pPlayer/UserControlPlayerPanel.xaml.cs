@@ -48,7 +48,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 new CanvasDevice(),
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                Config.Media.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
+                Config.Window.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
                 DirectXPixelFormat.R8G8B8A8UIntNormalized,
             //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
                 2,
@@ -756,7 +756,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     CanvasDevice.GetSharedDevice(),
                     DrawSet.ResolutionScreenWidth,
                     DrawSet.ResolutionScreenHeight,
-                    Config.Media.DefaultDpi
+                    Config.Window.DefaultDpi
                 );
         }
         catch ( Exception e )
@@ -807,7 +807,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
                     (int)_Offscreen.SizeInPixels.Width,
                     (int)_Offscreen.SizeInPixels.Height,
                     DirectXPixelFormat.R8G8B8A8UIntNormalized,
-                    Config.Media.DefaultDpi,
+                    Config.Window.DefaultDpi,
                     CanvasAlphaMode.Premultiplied
                 );
         }
@@ -877,7 +877,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
             (
                 DrawSet.ResolutionScreenWidth,
                 DrawSet.ResolutionScreenHeight,
-                Config.Media.DefaultDpi
+                Config.Window.DefaultDpi
             );
     }
 
