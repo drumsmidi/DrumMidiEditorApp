@@ -10,12 +10,12 @@ using Microsoft.UI.Xaml.Input;
 using System;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pPlayer.pSurface;
+namespace DrumMidiPlayerApp.pView.pSurface.pPlayer;
 
 /// <summary>
 /// プレイヤーサーフェイス
 /// </summary>
-public class PlayerSurfaceBase : IPlayerSurface
+public class PlayerSurfaceBase : ISurface
 {
     #region Member
 
@@ -96,15 +96,23 @@ public class PlayerSurfaceBase : IPlayerSurface
     {
     }
 
-    public virtual void MouseDown( object sender, PointerRoutedEventArgs args )
+    public virtual void KeyDown( object aSender, KeyRoutedEventArgs aArgs )
     {
     }
 
-    public virtual void MouseMove( object sender, PointerRoutedEventArgs args )
+    public virtual void KeyUp( object aSender, KeyRoutedEventArgs aArgs )
     {
     }
 
-    public virtual void MouseUp( object sender, PointerRoutedEventArgs args )
+    public virtual void MouseDown( object aSender, PointerRoutedEventArgs aArgs )
+    {
+    }
+
+    public virtual void MouseMove( object aSender, PointerRoutedEventArgs aArgs )
+    {
+    }
+
+    public virtual void MouseUp( object aSender, PointerRoutedEventArgs aArgs )
     {
     }
 

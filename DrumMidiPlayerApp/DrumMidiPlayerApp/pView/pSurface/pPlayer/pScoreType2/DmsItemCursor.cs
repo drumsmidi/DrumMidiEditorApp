@@ -1,9 +1,9 @@
-﻿using DrumMidiPlayerApp.pConfig;
-using DrumMidiLibrary.pUtil;
+﻿using DrumMidiLibrary.pUtil;
+using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pPlayer.pSurface.pScoreType2;
+namespace DrumMidiPlayerApp.pView.pSurface.pPlayer.pScoreType2;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節線
@@ -85,7 +85,7 @@ internal partial class DmsItemCursor : DisposeBaseClass
         rect.Y      += aDiffY;
         rect.Width   = aCursolX;
 
-        if ( Config.Player.ScoreType2SelectType.CursorRectOn )
+        if ( Config.Player.ScoreType2.CursorRectOn )
         {
             HelperWin2D.DrawFormatRect
                 (

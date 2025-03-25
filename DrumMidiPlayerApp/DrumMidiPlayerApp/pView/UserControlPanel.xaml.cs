@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pEvent;
-using DrumMidiPlayerApp.pView.pPlayer.pSurface;
+using DrumMidiPlayerApp.pView.pSurface;
+using DrumMidiPlayerApp.pView.pSurface.pSongSelect;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -17,46 +16,73 @@ using Windows.Graphics.DirectX;
 
 namespace DrumMidiPlayerApp.pView.pPlayer;
 
-public sealed partial class UserControlPlayerPanel2 : UserControl
+public sealed partial class UserControlPanel : UserControl
 {
     #region Member
 
     /// <summary>
-    /// Player設定
+    /// メインサーフェイス
     /// </summary>
-    private static ConfigPlayer DrawSet => Config.Player;
+    private ISurface? _CurrentSurface = null;
 
     /// <summary>
-    /// プレイヤーサーフェイス
+    /// 曲選択サーフェイス
     /// </summary>
-    private IPlayerSurface? _PlayerSurface = null;
+    private ISurface? _SongSelectSurface = null;
+
+    /// <summary>
+    /// 曲選択サーフェイス
+    /// </summary>
+    private ISurface? _PlayerSurface = null;
 
     #endregion
+
+    #region コンストラクタ / アンロード
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public UserControlPlayerPanel2()
+    public UserControlPanel()
     {
         InitializeComponent();
 
-        ControlAccess.UCPlayerPanel = this;
+        ControlAccess.MainPanel = this;
 
         // スワップチェイン作成
-        _PlayerCanvas.SwapChain = new CanvasSwapChain
+        _Canvas.SwapChain = new CanvasSwapChain
             (
                 new CanvasDevice(),
-                DrawSet.ResolutionScreenWidth,
-                DrawSet.ResolutionScreenHeight,
+                Config.Panel.ResolutionScreenWidth,
+                Config.Panel.ResolutionScreenHeight,
                 Config.Media.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
                 DirectXPixelFormat.R8G8B8A8UIntNormalized,
-            //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
                 2,
                 CanvasAlphaMode.Premultiplied
             );
 
         DrawTaskStart();
     }
+
+    /// <summary>
+    /// Win2D アンロード処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            // Win2D アンロード
+            _Canvas.RemoveFromVisualTree();
+            _Canvas = null;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    #endregion
 
     #region 描画スレッドプール
 
@@ -101,56 +127,60 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     /// <summary>
     /// 描画タスク
     /// </summary>
-    public void DrawTaskAsync()
+    public async Task DrawTaskAsync()
     {
         try
         {
+            // FPS 制御はしない方がよさそう
             var fps = new Fps();
-            fps.Set( 1, 0 );
-        //  fps.Set( 2, DrawSet.Fps );
+            fps.Set( 0 );
+        //  fps.Set( Config.Panel.Fps );
             fps.Start();
 
             while ( !_FlagIdleTaskStop )
             {
                 // サイズ変更
-                if ( DrawSet.FlagUpdateSize )
+                if ( Config.Panel.FlagUpdateSize )
                 {
-                    DrawSet.FlagUpdateSize = false;
+                    Config.Panel.FlagUpdateSize = false;
                     UpdatePanelSize();
                 }
 
                 // プレイヤー描画モード変更
-                if ( DrawSet.FlagUpdateSurfaceModo )
+                if ( Config.Panel.FlagUpdateSurfaceModo )
                 {
-                    DrawSet.FlagUpdateSurfaceModo = false;
+                    Config.Panel.FlagUpdateSurfaceModo = false;
                     UpdateSurfaceMode();
 
                     EventManage.Event_Player_UpdateScore();
                 }
 
                 // フレーム更新
-                fps.Tick();
-
-                _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) ) );
-
-                // 描画処理
-                using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
-
-                using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
-                using var drawSessionB = cl.CreateDrawingSession();
-
-                var args = new CanvasDrawEventArgs( drawSessionB );
-
-                _ = ( _PlayerSurface?.OnDraw( args ) );
-
-                using var blur = new AtlasEffect { Source = cl };
-
-                if ( blur != null )
+                if ( fps.TickFpsWeight() )
                 {
-                    drawSessionA.DrawImage( blur );
+                    _ = ( _CurrentSurface?.OnMove( fps.GetFrameTime() ) );
+
+                    // 描画処理
+                    using var cl = new CanvasCommandList( _Canvas.SwapChain );
+
+                    using var drawSessionA = _Canvas.SwapChain.CreateDrawingSession( Config.Panel.SheetColor.Color );
+                    using var drawSessionB = cl.CreateDrawingSession();
+
+                    var args = new CanvasDrawEventArgs( drawSessionB );
+
+                    _ = ( _CurrentSurface?.OnDraw( args ) );
+
+                    using var blur = new AtlasEffect { Source = cl };
+
+                    if ( blur != null )
+                    {
+                        drawSessionA.DrawImage( blur );
+                    }
+
+                    _Canvas.SwapChain.Present();
                 }
 
-                _PlayerCanvas.SwapChain.Present();
+                await Task.Delay( 1 );
             }
         }
         catch ( Exception e )
@@ -182,17 +212,17 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     #region Update
 
     /// <summary>
-    /// プレイヤー描画モード変更
+    /// 描画モード変更
     /// </summary>
     private void UpdateSurfaceMode()
     {
-        switch ( DrawSet.PlayerSurfaceModeSelect )
+        switch ( Config.Panel.SurfaceModeSelect )
         {
-            case ConfigSystem.PlayerSurfaceMode.Sequence:
-                _PlayerSurface = new pSurface.pSequence.PlayerSurface();
+            case ConfigPanel.SurfaceMode.SongSelect:
+                _CurrentSurface = _SongSelectSurface ??= new SongSelectSurface();
                 break;
-            case ConfigSystem.PlayerSurfaceMode.ScoreType2:
-                _PlayerSurface = new pSurface.pScoreType2.PlayerSurface();
+            case ConfigPanel.SurfaceMode.Player_ScoreType2:
+                _CurrentSurface = _PlayerSurface ??= new pSurface.pPlayer.pScoreType2.PlayerSurface();
                 break;
         }
     }
@@ -202,28 +232,62 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     /// </summary>
     private void UpdatePanelSize()
     {
-        _PlayerCanvas.SwapChain.ResizeBuffers
+        _Canvas.SwapChain.ResizeBuffers
             (
-                DrawSet.ResolutionScreenWidth,
-                DrawSet.ResolutionScreenHeight,
+                Config.Panel.ResolutionScreenWidth,
+                Config.Panel.ResolutionScreenHeight,
                 Config.Media.DefaultDpi
             );
     }
 
     #endregion
 
-    #region Mouse Event
+    #region Keyboard / Mouse Event
+
+    /// <summary>
+    /// キーダウン処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Canvas_KeyDown( object aSender, KeyRoutedEventArgs aArgs )
+    {
+        try
+        {
+            _CurrentSurface?.KeyDown( aSender, aArgs );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// キーアップ処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Canvas_KeyUp( object aSender, KeyRoutedEventArgs aArgs )
+    {
+        try
+        {
+            _CurrentSurface?.KeyUp( aSender, aArgs );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
 
     /// <summary>
     /// マウスダウン処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Canvas_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseDown( sender, args );
+            _CurrentSurface?.MouseDown( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -234,13 +298,13 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     /// <summary>
     /// マウス移動処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Canvas_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseMove( sender, args );
+            _CurrentSurface?.MouseMove( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -251,13 +315,13 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     /// <summary>
     /// マウスアップ処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Canvas_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseUp( sender, args );
+            _CurrentSurface?.MouseUp( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -266,23 +330,4 @@ public sealed partial class UserControlPlayerPanel2 : UserControl
     }
 
     #endregion
-
-    /// <summary>
-    /// Win2D アンロード処理
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_Unloaded( object sender, RoutedEventArgs args )
-    {
-        try
-        {
-            // Win2D アンロード
-            _PlayerCanvas.RemoveFromVisualTree();
-            _PlayerCanvas = null;
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
 }

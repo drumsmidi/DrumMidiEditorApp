@@ -25,14 +25,18 @@ public class SourceList
         try
         {
             // ファイル取得
-            foreach ( var filename in Directory.GetFiles( aFolderPath.AbsoulteFolderPath, aSearchPattern ) )
+            foreach ( var filpath in Directory.GetFiles( aFolderPath.AbsoulteFolderPath, aSearchPattern ) )
             {
-                Sources.Add( new( $"{aFolderPath.AbsoulteFolderPath}/{filename}" ) );
+                //Log.Info( $"-----{filpath}" );
+
+                Sources.Add( new( $"{filpath}", aFolderPath.BaseFolderPath ) );
             }
             // サブディレクトリ検索
-            foreach ( var foldername in Directory.GetDirectories( aFolderPath.AbsoulteFolderPath ) )
+            foreach ( var folderpath in Directory.GetDirectories( aFolderPath.AbsoulteFolderPath ) )
             {
-                SearchSource( new( $"{aFolderPath.AbsoulteFolderPath}/{foldername}" ), aSearchPattern );
+                //Log.Info( $"{folderpath}" );
+
+                SearchSource( new( $"{folderpath}\\", aFolderPath.BaseFolderPath ), aSearchPattern );
             }
         }
         catch ( Exception e )

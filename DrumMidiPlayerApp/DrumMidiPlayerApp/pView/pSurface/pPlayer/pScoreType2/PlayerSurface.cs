@@ -1,14 +1,14 @@
-﻿using DrumMidiPlayerApp.pConfig;
+﻿using System;
+using System.Collections.Generic;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
+using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using System;
-using System.Collections.Generic;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pPlayer.pSurface.pScoreType2;
+namespace DrumMidiPlayerApp.pView.pSurface.pPlayer.pScoreType2;
 
 /// <summary>
 /// プレイヤーサーフェイス
@@ -20,7 +20,7 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// プレイヤー設定
     /// </summary>
-    private static ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2SelectType;
+    private static ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
 
     /// <summary>
     /// セクション範囲
@@ -178,7 +178,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     {
                         pen = pens [ x ];
 
-                        if ( i % ( note_num / y ) == 0 && ( pen.LineSize != 0 ) )
+                        if ( i % ( note_num / y ) == 0 &&  pen.LineSize != 0  )
                         {
                             break;
                         }
@@ -193,7 +193,7 @@ public class PlayerSurface : PlayerSurfaceBase
                         (
                             new
                             (
-                                (float)( body.X + ( note_width * i ) ),
+                                (float)( body.X +  note_width * i  ),
                                 body._y,
                                 0,
                                 body._height,
@@ -385,9 +385,9 @@ public class PlayerSurface : PlayerSurfaceBase
 
                     note_rect.Width     = DrawSet.NoteWidthSize  * volume;
                     note_rect.Height    = DrawSet.NoteHeightSize * volume;
-                    note_rect.X         = body_s.X + ( info.NotePos * DrawSet.NoteTermWidthSize ); //- ( volume * DrawSet.NoteWidthSize / 2.0F );
-                    note_rect.Y         = body_s.Y + ( item.Item1 * DrawSet.NoteTermHeightSize ) 
-                                        + ( ( DrawSet.NoteTermHeightSize - note_rect.Height ) / 2.0F );
+                    note_rect.X         = body_s.X +  info.NotePos * DrawSet.NoteTermWidthSize ; //- ( volume * DrawSet.NoteWidthSize / 2.0F );
+                    note_rect.Y         = body_s.Y +  item.Item1 * DrawSet.NoteTermHeightSize  
+                                        +  ( DrawSet.NoteTermHeightSize - note_rect.Height ) / 2.0F ;
 
                     if ( volume != 0F )
                     {
@@ -464,7 +464,7 @@ public class PlayerSurface : PlayerSurfaceBase
             return true;
         }
 
-        var measure_no_now = (int)( note_pos / ConfigSystem.MeasureNoteNumber );
+        var measure_no_now =  note_pos / ConfigSystem.MeasureNoteNumber ;
 
         var measure_start = measure_no_now;
 
@@ -475,7 +475,7 @@ public class PlayerSurface : PlayerSurfaceBase
             measure_start -= measure_start % half;
         }
 
-        var measure_end = measure_start + ( measure_x * measure_y ) - 1;
+        var measure_end = measure_start +  measure_x * measure_y  - 1;
 
         #region Paint section
         {
@@ -506,7 +506,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
                 #region Paint horizon line
 
-                if ( ( measure_no % measure_x ) == 0 )
+                if (  measure_no % measure_x  == 0 )
                 {
                     foreach ( var obj in _HeaderList.Values )
                     {
@@ -556,7 +556,7 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 diff_x  = measure_size * ( measure_no % measure_x );
                 diff_y  = section._height * ( measure_no / measure_x % measure_y );
-                div_x   = ( measure_no == cur_measure_no )
+                div_x   =  measure_no == cur_measure_no 
                             ? _SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize
                             : measure_size ;
 

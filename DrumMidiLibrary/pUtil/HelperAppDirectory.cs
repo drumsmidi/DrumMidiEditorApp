@@ -14,7 +14,7 @@ public static class HelperAppDirectory
     /// マイドキュメントフォルダ
     /// </summary>
     public static string MyDocumentsDirectory
-        => Environment.GetFolderPath( Environment.SpecialFolder.Personal );
+        => Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments );
 
     /// <summary>
     /// アプリケーションインストールフォルダ情報

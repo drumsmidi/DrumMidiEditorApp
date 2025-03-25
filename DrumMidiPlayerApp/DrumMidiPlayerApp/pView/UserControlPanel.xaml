@@ -1,0 +1,22 @@
+﻿<UserControl
+    x:Class="DrumMidiPlayerApp.pView.pPlayer.UserControlPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    Unloaded="UserControl_Unloaded"
+    mc:Ignorable="d">
+
+    <Grid>
+        <canvas:CanvasSwapChainPanel x:Name = "_Canvas"
+            KeyDown="Canvas_KeyDown"
+            KeyUp="Canvas_KeyUp"
+            PointerPressed="Canvas_PointerPressed"
+            PointerMoved="Canvas_PointerMoved"
+            PointerExited="Canvas_PointerReleased"
+            PointerCanceled="Canvas_PointerReleased"
+            PointerCaptureLost="Canvas_PointerReleased"
+            PointerReleased="Canvas_PointerReleased" />
+    </Grid>
+</UserControl>

@@ -38,8 +38,10 @@ public static class EventManage
         // Page側のサイズ更新
         //ControlAccess.PagePlayer?.UpdatePageSize();
 
+
+
         // Panel用フラグ更新：描画ループ処理内で更新フラグを見て更新
-        Config.Player.FlagUpdateSize = true;
+        Config.Panel.FlagUpdateSize = true;
 
         // スクリーンサイズ変更に伴う更新
         Event_Player_UpdateScore();
@@ -81,6 +83,8 @@ public static class EventManage
     /// </summary>
     public static void Event_Window_ResizeWindow()
     {
+        Event_Player_UpdateScreenSize();
+
         // エディタパネルリサイズ
         //Event_Editer_ResizePanel();
 

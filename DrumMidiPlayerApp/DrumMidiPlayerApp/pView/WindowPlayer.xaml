@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     Activated="Window_Activated"
     Closed="Window_Closed"
+    SizeChanged="Window_SizeChanged"
     mc:Ignorable="d">
 
     <Grid>
@@ -24,7 +25,7 @@
                 TextWrapping="NoWrap" />
         </Grid>
 
-        <local:UserControlPlayerPanel2 Grid.Row="1" />
+        <local:UserControlPanel Grid.Row="1" />
 
     </Grid>
 

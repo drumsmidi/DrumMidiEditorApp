@@ -17,12 +17,12 @@ public static partial class HelperColor
     /// <summary>
     /// 黒色
     /// </summary>
-    public static Color BlackColor { get; } = Color.FromArgb( 255, 255, 255, 255 );
+    public static Color BlackColor { get; } = Color.FromArgb( 255, 0, 0, 0 );
 
     /// <summary>
     /// 白色
     /// </summary>
-    public static Color WhiteColor { get; } = Color.FromArgb( 255, 0, 0, 0 );
+    public static Color WhiteColor { get; } = Color.FromArgb( 255, 255, 255, 255 );
 
     /// <summary>
     /// #FFFFFF 表記の色、または ARGB値 からColorを返す

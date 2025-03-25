@@ -2,7 +2,7 @@
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pPlayer.pSurface;
+namespace DrumMidiPlayerApp.pView.pSurface.pSongSelect;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節線

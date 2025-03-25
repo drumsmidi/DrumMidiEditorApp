@@ -7,6 +7,24 @@ namespace DrumMidiLibrary.pUtil;
 /// </summary>
 public static class HelperMath
 {
+    #region 円
+
+    /// <summary>
+    /// 円周の位置取得
+    /// </summary>
+    /// <param name="aCenterX">基準値X</param>
+    /// <param name="aCenterY">基準値Y</param>
+    /// <param name="aRadius">半径</param>
+    /// <param name="aAngle">角度(360度)</param>
+    /// <returns>X座標、Y座標</returns>
+    public static (float X, float Y) GetCirclePosition( float aCenterX, float aCenterY, float aRadius, float aAngle )
+    {        
+        var angole = aAngle / 360F * MathF.Tau;
+
+        return ( aCenterX + aRadius * MathF.Cos( angole ), aCenterY + aRadius * MathF.Sin( angole ) );
+    }
+    #endregion
+
     #region ベジェ曲線
 
     /// <summary>

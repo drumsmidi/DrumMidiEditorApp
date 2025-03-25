@@ -101,13 +101,14 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// 描画タスク
     /// </summary>
-    public void DrawTaskAsync()
+    public async Task DrawTaskAsync()
     {
         try
         {
+            // FPS 制御はしない方がよさそう
             var fps = new Fps();
-            fps.Set( 1, 0 );
-        //  fps.Set( 2, DrawSet.Fps );
+            fps.Set( 0 );
+        //  fps.Set( Config.Panel.Fps );
             fps.Start();
 
             while ( !_FlagIdleTaskStop )
@@ -129,30 +130,33 @@ public sealed partial class UserControlPlayerPanel : UserControl
                 }
 
                 // フレーム更新
-                fps.Tick();
-
-                _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime( 1 ) ) );
-
-                // 描画処理
-                if ( DrawSet.DisplayPlayer )
+                if ( fps.TickFpsWeight() )
                 {
-                    using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
+                    _ = ( _PlayerSurface?.OnMove( fps.GetFrameTime() ) );
 
-                    using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
-                    using var drawSessionB = cl.CreateDrawingSession();
-
-                    var args = new CanvasDrawEventArgs( drawSessionB );
-
-                    _ = ( _PlayerSurface?.OnDraw( args ) );
-
-                    using var blur = GetEffectImage( cl );
-                    if ( blur != null )
+                    // 描画処理
+                    if ( DrawSet.DisplayPlayer )
                     {
-                        drawSessionA.DrawImage( blur );
-                    }
+                        using var cl = new CanvasCommandList( _PlayerCanvas.SwapChain );
 
-                    _PlayerCanvas.SwapChain.Present();
+                        using var drawSessionA = _PlayerCanvas.SwapChain.CreateDrawingSession( DrawSet.SheetColor.Color );
+                        using var drawSessionB = cl.CreateDrawingSession();
+
+                        var args = new CanvasDrawEventArgs( drawSessionB );
+
+                        _ = ( _PlayerSurface?.OnDraw( args ) );
+
+                        using var blur = GetEffectImage( cl );
+                        if ( blur != null )
+                        {
+                            drawSessionA.DrawImage( blur );
+                        }
+
+                        _PlayerCanvas.SwapChain.Present();
+                    }
                 }
+
+                await Task.Delay( 1 );
             }
         }
         catch ( Exception e )

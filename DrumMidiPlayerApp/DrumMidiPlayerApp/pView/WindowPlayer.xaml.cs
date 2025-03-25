@@ -1,14 +1,15 @@
+using System;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
+using DrumMidiPlayerApp.pEvent;
 using DrumMidiPlayerApp.pIO;
 using DrumMidiPlayerApp.pModel;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
-using System;
 
 namespace DrumMidiPlayerApp.pView;
 
@@ -57,14 +58,14 @@ public sealed partial class WindowPlayer : Window
     /// <summary>
     /// アクティブ状態更新
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Window_Activated( object sender, WindowActivatedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Window_Activated( object aSender, WindowActivatedEventArgs aArgs )
     {
         try
         {
             // タイトルバーが非アクティブ状態による前景色の変更
-            var key =  args.WindowActivationState == WindowActivationState.Deactivated
+            var key =  aArgs.WindowActivationState == WindowActivationState.Deactivated
                 ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
             _AppTitleTextBlock.Foreground = (SolidColorBrush)Application.Current.Resources [ key ];
@@ -78,9 +79,9 @@ public sealed partial class WindowPlayer : Window
     /// <summary>
     /// ウィンドウ終了処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Window_Closed( object sender, WindowEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Window_Closed( object aSender, WindowEventArgs aArgs )
     {
         try
         {
@@ -89,7 +90,7 @@ public sealed partial class WindowPlayer : Window
             DmsControl.End();
 
             // プレイヤー停止
-            ControlAccess.UCPlayerPanel?.DrawTaskStop();
+            ControlAccess.MainPanel?.DrawTaskStop();
 
             // 設定ファイル保存
             _ = FileIO.SaveConfig();
@@ -101,14 +102,15 @@ public sealed partial class WindowPlayer : Window
     }
 
     /// <summary>
-    /// タイトルバーのサブタイトルを設定
+    /// ウィンドウサイズ変更
     /// </summary>
-    /// <param name="aSubTitle">サブタイトル</param>
-    public void SetSubTitle( string aSubTitle )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Window_SizeChanged( object aSender, WindowSizeChangedEventArgs aArgs )
     {
         try
         {
-            _AppTitleTextBlock.Text = $"{Config.Window.AppName} - {aSubTitle}";
+            EventManage.Event_Window_ResizeWindow();
         }
         catch ( Exception e )
         {
@@ -132,6 +134,22 @@ public sealed partial class WindowPlayer : Window
                         Config.Window.WindowSizeHeight
                     );
             }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// タイトルバーのサブタイトルを設定
+    /// </summary>
+    /// <param name="aSubTitle">サブタイトル</param>
+    public void SetSubTitle( string aSubTitle )
+    {
+        try
+        {
+            _AppTitleTextBlock.Text = $"{Config.Window.AppName} - {aSubTitle}";
         }
         catch ( Exception e )
         {

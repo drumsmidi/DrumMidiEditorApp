@@ -24,6 +24,11 @@ public static class Config
         get => ConfigLib.Media;
         set => ConfigLib.Media = value;
     }
+    
+    /// <summary>
+    /// Panel設定
+    /// </summary>
+    public static ConfigPanel Panel { get; set; } = new();
 
     /// <summary>
     /// File設定

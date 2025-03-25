@@ -58,7 +58,7 @@ public static class HelperAppWindow
     /// </summary>
     /// <param name="aAppWindow"></param>
     public static void SetPresenterFixedWindow( AppWindow aAppWindow )
-        => SetPresenter( aAppWindow, false, true, false, false, false, false, false );
+        => SetPresenter( aAppWindow, false, true, false, false, false, true, true );
 
     /// <summary>
     /// ウィンドウのプレゼンター設定
@@ -106,7 +106,8 @@ public static class HelperAppWindow
         op.IsResizable      = aResizable;
         op.IsAlwaysOnTop    = aAlwaysOnTop;
         op.IsModal          = aModal;
-        //op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
+
+        op.SetBorderAndTitleBar( aHasBorder, aHasTitleBar );
     }
 
     #endregion

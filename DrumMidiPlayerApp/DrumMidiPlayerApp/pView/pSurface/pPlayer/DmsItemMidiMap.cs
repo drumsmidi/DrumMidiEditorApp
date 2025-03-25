@@ -3,7 +3,7 @@ using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pPlayer.pSurface;
+namespace DrumMidiPlayerApp.pView.pSurface.pPlayer;
 
 /// <summary>
 /// プレイヤー描画アイテム：MidiMapヘッダ

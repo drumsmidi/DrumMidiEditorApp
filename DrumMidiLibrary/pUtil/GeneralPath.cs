@@ -55,7 +55,7 @@ public class GeneralPath
     public GeneralPath( string aPath )
     {
         _FullPath = Path.GetFullPath( ConvertPath( aPath ), StartupFolderPath );
-        _BasePath = ConvertPath( StartupFolderPath );
+        _BasePath = AbsoulteFolderPath;
     }
 
     /// <summary>

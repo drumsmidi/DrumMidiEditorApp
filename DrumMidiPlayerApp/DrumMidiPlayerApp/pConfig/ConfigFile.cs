@@ -1,4 +1,6 @@
 ﻿using DrumMidiLibrary.pUtil;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace DrumMidiPlayerApp.pConfig;
@@ -23,6 +25,18 @@ public class ConfigFile
     public GeneralPath FolderConfig
      // => new( FolderDocBase.AbsoulteFolderPath );
         => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config\\" ) );
+
+    /// <summary>
+    /// DMSフォルダパス
+    /// </summary>
+    [JsonIgnore]
+    public List<GeneralPath> FolderDms { get; private set; } =
+    [
+        new( $"{HelperAppDirectory.MyDocumentsDirectory}\\" ),
+    ];
+
+
+
 
     #endregion
 
