@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 
-namespace DrumMidiLibrary.pIO.pDatabase.pModel;
+namespace DrumMidiLibrary.pIO.pDatabase.pRecord;
 
 internal record struct RecordDmsFile
 {

@@ -4,8 +4,8 @@ using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pEvent;
-using DrumMidiPlayerApp.pView.pSurface;
-using DrumMidiPlayerApp.pView.pSurface.pSongSelect;
+using DrumMidiPlayerApp.pView.pScreen;
+using DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -23,17 +23,17 @@ public sealed partial class UserControlPanel : UserControl
     /// <summary>
     /// メインサーフェイス
     /// </summary>
-    private ISurface? _CurrentSurface = null;
+    private IScreen? _CurrentSurface = null;
 
     /// <summary>
     /// 曲選択サーフェイス
     /// </summary>
-    private ISurface? _SongSelectSurface = null;
+    private IScreen? _SongSelectSurface = null;
 
     /// <summary>
     /// 曲選択サーフェイス
     /// </summary>
-    private ISurface? _PlayerSurface = null;
+    private IScreen? _PlayerSurface = null;
 
     #endregion
 
@@ -223,10 +223,10 @@ public sealed partial class UserControlPanel : UserControl
         switch ( Config.Panel.SurfaceModeSelect )
         {
             case ConfigPanel.SurfaceMode.SongSelect:
-                _CurrentSurface = _SongSelectSurface ??= new SongSelectSurface();
+                _CurrentSurface = _SongSelectSurface ??= new ScreenSongSelect();
                 break;
             case ConfigPanel.SurfaceMode.Player_ScoreType2:
-                _CurrentSurface = _PlayerSurface ??= new pSurface.pPlayer.pScoreType2.PlayerSurface();
+                _CurrentSurface = _PlayerSurface ??= new pScreen.pPlayer.pScoreType2.ScreenPlayer();
                 break;
         }
     }

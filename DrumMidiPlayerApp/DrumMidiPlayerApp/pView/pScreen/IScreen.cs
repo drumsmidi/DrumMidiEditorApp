@@ -1,12 +1,12 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 
-namespace DrumMidiPlayerApp.pView.pSurface;
+namespace DrumMidiPlayerApp.pView.pScreen;
 
 /// <summary>
 /// プレイヤーサーフェイスインタフェース
 /// </summary>
-internal interface ISurface
+public interface IScreen
 {
     /// <summary>
     /// キーダウン処理
@@ -55,4 +55,9 @@ internal interface ISurface
     /// </summary>
     /// <returns>True:処理続行、False:処理中断</returns>
     bool OnDraw( CanvasDrawEventArgs aArgs );
+
+    /// <summary>
+    /// 親スクリーンのインスタンスを設定
+    /// </summary>
+    void SetParentScreen( IScreen aScreen );
 }

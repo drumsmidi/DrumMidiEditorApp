@@ -2,7 +2,7 @@
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface;
+namespace DrumMidiPlayerApp.pView.pScreen;
 
 /// <summary>
 /// 描画アイテム：処理中

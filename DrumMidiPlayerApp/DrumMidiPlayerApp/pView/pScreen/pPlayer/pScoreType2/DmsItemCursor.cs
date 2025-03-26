@@ -3,7 +3,7 @@ using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface.pPlayer.pScoreType2;
+namespace DrumMidiPlayerApp.pView.pScreen.pPlayer.pScoreType2;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節線

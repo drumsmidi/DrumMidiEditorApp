@@ -1,21 +1,21 @@
-﻿using DrumMidiPlayerApp.pConfig;
-using DrumMidiPlayerApp.pModel;
+﻿using System;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pModel;
+using DrumMidiPlayerApp.pConfig;
+using DrumMidiPlayerApp.pModel;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
-using System;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface.pPlayer;
+namespace DrumMidiPlayerApp.pView.pScreen.pPlayer;
 
 /// <summary>
 /// プレイヤーサーフェイス
 /// </summary>
-public class PlayerSurfaceBase : ISurface
+public class ScreenPlayerBase : IScreen
 {
     #region Member
 
@@ -92,7 +92,7 @@ public class PlayerSurfaceBase : ISurface
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    protected PlayerSurfaceBase()
+    protected ScreenPlayerBase()
     {
     }
 
@@ -400,5 +400,8 @@ public class PlayerSurfaceBase : ISurface
         return _DmsPlayState is PlayState.Playing or PlayState.Recording;
     }
 
-    public virtual int GetNumberOfMeasureNoPerPage() => 0;
+    public virtual void SetParentScreen( IScreen aScreen )
+    {
+    }
+
 }

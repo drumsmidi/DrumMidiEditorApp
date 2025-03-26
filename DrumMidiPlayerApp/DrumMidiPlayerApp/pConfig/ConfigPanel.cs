@@ -101,7 +101,7 @@ public class ConfigPanel
     /// 解像度リスト選択インデックス
     /// </summary>
     [JsonIgnore]
-    public int ResolutionScreenIndex { get; set; } = 0;
+    public int ResolutionScreenIndex { get; set; } = 1;
 
     /// <summary>
     /// 解像度：横幅

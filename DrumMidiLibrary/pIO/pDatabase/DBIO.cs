@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DrumMidiLibrary.pIO.pDatabase.pModel;
+using DrumMidiLibrary.pIO.pDatabase.pRecord;
 using DrumMidiLibrary.pUtil;
 using LiteDB;
 
@@ -71,8 +71,6 @@ public static class DBIO
     /// </summary>
     public static void DeleteAllSongList()
     {
-        var songList = new List<GeneralPath>();
-
         using var conn = new LiteDatabase( _DatabasePath );
 
         // DBへ接続

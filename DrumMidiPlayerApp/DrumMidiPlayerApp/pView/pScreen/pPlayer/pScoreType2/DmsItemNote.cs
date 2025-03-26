@@ -1,15 +1,14 @@
-﻿using DrumMidiLibrary.pModel;
+﻿using System;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
-using System;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface.pPlayer;
+namespace DrumMidiPlayerApp.pView.pScreen.pPlayer.pScoreType2;
 
 /// <summary>
-/// プレイヤー描画アイテム：BPM
+/// プレイヤー描画アイテム：ノート
 /// </summary>
-internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<DmsItemBpm>
+internal partial class DmsItemNote : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
 {
     /// <summary>
     /// 描画範囲
@@ -17,14 +16,14 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
     private Rect _DrawRect = new();
 
     /// <summary>
-    /// BPM情報
-    /// </summary>
-    private InfoBpm? _Info = null;
-
-    /// <summary>
     /// 描画書式
     /// </summary>
     private FormatRect? _FormatRect = null;
+
+    /// <summary>
+    /// ラベルテキスト
+    /// </summary>
+    private readonly string _LabelText = string.Empty;
 
     /// <summary>
     /// コンストラクタ
@@ -33,16 +32,16 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
     /// <param name="aY">描画位置＋１小節内での相対Y座標</param>
     /// <param name="aWidth">横幅</param>
     /// <param name="aHeight">高さ</param>
-    /// <param name="aInfo">BPM情報</param>
     /// <param name="aFormatRect">描画書式</param>
-    public DmsItemBpm( float aX, float aY, float aWidth, float aHeight, InfoBpm aInfo, FormatRect aFormatRect )
+    /// <param name="aLabelText">ラベル</param>
+    public DmsItemNote( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect, string aLabelText )
     {
         _DrawRect.X         = aX;
         _DrawRect.Y         = aY;
         _DrawRect.Width     = aWidth;
         _DrawRect.Height    = aHeight;
-        _Info               = aInfo;
         _FormatRect         = aFormatRect;
+        _LabelText          = aLabelText;
     }
 
     protected override void Dispose( bool aDisposing )
@@ -52,7 +51,6 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _Info       = null;
                 _FormatRect = null;
             }
 
@@ -70,30 +68,53 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
     /// 描画
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
-    public void Draw( CanvasDrawingSession aGraphics )
-        => Draw( aGraphics, 0, 0 );
-
-    /// <summary>
-    /// 描画
-    /// </summary>
-    /// <param name="aGraphics">グラフィック</param>
     /// <param name="aDiffX">描画差分X</param>
     /// <param name="aDiffY">描画差分Y</param>
-    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY )
+    public void Draw( CanvasDrawingSession aGraphics, float aDiffX, float aDiffY, bool aTextFlag )
     {
-        var rect = _DrawRect;
-        rect.X += aDiffX;
-        rect.Y += aDiffY;
+        if ( _FormatRect == null )
+        {
+            return;
+        }
 
-        HelperWin2D.DrawFormatRect( aGraphics, rect, _FormatRect, _Info?.Bpm.ToString() ?? string.Empty );
+        var rect = _DrawRect;
+        rect.X  += aDiffX;
+        rect.Y  += aDiffY;
+
+        // テキスト
+        if ( aTextFlag && _LabelText.Length != 0 )
+        {
+            aGraphics.DrawText
+                (
+                    _LabelText,
+                    rect._x - rect._width / 2F,
+                    rect._y - rect._height,
+                    rect._width,
+                    rect._height,
+                    _FormatRect.Background.Color,
+                    _FormatRect.Text.TextFormat
+                );
+        }
+        else
+        {
+            // 背景色
+            aGraphics.FillEllipse
+                (
+                    rect._x,
+                    rect._y - rect._height / 2.0f,
+                    rect._width,
+                    rect._height,
+                    _FormatRect.Background.Color
+                );
+        }
     }
 
     /// <summary>
-    /// BPM描画順 並替用
+    /// ノート描画順 並替用
     /// </summary>
     /// <param name="aOther"></param>
     /// <returns></returns>
-    public int CompareTo( DmsItemBpm? aOther )
+    public int CompareTo( DmsItemNote? aOther )
     {
         if ( aOther == null )
         {
@@ -107,12 +128,11 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
         {
             return 0;
         }
-
         return -1;
     }
 
     /// <summary>
-    /// BPM描画順 並替用
+    /// ノート描画順 並替用
     /// </summary>
     /// <param name="aOther"></param>
     /// <returns></returns>
@@ -122,6 +142,6 @@ internal partial class DmsItemBpm : DisposeBaseClass, IComparable, IComparable<D
             ? 1
             : GetType() != aOther.GetType()
             ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
-            : CompareTo( aOther as DmsItemBpm );
+            : CompareTo( aOther as DmsItemNote );
     }
 }

@@ -1,122 +1,107 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
-using DrumMidiPlayerApp.pModel;
-using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface.pSongSelect;
+namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 
 /// <summary>
 /// プレイヤーサーフェイス
 /// </summary>
-public class SongSelectSurface : ISurface
+public class ScreenSongList : IScreen
 {
     #region Member
 
     /// <summary>
-    /// プレイヤー設定（共通）
+    /// 親スクリーン
     /// </summary>
-    protected ConfigPlayer DrawSetCom => Config.Player;
+    private ScreenSongSelect? _ParentScreen;
 
     /// <summary>
-    /// システム設定
+    /// スクリーン位置：X座標
     /// </summary>
-    protected ConfigSystem ConfigSystem => Config.System;
+    public float ScreenPosX { get; set; } = 0;
 
     /// <summary>
-    /// メディア設定
+    /// スクリーン位置：Y座標
     /// </summary>
-    protected ConfigMedia ConfigMedia => Config.Media;
-
-    /// <summary>
-    /// スコア
-    /// </summary>
-    protected Score Score = new();
+    public float ScreenPosY { get; set; } = 0;
 
     /// <summary>
     /// スクリーンサイズ
     /// </summary>
-    protected Size _ScreenSize = new();
+    public Size ScreenSize { get; set; } = new( Config.Panel.BaseScreenSize.Width / 2F, Config.Panel.BaseScreenSize.Height );
 
     /// <summary>
-    /// ノート位置（絶対値）小数点あり
+    /// 処理中アイテム
     /// </summary>
-    protected float _SheetPosX = 0;
+    private ItemProcessing? _Processing;
 
     /// <summary>
-    /// ノート位置（絶対値）
+    /// 曲リストスクロールリスト
     /// </summary>
-    protected int _NotePositionX = 0;
+    private ItemSongScrollList? _SongScrollList;
 
-    /// <summary>
-    /// 再生開始処理後の現在の再生時間（秒）
-    /// </summary>
-    protected double _DmsPlayTime = 0.0D;
+    #endregion
 
+    #region Request & State
 
     /// <summary>
     /// リクエスト一覧
     /// </summary>
-    private enum SongSelectRequest : int
+    public enum Requests : int
     {
         None = 0,
+        Load,
         ScoreSearch,
         SongListInit,
         SongListSelectMode,
+        UnLoad,
     }
 
     /// <summary>
     /// 再生状態
     /// </summary>
-    private SongSelectRequest _SongSelectRequest= SongSelectRequest.ScoreSearch;
+    public Requests Request { get; set; } = Requests.ScoreSearch;
 
     /// <summary>
     /// 状態一覧
     /// </summary>
-    private enum SongSelectState : int
+    public enum States : int
     {
         None = 0,
+        Loading,
         ScoreSearching,
         SongListInitializing,
         SongListSelectMode,
+        UnLoading,
     }
 
     /// <summary>
-    /// 再生状態
+    /// 状態
     /// </summary>
-    private SongSelectState _SongSelectState = SongSelectState.None;
+    public States State { get; protected set; } = States.None;
 
     /// <summary>
-    /// 再生要求内容（通常再生、ループ再生の判定に使用）
+    /// 前回状態
     /// </summary>
-    private SongSelectState _SongSelectStatePre = SongSelectState.None;
-
-    /// <summary>
-    /// 停止中にプレイヤーへ描画する画像
-    /// </summary>
-    private IAsyncOperation<CanvasBitmap>? _StopImage;
-
-
-    private ItemProcessing? _Processing;
+    public States StatePre { get; protected set; } = States.None;
 
     #endregion
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    public SongSelectSurface()
+    public ScreenSongList()
     {
     }
+
+    #region Key & Mouse Event
 
     public virtual void KeyDown( object aSender, KeyRoutedEventArgs aArgs )
     {
@@ -138,51 +123,64 @@ public class SongSelectSurface : ISurface
     {
     }
 
+    #endregion
+
+    #region Frame処理
+
     public virtual bool OnMove( double aFrameTime )
     {
         #region リクエスト処理
         {
-            var req = _SongSelectRequest;
+            var req = Request;
 
-            if (  req != SongSelectRequest.None )
+            if (  req != Requests.None )
             {
-                _SongSelectRequest  = SongSelectRequest.None;
-                _SongSelectStatePre = _SongSelectState;
+                // リクエストクリア
+                Request = Requests.None;
+
+                // 前回状態
+                StatePre = State;
 
                 switch ( req )
                 {
-                    case SongSelectRequest.ScoreSearch:
+                    case Requests.Load:
                         {
-                            SearchScoreFiles();
+                            // スコア検索
+                            SearchScoreFilesAsync();
 
-                            FormatRect format = new()
+                            var format = new FormatRect()
                             {
                                 Background = new( HelperColor.GetColor("#AA666666" ) ),
                             };
 
-                            
-
-                            _Processing ??= new ItemProcessing
+                            // 処理中アイテム
+                            _Processing ??= new
                             (
-                                Config.Panel.BaseScreenSize._width  / 2F,
-                                Config.Panel.BaseScreenSize._height / 2F, 
+                                ScreenSize._width  / 2F,
+                                ScreenSize._height / 2F, 
                                 30, 
-                                format 
+                                format
                             );
 
-                            _SongSelectState = SongSelectState.ScoreSearching;
+                            // 
+                            _SongScrollList ??= new();
+
+                            State = States.ScoreSearching;
                         }
                         break;
-                    case SongSelectRequest.SongListInit:
+                    case Requests.SongListInit:
                         {
+                            // SongList検索
                             SearchSongList();
 
-                            _SongSelectState = SongSelectState.SongListInitializing;
+                            State = States.SongListInitializing;
+
+                            Request = Requests.SongListSelectMode;
                         }
                         break;
-                    case SongSelectRequest.SongListSelectMode:
+                    case Requests.SongListSelectMode:
                         {
-                            _SongSelectState = SongSelectState.SongListSelectMode;
+                            State = States.SongListSelectMode;
                         }
                         break;
                 }
@@ -190,24 +188,27 @@ public class SongSelectSurface : ISurface
         }
         #endregion
 
+        #region Itemフレーム処理
+        {
+            _Processing?.Move( aFrameTime );
+            _SongScrollList?.Move( aFrameTime );
+        }
+        #endregion
+
         #region 状態に応じた処理
         {
-            switch ( _SongSelectState )
+            switch ( State )
             {
-                case SongSelectState.ScoreSearching:
+                case States.ScoreSearching:
                     {
-                        _Processing?.Move( aFrameTime );
-
                     }
                     break;
-                case SongSelectState.SongListInitializing:
+                case States.SongListInitializing:
                     {
-                        _Processing?.Move( aFrameTime );
                     }
                     break;
-                case SongSelectState.SongListSelectMode:
+                case States.SongListSelectMode:
                     {
-                        _Processing?.Move( aFrameTime );
                     }
                     break;
             }
@@ -220,7 +221,7 @@ public class SongSelectSurface : ISurface
     /// <summary>
     /// スコア検索
     /// </summary>
-    private async void SearchScoreFiles()
+    private async void SearchScoreFilesAsync()
     {
         try
         {
@@ -242,7 +243,7 @@ public class SongSelectSurface : ISurface
                         }
                     );
 
-                    _SongSelectRequest = SongSelectRequest.SongListInit;
+                    Request = Requests.SongListInit;
                 }
             );
         }
@@ -250,38 +251,30 @@ public class SongSelectSurface : ISurface
         {
             Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
 
-            _SongSelectRequest = SongSelectRequest.SongListInit;
+            Request = Requests.SongListInit;
         }
     }
 
     /// <summary>
     /// SongList取得
     /// </summary>
-    private async void SearchSongList()
+    private void SearchSongList()
     {
         try
         {
-            await Task.Run
-            (
-                () =>
-                {
-                    var songlist = DBIO.SelectSongList();
+            var songlist = DBIO.SelectSongList();
 
-                    //songlist.ForEach( song => Log.Info( $"{song.RelativeFilePath}" ) );
-
-                    _SongSelectRequest = SongSelectRequest.SongListSelectMode;
-                }
-            );
+            //songlist.ForEach( song => Log.Info( $"{song.RelativeFilePath}" ) );
         }
         catch ( Exception e )
         {
             Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            _SongSelectRequest = SongSelectRequest.SongListSelectMode;
         }
     }
 
+    #endregion
 
+    #region 描画処理
 
     public virtual bool OnDraw( CanvasDrawEventArgs aArgs )
     {
@@ -290,24 +283,18 @@ public class SongSelectSurface : ISurface
 
         #region 状態に応じた処理
         {
-            switch ( _SongSelectState )
+            switch ( State )
             {
-                case SongSelectState.ScoreSearching:
-                case SongSelectState.SongListInitializing:
+                case States.Loading:
+                case States.ScoreSearching:
+                case States.SongListInitializing:
                     {
                         _Processing?.Draw( aArgs.DrawingSession );
                     }
                     break;
-                case SongSelectState.SongListSelectMode:
+                case States.SongListSelectMode:
                     {
-                        // Effect機能確認用に停止中に画像を表示
-                        _StopImage ??= CanvasBitmap.LoadAsync( aArgs.DrawingSession, new Uri( "ms-appx:///Images/stop.jpg" ) );
-                        if ( _StopImage.Status == AsyncStatus.Completed )
-                        {
-                            aArgs.DrawingSession.DrawImage( _StopImage.GetResults() );
-                        }
-
-                        _Processing?.Draw( aArgs.DrawingSession );
+                        _SongScrollList?.Draw( aArgs.DrawingSession );
                     }
                     break;
             }
@@ -316,4 +303,18 @@ public class SongSelectSurface : ISurface
 
         return true;
     }
+
+    #endregion
+
+    #region その他
+
+    public virtual void SetParentScreen( IScreen aScreen )
+    {
+        if ( aScreen is ScreenSongSelect screen )
+        {
+            _ParentScreen = screen;
+        }
+    }
+
+    #endregion
 }

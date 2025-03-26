@@ -3,7 +3,7 @@ using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pSurface.pPlayer;
+namespace DrumMidiPlayerApp.pView.pScreen.pPlayer;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節ヘッダ
