@@ -7,16 +7,8 @@
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     Unloaded="UserControl_Unloaded"
     mc:Ignorable="d">
-
+    
     <Grid>
-        <canvas:CanvasSwapChainPanel x:Name = "_Canvas"
-            KeyDown="Canvas_KeyDown"
-            KeyUp="Canvas_KeyUp"
-            PointerPressed="Canvas_PointerPressed"
-            PointerMoved="Canvas_PointerMoved"
-            PointerExited="Canvas_PointerReleased"
-            PointerCanceled="Canvas_PointerReleased"
-            PointerCaptureLost="Canvas_PointerReleased"
-            PointerReleased="Canvas_PointerReleased" />
+        <canvas:CanvasSwapChainPanel x:Name = "_Canvas" />
     </Grid>
 </UserControl>

@@ -1,46 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml.Input;
-using Windows.Foundation;
 
 namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 
 /// <summary>
 /// プレイヤーサーフェイス
 /// </summary>
-public class ScreenSongList : IScreen
+public class ScreenSongList : ScreenBase
 {
-    #region Member
-
     /// <summary>
-    /// 親スクリーン
+    /// コンストラクタ
     /// </summary>
-    private ScreenSongSelect? _ParentScreen;
+    public ScreenSongList() : base( true )
+    {
+    }
 
-    /// <summary>
-    /// スクリーン位置：X座標
-    /// </summary>
-    public float ScreenPosX { get; set; } = 0;
 
-    /// <summary>
-    /// スクリーン位置：Y座標
-    /// </summary>
-    public float ScreenPosY { get; set; } = 0;
-
-    /// <summary>
-    /// スクリーンサイズ
-    /// </summary>
-    public Size ScreenSize { get; set; } = new( Config.Panel.BaseScreenSize.Width / 2F, Config.Panel.BaseScreenSize.Height );
-
-    /// <summary>
-    /// 処理中アイテム
-    /// </summary>
-    private ItemProcessing? _Processing;
+    #region Screen情報
 
     /// <summary>
     /// 曲リストスクロールリスト
@@ -57,17 +39,15 @@ public class ScreenSongList : IScreen
     public enum Requests : int
     {
         None = 0,
-        Load,
         ScoreSearch,
         SongListInit,
         SongListSelectMode,
-        UnLoad,
     }
 
     /// <summary>
     /// 再生状態
     /// </summary>
-    public Requests Request { get; set; } = Requests.ScoreSearch;
+    public Requests Request { get; set; } = Requests.None;
 
     /// <summary>
     /// 状態一覧
@@ -75,11 +55,9 @@ public class ScreenSongList : IScreen
     public enum States : int
     {
         None = 0,
-        Loading,
         ScoreSearching,
         SongListInitializing,
         SongListSelectMode,
-        UnLoading,
     }
 
     /// <summary>
@@ -92,131 +70,125 @@ public class ScreenSongList : IScreen
     /// </summary>
     public States StatePre { get; protected set; } = States.None;
 
+    /// <summary>
+    /// リクエスト処理
+    /// </summary>
+    private void ProcRequest()
+    {
+        var req = Request;
+
+        if ( req == Requests.None )
+        {
+            return;
+        }
+
+        // 前回状態
+        StatePre = State;
+
+        // リクエスト処理
+        switch ( req )
+        {
+            case Requests.ScoreSearch:
+                {
+                    // スコア検索
+                    SearchScoreFilesAsync();
+
+                    State = States.ScoreSearching;
+                }
+                break;
+            case Requests.SongListInit:
+                {
+                    // SongList検索
+                    SearchSongList();
+
+                    State = States.SongListInitializing;
+                }
+                break;
+            case Requests.SongListSelectMode:
+                {
+                    State = States.SongListSelectMode;
+                }
+                break;
+        }
+    }
+
     #endregion
 
+    #region Input Event
+
     /// <summary>
-    /// コンストラクタ
+    /// 入力イベント処理
     /// </summary>
-    public ScreenSongList()
+    private void ProcInputEvent()
     {
-    }
+        switch ( State )
+        {
+            case States.SongListSelectMode:
+                {
+                    //_SongScrollList?.NextSongList();
 
-    #region Key & Mouse Event
-
-    public virtual void KeyDown( object aSender, KeyRoutedEventArgs aArgs )
-    {
-    }
-
-    public virtual void KeyUp( object aSender, KeyRoutedEventArgs aArgs )
-    {
-    }
-
-    public virtual void MouseDown( object aSender, PointerRoutedEventArgs aArgs )
-    {
-    }
-
-    public virtual void MouseMove( object aSender, PointerRoutedEventArgs aArgs )
-    {
-    }
-
-    public virtual void MouseUp( object aSender, PointerRoutedEventArgs aArgs )
-    {
+                    //SystemSound.SoundPlayMoveNext();
+                }
+                break;
+        }
     }
 
     #endregion
 
     #region Frame処理
 
-    public virtual bool OnMove( double aFrameTime )
+    protected override void OnLoadSelf()
     {
-        #region リクエスト処理
+        // スクリーンサイズ設定
+        //ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width  / 2D;
+        //ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height / 2D;
+
+        // アイテム：曲スクロールリスト作成
+        _SongScrollList ??= new();
+
+        // スコア検索
+        SearchScoreFilesAsync();
+    }
+
+    protected override bool OnLoadedSelf()
+    {
+        return State == States.SongListSelectMode;
+    }
+
+    protected override void OnUnLoadSelf()
+    {
+        _SongScrollList?.Dispose();
+    }
+
+    protected override bool OnMoveSelf( double aFrameTime )
+    {
+        // 子クラス リクエスト処理
+        ProcRequest();
+
+        // 子クラス 入力イベント処理
+        ProcInputEvent();
+
+        // 子クラス 状態別 フレーム処理
+        switch ( State )
         {
-            var req = Request;
-
-            if (  req != Requests.None )
-            {
-                // リクエストクリア
-                Request = Requests.None;
-
-                // 前回状態
-                StatePre = State;
-
-                switch ( req )
+            case States.ScoreSearching:
                 {
-                    case Requests.Load:
-                        {
-                            // スコア検索
-                            SearchScoreFilesAsync();
-
-                            var format = new FormatRect()
-                            {
-                                Background = new( HelperColor.GetColor("#AA666666" ) ),
-                            };
-
-                            // 処理中アイテム
-                            _Processing ??= new
-                            (
-                                ScreenSize._width  / 2F,
-                                ScreenSize._height / 2F, 
-                                30, 
-                                format
-                            );
-
-                            // 
-                            _SongScrollList ??= new();
-
-                            State = States.ScoreSearching;
-                        }
-                        break;
-                    case Requests.SongListInit:
-                        {
-                            // SongList検索
-                            SearchSongList();
-
-                            State = States.SongListInitializing;
-
-                            Request = Requests.SongListSelectMode;
-                        }
-                        break;
-                    case Requests.SongListSelectMode:
-                        {
-                            State = States.SongListSelectMode;
-                        }
-                        break;
                 }
-            }
+                break;
+            case States.SongListInitializing:
+                {
+                }
+                break;
+            case States.SongListSelectMode:
+                {
+                    _SongScrollList?.Move( aFrameTime );
+                }
+                break;
         }
-        #endregion
-
-        #region Itemフレーム処理
-        {
-            _Processing?.Move( aFrameTime );
-            _SongScrollList?.Move( aFrameTime );
-        }
-        #endregion
-
-        #region 状態に応じた処理
-        {
-            switch ( State )
-            {
-                case States.ScoreSearching:
-                    {
-                    }
-                    break;
-                case States.SongListInitializing:
-                    {
-                    }
-                    break;
-                case States.SongListSelectMode:
-                    {
-                    }
-                    break;
-            }
-        }
-        #endregion
 
         return true;
     }
+
 
     /// <summary>
     /// スコア検索
@@ -263,12 +235,17 @@ public class ScreenSongList : IScreen
         try
         {
             var songlist = DBIO.SelectSongList();
+            songlist.Sort();
 
-            //songlist.ForEach( song => Log.Info( $"{song.RelativeFilePath}" ) );
+            _SongScrollList?.SetSongList( songlist );
+
+            Request = Requests.SongListSelectMode;
         }
         catch ( Exception e )
         {
             Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
+
+            Request = Requests.SongListSelectMode;
         }
     }
 
@@ -276,45 +253,19 @@ public class ScreenSongList : IScreen
 
     #region 描画処理
 
-    public virtual bool OnDraw( CanvasDrawEventArgs aArgs )
+    protected override bool OnDrawSelf( CanvasDrawEventArgs aArgs )
     {
-        // SwapChainの描画セッション作成時に背景色指定済み
-        //aArgs.DrawingSession.Clear( DrawSetCom.SheetColor.Color );
-
-        #region 状態に応じた処理
+        switch ( State )
         {
-            switch ( State )
-            {
-                case States.Loading:
-                case States.ScoreSearching:
-                case States.SongListInitializing:
-                    {
-                        _Processing?.Draw( aArgs.DrawingSession );
-                    }
-                    break;
-                case States.SongListSelectMode:
-                    {
-                        _SongScrollList?.Draw( aArgs.DrawingSession );
-                    }
-                    break;
-            }
+            case States.SongListSelectMode:
+                {
+                    _SongScrollList?.Draw( aArgs.DrawingSession );
+                }
+                break;
         }
-        #endregion
-
         return true;
     }
 
     #endregion
 
-    #region その他
-
-    public virtual void SetParentScreen( IScreen aScreen )
-    {
-        if ( aScreen is ScreenSongSelect screen )
-        {
-            _ParentScreen = screen;
-        }
-    }
-
-    #endregion
 }

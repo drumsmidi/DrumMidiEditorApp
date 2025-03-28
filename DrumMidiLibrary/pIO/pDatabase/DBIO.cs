@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DrumMidiLibrary.pIO.pDatabase.pRecord;
+using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
 using LiteDB;
 
@@ -16,6 +17,8 @@ public static class DBIO
     /// </summary>
     private static readonly string _DatabasePath = $"{HelperAppDirectory.AppBaseDirectory}./data.db";
 
+    private static readonly string _TableSongList = "SongList";
+
     /// <summary>
     /// SongList登録
     /// </summary>
@@ -26,7 +29,7 @@ public static class DBIO
         using var conn = new LiteDatabase( _DatabasePath );
 
         // DBへ接続
-        var table = conn.GetCollection<RecordDmsFile>( "SongList" );
+        var table = conn.GetCollection<RecordDmsFile>( _TableSongList );
 
         aSongList.ForEach
         (
@@ -47,14 +50,14 @@ public static class DBIO
     /// <summary>
     /// SongList取得
     /// </summary>
-    public static List<GeneralPath> SelectSongList()
+    public static SongList SelectSongList()
     {
-        var songList = new List<GeneralPath>();
+        var songList = new SongList();
 
         using var conn = new LiteDatabase( _DatabasePath );
 
         // DBへ接続
-        var table = conn.GetCollection<RecordDmsFile>( "SongList" );
+        var table = conn.GetCollection<RecordDmsFile>( _TableSongList );
 
         var result = table.FindAll();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
@@ -11,7 +12,6 @@ using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using Windows.Graphics.DirectX;
 
 namespace DrumMidiPlayerApp.pView.pPlayer;
@@ -60,7 +60,16 @@ public sealed partial class UserControlPanel : UserControl
                 CanvasAlphaMode.Premultiplied
             );
 
+        // 描画タスク開始
         DrawTaskStart();
+
+        // マウスイベントキャプチャ
+        _Canvas.PointerPressed      += InputControl.PointerPressed;
+        _Canvas.PointerMoved        += InputControl.PointerMoved;
+        _Canvas.PointerExited       += InputControl.PointerReleased;
+        _Canvas.PointerCanceled     += InputControl.PointerReleased;
+        _Canvas.PointerCaptureLost  += InputControl.PointerReleased;
+        _Canvas.PointerReleased     += InputControl.PointerReleased;
     }
 
     /// <summary>
@@ -72,6 +81,14 @@ public sealed partial class UserControlPanel : UserControl
     {
         try
         {
+            // マウスイベントキャプチャ解放
+            _Canvas.PointerPressed      -= InputControl.PointerPressed;
+            _Canvas.PointerMoved        -= InputControl.PointerMoved;
+            _Canvas.PointerExited       -= InputControl.PointerReleased;
+            _Canvas.PointerCanceled     -= InputControl.PointerReleased;
+            _Canvas.PointerCaptureLost  -= InputControl.PointerReleased;
+            _Canvas.PointerReleased     -= InputControl.PointerReleased;
+
             // Win2D アンロード
             _Canvas.RemoveFromVisualTree();
             _Canvas = null;
@@ -158,7 +175,7 @@ public sealed partial class UserControlPanel : UserControl
                 // フレーム更新
                 if ( fps.TickFpsWeight() )
                 {
-                    _ = ( _CurrentSurface?.OnMove( fps.GetFrameTime() ) );
+                    _CurrentSurface?.OnMove( fps.GetFrameTime() );
 
                     // 描画処理
                     using var cl = new CanvasCommandList( _Canvas.SwapChain );
@@ -168,7 +185,7 @@ public sealed partial class UserControlPanel : UserControl
 
                     var args = new CanvasDrawEventArgs( drawSessionB );
 
-                    _ = ( _CurrentSurface?.OnDraw( args ) );
+                    _CurrentSurface?.OnDraw( args );
 
                     using var blur = new ScaleEffect
                     { 
@@ -225,9 +242,9 @@ public sealed partial class UserControlPanel : UserControl
             case ConfigPanel.SurfaceMode.SongSelect:
                 _CurrentSurface = _SongSelectSurface ??= new ScreenSongSelect();
                 break;
-            case ConfigPanel.SurfaceMode.Player_ScoreType2:
-                _CurrentSurface = _PlayerSurface ??= new pScreen.pPlayer.pScoreType2.ScreenPlayer();
-                break;
+            //case ConfigPanel.SurfaceMode.Player_ScoreType2:
+            //    _CurrentSurface = _PlayerSurface ??= new pScreen.pPlayer.pScoreType2.ScreenPlayer();
+            //    break;
         }
     }
 
@@ -242,95 +259,6 @@ public sealed partial class UserControlPanel : UserControl
                 Config.Panel.ResolutionScreenHeight,
                 Config.Window.DefaultDpi
             );
-    }
-
-    #endregion
-
-    #region Keyboard / Mouse Event
-
-    /// <summary>
-    /// キーダウン処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Canvas_KeyDown( object aSender, KeyRoutedEventArgs aArgs )
-    {
-        try
-        {
-            _CurrentSurface?.KeyDown( aSender, aArgs );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    /// <summary>
-    /// キーアップ処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Canvas_KeyUp( object aSender, KeyRoutedEventArgs aArgs )
-    {
-        try
-        {
-            _CurrentSurface?.KeyUp( aSender, aArgs );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    /// <summary>
-    /// マウスダウン処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Canvas_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        try
-        {
-            _CurrentSurface?.MouseDown( aSender, aArgs );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    /// <summary>
-    /// マウス移動処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Canvas_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        try
-        {
-            _CurrentSurface?.MouseMove( aSender, aArgs );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    /// <summary>
-    /// マウスアップ処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Canvas_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        try
-        {
-            _CurrentSurface?.MouseUp( aSender, aArgs );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
     }
 
     #endregion

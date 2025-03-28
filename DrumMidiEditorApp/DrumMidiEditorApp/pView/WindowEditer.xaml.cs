@@ -133,7 +133,9 @@ public sealed partial class WindowEditer : Window
     {
         try
         {
-            _AppTitleTextBlock.Text = $"{Config.Window.AppName} - {aSubTitle}";
+            _AppTitleTextBlock.Text = aSubTitle.Length != 0
+                ? $"{Config.Window.AppName} - {aSubTitle}"
+                : $"{Config.Window.AppName}";
         }
         catch ( Exception e )
         {

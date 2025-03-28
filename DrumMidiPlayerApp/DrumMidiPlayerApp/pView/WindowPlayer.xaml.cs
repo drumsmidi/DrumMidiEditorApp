@@ -1,12 +1,12 @@
 using System;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
+using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pEvent;
 using DrumMidiPlayerApp.pIO;
-using DrumMidiPlayerApp.pModel;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
@@ -41,7 +41,8 @@ public sealed partial class WindowPlayer : Window
         // 独自のタイトルバー設定
         ExtendsContentIntoTitleBar = true;
         SetTitleBar( _AppTitleBar );
-        SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
+        SetSubTitle( string.Empty );
+    //  SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
 
         // ウィンドウ初期サイズ変更
         UpdateWindowsSize();
@@ -51,8 +52,15 @@ public sealed partial class WindowPlayer : Window
 
         ControlAccess.MainWindow = this;
 
+        // 環境音有効化
+        SystemSound.SoundOn();
+
         // 再生コントロール開始
         DmsControl.Start();
+
+        // キーイベントキャプチャ
+        _MainGrid.KeyUp   += InputControl.KeyUp;
+        _MainGrid.KeyDown += InputControl.KeyDown;
     }
 
     /// <summary>
@@ -85,6 +93,10 @@ public sealed partial class WindowPlayer : Window
     {
         try
         {
+            // キーイベントキャプチャ解放
+            _MainGrid.KeyUp   -= InputControl.KeyUp;
+            _MainGrid.KeyDown -= InputControl.KeyDown;
+
             // 再生コントロール停止
             DmsControl.StopPreSequence();
             DmsControl.End();
@@ -155,7 +167,9 @@ public sealed partial class WindowPlayer : Window
     {
         try
         {
-            _AppTitleTextBlock.Text = $"{Config.Window.AppName} - {aSubTitle}";
+            _AppTitleTextBlock.Text = aSubTitle.Length != 0 
+                ? $"{Config.Window.AppName} - {aSubTitle}"
+                : $"{Config.Window.AppName}" ;
         }
         catch ( Exception e )
         {

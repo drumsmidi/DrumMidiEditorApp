@@ -1,21 +1,24 @@
 ﻿using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pModel;
-using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml.Input;
-using Windows.Foundation;
 
 namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 
 /// <summary>
 /// プレイヤーサーフェイス
 /// </summary>
-public class ScreenSongSelect : IScreen
+public class ScreenSongSelect : ScreenBase
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public ScreenSongSelect() : base( false )
+    {
+    }
+
     #region Member
 
-    private ScreenSongList _ScreenSongList = new();
+    private ScreenSongList? _ScreenSongList;
 
     /// <summary>
     /// プレイヤー設定（共通）
@@ -32,31 +35,6 @@ public class ScreenSongSelect : IScreen
     /// </summary>
     protected ConfigMedia ConfigMedia => Config.Media;
 
-    /// <summary>
-    /// スコア
-    /// </summary>
-    protected Score Score = new();
-
-    /// <summary>
-    /// スクリーンサイズ
-    /// </summary>
-    protected Size _ScreenSize = new();
-
-    /// <summary>
-    /// ノート位置（絶対値）小数点あり
-    /// </summary>
-    protected float _SheetPosX = 0;
-
-    /// <summary>
-    /// ノート位置（絶対値）
-    /// </summary>
-    protected int _NotePositionX = 0;
-
-    /// <summary>
-    /// 再生開始処理後の現在の再生時間（秒）
-    /// </summary>
-    protected double _DmsPlayTime = 0.0D;
-
     #endregion
 
     #region Request & State
@@ -67,17 +45,15 @@ public class ScreenSongSelect : IScreen
     public enum Requests : int
     {
         None = 0,
-        Load,
         ScoreReSearch,
         SongListInit,
         SongListSelectMode,
-        UnLoad,
     }
 
     /// <summary>
     /// 再生状態
     /// </summary>
-    public Requests Request { get; set; } = Requests.Load;
+    public Requests Request { get; set; } = Requests.None;
 
     /// <summary>
     /// 状態一覧
@@ -85,11 +61,9 @@ public class ScreenSongSelect : IScreen
     public enum States : int
     {
         None = 0,
-        Loading,
         ScoreSearching,
         SongListInitializing,
         SongListSelectMode,
-        UnLoading,
     }
 
     /// <summary>
@@ -102,118 +76,111 @@ public class ScreenSongSelect : IScreen
     /// </summary>
     public States StatePre { get; protected set; } = States.None;
 
+    /// <summary>
+    /// リクエスト処理
+    /// </summary>
+    private void ProcRequest()
+    {
+        var req = Request;
+
+        if ( req == Requests.None )
+        {
+            return;
+        }
+
+        // 前回状態
+        StatePre = State;
+
+        // リクエスト処理
+        switch ( req )
+        {
+            case Requests.ScoreReSearch:
+                {
+                    //_ScreenSongList?.Request = ScreenSongList.Requests.ScoreSearch;
+
+                    State = States.ScoreSearching;
+                }
+                break;
+            case Requests.SongListInit:
+                {
+                    //_ScreenSongList?.Request = ScreenSongList.Requests.SongListInit;
+
+                    State = States.SongListInitializing;
+                }
+                break;
+            case Requests.SongListSelectMode:
+                {
+                    if ( _ScreenSongList != null )
+                    {
+                       // _ScreenSongList.Request = ScreenSongList.Requests.SongListSelectMode;
+
+                        State = States.SongListSelectMode;
+                    }
+                }
+                break;
+        }
+    }
+
     #endregion
 
+
+    #region Input Event
+
     /// <summary>
-    /// コンストラクタ
+    /// 入力イベント処理
     /// </summary>
-    public ScreenSongSelect()
+    private void ProcInputEvent()
     {
-    }
-
-    #region Key & Mouse Event
-
-    public virtual void KeyDown( object aSender, KeyRoutedEventArgs aArgs )
-    {
-        _ScreenSongList.KeyDown( aSender, aArgs );
-    }
-
-    public virtual void KeyUp( object aSender, KeyRoutedEventArgs aArgs )
-    {
-        _ScreenSongList.KeyUp( aSender, aArgs );
-    }
-
-    public virtual void MouseDown( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        _ScreenSongList.MouseDown( aSender, aArgs );
-    }
-
-    public virtual void MouseMove( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        _ScreenSongList.MouseMove( aSender, aArgs );
-    }
-
-    public virtual void MouseUp( object aSender, PointerRoutedEventArgs aArgs )
-    {
-        _ScreenSongList.MouseUp( aSender, aArgs );
+        switch ( State )
+        {
+            case States.SongListSelectMode:
+                {
+                }
+                break;
+        }
     }
 
     #endregion
 
     #region Frame処理
 
-    public virtual bool OnMove( double aFrameTime )
+    protected override void OnLoadSelf()
     {
-        #region リクエスト処理
+        AddChildScreen( _ScreenSongList ??= new() );
+    }
+
+    protected override void OnUnLoadSelf()
+    {
+        _ScreenSongList = null;
+    }
+
+    protected override bool OnLoadedSelf()
+    {
+        Request = Requests.SongListSelectMode;
+
+        return true;
+    }
+
+    protected override bool OnMoveSelf( double aFrameTime )
+    {
+        // 子クラス リクエスト処理
+        ProcRequest();
+
+        // 子クラス 入力イベント処理
+        ProcInputEvent();
+
+        // 子クラス 状態別 フレーム処理
+        switch ( State )
         {
-            var req = Request;
-
-            if (  req != Requests.None )
-            {
-                // リクエストクリア
-                Request = Requests.None;
-
-                // 前回状態
-                StatePre = State;
-
-                switch ( req )
+            case States.SongListSelectMode:
                 {
-                    case Requests.Load:
-                        {
-                            _ScreenSongList.Request = ScreenSongList.Requests.Load;
-
-                            State = States.Loading;
-                        }
-                        break;
-                    case Requests.ScoreReSearch:
-                        {
-                            _ScreenSongList.Request = ScreenSongList.Requests.ScoreSearch;
-
-                            State = States.ScoreSearching;
-                        }
-                        break;
-                    case Requests.SongListInit:
-                        {
-                            _ScreenSongList.Request = ScreenSongList.Requests.SongListInit;
-
-                            State = States.SongListInitializing;
-                        }
-                        break;
-                    case Requests.SongListSelectMode:
-                        {
-                            _ScreenSongList.Request = ScreenSongList.Requests.SongListSelectMode;
-
-                            State = States.SongListSelectMode;
-                        }
-                        break;
-                }
-            }
-        }
-        #endregion
-
-        #region 子スクリーン フレーム処理
-        {
-            _ScreenSongList.OnMove( aFrameTime );
-        }
-        #endregion
-
-        #region 処理状態別 処理
-        {
-            switch ( State )
-            {
-                case States.Loading:
-                case States.ScoreSearching:
-                case States.SongListInitializing:
+                    if ( _ScreenSongList?.State == ScreenSongList.States.SongListSelectMode )
                     {
-                        if ( _ScreenSongList.State == ScreenSongList.States.SongListSelectMode )
-                        {
-                            State = States.SongListSelectMode;
-                        }
+                        State = States.SongListSelectMode;
                     }
-                    break;
-            }
+                }
+                break;
         }
-        #endregion
 
         return true;
     }
@@ -222,22 +189,9 @@ public class ScreenSongSelect : IScreen
 
     #region 描画処理
 
-    public virtual bool OnDraw( CanvasDrawEventArgs aArgs )
+    protected override bool OnDrawSelf( CanvasDrawEventArgs aArgs )
     {
-        // SwapChainの描画セッション作成時に背景色指定済み
-        //aArgs.DrawingSession.Clear( DrawSetCom.SheetColor.Color );
-
-        _ScreenSongList?.OnDraw( aArgs );
-
         return true;
-    }
-
-    #endregion
-
-    #region その他
-
-    public virtual void SetParentScreen( IScreen aScreen )
-    {
     }
 
     #endregion

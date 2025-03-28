@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
 
 namespace DrumMidiLibrary.pUtil;
@@ -24,12 +25,12 @@ public class GeneralPath
     /// パス文字 変更前
     /// </summary>
     [JsonIgnore]
-    private static readonly char _ConvertBef = '/';
+    private static readonly char _ConvertBef = Path.AltDirectorySeparatorChar; // '/'
     /// <summary>
     /// パス文字 変更後
     /// </summary>
     [JsonIgnore]
-    private static readonly char _ConvertAft = '\\';
+    private static readonly char _ConvertAft = Path.DirectorySeparatorChar; // '\\'
 
     /// <summary>
     /// コンストラクタ
@@ -117,6 +118,18 @@ public class GeneralPath
     [JsonIgnore]
     public string RelativeFolderPath
         => Path.GetDirectoryName( RelativeFilePath ) ?? string.Empty;
+
+    /// <summary>
+    /// ディレクトリ一覧（絶対パス）
+    /// </summary>
+    public string [] AbsoulteFolderList
+        => AbsoulteFolderPath.Split( _ConvertAft );
+
+    /// <summary>
+    /// ディレクトリ一覧（相対パス）
+    /// </summary>
+    public string [] RelativeFolderList
+        => RelativeFolderPath.Split( _ConvertAft );
 
     /// <summary>
     /// 拡張子ありファイル名

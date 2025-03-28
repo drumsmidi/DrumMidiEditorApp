@@ -1,4 +1,6 @@
-﻿using DrumMidiLibrary.pUtil;
+﻿using System.Collections.Generic;
+using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
@@ -18,6 +20,25 @@ namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 /// <param name="aFormatRect">描画書式</param>
 internal partial class ItemSongScrollList() : DisposeBaseClass
 {
+    /// <summary>
+    /// 曲リスト
+    /// </summary>
+    private SongList? _SongListRoot = null;
+
+    /// <summary>
+    /// 曲リスト
+    /// </summary>
+    private SongList? _SongListCurrent = null;
+
+    /// <summary>
+    /// 曲リスト 選択位置
+    /// </summary>
+    private int _SongListCurrentIndex = 0;
+
+    /// <summary>
+    /// 曲リスト階層別 選択位置
+    /// </summary>
+    private Stack<int> _SongListIndexByHierarchyStack = new();
 
     /// <summary>
     /// 現在のフレーム時間
@@ -32,7 +53,21 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
     /// <summary>
     /// 描画書式
     /// </summary>
-    private FormatRect? _FormatRect = new() {
+    private FormatRect? _ActiveFormatRect = new() {
+        Background = new( HelperColor.GetColor("#AA66FFFF" ) ),
+        Line        = new( HelperColor.GetColor("#FF000000" ), 1.0F ),
+        Text        = new( HelperColor.GetColor("#FFFFFFFF" ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 36F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
+
+    private FormatRect? _NormalSelectFormatRect = new()
+    {
         Background = new( HelperColor.GetColor("#AA666666" ) ),
         Line        = new( HelperColor.GetColor("#FF000000" ), 1.0F ),
         Text        = new( HelperColor.GetColor("#FFFFFFFF" ),
@@ -45,6 +80,7 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
                             } ),
     };
 
+
     protected override void Dispose( bool aDisposing )
     {
         if ( !_Disposed )
@@ -52,7 +88,8 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
             if ( aDisposing )
             {
                 // Dispose managed resources.
-                _FormatRect = null;
+                _ActiveFormatRect = null;
+                _NormalSelectFormatRect = null;
             }
 
             // Dispose unmanaged resources.
@@ -64,6 +101,68 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
         }
     }
     private bool _Disposed = false;
+
+    /// <summary>
+    /// 曲リスト設定
+    /// </summary>
+    /// <param name="aSongList"></param>
+    public void SetSongList( SongList aSongList )
+    {
+        _SongListRoot           = aSongList;
+        _SongListCurrent        = aSongList;
+        _SongListCurrentIndex   = 0;
+        _SongListIndexByHierarchyStack.Clear();
+
+        GoDirectorySongList();
+    }
+
+    private int CurrentSongListCount
+        => _SongListCurrent?.ItemList.Count ?? 0 ;
+
+    public void PreviewSongList()
+    {
+        _SongListCurrentIndex--;
+
+        if ( _SongListCurrentIndex < 0 )
+        {
+            _SongListCurrentIndex = CurrentSongListCount - 1;
+        }
+    }
+
+    public void NextSongList()
+    {
+        _SongListCurrentIndex++;
+
+        if ( _SongListCurrentIndex >= CurrentSongListCount )
+        {
+            _SongListCurrentIndex = CurrentSongListCount - 1;
+        }
+    }
+
+    public void GoBackSongList()
+    {
+        if ( _SongListIndexByHierarchyStack.Count == 0 )
+        {
+            return;
+        }
+
+        _SongListCurrentIndex = _SongListIndexByHierarchyStack.Pop();
+    }
+
+    public void GoDirectorySongList()
+    {
+        if ( _SongListCurrent == null || _SongListCurrentIndex >= CurrentSongListCount )
+        {
+            return;
+        }
+
+        _SongListCurrent = _SongListCurrent?.ItemList[ _SongListCurrentIndex ].SongList;
+
+        _SongListIndexByHierarchyStack.Push( _SongListCurrentIndex );
+
+        _SongListCurrentIndex = 0;
+
+    }
 
     /// <summary>
     /// フレーム処理
@@ -82,20 +181,40 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
     /// <param name="aGraphics">グラフィック</param>
     public void Draw( CanvasDrawingSession aGraphics )
     {
-        if ( _FormatRect == null )
-        {
-            return;
-        }
-
         var progress = (float)( _CurrentFrameTime / _EndFrameTime );
 
-        var rect = new Rect( 20, 20, 1000, 60 );
+        var parent  = _SongListCurrent?.ParentItem;
+        var list    = _SongListCurrent?.ItemList;
+        var index   = _SongListCurrentIndex;
 
-        for ( var i = 0; i < 13; i++ )
+        if ( list != null )
         {
-            HelperWin2D.DrawFormatRect( aGraphics, rect, _FormatRect, " TEST" );
+            var rect = new Rect( 20, 20, 1000, 60 );
 
-            rect.Y += rect.Height + 20;
+            var icon = parent.IsDirectory ? "📁" : "　 " ;
+
+            HelperWin2D.DrawFormatRect( aGraphics, rect, _ActiveFormatRect, $"{icon}{parent.ItemName}" );
+
+            rect.X += 40;
+            rect.Y += rect.Height + 40;
+            rect.Width -= 40;
+
+            for ( var i = 0; i < 12; i++ )
+            {
+                var item = list[ i % list.Count ];
+
+                icon = item.IsDirectory ? "📁" : "　 " ;
+
+                HelperWin2D.DrawFormatRect
+                ( 
+                    aGraphics, 
+                    rect,
+                    index == i ? _ActiveFormatRect : _NormalSelectFormatRect, 
+                    $"{icon}{item.ItemName}" 
+                );
+
+                rect.Y += rect.Height + 20;
+            }
         }
     }
 }

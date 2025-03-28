@@ -44,4 +44,12 @@ public static class Config
     /// Player設定
     /// </summary>
     public static ConfigPlayer Player { get; set; } = new();
+
+    /// <summary>
+    /// ScreenBase設定
+    /// </summary>
+    public static ConfigScreenBase ScreenBase { get; set; } = new();
+
+
+    
 }
