@@ -26,12 +26,14 @@ public sealed partial class PageDebugShell : Page
         InitializeComponent();
     }
 
-    private void OpenButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void OpenButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoulteFolderPath}" );
     }
 
-    private void ToastShowButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ToastShowButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         //try
         //{
@@ -262,7 +264,8 @@ public sealed partial class PageDebugShell : Page
         //}
     }
 
-    private void ToastUpdateButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ToastUpdateButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -283,7 +286,8 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
-    private void ToastClearButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ToastClearButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         //try
         //{
@@ -305,7 +309,8 @@ public sealed partial class PageDebugShell : Page
         //}
     }
 
-    private void BadgeNumberButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void BadgeNumberButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -326,7 +331,8 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
-    private void BadgeGlyphButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void BadgeGlyphButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -362,7 +368,8 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
-    private void BadgeClearButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void BadgeClearButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -375,7 +382,8 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
-    private async void TaskBarRegistButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private async void TaskBarRegistButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -409,7 +417,8 @@ public sealed partial class PageDebugShell : Page
         }
     }
 
-    private void RestartAppButton_Click( object sender, RoutedEventArgs args )
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void RestartAppButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

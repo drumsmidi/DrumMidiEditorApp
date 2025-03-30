@@ -53,9 +53,10 @@ public sealed partial class PageConfigDevice : Page
     /// <summary>
     /// MIDI-OUTデバイス選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void MidiOutDeviceListView_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiOutDeviceListView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -70,14 +71,14 @@ public sealed partial class PageConfigDevice : Page
     /// <summary>
     /// MIDI-OUT遅延時間変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiOutLatencyNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MidiOutLatencyNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }

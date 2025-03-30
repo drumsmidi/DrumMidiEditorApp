@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DrumMidiEditorApp.pMachineLearning.pProc;
 using DrumMidiLibrary.pLog;
 
 namespace DrumMidiEditorApp.pMachineLearning;

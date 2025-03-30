@@ -103,9 +103,10 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// 描画方向変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void DrawDirectionModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void DrawDirectionModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -120,9 +121,10 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// 共通：トグル切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -137,14 +139,14 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// ノートサイズ変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void SizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void SizeNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -160,13 +162,14 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// <summary>
     /// 色選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not Button item )
+            if ( aSender is not Button item )
             {
                 return;
             }
@@ -187,11 +190,17 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
         }
     }
 
-    private void HeaderGroupToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void HeaderGroupToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not ToggleSwitch item )
+            if ( aSender is not ToggleSwitch item )
             {
                 return;
             }

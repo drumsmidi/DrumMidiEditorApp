@@ -6,7 +6,7 @@ using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -82,9 +82,10 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// <summary>
     /// BGMファイルの選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MusicInfoBgmFilePathButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MusicInfoBgmFilePathButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -111,9 +112,10 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// <summary>
     /// BGMファイルパスの変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MusicInfoBgmFilePathTextBox_TextChanged( object sender, TextChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MusicInfoBgmFilePathTextBox_TextChanged( object aSender, TextChangedEventArgs aArgs )
     {
         try
         {
@@ -128,14 +130,14 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// <summary>
     /// BPMの変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MusicInfoBpmNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MusicInfoBpmNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -151,14 +153,14 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// <summary>
     /// BGM再生開始位置変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MusicInfoBgmPlaybackStartPositionNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -174,19 +176,19 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// <summary>
     /// BGM音量変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MusicInfoBgmVolumeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MusicInfoBgmVolumeNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
 
-            Config.Media.BgmVolume = (int)sender.Value;
+            Config.Media.BgmVolume = (int)aSender.Value;
         }
         catch ( Exception e )
         {

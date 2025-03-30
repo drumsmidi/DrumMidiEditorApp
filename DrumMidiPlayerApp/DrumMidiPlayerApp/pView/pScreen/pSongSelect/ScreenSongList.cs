@@ -140,8 +140,8 @@ public class ScreenSongList : ScreenBase
     protected override void OnLoadSelf()
     {
         // スクリーンサイズ設定
-        //ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width  / 2D;
-        //ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height / 2D;
+        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width  / 2D;
+        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height / 2D;
 
         // アイテム：曲スクロールリスト作成
         _SongScrollList ??= new();

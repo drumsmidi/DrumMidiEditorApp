@@ -8,7 +8,7 @@ using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -161,9 +161,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// 編集中のMidiMapSetを主データに反映
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ApplyButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ApplyButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -185,9 +186,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// インポート
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ImportButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ImportButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -247,9 +249,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// エクスポート
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ExportButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ExportButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -303,9 +306,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMapGroupのアイテム変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGroupGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGroupGridView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -320,9 +324,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMapGroup追加
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGroupAddButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MidiMapGroupAddButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -347,7 +351,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 
             if ( _TmpMidiMapList.Count == 0 )
             {
-                MidiMapAddButton_Click( sender, args );
+                MidiMapAddButton_Click( aSender, aArgs );
             }
         }
         catch ( Exception e )
@@ -359,9 +363,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMapGroup削除
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGroupRemoveButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGroupRemoveButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -394,25 +399,26 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMapGroup のドラッグ開始
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGroupGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGroupGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
         {
-            if ( args.Items.Count != 1 )
+            if ( aArgs.Items.Count != 1 )
             {
                 return;
             }
 
-            if ( args.Items [ 0 ] is not MidiMapGroup group )
+            if ( aArgs.Items [ 0 ] is not MidiMapGroup group )
             {
                 return;
             }
 
             _BeforeMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
 
-            args.Data.RequestedOperation = DataPackageOperation.Move;
+            aArgs.Data.RequestedOperation = DataPackageOperation.Move;
         }
         catch ( Exception e )
         {
@@ -423,22 +429,23 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMapGroup のドラッグ終了
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGroupGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGroupGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
         {
-            switch ( args.DropResult )
+            switch ( aArgs.DropResult )
             {
                 case DataPackageOperation.Move:
                     {
-                        if ( args.Items.Count != 1 )
+                        if ( aArgs.Items.Count != 1 )
                         {
                             return;
                         }
 
-                        if ( args.Items [ 0 ] is not MidiMapGroup group )
+                        if ( aArgs.Items [ 0 ] is not MidiMapGroup group )
                         {
                             return;
                         }
@@ -478,9 +485,10 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMap追加
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapAddButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapAddButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -517,9 +525,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMap削除
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapRemoveButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MidiMapRemoveButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -538,7 +546,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
             // 同じ行にあるアイテムを選択
             if ( _MidiMapGridView.Items.Count == 0 )
             {
-                MidiMapAddButton_Click( sender, args );
+                MidiMapAddButton_Click( aSender, aArgs );
                 return;
             }
             else if ( _MidiMapGridView.Items.Count <= index )
@@ -557,25 +565,26 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMap ドラッグ開始
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
         {
-            if ( args.Items.Count != 1 )
+            if ( aArgs.Items.Count != 1 )
             {
                 return;
             }
 
-            if ( args.Items [ 0 ] is not MidiMap midiMap )
+            if ( aArgs.Items [ 0 ] is not MidiMap midiMap )
             {
                 return;
             }
 
             _BeforeMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
 
-            args.Data.RequestedOperation = DataPackageOperation.Move;
+            aArgs.Data.RequestedOperation = DataPackageOperation.Move;
         }
         catch ( Exception e )
         {
@@ -586,22 +595,23 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MidiMap ドラッグ終了
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
         {
-            switch ( args.DropResult )
+            switch ( aArgs.DropResult )
             {
                 case DataPackageOperation.Move:
                     {
-                        if ( args.Items.Count != 1 )
+                        if ( aArgs.Items.Count != 1 )
                         {
                             return;
                         }
 
-                        if ( args.Items [ 0 ] is not MidiMap midiMap )
+                        if ( aArgs.Items [ 0 ] is not MidiMap midiMap )
                         {
                             return;
                         }
@@ -632,19 +642,19 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// ボリューム増減入力チェック
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void VolumeAddNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void VolumeAddNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
 
-            sender.Value = Config.Media.CheckMidiAddVolume( (int)args.NewValue );
+            aSender.Value = Config.Media.CheckMidiAddVolume( (int)aArgs.NewValue );
         }
         catch ( Exception e )
         {
@@ -655,19 +665,19 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// MIDI入力チェック
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MidiNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
 
-            sender.Value = MidiNet.CheckMidiNote( (int)args.NewValue );
+            aSender.Value = MidiNet.CheckMidiNote( (int)aArgs.NewValue );
         }
         catch ( Exception e )
         {
@@ -678,13 +688,14 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// <summary>
     /// 色選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not Button item )
+            if ( aSender is not Button item )
             {
                 return;
             }

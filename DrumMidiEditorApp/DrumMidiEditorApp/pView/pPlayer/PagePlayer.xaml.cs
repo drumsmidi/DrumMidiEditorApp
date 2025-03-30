@@ -58,9 +58,10 @@ public sealed partial class PagePlayer : Page
     /// <summary>
     /// マウスダウン処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
@@ -69,8 +70,8 @@ public sealed partial class PagePlayer : Page
                 return;
             }
 
-            var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( ControlAccess.PageEditerMain );
+        //  var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
             {
@@ -96,9 +97,10 @@ public sealed partial class PagePlayer : Page
     /// <summary>
     /// マウス移動処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
@@ -107,8 +109,8 @@ public sealed partial class PagePlayer : Page
                 return;
             }
 
-            var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( ControlAccess.PageEditerMain );
+        //  var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -130,9 +132,10 @@ public sealed partial class PagePlayer : Page
     /// <summary>
     /// マウスアップ処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
@@ -141,8 +144,8 @@ public sealed partial class PagePlayer : Page
                 return;
             }
 
-            var p = args.GetCurrentPoint( ControlAccess.PageEditerMain );
-        //  var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( ControlAccess.PageEditerMain );
+        //  var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {

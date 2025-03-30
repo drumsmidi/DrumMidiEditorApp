@@ -3,7 +3,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pMidiMap;
@@ -57,9 +57,10 @@ public sealed partial class PageInputMidiMap : Page
     /// <summary>
     /// 選択変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MidiMapListBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MidiMapListBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {

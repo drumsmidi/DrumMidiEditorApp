@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 
 namespace DrumMidiLibrary.pConfig;
 

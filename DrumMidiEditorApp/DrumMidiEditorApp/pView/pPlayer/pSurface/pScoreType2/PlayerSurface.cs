@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
-using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Foundation;

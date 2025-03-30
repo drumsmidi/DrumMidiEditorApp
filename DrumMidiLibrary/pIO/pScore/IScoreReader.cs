@@ -1,4 +1,4 @@
-﻿using DrumMidiLibrary.pModel;
+﻿using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pIO.pScore;

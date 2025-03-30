@@ -28,14 +28,14 @@ public sealed partial class PageImportMidi : Page
     /// <summary>
     /// ＢＰＭ取込倍率変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void BpmZoomNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void BpmZoomNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }

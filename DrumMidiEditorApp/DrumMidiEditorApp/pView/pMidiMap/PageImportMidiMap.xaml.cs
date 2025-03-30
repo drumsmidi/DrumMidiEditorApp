@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel.DataTransfer;
@@ -132,19 +132,20 @@ public sealed partial class PageImportMidiMap : Page
     /// <summary>
     /// ドラッグ
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ImportMidiMapGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ImportMidiMapGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
         {
-            if ( args.Items [ 0 ] is not ImportMidiMapData data )
+            if ( aArgs.Items [ 0 ] is not ImportMidiMapData data )
             {
                 return;
             }
 
-            args.Data.SetData( "midimapdata", data.AfterName );
-            args.Data.RequestedOperation = DataPackageOperation.Copy;
+            aArgs.Data.SetData( "midimapdata", data.AfterName );
+            aArgs.Data.RequestedOperation = DataPackageOperation.Copy;
         }
         catch ( Exception e )
         {
@@ -155,25 +156,25 @@ public sealed partial class PageImportMidiMap : Page
     /// <summary>
     /// ドロップ
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private async void TextBlock_Drop( object sender, DragEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private async void TextBlock_Drop( object aSender, DragEventArgs aArgs )
     {
         try
         {
-            switch ( args.AcceptedOperation )
+            switch ( aArgs.AcceptedOperation )
             {
                 case DataPackageOperation.Copy:
                     {
-                        var def = args.GetDeferral();
+                        var def = aArgs.GetDeferral();
 
-                        var obj = await args.Data.GetView().GetDataAsync( "midimapdata" );
+                        var obj = await aArgs.Data.GetView().GetDataAsync( "midimapdata" );
 
                         var name = ( obj as string ) ?? string.Empty;
 
                         def.Complete();
 
-                        if ( sender is not TextBlock textblock )
+                        if ( aSender is not TextBlock textblock )
                         {
                             return;
                         }
@@ -192,13 +193,14 @@ public sealed partial class PageImportMidiMap : Page
     /// <summary>
     /// ドラッグ範囲内に入った
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void TextBlock_DragEnter( object sender, DragEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void TextBlock_DragEnter( object aSender, DragEventArgs aArgs )
     {
         try
         {
-            args.AcceptedOperation = DataPackageOperation.Copy;
+            aArgs.AcceptedOperation = DataPackageOperation.Copy;
         }
         catch ( Exception e )
         {
@@ -209,13 +211,14 @@ public sealed partial class PageImportMidiMap : Page
     /// <summary>
     /// ドラッグ範囲外に外れた
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void TextBlock_DragLeave( object sender, DragEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void TextBlock_DragLeave( object aSender, DragEventArgs aArgs )
     {
         try
         {
-            args.AcceptedOperation = DataPackageOperation.None;
+            aArgs.AcceptedOperation = DataPackageOperation.None;
         }
         catch ( Exception e )
         {

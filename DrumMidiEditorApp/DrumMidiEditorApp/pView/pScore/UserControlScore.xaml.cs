@@ -3,7 +3,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
@@ -274,9 +274,10 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// 描画
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScoreCanvas_Draw( CanvasControl sender, CanvasDrawEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScoreCanvas_Draw( CanvasControl aSender, CanvasDrawEventArgs aArgs )
     {
         try
         {
@@ -285,7 +286,7 @@ public sealed partial class UserControlScore : UserControl
             // 画像表示
             if ( _ScoreBitmap != null )
             {
-                args.DrawingSession.DrawImage( _ScoreBitmap, 0, 0 );
+                aArgs.DrawingSession.DrawImage( _ScoreBitmap, 0, 0 );
             }
         }
         catch ( Exception e )
@@ -297,9 +298,10 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// Win2D アンロード処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_Unloaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

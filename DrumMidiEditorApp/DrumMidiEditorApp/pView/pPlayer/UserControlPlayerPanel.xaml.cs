@@ -170,6 +170,8 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     /// <param name="aCanvasCommandList"></param>
     /// <returns></returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Performance", "CA1859:可能な場合は具象型を使用してパフォーマンスを向上させる", Justification = "<保留中>" )]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "CodeQuality", "IDE0079:不要な抑制を削除します", Justification = "<保留中>" )]
     private static ICanvasImage? GetEffectImage( CanvasCommandList aCanvasCommandList )
     {
         return new AtlasEffect
@@ -889,12 +891,12 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// マウスダウン処理
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aArgs"></param>
+    private void PlayerCanvas_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseDown( sender, args );
+            _PlayerSurface?.MouseDown( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -905,13 +907,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// マウス移動処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void PlayerCanvas_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseMove( sender, args );
+            _PlayerSurface?.MouseMove( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -922,13 +924,13 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// マウスアップ処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerCanvas_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void PlayerCanvas_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            _PlayerSurface?.MouseUp( sender, args );
+            _PlayerSurface?.MouseUp( aSender, aArgs );
         }
         catch ( Exception e )
         {
@@ -941,9 +943,10 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// <summary>
     /// Win2D アンロード処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_Unloaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

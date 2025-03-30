@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 
 namespace DrumMidiLibrary.pControl;
 

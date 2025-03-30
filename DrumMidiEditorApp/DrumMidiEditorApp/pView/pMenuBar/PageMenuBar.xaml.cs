@@ -10,7 +10,7 @@ using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -200,9 +200,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：DMS新規作成
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemNew_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemNew_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -233,9 +234,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：DMS開く
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemOpen_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemOpen_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -259,9 +261,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：DMS上書き保存
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemSave_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemSave_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -298,9 +301,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：DMS別名保存
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemSaveAs_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemSaveAs_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -325,9 +329,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：Export - Midi
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemExportMidi_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemExportMidi_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -358,9 +363,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：Export - Video
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemExportVideo_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemExportVideo_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -391,9 +397,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：Export - Pdf
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemExportPdf_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemExportPdf_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -423,9 +430,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// メニュー：Import - Midi
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MenuItemImportMidi_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MenuItemImportMidi_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -481,9 +489,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// チャンネルNO切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ChannelNoComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ChannelNoComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -500,9 +509,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// 通常再生
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void PlayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -517,9 +527,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// 再生停止
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void StopButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void StopButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -535,8 +546,9 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// ループ再生
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void LoopPlayButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void LoopPlayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -551,14 +563,14 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// ループ再生 小節番号変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void LoopPlayMeasureNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void LoopPlayMeasureNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -574,9 +586,10 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// ループ再生 小節接続切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void LoopPlayMeasureConnectToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void LoopPlayMeasureConnectToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -636,13 +649,14 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// <summary>
     /// プレイヤー表示切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerDisplayToggleSwitch_Toggled( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void PlayerDisplayToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not ToggleSwitch item )
+            if ( aSender is not ToggleSwitch item )
             {
                 return;
             }

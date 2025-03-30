@@ -38,13 +38,14 @@ public sealed partial class PageConfigPlayerSimuration : Page
     /// <summary>
     /// 色選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not Button item )
+            if ( aSender is not Button item )
             {
                 return;
             }

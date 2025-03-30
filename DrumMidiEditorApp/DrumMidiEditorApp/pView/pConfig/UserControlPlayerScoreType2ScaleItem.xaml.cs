@@ -74,9 +74,10 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// <summary>
     /// 編集中のScaleItemを主データに反映
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScaleItemApplyButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScaleItemApplyButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -100,9 +101,10 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// <summary>
     /// ScaleItem 追加
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScaleItemAddButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScaleItemAddButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -117,9 +119,10 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// <summary>
     /// ScaleItem 削除
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScaleItemRemoveButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScaleItemRemoveButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -139,18 +142,19 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// <summary>
     /// ScaleItem のドラッグ開始
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScaleItemGridView_DragItemsStarting( object sender, DragItemsStartingEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScaleItemGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
         {
-            if ( args.Items.Count != 1 || args.Items [ 0 ] is not ConfigPlayerScoreType2ScaleItem item )
+            if ( aArgs.Items.Count != 1 || aArgs.Items [ 0 ] is not ConfigPlayerScoreType2ScaleItem item )
             {
                 return;
             }
 
-            args.Data.RequestedOperation = DataPackageOperation.Move;
+            aArgs.Data.RequestedOperation = DataPackageOperation.Move;
         }
         catch ( Exception e )
         {
@@ -161,17 +165,18 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// <summary>
     /// ScaleItem のドラッグ終了
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ScaleItemGridView_DragItemsCompleted( ListViewBase sender, DragItemsCompletedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ScaleItemGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
         {
-            switch ( args.DropResult )
+            switch ( aArgs.DropResult )
             {
                 case DataPackageOperation.Move:
                     {
-                        if ( args.Items.Count != 1 || args.Items [ 0 ] is not ConfigPlayerScoreType2ScaleItem item )
+                        if ( aArgs.Items.Count != 1 || aArgs.Items [ 0 ] is not ConfigPlayerScoreType2ScaleItem item )
                         {
                             return;
                         }

@@ -22,9 +22,10 @@ public sealed partial class PageConfig : Page
     /// <summary>
     /// ページロード完了
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_Loaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -57,13 +58,14 @@ public sealed partial class PageConfig : Page
     /// <summary>
     /// ナビゲーション 変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void NaviLinkListView_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void NaviLinkListView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
-            var tag = ( ( sender as ListView )?.SelectedItem as FrameworkElement )?.Tag.ToString() ?? string.Empty ;
+            var tag = ( ( aSender as ListView )?.SelectedItem as FrameworkElement )?.Tag.ToString() ?? string.Empty ;
 
             NaviLinkListView_Navigate( tag );
         }

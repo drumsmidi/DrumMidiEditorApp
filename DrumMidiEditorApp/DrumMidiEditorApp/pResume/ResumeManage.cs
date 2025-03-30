@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
+using DrumMidiEditorApp.pResume.pItem;
 
 namespace DrumMidiEditorApp.pResume;
 

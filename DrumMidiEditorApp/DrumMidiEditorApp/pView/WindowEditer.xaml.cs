@@ -57,14 +57,15 @@ public sealed partial class WindowEditer : Window
     /// <summary>
     /// アクティブ状態更新
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Window_Activated( object sender, WindowActivatedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Window_Activated( object aSender, WindowActivatedEventArgs aArgs )
     {
         try
         {
             // タイトルバーが非アクティブ状態による前景色の変更
-            var key = ( args.WindowActivationState == WindowActivationState.Deactivated )
+            var key = ( aArgs.WindowActivationState == WindowActivationState.Deactivated )
                 ? "WindowCaptionForegroundDisabled" : "WindowCaptionForeground";
 
             _AppTitleTextBlock.Foreground = (SolidColorBrush)App.Current.Resources [ key ];
@@ -79,8 +80,9 @@ public sealed partial class WindowEditer : Window
     /// ウィンドウ終了処理
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Window_Closed( object sender, WindowEventArgs args )
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Window_Closed( object aSender, WindowEventArgs aArgs )
     {
         try
         {

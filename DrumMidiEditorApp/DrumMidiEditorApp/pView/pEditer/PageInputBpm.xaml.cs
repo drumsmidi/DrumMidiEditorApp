@@ -39,14 +39,14 @@ public sealed partial class PageInputBpm : Page
     /// <summary>
     /// ＢＰＭ変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void BpmNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void BpmNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -60,13 +60,14 @@ public sealed partial class PageInputBpm : Page
     /// <summary>
     /// ＢＰＭ変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void BpmRadioButtons_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void BpmRadioButtons_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
-            var obj = sender as RadioButtons;
+            var obj = aSender as RadioButtons;
             ConfigEditer.BpmChangeIndex = obj?.SelectedIndex ?? 0;
 
             double s, l;

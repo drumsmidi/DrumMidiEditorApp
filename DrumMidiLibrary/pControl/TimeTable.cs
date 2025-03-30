@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 
 namespace DrumMidiLibrary.pControl;
 

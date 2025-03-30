@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DrumMidiLibrary.pIO.pDatabase.pRecord;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pSongList;
 using DrumMidiLibrary.pUtil;
 using LiteDB;
 

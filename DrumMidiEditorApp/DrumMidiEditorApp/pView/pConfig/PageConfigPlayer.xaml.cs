@@ -76,9 +76,10 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// プレイヤー描画モード変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerSurfaceModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void PlayerSurfaceModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -99,9 +100,10 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// プレイヤー描画エフェクトモード変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerSurfaceEffectModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void PlayerSurfaceEffectModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -122,9 +124,10 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// プレイヤースクリーンサイズ変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void PlayerScreenSizeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void PlayerScreenSizeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
@@ -145,13 +148,14 @@ public sealed partial class PageConfigPlayer : Page
     /// <summary>
     /// 色選択
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void ColorButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not Button item )
+            if ( aSender is not Button item )
             {
                 return;
             }

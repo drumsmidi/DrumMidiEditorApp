@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 using DrumMidiEditorApp.pConfig;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;

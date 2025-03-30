@@ -1,6 +1,7 @@
 ﻿using DrumMidiPlayerApp.pConfig;
 using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
+using DrumMidiLibrary.pModel.pScore;
 
 namespace DrumMidiPlayerApp.pModel;
 

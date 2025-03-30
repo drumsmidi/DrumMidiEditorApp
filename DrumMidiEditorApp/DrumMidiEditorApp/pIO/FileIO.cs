@@ -13,7 +13,7 @@ using DrumMidiLibrary.pIO.pPdf;
 using DrumMidiLibrary.pIO.pScore;
 using DrumMidiLibrary.pIO.pVideo;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiEditorApp.pIO;
@@ -61,6 +61,10 @@ public static class FileIO
         path.FileName    = ConfigFile.FileNameConfigMachine;
         Config.Machine   = LoadConfig<ConfigMachine>( path ) ?? Config.Machine;
 
+        // ConfigPlayer
+        path.FileName    = ConfigFile.FileNameConfigPlayer;
+        Config.Player    = LoadConfig<ConfigPlayer>( path ) ?? Config.Player;
+
         // ConfigScale
         path.FileName    = ConfigFile.FileNameConfigScale;
         Config.Scale     = LoadConfig<ConfigScale>( path ) ?? Config.Scale;
@@ -72,10 +76,6 @@ public static class FileIO
         // ConfigWindow
         path.FileName    = ConfigFile.FileNameConfigWindow;
         Config.Window    = LoadConfig<ConfigWindow>( path ) ?? Config.Window;
-
-        // ConfigPlayer
-        path.FileName    = ConfigFile.FileNameConfigPlayer;
-        Config.Player    = LoadConfig<ConfigPlayer>( path ) ?? Config.Player;
 
         return true;
     }
@@ -143,6 +143,10 @@ public static class FileIO
         path.FileName = ConfigFile.FileNameConfigMachine;
         SaveConfig( path, Config.Machine );
 
+        // ConfigPlayer
+        path.FileName = ConfigFile.FileNameConfigPlayer;
+        SaveConfig( path, Config.Player );
+
         // ConfigScale
         path.FileName = ConfigFile.FileNameConfigScale;
         SaveConfig( path, Config.Scale );
@@ -154,10 +158,6 @@ public static class FileIO
         // ConfigWindow
         path.FileName = ConfigFile.FileNameConfigWindow;
         SaveConfig( path, Config.Window );
-
-        // ConfigPlayer
-        path.FileName = ConfigFile.FileNameConfigPlayer;
-        SaveConfig( path, Config.Player );
 
         return true;
     }

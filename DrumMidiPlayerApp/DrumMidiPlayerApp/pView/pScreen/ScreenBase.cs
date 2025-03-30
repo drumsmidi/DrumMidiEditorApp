@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Windows.Foundation;
 
 namespace DrumMidiPlayerApp.pView.pScreen;
 
@@ -55,7 +55,7 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     /// <summary>
     /// スクリーン描画範囲
     /// </summary>
-    public Rect ScreenDrawRect { get; set; } 
+    public RectClass ScreenDrawRect { get; set; } 
         = new( 0, 0, Config.Panel.BaseScreenSize.Width, Config.Panel.BaseScreenSize.Height );
 
     /// <summary>

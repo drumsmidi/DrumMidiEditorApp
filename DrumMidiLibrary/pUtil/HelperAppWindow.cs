@@ -1,10 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
-using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
 using WinRT.Interop;
 
 namespace DrumMidiLibrary.pUtil;

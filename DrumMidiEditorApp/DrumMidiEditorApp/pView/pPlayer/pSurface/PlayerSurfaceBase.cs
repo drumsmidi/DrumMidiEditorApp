@@ -4,7 +4,7 @@ using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml.Input;

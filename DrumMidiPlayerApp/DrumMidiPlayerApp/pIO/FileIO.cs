@@ -7,6 +7,7 @@ using DrumMidiLibrary.pModel;
 using DrumMidiLibrary.pUtil;
 using System;
 using System.Collections.Generic;
+using DrumMidiLibrary.pModel.pScore;
 
 namespace DrumMidiPlayerApp.pIO;
 

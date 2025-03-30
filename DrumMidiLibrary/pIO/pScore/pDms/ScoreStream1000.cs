@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 using DrumMidiLibrary.pConfig;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pIO.pScore.pDms;

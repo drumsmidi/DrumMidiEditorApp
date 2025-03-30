@@ -11,7 +11,7 @@ using DrumMidiEditorApp.pResume;
 using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pControl;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
@@ -241,9 +241,9 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// マウスダウン処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EditerCanvas_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void EditerCanvas_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState != EActionState.None )
         {
@@ -252,7 +252,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
             {
@@ -291,7 +291,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     _NoteRangeBef.Set( _NoteRange );
 
-                    if ( ( args.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
+                    if ( ( aArgs.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
                     {
                         CopyNoteRange();
                     }
@@ -306,7 +306,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     _NoteRangeBef.Set( _NoteRange );
 
-                    if ( ( args.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
+                    if ( ( aArgs.KeyModifiers & VirtualKeyModifiers.Control ) == VirtualKeyModifiers.Control )
                     {
                         PasteNoteRange( p.Position );
                     }
@@ -401,13 +401,13 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// マウス移動処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EditerCanvas_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void EditerCanvas_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -498,9 +498,9 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// マウスアップ処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EditerCanvas_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void EditerCanvas_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState == EActionState.None )
         {
@@ -509,7 +509,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -3138,9 +3138,10 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// Win2D アンロード処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UserControl_Unloaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -3157,9 +3158,9 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// 描画
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EditerCanvas_Draw( CanvasControl sender, CanvasDrawEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void EditerCanvas_Draw( CanvasControl aSender, CanvasDrawEventArgs aArgs )
     {
         try
         {
@@ -3174,7 +3175,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             #region 背景色
             {
-                args.DrawingSession.Clear( DrawSet.SheetColor.Color );
+                aArgs.DrawingSession.Clear( DrawSet.SheetColor.Color );
             }
             #endregion
 
@@ -3222,7 +3223,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         };
 
                         // 描画
-                        args.DrawingSession.DrawImage
+                        aArgs.DrawingSession.DrawImage
                             (
                                 blurEffect, //bmp,
                                 destRect,
@@ -3249,7 +3250,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     HelperWin2D.DrawFormatRectFillRectangle
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             rect,
                             DrawSet.SheetCursorHorizonRect
                         );
@@ -3267,7 +3268,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     foreach ( var line in _MeasureLineList )
                     {
-                        line.Draw( args.DrawingSession, diff_x, -sheet_pos._y );
+                        line.Draw( aArgs.DrawingSession, diff_x, -sheet_pos._y );
                     }
                 }
             }
@@ -3277,14 +3278,14 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 foreach ( var line in _StaffLineList )
                 {
-                    line.Draw( args.DrawingSession, 0, -sheet_pos._y );
+                    line.Draw( aArgs.DrawingSession, 0, -sheet_pos._y );
                 }
             }
             #endregion
 
             #region Support line
             {
-                _SupportLine.Draw( args.DrawingSession, measure_start, measure_end, note_pos.X, -sheet_pos._y );
+                _SupportLine.Draw( aArgs.DrawingSession, measure_start, measure_end, note_pos.X, -sheet_pos._y );
             }
             #endregion
 
@@ -3303,7 +3304,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     foreach ( var note in notes )
                     {
-                        note.Draw( sender, args.DrawingSession, diff_x, -sheet_pos._y );
+                        note.Draw( aSender, aArgs.DrawingSession, diff_x, -sheet_pos._y );
                     }
                 }
             }
@@ -3324,7 +3325,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     foreach ( var note in notes )
                     {
-                        note.DrawPredict( args.DrawingSession, diff_x, -sheet_pos._y );
+                        note.DrawPredict( aArgs.DrawingSession, diff_x, -sheet_pos._y );
                     }
                 }
             }
@@ -3336,7 +3337,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _BpmBodyRange,
                             DrawSet.BpmBodyRect,
                             string.Empty
@@ -3355,7 +3356,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                         foreach ( var bpm in bpms )
                         {
-                            bpm.Draw( args.DrawingSession, diff_x, 0 );
+                            bpm.Draw( aArgs.DrawingSession, diff_x, 0 );
                         }
                     }
                 }
@@ -3365,7 +3366,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
             #region NoteRange
             {
-                _NoteRange.Draw( args.DrawingSession, note_pos );
+                _NoteRange.Draw( aArgs.DrawingSession, note_pos );
             }
             #endregion
 
@@ -3373,7 +3374,7 @@ public sealed partial class UserControlEditerPanel : UserControl
             {
                 foreach ( var obj in _HeaderList )
                 {
-                    obj.Draw( args.DrawingSession, 0, -sheet_pos._y );
+                    obj.Draw( aArgs.DrawingSession, 0, -sheet_pos._y );
                 }
             }
             #endregion
@@ -3384,7 +3385,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _BpmHeadRange,
                             DrawSet.BpmHeadRect,
                             $"{HelperResources.GetString( "LabelBpm" )}"
@@ -3402,7 +3403,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // 背景描画
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _VolumeBodyRange,
                             DrawSet.VolumeBodyRect,
                             string.Empty
@@ -3422,7 +3423,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                         foreach ( var note in notes )
                         {
-                            note.Draw( args.DrawingSession, diff_x );
+                            note.Draw( aArgs.DrawingSession, diff_x );
                         }
                     }
                 }
@@ -3430,7 +3431,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                 #region 音量入力線
                 {
-                    _VolumeRange.DrawRange( args.DrawingSession, note_pos.X );
+                    _VolumeRange.DrawRange( aArgs.DrawingSession, note_pos.X );
                 }
                 #endregion
 
@@ -3438,7 +3439,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _VolumeHeadRange,
                             DrawSet.VolumeHeadRect,
                             $"{HelperResources.GetString( "LabelVolume" )}-Start={_VolumeRange.StartVolume}"
@@ -3455,7 +3456,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     // 背景色
                     HelperWin2D.DrawFormatRectFillRectangle
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _MeasureNoBodyRange,
                             DrawSet.MeasureNoBodyRect
                         );
@@ -3475,7 +3476,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         // 外枠
                         HelperWin2D.DrawFormatRectOutlineRectangle
                             (
-                                args.DrawingSession,
+                                aArgs.DrawingSession,
                                 rect,
                                 DrawSet.MeasureNoBodyRect
                             );
@@ -3485,7 +3486,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                         // テキスト
                         HelperWin2D.DrawFormatRectText
                             (
-                                args.DrawingSession,
+                                aArgs.DrawingSession,
                                 rect,
                                 DrawSet.MeasureNoBodyRect,
                                 string.Format( Config.System.MeasureNumberFormat, measure_no )
@@ -3498,7 +3499,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _MeasureNoHeadRange,
                             DrawSet.MeasureNoHeadRect,
                             $"{HelperResources.GetString( "LabelMeasureNo" )}"
@@ -3516,7 +3517,7 @@ public sealed partial class UserControlEditerPanel : UserControl
 
                     HelperWin2D.DrawFormatLine
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             x,
                             body._y,
                             x,
@@ -3533,7 +3534,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                 {
                     HelperWin2D.DrawFormatRect
                         (
-                            args.DrawingSession,
+                            aArgs.DrawingSession,
                             _InfoRange,
                             DrawSet.InfoHeaderRect,
                             $"{DrawSet.NotePosition.X % Config.System.MeasureNoteNumber}:{DrawSet.NotePosition.Y}"

@@ -92,9 +92,10 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザリセット
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerResetAppBarButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void EqualizerResetAppBarButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -110,9 +111,10 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザON/OFFの切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerAppBarToggleButton_CheckChanged( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void EqualizerAppBarToggleButton_CheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -128,9 +130,10 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザON/OFFの切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerAppBarToggleButton_UncheckChanged( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void EqualizerAppBarToggleButton_UncheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -146,13 +149,14 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// WaveForm ON/OFFの切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerWaveFormAppBarToggleButton_CheckChanged( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void EqualizerWaveFormAppBarToggleButton_CheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( sender is not AppBarToggleButton item )
+            if ( aSender is not AppBarToggleButton item )
             {
                 return;
             }
@@ -227,9 +231,9 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// マウスダウン
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerCanvas_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void EqualizerCanvas_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState != EActionState.None )
         {
@@ -238,7 +242,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
             {
@@ -274,9 +278,9 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// マウス移動
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-	private void EqualizerCanvas_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+	private void EqualizerCanvas_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState == EActionState.None )
         {
@@ -285,7 +289,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -308,9 +312,9 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// マウスアップ
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-	private void EqualizerCanvas_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+	private void EqualizerCanvas_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState == EActionState.None )
         {
@@ -319,7 +323,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -614,9 +618,10 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザキャンバス描画
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void EqualizerCanvas_Draw( CanvasControl sender, CanvasDrawEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void EqualizerCanvas_Draw( CanvasControl aSender, CanvasDrawEventArgs aArgs )
     {
         try
         {
@@ -626,7 +631,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
             #region 背景色
             {
-                args.DrawingSession.Clear( DrawSet.BackGround.Color );
+                aArgs.DrawingSession.Clear( DrawSet.BackGround.Color );
             }
             #endregion
 
@@ -638,7 +643,7 @@ public sealed partial class UserControlEqualizer : UserControl
                 {
                     pos_x += item.Width;
 
-                    args.DrawingSession.DrawText
+                    aArgs.DrawingSession.DrawText
                         (
                             item.LabelName,
                             (float)pos_x,
@@ -647,7 +652,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             DrawSet.TextCenterRect.Text.TextFormat
                         );
 
-                    args.DrawingSession.DrawLine
+                    aArgs.DrawingSession.DrawLine
                         (
                             (float)pos_x,
                             (float)body.Top,
@@ -668,7 +673,7 @@ public sealed partial class UserControlEqualizer : UserControl
                 {
                     var db = DrawSet.DbGainMax - (DrawSet.DbGainSeparate * y);
 
-                    args.DrawingSession.DrawText
+                    aArgs.DrawingSession.DrawText
                         (
                             $"{db}db",
                             (float)( body.Left - DrawSet.YLineTitlePaddingRight ),
@@ -677,7 +682,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             DrawSet.TextRightRect.Text.TextFormat
                         );
 
-                    args.DrawingSession.DrawLine
+                    aArgs.DrawingSession.DrawLine
                         (
                             (float)( body.Left - DrawSet.YLineTitlePaddingRight ),
                             (float)pos_y,
@@ -742,7 +747,7 @@ public sealed partial class UserControlEqualizer : UserControl
                                     }
                                 }
 
-                                args.DrawingSession.DrawLine
+                                aArgs.DrawingSession.DrawLine
                                     (
                                         r._x,
                                         r._y,
@@ -770,7 +775,7 @@ public sealed partial class UserControlEqualizer : UserControl
 
                     var format = index == _GainMoveIndex ? DrawSet.PointSelectRect : DrawSet.PointNonSelectRect ;
 
-                    args.DrawingSession.DrawCircle
+                    aArgs.DrawingSession.DrawCircle
                         (
                             point._x,
                             point._y,
@@ -779,7 +784,7 @@ public sealed partial class UserControlEqualizer : UserControl
                             format.Line.LineSize
                         );
 
-                    args.DrawingSession.FillCircle
+                    aArgs.DrawingSession.FillCircle
                         (
                             point._x,
                             point._y,
@@ -799,9 +804,10 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// Win2D アンロード処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_Unloaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

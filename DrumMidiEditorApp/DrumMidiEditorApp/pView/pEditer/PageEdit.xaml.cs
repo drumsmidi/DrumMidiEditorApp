@@ -7,7 +7,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -141,13 +141,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 小節番号移動
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MeasureNoGridView_SelectionChanged( object sender, SelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MeasureNoGridView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
-            var value = args.AddedItems[ 0 ].ToString();
+            var value = aArgs.AddedItems[ 0 ].ToString();
 
             if ( !string.IsNullOrEmpty( value ) )
             {
@@ -163,19 +164,19 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 小節番号移動
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MeasureNoGridView_ItemClick( object sender, ItemClickEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MeasureNoGridView_ItemClick( object aSender, ItemClickEventArgs aArgs )
     {
         try
         {
-            if ( sender is not GridView item )
+            if ( aSender is not GridView item )
             {
                 return;
             }
 
             var oldValue = item.SelectedValue;
-            var newValue = args.ClickedItem;
+            var newValue = aArgs.ClickedItem;
 
             // 同じ小節番号が選択された場合
             if ( oldValue?.Equals( newValue ) ?? false )
@@ -236,15 +237,16 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Flyout Open
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-	private void MoveSheetFlyout_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void MoveSheetFlyout_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
         {
             if ( !_MoveSheetFlyout.IsOpen )
             {
-                FlyoutBase.ShowAttachedFlyout( (FrameworkElement)sender );
+                FlyoutBase.ShowAttachedFlyout( (FrameworkElement)aSender );
             }
         }
         catch ( Exception e )
@@ -268,9 +270,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// マウスダウン処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MoveSheetTextBlock_PointerPressed( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MoveSheetTextBlock_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState != EActionState.None )
         {
@@ -279,7 +281,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             if ( p.Properties.IsLeftButtonPressed )
             {
@@ -299,9 +301,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// マウス移動処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MoveSheetTextBlock_PointerMoved( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MoveSheetTextBlock_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState == EActionState.None )
         {
@@ -310,7 +312,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -332,9 +334,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// マウスアップ処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void MoveSheetTextBlock_PointerReleased( object sender, PointerRoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MoveSheetTextBlock_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         if ( _ActionState == EActionState.None )
         {
@@ -344,7 +346,7 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
 
         try
         {
-            var p = args.GetCurrentPoint( sender as FrameworkElement );
+            var p = aArgs.GetCurrentPoint( aSender as FrameworkElement );
 
             switch ( _ActionState )
             {
@@ -432,8 +434,9 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// 範囲選択解除
     /// </summary>
     /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void SelectRangeToggleButton_Unchecked( object sender, RoutedEventArgs args )
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void SelectRangeToggleButton_Unchecked( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -448,9 +451,10 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 範囲選択内ノートを16分割線で左寄せする
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void SelectRangeNoteLeftAlignmentToggleButton_Unchecked( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void SelectRangeNoteLeftAlignmentToggleButton_Unchecked( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -470,14 +474,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// ノートサイズ変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void NoteSizeNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void NoteSizeNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -497,9 +501,10 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Undo実行
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void UndoButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void UndoButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -514,9 +519,10 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// Redo実行
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void RedoButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void RedoButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -535,14 +541,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 音量TOP変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void VolumeLevelTopNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void VolumeLevelTopNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -566,14 +572,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 音量HIGT変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void VolumeLevelHighNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="araArgsgs"></param>
+    private void VolumeLevelHighNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -608,14 +614,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 音量MID変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void VolumeLevelMidNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void VolumeLevelMidNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -650,14 +656,14 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 音量LOW変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void VolumeLevelLowNumberBox_ValueChanged( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void VolumeLevelLowNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
             // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( sender, args ) )
+            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
             {
                 return;
             }
@@ -686,9 +692,10 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 感度設定
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void WaveFormSensitivityLevelSlider_ValueChanged( object sender, RangeBaseValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void WaveFormSensitivityLevelSlider_ValueChanged( object aSender, RangeBaseValueChangedEventArgs aArgs )
     {
         try
         {
@@ -703,9 +710,10 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     /// <summary>
     /// 再生停止
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void WaveForm_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void WaveForm_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

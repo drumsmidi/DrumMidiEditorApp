@@ -12,12 +12,18 @@ public sealed partial class GroupBox : UserControl
 
     #region Property:Header
 
+    /// <summary>
+    /// 
+    /// </summary>
     public string Header
     {
         get => (string)GetValue( HeaderProperty );
         set => SetValue( HeaderProperty, value );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static readonly DependencyProperty HeaderProperty =
         DependencyProperty.Register
             (
@@ -27,13 +33,18 @@ public sealed partial class GroupBox : UserControl
                 new PropertyMetadata( "Your Header", HeaderPropertyChangedCallback )
             );
 
-    public static void HeaderPropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    public static void HeaderPropertyChangedCallback( DependencyObject aSender, DependencyPropertyChangedEventArgs aArgs )
     {
-        var obj = sender as GroupBox;
+        var obj = aSender as GroupBox;
 
-        if ( ev.NewValue != ev.OldValue && obj != null )
+        if ( aArgs.NewValue != aArgs.OldValue && obj != null )
         {
-            obj._HeaderTitle.Text = ev.NewValue?.ToString() ?? string.Empty ;
+            obj._HeaderTitle.Text = aArgs.NewValue?.ToString() ?? string.Empty ;
         }
     }
 
@@ -41,12 +52,18 @@ public sealed partial class GroupBox : UserControl
 
     #region Property:CustomContent
 
+    /// <summary>
+    /// 
+    /// </summary>
     public object CustomContent
     {
         get => GetValue( CustomContentProperty );
         set => SetValue( CustomContentProperty, value );
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static readonly DependencyProperty CustomContentProperty =
         DependencyProperty.Register
             (
@@ -56,18 +73,29 @@ public sealed partial class GroupBox : UserControl
                 new PropertyMetadata( null, PropertyChangedCallback )
             );
 
-    public static void PropertyChangedCallback( DependencyObject sender, DependencyPropertyChangedEventArgs ev )
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    public static void PropertyChangedCallback( DependencyObject aSender, DependencyPropertyChangedEventArgs aArgs )
     {
-        var obj = sender as GroupBox;
+        var obj = aSender as GroupBox;
 
-        if ( ev.NewValue != ev.OldValue && obj != null )
+        if ( aArgs.NewValue != aArgs.OldValue && obj != null )
         {
-            obj._Content.Content = ev.NewValue;
+            obj._Content.Content = aArgs.NewValue;
         }
     }
 
     #endregion
 
-    private void HeaderTitle_LayoutUpdated( object sender, object ev ) 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void HeaderTitle_LayoutUpdated( object aSender, object aArgs ) 
         => _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
 }

@@ -43,9 +43,10 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     /// <summary>
     /// リサイズイベント
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_SizeChanged( object sender, SizeChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_SizeChanged( object aSender, SizeChangedEventArgs aArgs )
     {
         try
         {

@@ -6,7 +6,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pModel;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -89,9 +89,10 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <summary>
     /// 表示切替
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void DisplayButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void DisplayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -117,9 +118,10 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// <summary>
     /// キー変更処理
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void KeyChangeButton_Click( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void KeyChangeButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {

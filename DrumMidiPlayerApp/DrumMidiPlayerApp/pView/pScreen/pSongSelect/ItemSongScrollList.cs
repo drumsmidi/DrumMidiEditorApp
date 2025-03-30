@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DrumMidiLibrary.pModel;
+using DrumMidiLibrary.pModel.pSongList;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas;

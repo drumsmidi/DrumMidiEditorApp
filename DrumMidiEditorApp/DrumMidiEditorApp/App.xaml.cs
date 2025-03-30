@@ -50,8 +50,8 @@ public partial class App : Application
     /// アプリケーションがエンドユーザーによって正常に起動されたときに呼び出されます。 
     /// アプリケーションを起動して特定のファイルを開くときなど、他のエントリポイントが使用されます。
     /// </summary>
-    /// <param name="args">起動リクエストとプロセスに関する詳細</param>
-    protected override void OnLaunched( LaunchActivatedEventArgs args )
+    /// <param name="aArgs">起動リクエストとプロセスに関する詳細</param>
+    protected override void OnLaunched( LaunchActivatedEventArgs aArgs )
     {
         #region デバッグ設定
 #if DEBUG

@@ -28,9 +28,10 @@ public sealed partial class PageNavigation : Page
     /// <summary>
     /// ページロード完了
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void Page_Loaded( object sender, RoutedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
@@ -62,22 +63,23 @@ public sealed partial class PageNavigation : Page
     /// <summary>
     /// ナビゲーション 変更
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void NaviControl_SelectionChanged( NavigationView sender, NavigationViewSelectionChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    private void NaviControl_SelectionChanged( NavigationView aSender, NavigationViewSelectionChangedEventArgs aArgs )
     {
         try
         {
             var navItemTag = "";
 
-            if ( args.IsSettingsSelected )
+            if ( aArgs.IsSettingsSelected )
             {
                 // 未使用
                 navItemTag = "settings";
             }
-            else if ( args.SelectedItemContainer != null )
+            else if ( aArgs.SelectedItemContainer != null )
             {
-                navItemTag = args.SelectedItemContainer.Tag.ToString() ?? string.Empty;
+                navItemTag = aArgs.SelectedItemContainer.Tag.ToString() ?? string.Empty;
             }
 
             NavigationView_Navigate( navItemTag );
