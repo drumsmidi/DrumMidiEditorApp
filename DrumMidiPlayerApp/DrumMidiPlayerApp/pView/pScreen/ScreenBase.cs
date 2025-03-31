@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -50,7 +51,10 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     private readonly List<IScreen> _ChildScreenList = [];
 
     public void AddChildScreen( IScreen aScreen )
-        => _ChildScreenList.Add( aScreen );
+    {
+        aScreen.SetParentScreen( this );
+        _ChildScreenList.Add( aScreen );
+    }
 
     /// <summary>
     /// スクリーン描画範囲
@@ -246,6 +250,12 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
         {
             // 子スクリーンのフレーム処理
             _ChildScreenList.ForEach( screen => screen.OnMove( aFrameTime ) );
+        }
+
+        // キーイベントリセット処理
+        if ( _ParentScreen == null )
+        {
+            InputControl.ResetInputState();
         }
     }
 

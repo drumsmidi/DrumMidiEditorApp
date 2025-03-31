@@ -61,6 +61,8 @@ public sealed partial class WindowPlayer : Window
         // キーイベントキャプチャ
         _MainGrid.KeyUp   += InputControl.KeyUp;
         _MainGrid.KeyDown += InputControl.KeyDown;
+
+        InputControl.StartTime();
     }
 
     /// <summary>

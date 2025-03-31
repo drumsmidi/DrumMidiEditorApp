@@ -136,7 +136,7 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
 
         if ( _SongListCurrentIndex >= CurrentSongListCount )
         {
-            _SongListCurrentIndex = CurrentSongListCount - 1;
+            _SongListCurrentIndex = 0;
         }
     }
 
@@ -200,7 +200,9 @@ internal partial class ItemSongScrollList() : DisposeBaseClass
             rect.Y += rect.Height + 40;
             rect.Width -= 40;
 
-            for ( var i = 0; i < 12; i++ )
+            var cnt = list.Count < 12 ? list.Count : 12;
+
+            for ( var i = 0; i < cnt; i++ )
             {
                 var item = list[ i % list.Count ];
 

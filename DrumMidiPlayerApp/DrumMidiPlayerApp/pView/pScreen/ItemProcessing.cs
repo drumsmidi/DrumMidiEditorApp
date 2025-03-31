@@ -34,7 +34,7 @@ internal partial class ItemProcessing( float aX, float aY, float aRadius, Format
     /// <summary>
     /// １アイテムの基準サイズ：半径
     /// </summary>
-    private readonly float _DrawRadius = 8.0F;
+    private readonly float _DrawRadius = aRadius / 8.0F;
 
     /// <summary>
     /// 描画アイテム数

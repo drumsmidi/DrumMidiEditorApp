@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DrumMidiLibrary.pAudio;
+using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
@@ -121,13 +122,29 @@ public class ScreenSongList : ScreenBase
     /// </summary>
     private void ProcInputEvent()
     {
+        var map = new InputMap();
+        map.KeyMap.Add( Windows.System.VirtualKey.Up  , "Up" );
+        map.KeyMap.Add( Windows.System.VirtualKey.Down, "Down" );
+
+        var inputStateList = InputControl.GetInputState( map );
+
         switch ( State )
         {
             case States.SongListSelectMode:
                 {
-                    //_SongScrollList?.NextSongList();
+                    foreach ( var state in inputStateList )
+                    {
+                        if ( state.MapKey.Equals( "Up" ) )
+                        {
+                            _SongScrollList?.PreviewSongList();
+                        }
+                        else if ( state.MapKey.Equals( "Down" ) )
+                        {
+                            _SongScrollList?.NextSongList();
+                        }
 
-                    //SystemSound.SoundPlayMoveNext();
+                        //SystemSound.SoundPlayMoveNext();
+                    }
                 }
                 break;
         }
@@ -135,13 +152,13 @@ public class ScreenSongList : ScreenBase
 
     #endregion
 
-    #region Frame処理
+        #region Frame処理
 
     protected override void OnLoadSelf()
     {
         // スクリーンサイズ設定
-        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width  / 2D;
-        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height / 2D;
+        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
+        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
 
         // アイテム：曲スクロールリスト作成
         _SongScrollList ??= new();

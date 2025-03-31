@@ -13,7 +13,7 @@ public class ConfigScreenBase
     /// 処理中表示：半径
     /// </summary>
     [JsonInclude]
-    public float ProcessingRadius { get; set; } = 100F;
+    public float ProcessingRadius { get; set; } = 80F;
 
     /// <summary>
     /// 処理中表示：書式
