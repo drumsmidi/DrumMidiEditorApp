@@ -56,4 +56,14 @@ public class ConfigScreenSongList
                                     VerticalAlignment   = CanvasVerticalAlignment.Center,
                                 } ),
         };
+
+    /// <summary>
+    /// SongListItem：書式
+    /// </summary>
+    [JsonInclude]
+    public FormatLine StartFormatLine
+    {
+        get; set;
+    } = new( HelperColor.GetColor( "#FF0000FF" ), 1.0F );
+
 }

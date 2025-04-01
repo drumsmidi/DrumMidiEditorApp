@@ -43,6 +43,12 @@ internal partial class ItemSongScrollList() : ItemBase
     /// </summary>
     private FormatRect? _NormalSelectFormatRect = Config.ScreenSongList.NormalSelectFormatRect;
 
+    /// <summary>
+    /// 描画書式：先頭アイテム
+    /// </summary>
+    private FormatLine? _StartFormatLine = Config.ScreenSongList.StartFormatLine;
+
+
     protected override void Dispose( bool aDisposing )
     {
         if ( !_Disposed )
@@ -210,6 +216,13 @@ internal partial class ItemSongScrollList() : ItemBase
                     i == 0 ? _ActiveFormatRect : _NormalSelectFormatRect, 
                     $"{icon}{item.ItemName}" 
                 );
+
+                if ( x == 0 )
+                {
+                    var line = rect;
+                    line.Height = 2;
+                    HelperWin2D.DrawFormatLine( aGraphics, line, _StartFormatLine );
+                }
 
                 rect.Y += rect.Height + 20;
             }

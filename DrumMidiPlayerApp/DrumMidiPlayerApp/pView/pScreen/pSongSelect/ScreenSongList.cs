@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
