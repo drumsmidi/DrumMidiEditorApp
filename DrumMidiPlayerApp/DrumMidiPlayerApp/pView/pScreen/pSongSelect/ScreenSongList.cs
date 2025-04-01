@@ -7,6 +7,7 @@ using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Windows.System;
 
 namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 
@@ -122,28 +123,51 @@ public class ScreenSongList : ScreenBase
     /// </summary>
     private void ProcInputEvent()
     {
-        var map = new InputMap();
-        map.KeyMap.Add( Windows.System.VirtualKey.Up  , "Up" );
-        map.KeyMap.Add( Windows.System.VirtualKey.Down, "Down" );
-
-        var inputStateList = InputControl.GetInputState( map );
-
         switch ( State )
         {
             case States.SongListSelectMode:
                 {
+                    var inputStateList = InputControl.GetInputState( _InputMap );
+
                     foreach ( var state in inputStateList )
                     {
-                        if ( state.MapKey.Equals( "Up" ) )
+                        switch ( state.MapKey )
                         {
-                            _SongScrollList?.PreviewSongList();
-                        }
-                        else if ( state.MapKey.Equals( "Down" ) )
-                        {
-                            _SongScrollList?.NextSongList();
-                        }
+                            case VirtualKey.GamepadDPadUp:
+                                {
+                                    _SongScrollList?.PreviewSongList();
 
-                        //SystemSound.SoundPlayMoveNext();
+                                    // NOTE: そのままでは非同期処理中の再生ができない
+                                    //SystemSound.SoundPlayMovePrevious();
+                                }
+                                break;
+                            case VirtualKey.GamepadDPadDown:
+                                {
+                                    _SongScrollList?.NextSongList();
+
+                                    //SystemSound.SoundPlayMoveNext();
+                                }
+                                break;
+                            case VirtualKey.GamepadA:
+                                {
+                                    _SongScrollList?.GoBackSongList();
+
+                                    //SystemSound.SoundPlayGoBack();
+                                }
+                                break;
+                            case VirtualKey.GamepadB:
+                                {
+                                    var item = _SongScrollList?.GoSongList();
+
+                                    //SystemSound.SoundPlayFocus();
+
+                                    if (  item != null )
+                                    {
+                                        // 曲選択
+                                    }
+                                }
+                                break;
+                        }
                     }
                 }
                 break;
@@ -165,6 +189,13 @@ public class ScreenSongList : ScreenBase
 
         // スコア検索
         SearchScoreFilesAsync();
+
+        // 入力マップ設定
+        _InputMap.KeyMap.Clear();
+        _InputMap.KeyMap.Add( VirtualKey.Up,    VirtualKey.GamepadDPadUp   );
+        _InputMap.KeyMap.Add( VirtualKey.Down,  VirtualKey.GamepadDPadDown );
+        _InputMap.KeyMap.Add( VirtualKey.Back,  VirtualKey.GamepadA );
+        _InputMap.KeyMap.Add( VirtualKey.Enter, VirtualKey.GamepadB );
     }
 
     protected override bool OnLoadedSelf()
@@ -174,7 +205,11 @@ public class ScreenSongList : ScreenBase
 
     protected override void OnUnLoadSelf()
     {
+        // アイテム：曲スクロールリスト破棄
         _SongScrollList?.Dispose();
+
+        // 入力マップ設定クリア
+        _InputMap.KeyMap.Clear();
     }
 
     protected override bool OnMoveSelf( double aFrameTime )

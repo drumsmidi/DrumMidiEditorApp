@@ -10,6 +10,7 @@ using DrumMidiPlayerApp.pIO;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Windows.Gaming.Input;
 
 namespace DrumMidiPlayerApp.pView;
 
@@ -62,6 +63,9 @@ public sealed partial class WindowPlayer : Window
         _MainGrid.KeyUp   += InputControl.KeyUp;
         _MainGrid.KeyDown += InputControl.KeyDown;
 
+        // ゲームパッド監視
+        InputControl.SetGamePadWatcher();
+
         InputControl.StartTime();
     }
 
@@ -98,6 +102,9 @@ public sealed partial class WindowPlayer : Window
             // キーイベントキャプチャ解放
             _MainGrid.KeyUp   -= InputControl.KeyUp;
             _MainGrid.KeyDown -= InputControl.KeyDown;
+
+            // ゲームパッド監視解放
+            InputControl.ReleaseGamePadWatcher();
 
             // 再生コントロール停止
             DmsControl.StopPreSequence();

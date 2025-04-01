@@ -204,6 +204,11 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     #region Input Event
 
     /// <summary>
+    /// 入力変換マップ
+    /// </summary>
+    protected InputMap _InputMap = new();
+
+    /// <summary>
     /// 入力イベント処理
     /// </summary>
     private void ProcInputEvent()

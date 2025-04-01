@@ -14,7 +14,7 @@ namespace DrumMidiPlayerApp.pView.pScreen;
 /// <param name="aY">描画位置＋１小節内での相対Y座標</param>
 /// <param name="aRadius">半径</param>
 /// <param name="aFormatRect">描画書式</param>
-internal partial class ItemProcessing( float aX, float aY, float aRadius, FormatRect aFormatRect ) : DisposeBaseClass
+internal partial class ItemProcessing( float aX, float aY, float aRadius, FormatRect aFormatRect ) : ItemBase
 {
     /// <summary>
     /// 描画位置：X座標（中心値）
@@ -42,16 +42,6 @@ internal partial class ItemProcessing( float aX, float aY, float aRadius, Format
     private readonly int _ItemCount = 6;
 
     /// <summary>
-    /// 現在のフレーム時間
-    /// </summary>
-    private double _CurrentFrameTime = 0.0F;
-
-    /// <summary>
-    /// フレーム終了時間
-    /// </summary>
-    private readonly double _EndFrameTime = 5.0F;
-
-    /// <summary>
     /// 描画書式
     /// </summary>
     private FormatRect? _FormatRect = aFormatRect;
@@ -77,17 +67,6 @@ internal partial class ItemProcessing( float aX, float aY, float aRadius, Format
     private bool _Disposed = false;
 
     /// <summary>
-    /// フレーム処理
-    /// </summary>
-    /// <param name="aFrameTime"></param>
-    public void Move( double aFrameTime )
-    {
-        // フレーム時間計算
-        _CurrentFrameTime += aFrameTime;
-        _CurrentFrameTime %= _EndFrameTime;
-    }
-
-    /// <summary>
     /// 描画
     /// </summary>
     /// <param name="aGraphics">グラフィック</param>
@@ -98,7 +77,7 @@ internal partial class ItemProcessing( float aX, float aY, float aRadius, Format
             return;
         }
 
-        var progress = (float)( _CurrentFrameTime / _EndFrameTime );
+        var progress = FrameProgress;
 
         var rect = new Rect();
 

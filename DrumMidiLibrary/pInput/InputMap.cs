@@ -8,5 +8,5 @@ namespace DrumMidiLibrary.pInput;
 /// </summary>
 public class InputMap
 {
-    public Dictionary<VirtualKey, string> KeyMap = [];        
+    public Dictionary<VirtualKey, VirtualKey> KeyMap = [];        
 }

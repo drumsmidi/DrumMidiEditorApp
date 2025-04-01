@@ -6,7 +6,7 @@ public class InputDeviceState
 {
     public VirtualKey Key { get; set; }
 
-    public string MapKey { get; set; } = string.Empty;
+    public VirtualKey MapKey { get; set; } = VirtualKey.None;
 
     public bool IsKeyPushed { get; set; } = false;
 

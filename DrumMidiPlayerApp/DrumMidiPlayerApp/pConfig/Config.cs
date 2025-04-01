@@ -50,6 +50,10 @@ public static class Config
     /// </summary>
     public static ConfigScreenBase ScreenBase { get; set; } = new();
 
+    /// <summary>
+    /// ScreenSongList設定
+    /// </summary>
+    public static ConfigScreenSongList ScreenSongList { get; set; } = new();
 
-    
+
 }

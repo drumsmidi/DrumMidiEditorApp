@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml.Input;
+using Windows.Gaming.Input;
 
 namespace DrumMidiLibrary.pInput;
 
@@ -118,7 +119,106 @@ public static class InputControl
 
     #endregion
 
-    #region イベントキャプチャ
+    #region イベントキャプチャ：ゲームパッド
+
+    /// <summary>
+    /// ゲームパッド監視
+    /// 
+    /// NOTE:ゲームパッドはWinUI3 未サポート？
+    /// </summary>
+    public static void SetGamePadWatcher()
+    {
+        try
+        {
+            lock ( _LockObj )
+            {
+                foreach ( var gamepad in Gamepad.Gamepads )
+                {
+                    PrintGamePadLog( gamepad );
+                }
+
+                Gamepad.GamepadAdded += GamePadAdded;
+                Gamepad.GamepadRemoved += GamepadRemoved;
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ゲームパッド監視解除
+    /// </summary>
+    public static void ReleaseGamePadWatcher()
+    {
+        try
+        {
+            lock ( _LockObj )
+            {
+                Gamepad.GamepadAdded   -= GamePadAdded;
+                Gamepad.GamepadRemoved -= GamepadRemoved;
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ゲームパッド追加イベント
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aGamepad"></param>
+    private static void GamePadAdded( object? aSender, Gamepad aGamepad )
+    {
+        try
+        {
+            lock ( _LockObj )
+            {
+                PrintGamePadLog( aGamepad );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// ゲームパッド削除イベント
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aGamepad"></param>
+    private static void GamepadRemoved( object? aSender, Gamepad aGamepad )
+    {
+        try
+        {
+            lock ( _LockObj )
+            {
+                PrintGamePadLog( aGamepad );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+    }
+
+    /// <summary>
+    /// キーイベントログ出力
+    /// </summary>
+    /// <param name="aArgs"></param>
+    /// <returns></returns>
+    [Conditional( "DEBUG" )]
+    public static void PrintGamePadLog( Gamepad aGamepad )
+        => Log.Info( $"AAAAAA={aGamepad.IsWireless}"
+            );
+
+    #endregion
+
+    #region イベントキャプチャ：キーボード
 
     /// <summary>
     /// キーダウン処理
@@ -181,6 +281,10 @@ public static class InputControl
             + $" WasKeyDown={aArgs.KeyStatus.WasKeyDown} IsMenuKeyDown={aArgs.KeyStatus.IsMenuKeyDown}"
             + $" IsExtendedKey={aArgs.KeyStatus.IsExtendedKey} ScanCode={aArgs.KeyStatus.ScanCode}"
             );
+
+    #endregion
+
+    #region イベントキャプチャ：マウス
 
     /// <summary>
     /// マウスダウン処理
