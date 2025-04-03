@@ -7,6 +7,9 @@
 - オーディオインタフェースやドラム音源は自前で用意する必要があります。
 <img width="284" alt="image" src="https://user-images.githubusercontent.com/97685486/182602780-22433054-0a64-4e2d-a41b-3394893d5f53.png">
 
+- DrumMidiPlayerApp試作中  
+[![](https://i.ytimg.com/vi/v3fcRcVwsrM/hqdefault.jpg?sqp=-oaymwFBCNACELwBSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGGUgZShlMA8=&rs=AOn4CLCV7OXxpnmJqPrwb1lnRD8pDyKFCQ)](https://www.youtube.com/watch?v=v3fcRcVwsrM)
+
 ## 技術要素
 
 - C#
