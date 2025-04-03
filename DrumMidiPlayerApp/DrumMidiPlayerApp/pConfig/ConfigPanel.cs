@@ -42,7 +42,7 @@ public class ConfigPanel
     public enum SurfaceMode : int
     {
         SongSelect = 0,
-        Player_ScoreType2,
+        Player,
     }
 
     /// <summary>

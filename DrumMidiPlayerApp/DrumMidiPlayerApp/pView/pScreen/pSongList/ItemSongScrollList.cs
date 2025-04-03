@@ -3,16 +3,16 @@ using DrumMidiLibrary.pModel.pSongList;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
 
-namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
+namespace DrumMidiPlayerApp.pView.pScreen.pSongList;
 
 /// <summary>
 /// 描画アイテム：曲スクロールリスト
 /// </summary>
-internal partial class ItemSongScrollList() : ItemBase
+internal partial class ItemSongScrollList() : ItemBase( 0, 0, 0, 0, 0 )
 {
+
     /// <summary>
     /// 曲リスト
     /// </summary>
@@ -47,7 +47,6 @@ internal partial class ItemSongScrollList() : ItemBase
     /// 描画書式：先頭アイテム
     /// </summary>
     private FormatLine? _StartFormatLine = Config.ScreenSongList.StartFormatLine;
-
 
     protected override void Dispose( bool aDisposing )
     {

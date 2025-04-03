@@ -6,7 +6,6 @@ using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pEvent;
 using DrumMidiPlayerApp.pView.pScreen;
-using DrumMidiPlayerApp.pView.pScreen.pSongSelect;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -21,19 +20,9 @@ public sealed partial class UserControlPanel : UserControl
     #region Member
 
     /// <summary>
-    /// メインサーフェイス
+    /// 実行中のスクリーン
     /// </summary>
-    private IScreen? _CurrentSurface = null;
-
-    /// <summary>
-    /// 曲選択サーフェイス
-    /// </summary>
-    private IScreen? _SongSelectSurface = null;
-
-    /// <summary>
-    /// 曲選択サーフェイス
-    /// </summary>
-    private IScreen? _PlayerSurface = null;
+    private readonly ScreenMain _CurrentScreen = new();
 
     #endregion
 
@@ -77,6 +66,7 @@ public sealed partial class UserControlPanel : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -163,19 +153,10 @@ public sealed partial class UserControlPanel : UserControl
                     UpdatePanelSize();
                 }
 
-                // プレイヤー描画モード変更
-                if ( Config.Panel.FlagUpdateSurfaceModo )
-                {
-                    Config.Panel.FlagUpdateSurfaceModo = false;
-                    UpdateSurfaceMode();
-
-                    EventManage.Event_Player_UpdateScore();
-                }
-
                 // フレーム更新
                 if ( fps.TickFpsWeight() )
                 {
-                    _CurrentSurface?.OnMove( fps.GetFrameTime() );
+                    _CurrentScreen.OnMove( fps.GetFrameTime() );
 
                     // 描画処理
                     using var cl = new CanvasCommandList( _Canvas.SwapChain );
@@ -185,7 +166,7 @@ public sealed partial class UserControlPanel : UserControl
 
                     var args = new CanvasDrawEventArgs( drawSessionB );
 
-                    _CurrentSurface?.OnDraw( args );
+                    _CurrentScreen.OnDraw( args );
 
                     using var blur = new ScaleEffect
                     { 
@@ -231,22 +212,6 @@ public sealed partial class UserControlPanel : UserControl
     #endregion
 
     #region Update
-
-    /// <summary>
-    /// 描画モード変更
-    /// </summary>
-    private void UpdateSurfaceMode()
-    {
-        switch ( Config.Panel.SurfaceModeSelect )
-        {
-            case ConfigPanel.SurfaceMode.SongSelect:
-                _CurrentSurface = _SongSelectSurface ??= new ScreenSongSelect();
-                break;
-            //case ConfigPanel.SurfaceMode.Player_ScoreType2:
-            //    _CurrentSurface = _PlayerSurface ??= new pScreen.pPlayer.pScoreType2.ScreenPlayer();
-            //    break;
-        }
-    }
 
     /// <summary>
     /// 描画サイズ変更

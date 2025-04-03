@@ -169,7 +169,7 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
                                 new()
                                 {
                                     FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 24F,
+                                    FontSize            = 36F,
                                     HorizontalAlignment = CanvasHorizontalAlignment.Center,
                                     VerticalAlignment   = CanvasVerticalAlignment.Center,
                                 } ),
@@ -179,13 +179,13 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// ノート高さ
     /// </summary>
     [JsonInclude]
-    public float NoteHeightSize { get; set; } = 10F;
+    public float NoteHeightSize { get; set; } = 20F;
 
     /// <summary>
     /// ノート横幅
     /// </summary>
     [JsonInclude]
-    public float NoteWidthSize { get; set; } = 10F;
+    public float NoteWidthSize { get; set; } = 20F;
 
     /// <summary>
     /// 音量ゼロノート表示フラグ
@@ -209,13 +209,13 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// ノート間隔：横
     /// </summary>
     [JsonInclude]
-    public float NoteTermWidthSize { get; set; } = 2.34F;
+    public float NoteTermWidthSize { get; set; } = 3.66F;
 
     /// <summary>
     /// ノート間隔：縦
     /// </summary>
     [JsonInclude]
-    public float NoteTermHeightSize { get; set; } = 18.2F;
+    public float NoteTermHeightSize { get; set; } = 30F;
 
     #endregion
 

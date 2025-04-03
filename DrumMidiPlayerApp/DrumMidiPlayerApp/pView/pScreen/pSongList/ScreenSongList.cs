@@ -5,10 +5,13 @@ using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
+using DrumMidiPlayerApp.pIO;
+using DrumMidiPlayerApp.pModel;
+using DrumMidiPlayerApp.pView.pScreen.pPlayer;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.System;
 
-namespace DrumMidiPlayerApp.pView.pScreen.pSongSelect;
+namespace DrumMidiPlayerApp.pView.pScreen.pSongList;
 
 /// <summary>
 /// プレイヤーサーフェイス
@@ -22,8 +25,12 @@ public class ScreenSongList : ScreenBase
     {
     }
 
-
     #region Screen情報
+
+    /// <summary>
+    /// スクリーン：曲選択
+    /// </summary>
+    private ScreenPlayer? _ScreenPlayer;
 
     /// <summary>
     /// 曲リストスクロールリスト
@@ -43,6 +50,8 @@ public class ScreenSongList : ScreenBase
         ScoreSearch,
         SongListInit,
         SongListSelectMode,
+        PlayerLoad,
+        PlayerUnLoad,
     }
 
     /// <summary>
@@ -59,6 +68,9 @@ public class ScreenSongList : ScreenBase
         ScoreSearching,
         SongListInitializing,
         SongListSelectMode,
+        PlayerLoading,
+        PlayerMode,
+        PlayerUnLoading,
     }
 
     /// <summary>
@@ -108,6 +120,16 @@ public class ScreenSongList : ScreenBase
             case Requests.SongListSelectMode:
                 {
                     State = States.SongListSelectMode;
+                }
+                break;
+            case Requests.PlayerLoad:
+                {
+                    State = States.PlayerLoading;
+                }
+                break;
+            case Requests.PlayerUnLoad:
+                {
+                    State = States.PlayerUnLoading;
                 }
                 break;
         }
@@ -160,9 +182,21 @@ public class ScreenSongList : ScreenBase
 
                                     //SystemSound.SoundPlayFocus();
 
-                                    if (  item != null )
+                                    if (  item != null && item.FilePath != null )
                                     {
+                                        if ( !FileIO.LoadScore( item.FilePath, out var score ) )
+                                        {
+                                            return;
+                                        }
                                         // 曲選択
+                                        DMS.OpenFilePath    = item.FilePath;
+                                        DMS.SCORE           = score;
+
+
+                                        if ( _ScreenPlayer != null )
+                                        {
+                                            _ScreenPlayer.Request = ScreenPlayerBase.Requests.Load;
+                                        }
                                     }
                                 }
                                 break;
@@ -175,7 +209,7 @@ public class ScreenSongList : ScreenBase
 
     #endregion
 
-        #region Frame処理
+    #region Frame処理
 
     protected override void OnLoadSelf()
     {
@@ -185,6 +219,8 @@ public class ScreenSongList : ScreenBase
 
         // アイテム：曲スクロールリスト作成
         _SongScrollList ??= new();
+
+        AddChildScreen( _ScreenPlayer ??= new() );
 
         // スコア検索
         SearchScoreFilesAsync();
@@ -204,6 +240,8 @@ public class ScreenSongList : ScreenBase
 
     protected override void OnUnLoadSelf()
     {
+        _ScreenPlayer = null;
+
         // アイテム：曲スクロールリスト破棄
         _SongScrollList?.Dispose();
 
@@ -233,6 +271,18 @@ public class ScreenSongList : ScreenBase
             case States.SongListSelectMode:
                 {
                     _SongScrollList?.Move( aFrameTime );
+                }
+                break;
+            case States.PlayerLoading:
+                {
+                }
+                break;
+            case States.PlayerMode:
+                {
+                }
+                break;
+            case States.PlayerUnLoading:
+                {
                 }
                 break;
         }

@@ -1,7 +1,6 @@
-﻿using DrumMidiPlayerApp.pConfig;
-using DrumMidiLibrary.pModel;
+﻿using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
-using DrumMidiLibrary.pModel.pScore;
+using DrumMidiPlayerApp.pConfig;
 
 namespace DrumMidiPlayerApp.pModel;
 
@@ -18,7 +17,18 @@ public static class DMS
     /// <summary>
     /// スコア
     /// </summary>
-    public static Score SCORE { get; set; } = new();
+    public static Score SCORE
+    {
+        get => _Score;
+        set
+        {
+            _Score = value;
+
+            // 再生用に譜面情報の参照情報を設定しておく
+            Config.Media.SCORE = value;
+        }
+    }
+    private static Score _Score = new();
 
     /// <summary>
     /// 機械学習用スコア

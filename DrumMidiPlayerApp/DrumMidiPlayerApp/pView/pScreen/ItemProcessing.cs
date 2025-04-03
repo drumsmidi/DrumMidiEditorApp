@@ -7,14 +7,12 @@ namespace DrumMidiPlayerApp.pView.pScreen;
 /// <summary>
 /// 描画アイテム：処理中
 /// </summary>
-/// <remarks>
-/// コンストラクタ
-/// </remarks>
-/// <param name="aX">描画位置＋１小節内での相対X座標</param>
-/// <param name="aY">描画位置＋１小節内での相対Y座標</param>
+/// <param name="aX">描画中心座標</param>
+/// <param name="aY">描画中心座標</param>
 /// <param name="aRadius">半径</param>
 /// <param name="aFormatRect">描画書式</param>
-internal partial class ItemProcessing( float aX, float aY, float aRadius, FormatRect aFormatRect ) : ItemBase
+internal partial class ItemProcessing( float aX, float aY, float aRadius, FormatRect aFormatRect ) 
+    : ItemBase( 10, aX - aRadius, aY - aRadius, aRadius, aRadius )
 {
     /// <summary>
     /// 描画位置：X座標（中心値）
@@ -83,7 +81,7 @@ internal partial class ItemProcessing( float aX, float aY, float aRadius, Format
 
         for ( var i = _ItemCount; i > 0; i-- )
         {
-            var (x, y) = HelperMath.GetCirclePosition
+            var ( x, y ) = HelperMath.GetCirclePosition
                 ( 
                     _PositionX, 
                     _PositionY, 
