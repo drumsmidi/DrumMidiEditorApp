@@ -9,6 +9,7 @@ using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pModel;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Windows.Devices.Display.Core;
 using Windows.Foundation;
 using Windows.System;
 
@@ -272,6 +273,11 @@ public abstract class ScreenPlayerBase() : ScreenBase( false )
                     }
                 }
                 break;
+            case States.UnLoading:
+                {
+                    State = States.None;
+                }
+                break;
         }
 
         return true;
@@ -313,8 +319,10 @@ public abstract class ScreenPlayerBase() : ScreenBase( false )
         {
             await Task.Run
             (
-                () =>
+                async () =>
                 {
+                    #region DmsControlへのリクエスト
+
                     // DmsControl用のフラグを設定
                     ConfigLib.Media.FlagUpdateDmsControlBgm     = true;
                     ConfigLib.Media.FlagUpdateDmsControlMidiMap = true;
@@ -322,6 +330,8 @@ public abstract class ScreenPlayerBase() : ScreenBase( false )
 
                     DmsControl.RefreshTimeTable();
                     DmsControl.PlayPreSequence();
+
+                    #endregion
 
                     // スコア情報をコピー
                     Score = DMS.SCORE.Clone();
@@ -341,13 +351,25 @@ public abstract class ScreenPlayerBase() : ScreenBase( false )
                         UpdateScoreMeasure( measure_no );
                     }
 
+                    #region DmsControlの完了待
+
+                    while ( DmsControl.PlayReq != DmsControl.PlayRequest.PrePlay )
+                    {
+                        await Task.Delay( 1 );
+                    }
+                    DmsControl.PlayReq = DmsControl.PlayRequest.None;
+
                     DmsControl.WaitAudio();
 
-                    SheetPosX       = 0;
+                    #endregion
+
+                    SheetPosX = 0;
                     NotePositionX   = 0;
                     DmsPlayTime     = DmsControl.StartPlayTime;
 
                     Request = Requests.Play;
+
+                    Log.Info( $"{Log.GetThisMethodName}:Load OK" );
                 }
             );
         }

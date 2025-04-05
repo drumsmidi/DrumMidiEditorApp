@@ -10,7 +10,6 @@ using DrumMidiPlayerApp.pIO;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
-using Windows.Gaming.Input;
 
 namespace DrumMidiPlayerApp.pView;
 

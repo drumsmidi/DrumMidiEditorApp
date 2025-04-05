@@ -281,9 +281,7 @@ public static class DmsControl
     /// </summary>
     public static void WaitRecorder()
     {
-        var cnt = 3000;
-
-        while ( !_FlagUpdatePlayer && !_FlagUpdateAudio && cnt-- > 0 )
+        while ( !_FlagUpdatePlayer && !_FlagUpdateAudio )
         {
             Thread.Sleep( 1 );
         }
@@ -295,14 +293,14 @@ public static class DmsControl
     /// </summary>
     private static void WaitPlayer()
     {
-        var cnt = 3000;
-
         _FlagUpdateAudio = true;
 
-        while ( !_FlagUpdatePlayer && cnt-- > 0 )
+        while ( !_FlagUpdatePlayer )
         {
             Thread.Sleep( 1 );
         }
+
+        Log.Info( $"{Log.GetThisMethodName}:OK" );
     }
 
     /// <summary>
@@ -311,14 +309,14 @@ public static class DmsControl
     /// </summary>
     public static void WaitAudio()
     {
-        var cnt = 3000;
-
         _FlagUpdatePlayer = true;
 
-        while ( !_FlagUpdateAudio && cnt-- > 0 )
+        while ( !_FlagUpdateAudio )
         {
             Thread.Sleep( 1 );
         }
+
+        Log.Info( $"{Log.GetThisMethodName}:OK" );
     }
 
     #endregion
