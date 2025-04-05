@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
@@ -14,21 +15,14 @@ using Windows.System;
 namespace DrumMidiPlayerApp.pView.pScreen.pSongList;
 
 /// <summary>
-/// プレイヤーサーフェイス
+/// スクリーン：曲選択
 /// </summary>
-public class ScreenSongList : ScreenBase
+public class ScreenSongList() : ScreenBase( true )
 {
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public ScreenSongList() : base( true )
-    {
-    }
-
     #region Screen情報
 
     /// <summary>
-    /// スクリーン：曲選択
+    /// スクリーン：曲再生
     /// </summary>
     private ScreenPlayer? _ScreenPlayer;
 
@@ -39,25 +33,47 @@ public class ScreenSongList : ScreenBase
 
     #endregion
 
-    #region Request & State
+    #region Load/UnLoad処理
 
-    /// <summary>
-    /// リクエスト一覧
-    /// </summary>
-    public enum Requests : int
+    protected override void OnLoadSelf()
     {
-        None = 0,
-        ScoreSearch,
-        SongListInit,
-        SongListSelectMode,
-        PlayerLoad,
-        PlayerUnLoad,
+        // スクリーンサイズ設定
+        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
+        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
+
+        // アイテム：曲スクロールリスト作成
+        _SongScrollList ??= new();
+
+        // 子スクリーン作成
+        AddChildScreen( _ScreenPlayer ??= new() );
+
+        // 入力マップ設定
+        _InputMap.KeyMap.Clear();
+        _InputMap.KeyMap.Add( VirtualKey.Up     , VirtualKey.GamepadDPadUp );
+        _InputMap.KeyMap.Add( VirtualKey.Down   , VirtualKey.GamepadDPadDown );
+        _InputMap.KeyMap.Add( VirtualKey.Back   , VirtualKey.GamepadA );
+        _InputMap.KeyMap.Add( VirtualKey.Enter  , VirtualKey.GamepadB );
+
+        // スコア検索
+        Request = Requests.ScoreSearch;
     }
 
-    /// <summary>
-    /// 再生状態
-    /// </summary>
-    public Requests Request { get; set; } = Requests.None;
+    protected override bool OnLoadedSelf()
+    {
+        return State == States.SongListSelectMode;
+    }
+
+    protected override void OnUnLoadSelf()
+    {
+        _ScreenPlayer = null;
+
+        // アイテム：曲スクロールリスト破棄
+        _SongScrollList?.Dispose();
+    }
+
+    #endregion
+
+    #region State
 
     /// <summary>
     /// 状態一覧
@@ -68,9 +84,7 @@ public class ScreenSongList : ScreenBase
         ScoreSearching,
         SongListInitializing,
         SongListSelectMode,
-        PlayerLoading,
         PlayerMode,
-        PlayerUnLoading,
     }
 
     /// <summary>
@@ -78,15 +92,29 @@ public class ScreenSongList : ScreenBase
     /// </summary>
     public States State { get; protected set; } = States.None;
 
-    /// <summary>
-    /// 前回状態
-    /// </summary>
-    public States StatePre { get; protected set; } = States.None;
+    #endregion
+
+    #region Request
 
     /// <summary>
-    /// リクエスト処理
+    /// リクエスト一覧
     /// </summary>
-    private void ProcRequest()
+    private enum Requests : int
+    {
+        None = 0,
+        ScoreSearch,
+        SongListInit,
+        SongListSelectMode,
+        PlayerMode,
+        PlayerUnLoad,
+    }
+
+    /// <summary>
+    /// 再生状態
+    /// </summary>
+    private Requests Request { get; set; } = Requests.None;
+
+    protected override void OnRequestSelf()
     {
         var req = Request;
 
@@ -95,8 +123,8 @@ public class ScreenSongList : ScreenBase
             return;
         }
 
-        // 前回状態
-        StatePre = State;
+        // リクエストクリア
+        Request = Requests.None;
 
         // リクエスト処理
         switch ( req )
@@ -119,17 +147,45 @@ public class ScreenSongList : ScreenBase
                 break;
             case Requests.SongListSelectMode:
                 {
+                    OnActivate( true );
+
                     State = States.SongListSelectMode;
                 }
                 break;
-            case Requests.PlayerLoad:
+            case Requests.PlayerMode:
                 {
-                    State = States.PlayerLoading;
+                    OnActivate( false );
+
+                    _ScreenPlayer?.OnActivate( true );
+
+                    State = States.PlayerMode;
                 }
                 break;
             case Requests.PlayerUnLoad:
                 {
-                    State = States.PlayerUnLoading;
+                    OnActivate( true );
+
+                    State = States.SongListSelectMode;
+                }
+                break;
+        }
+    }
+
+    #endregion
+
+    #region Activate処理
+
+    protected override void OnActivateSelf( bool aActivate )
+    {
+        switch ( State )
+        {
+            case States.PlayerMode:
+                {
+                    if ( aActivate )
+                    {
+                        // 曲スクロールリスト選択状態
+                        Request = Requests.SongListSelectMode;
+                    }
                 }
                 break;
         }
@@ -139,16 +195,13 @@ public class ScreenSongList : ScreenBase
 
     #region Input Event
 
-    /// <summary>
-    /// 入力イベント処理
-    /// </summary>
-    private void ProcInputEvent()
+    protected override void OnInputEventSelf( InputMap aInputMap )
     {
         switch ( State )
         {
             case States.SongListSelectMode:
                 {
-                    var inputStateList = InputControl.GetInputState( _InputMap );
+                    var inputStateList = InputControl.GetInputState( aInputMap );
 
                     foreach ( var state in inputStateList )
                     {
@@ -158,44 +211,38 @@ public class ScreenSongList : ScreenBase
                                 {
                                     _SongScrollList?.PreviewSongList();
 
-                                    // NOTE: そのままでは非同期処理中の再生ができない
-                                    //SystemSound.SoundPlayMovePrevious();
+                                    SystemSound.SoundPlayMovePrevious();
                                 }
                                 break;
                             case VirtualKey.GamepadDPadDown:
                                 {
                                     _SongScrollList?.NextSongList();
 
-                                    //SystemSound.SoundPlayMoveNext();
+                                    SystemSound.SoundPlayMoveNext();
                                 }
                                 break;
                             case VirtualKey.GamepadA:
                                 {
                                     _SongScrollList?.GoBackSongList();
 
-                                    //SystemSound.SoundPlayGoBack();
+                                    SystemSound.SoundPlayGoBack();
                                 }
                                 break;
                             case VirtualKey.GamepadB:
                                 {
                                     var item = _SongScrollList?.GoSongList();
 
-                                    //SystemSound.SoundPlayFocus();
+                                    SystemSound.SoundPlayFocus();
 
-                                    if (  item != null && item.FilePath != null )
+                                    // 曲選択
+                                    if ( item != null && item.FilePath != null )
                                     {
-                                        if ( !FileIO.LoadScore( item.FilePath, out var score ) )
+                                        if ( FileIO.LoadScore( item.FilePath, out var score ) )
                                         {
+                                            DMS.SCORE = score;
+
+                                            Request = Requests.PlayerMode;
                                             return;
-                                        }
-                                        // 曲選択
-                                        DMS.OpenFilePath    = item.FilePath;
-                                        DMS.SCORE           = score;
-
-
-                                        if ( _ScreenPlayer != null )
-                                        {
-                                            _ScreenPlayer.Request = ScreenPlayerBase.Requests.Load;
                                         }
                                     }
                                 }
@@ -211,78 +258,14 @@ public class ScreenSongList : ScreenBase
 
     #region Frame処理
 
-    protected override void OnLoadSelf()
-    {
-        // スクリーンサイズ設定
-        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
-        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
-
-        // アイテム：曲スクロールリスト作成
-        _SongScrollList ??= new();
-
-        AddChildScreen( _ScreenPlayer ??= new() );
-
-        // スコア検索
-        SearchScoreFilesAsync();
-
-        // 入力マップ設定
-        _InputMap.KeyMap.Clear();
-        _InputMap.KeyMap.Add( VirtualKey.Up,    VirtualKey.GamepadDPadUp   );
-        _InputMap.KeyMap.Add( VirtualKey.Down,  VirtualKey.GamepadDPadDown );
-        _InputMap.KeyMap.Add( VirtualKey.Back,  VirtualKey.GamepadA );
-        _InputMap.KeyMap.Add( VirtualKey.Enter, VirtualKey.GamepadB );
-    }
-
-    protected override bool OnLoadedSelf()
-    {
-        return State == States.SongListSelectMode;
-    }
-
-    protected override void OnUnLoadSelf()
-    {
-        _ScreenPlayer = null;
-
-        // アイテム：曲スクロールリスト破棄
-        _SongScrollList?.Dispose();
-
-        // 入力マップ設定クリア
-        _InputMap.KeyMap.Clear();
-    }
-
     protected override bool OnMoveSelf( double aFrameTime )
     {
-        // 子クラス リクエスト処理
-        ProcRequest();
-
-        // 子クラス 入力イベント処理
-        ProcInputEvent();
-
         // 子クラス 状態別 フレーム処理
         switch ( State )
         {
-            case States.ScoreSearching:
-                {
-                }
-                break;
-            case States.SongListInitializing:
-                {
-                }
-                break;
             case States.SongListSelectMode:
                 {
                     _SongScrollList?.Move( aFrameTime );
-                }
-                break;
-            case States.PlayerLoading:
-                {
-                }
-                break;
-            case States.PlayerMode:
-                {
-                }
-                break;
-            case States.PlayerUnLoading:
-                {
                 }
                 break;
         }
@@ -290,6 +273,26 @@ public class ScreenSongList : ScreenBase
         return true;
     }
 
+    #endregion
+
+    #region 描画処理
+
+    protected override bool OnDrawSelf( CanvasDrawEventArgs aArgs )
+    {
+        switch ( State )
+        {
+            case States.SongListSelectMode:
+                {
+                    _SongScrollList?.Draw( aArgs.DrawingSession );
+                }
+                break;
+        }
+        return true;
+    }
+
+    #endregion
+
+    #region 個別処理
 
     /// <summary>
     /// スコア検索
@@ -351,22 +354,4 @@ public class ScreenSongList : ScreenBase
     }
 
     #endregion
-
-    #region 描画処理
-
-    protected override bool OnDrawSelf( CanvasDrawEventArgs aArgs )
-    {
-        switch ( State )
-        {
-            case States.SongListSelectMode:
-                {
-                    _SongScrollList?.Draw( aArgs.DrawingSession );
-                }
-                break;
-        }
-        return true;
-    }
-
-    #endregion
-
 }

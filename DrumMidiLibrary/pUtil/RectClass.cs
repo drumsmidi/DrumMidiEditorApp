@@ -42,6 +42,8 @@ public record class RectClass
 
     #endregion
 
+    public Rect GetRect() => _Rect;
+
     public double X
     {
         get => _Rect.X;

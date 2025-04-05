@@ -10,11 +10,6 @@ namespace DrumMidiPlayerApp.pModel;
 public static class DMS
 {
     /// <summary>
-    /// 編集中のDMSファイルパス
-    /// </summary>
-    public static GeneralPath OpenFilePath { get; set; } = new();
-
-    /// <summary>
     /// スコア
     /// </summary>
     public static Score SCORE
@@ -29,9 +24,4 @@ public static class DMS
         }
     }
     private static Score _Score = new();
-
-    /// <summary>
-    /// 機械学習用スコア
-    /// </summary>
-    public static Score SCORE_PREDICT { get; set; } = new();
 }

@@ -8,6 +8,12 @@ namespace DrumMidiPlayerApp.pView.pScreen;
 public interface IScreen
 {
     /// <summary>
+    /// アクティブ化／非アクティブ化
+    /// </summary>
+    /// <param name="aActivate">true:アクティブ化、false:非アクティブ化</param>
+    void OnActivate( bool aActivate );
+
+    /// <summary>
     /// フレーム処理
     /// </summary>
     /// <param name="aFrameTime">フレーム時間（秒）</param>
@@ -34,6 +40,11 @@ public interface IScreen
     /// 親スクリーンのインスタンスを設定
     /// </summary>
     void SetParentScreen( IScreen aScreen );
+
+    /// <summary>
+    /// 親スクリーンのインスタンスを取得
+    /// </summary>
+    IScreen? GetParentScreen();
 
     /// <summary>
     /// 親スクリーンのインスタンスを取得

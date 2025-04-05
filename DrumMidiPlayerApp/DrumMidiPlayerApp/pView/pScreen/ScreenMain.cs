@@ -1,21 +1,15 @@
-﻿using DrumMidiPlayerApp.pView.pScreen.pSongList;
+﻿using DrumMidiLibrary.pInput;
+using DrumMidiPlayerApp.pView.pScreen.pSongList;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace DrumMidiPlayerApp.pView.pScreen;
 
 /// <summary>
-/// メインスクリーン
+/// スクリーン：メイン
 /// </summary>
-public class ScreenMain : ScreenBase
+public class ScreenMain() : ScreenBase( false )
 {
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public ScreenMain() : base( false )
-    {
-    }
-
-    #region Member
+    #region Screen情報
 
     /// <summary>
     /// スクリーン：曲選択
@@ -24,70 +18,7 @@ public class ScreenMain : ScreenBase
 
     #endregion
 
-    #region Request & State
-
-    /// <summary>
-    /// リクエスト一覧
-    /// </summary>
-    public enum Requests : int
-    {
-        None = 0,
-    }
-
-    /// <summary>
-    /// 再生状態
-    /// </summary>
-    public Requests Request { get; set; } = Requests.None;
-
-    /// <summary>
-    /// 状態一覧
-    /// </summary>
-    public enum States : int
-    {
-        None = 0,
-    }
-
-    /// <summary>
-    /// 再生状態
-    /// </summary>
-    public States State { get; protected set; } = States.None;
-
-    /// <summary>
-    /// 再生要求内容（通常再生、ループ再生の判定に使用）
-    /// </summary>
-    public States StatePre { get; protected set; } = States.None;
-
-    /// <summary>
-    /// リクエスト処理
-    /// </summary>
-    private void ProcRequest()
-    {
-        var req = Request;
-
-        if ( req == Requests.None )
-        {
-            return;
-        }
-
-        // 前回状態
-        StatePre = State;
-    }
-
-    #endregion
-
-
-    #region Input Event
-
-    /// <summary>
-    /// 入力イベント処理
-    /// </summary>
-    private void ProcInputEvent()
-    {
-    }
-
-    #endregion
-
-    #region Frame処理
+    #region Load/UnLoad処理
 
     protected override void OnLoadSelf()
     {
@@ -109,16 +40,75 @@ public class ScreenMain : ScreenBase
         return true;
     }
 
+    #endregion
+
+    #region State
+
+    /// <summary>
+    /// 状態一覧
+    /// </summary>
+    public enum States : int
+    {
+        None = 0,
+    }
+
+    /// <summary>
+    /// 再生状態
+    /// </summary>
+    public States State { get; protected set; } = States.None;
+
+    #endregion
+
+    #region Request
+
+    /// <summary>
+    /// リクエスト一覧
+    /// </summary>
+    private enum Requests : int
+    {
+        None = 0,
+    }
+
+    /// <summary>
+    /// 再生状態
+    /// </summary>
+    private Requests Request { get; set; } = Requests.None;
+
+    protected override void OnRequestSelf()
+    {
+        var req = Request;
+
+        if ( req == Requests.None )
+        {
+            return;
+        }
+
+        // リクエストクリア
+        Request = Requests.None;
+    }
+
+    #endregion
+
+    #region Activate処理
+
+    protected override void OnActivateSelf( bool aActivate )
+    {
+    }
+
+    #endregion
+
+    #region Input Event
+
+    protected override void OnInputEventSelf( InputMap aInputMap )
+    {
+    }
+
+    #endregion
+
+    #region Frame処理
+
     protected override bool OnMoveSelf( double aFrameTime )
     {
-        // 子クラス リクエスト処理
-        ProcRequest();
-
-        // 子クラス 入力イベント処理
-        ProcInputEvent();
-
-        // 子クラス 状態別 フレーム処理
-
         return true;
     }
 

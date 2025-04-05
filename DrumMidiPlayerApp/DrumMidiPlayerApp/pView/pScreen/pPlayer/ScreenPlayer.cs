@@ -14,16 +14,8 @@ namespace DrumMidiPlayerApp.pView.pScreen.pPlayer;
 /// <summary>
 /// スクリーン：プレイヤー
 /// </summary>
-public class ScreenPlayer : ScreenPlayerBase
+public class ScreenPlayer() : ScreenPlayerBase()
 {
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public ScreenPlayer() : base()
-    {
-    }
-
-
     #region Screen情報
 
     /// <summary>
@@ -96,12 +88,12 @@ public class ScreenPlayer : ScreenPlayerBase
 
         // bpm
         _NowBpmRange.X              = ScreenDrawRect.Width - 94;
-        _NowBpmRange.Y              = 0;
+        _NowBpmRange.Y              = ScreenDrawRect.Y;
         _NowBpmRange.Width          = DrawSet.BpmWidthSize;
         _NowBpmRange.Height         = DrawSet.BpmHeightSize;
 
         // measure no body
-        _MeasureNoBodyRange.X       = 20;
+        _MeasureNoBodyRange.X       = ScreenDrawRect.X + 20;
         _MeasureNoBodyRange.Y       = _NowBpmRange.Bottom;
         _MeasureNoBodyRange.Width   = (int)( ( ScreenDrawRect.Width - 40 ) / DrawSet.MeasureSize ) * DrawSet.MeasureSize;
         _MeasureNoBodyRange.Height  = DrawSet.MeasureNoHeightSize;
@@ -387,10 +379,10 @@ public class ScreenPlayer : ScreenPlayerBase
                         volume = 1F;
                     }
 
-                    note_rect.Width     = DrawSet.NoteWidthSize * volume;
+                    note_rect.Width     = DrawSet.NoteWidthSize  * volume;
                     note_rect.Height    = DrawSet.NoteHeightSize * volume;
                     note_rect.X         = body_s.X + ( info.NotePos * DrawSet.NoteTermWidthSize ); //- ( volume * DrawSet.NoteWidthSize / 2.0F );
-                    note_rect.Y         = body_s.Y + ( item.Item1 * DrawSet.NoteTermHeightSize )
+                    note_rect.Y         = body_s.Y + ( item.Item1   * DrawSet.NoteTermHeightSize )
                                         + ( ( DrawSet.NoteTermHeightSize - note_rect.Height ) / 2.0F );
 
                     if ( volume != 0F )
@@ -444,19 +436,16 @@ public class ScreenPlayer : ScreenPlayerBase
 
     protected override bool OnDrawSelf( CanvasDrawEventArgs aArgs )
     {
+        if ( !base.OnDrawSelf( aArgs ) )
+        {
+            return false;
+        }
+
         switch ( State )
         {
             case States.Playing:
                 {
                     OnDrawPlaying( aArgs );
-                }
-                break;
-            case States.Loading:
-                {
-                }
-                break;
-            case States.UnLoading:
-                {
                 }
                 break;
         }
@@ -508,13 +497,13 @@ public class ScreenPlayer : ScreenPlayerBase
 
         #region Paint section
         {
-            int     cnt;
-            float   diff_x;
-            float   diff_y;
+            int   cnt;
+            float diff_x;
+            float diff_y;
 
             for ( var measure_no = measure_start; measure_no <= measure_end; measure_no++ )
             {
-                diff_x = measure_size * ( measure_no % measure_x );
+                diff_x = measure_size    * ( measure_no % measure_x );
                 diff_y = section._height * ( measure_no / measure_x % measure_y );
 
                 #region Paint measure line
@@ -575,17 +564,17 @@ public class ScreenPlayer : ScreenPlayerBase
 
         #region Cursol
         {
-            float   diff_x;
-            float   diff_y;
-            float   div_x;
+            float diff_x;
+            float diff_y;
+            float div_x;
 
-            var cur_measure_no  = (int)( SheetPosX / ConfigSystem.MeasureNoteNumber );
+            var cur_measure_no = (int)( SheetPosX / ConfigSystem.MeasureNoteNumber );
 
             for ( var measure_no = measure_start; measure_no <= cur_measure_no; measure_no++ )
             {
-                diff_x = measure_size * ( measure_no % measure_x );
+                diff_x = measure_size    * ( measure_no % measure_x );
                 diff_y = section._height * ( measure_no / measure_x % measure_y );
-                div_x = ( measure_no == cur_measure_no )
+                div_x  = ( measure_no == cur_measure_no )
                             ? SheetPosX % ConfigSystem.MeasureNoteNumber * DrawSet.NoteTermWidthSize
                             : measure_size;
 
@@ -606,5 +595,4 @@ public class ScreenPlayer : ScreenPlayerBase
     }
 
     #endregion
-
 }

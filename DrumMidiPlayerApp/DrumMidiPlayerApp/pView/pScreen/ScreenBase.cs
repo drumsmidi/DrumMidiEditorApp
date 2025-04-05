@@ -8,20 +8,22 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 namespace DrumMidiPlayerApp.pView.pScreen;
 
 /// <summary>
-/// スクリーンベース
+/// スクリーン基底クラス
 /// </summary>
-/// <remarks>
-/// コンストラクタ
-/// </remarks>
+/// <param name="aProcessing">処理中表示フラグ</param>
 public abstract class ScreenBase( bool aProcessing ) : IScreen
 {
-
     #region Screen情報
 
     /// <summary>
     /// 描画設定
     /// </summary>
     private ConfigScreenBase DrawSet => Config.ScreenBase;
+
+    /// <summary>
+    /// 描画設定
+    /// </summary>
+    private ConfigPanel DrawSetPanel => Config.Panel;
 
     /// <summary>
     /// 親スクリーン
@@ -42,15 +44,20 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
         return obj;
     }
 
-    public void SetParentScreen( IScreen aScreen )
-        => _ParentScreen = aScreen;
+    public IScreen? GetParentScreen() => _ParentScreen;
+
+    public void SetParentScreen( IScreen aScreen ) => _ParentScreen = aScreen;
 
     /// <summary>
     /// 子スクリーン
     /// </summary>
     private readonly List<IScreen> _ChildScreenList = [];
 
-    public void AddChildScreen( IScreen aScreen )
+    /// <summary>
+    /// 子スクリーン追加
+    /// </summary>
+    /// <param name="aScreen"></param>
+    protected void AddChildScreen( IScreen aScreen )
     {
         aScreen.SetParentScreen( this );
         _ChildScreenList.Add( aScreen );
@@ -59,11 +66,10 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     /// <summary>
     /// スクリーン描画範囲
     /// </summary>
-    public RectClass ScreenDrawRect { get; set; } 
-        = new( 0, 0, Config.Panel.BaseScreenSize.Width, Config.Panel.BaseScreenSize.Height );
+    public RectClass ScreenDrawRect { get; set; } = new( 0, 0, 0, 0 );
 
     /// <summary>
-    /// 処理中描画アイテム
+    /// 処理中描画アイテム表示フラグ
     /// </summary>
     private readonly bool _ProcessingEnable = aProcessing;
 
@@ -74,27 +80,111 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
 
     #endregion
 
-    #region Request & State
+    #region Load/UnLoad処理
 
     /// <summary>
-    /// リクエスト一覧
+    /// ロード処理
     /// </summary>
-    private enum Requests : int
+    private void OnLoad()
     {
-        None = 0,
-        Load,
-        UnLoad,
+        // スクリーン描画範囲の設定（パネルサイズを初期設定）
+        ScreenDrawRect.Width  = DrawSetPanel.BaseScreenSize.Width;
+        ScreenDrawRect.Height = DrawSetPanel.BaseScreenSize.Height;
+
+        // 子クラスのロード処理
+        OnLoadSelf();
+
+        // 親クラスのロード処理
+        if ( _ProcessingEnable )
+        {
+            _Processing ??= new
+                (
+                    ScreenDrawRect._x + ScreenDrawRect._width  / 2F,
+                    ScreenDrawRect._y + ScreenDrawRect._height / 2F,
+                    DrawSet.ProcessingRadius,
+                    DrawSet.ProcessingRect
+                );
+        }
     }
 
     /// <summary>
-    /// リクエスト
+    /// ロード処理（子クラス用）
     /// </summary>
-    private Requests Request { get; set; } = Requests.Load;
+    protected virtual void OnLoadSelf()
+    {
+    }
 
     /// <summary>
-    /// リクエスト：アンロード
+    /// ロード完了処理
     /// </summary>
-    protected void RequestUnLoad() => Request = Requests.UnLoad;
+    /// <returns>true:処理完了、false:処理中</returns>
+    private bool OnLoaded()
+    {
+        // 子スクリーンのロード完了チェック
+        var flag = _ChildScreenList.Count == 0 || _ChildScreenList.All( screen => screen.IsLoaded == true );
+
+        // 子クラスと子スクリーンのロード完了チェック
+        return OnLoadedSelf() && flag;
+    }
+
+    /// <summary>
+    /// ロード完了処理（子クラス用）
+    /// </summary>
+    /// <returns>true:処理完了、false:処理中</returns>
+    protected virtual bool OnLoadedSelf()
+    {
+        return true;
+    }
+
+    /// <summary>
+    /// アンロード処理
+    /// </summary>
+    private void OnUnLoad()
+    {
+        // 子クラスのアンロード処理
+        OnUnLoadSelf();
+
+        // 入力マップ設定クリア
+        _InputMap.KeyMap.Clear();
+
+        // 親クラスのアンロード処理
+        _Processing?.Dispose();
+    }
+
+    /// <summary>
+    /// アンロード処理（子クラス用）
+    /// </summary>
+    protected virtual void OnUnLoadSelf()
+    {
+    }
+
+    /// <summary>
+    /// アンロード完了処理
+    /// </summary>
+    /// <returns>true:処理完了、false:処理中</returns>
+    private bool OnUnLoaded()
+    {
+        // 子スクリーンのアンロード完了チェック
+        if ( _ChildScreenList.All( screen => screen.IsUnLoaded == true ) )
+        {
+            _ChildScreenList.Clear();
+        }
+        // 子クラスのアンロード完了チェック
+        return OnUnLoadedSelf();
+    }
+
+    /// <summary>
+    /// アンロード完了処理（子クラス用）
+    /// </summary>
+    /// <returns>true:処理完了、false:処理中</returns>
+    protected virtual bool OnUnLoadedSelf()
+    {
+        return true;
+    }
+
+    #endregion
+
+    #region State
 
     /// <summary>
     /// 状態一覧
@@ -113,95 +203,111 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     /// </summary>
     private States State { get; set; } = States.None;
 
+    /// <summary>
+    /// 親クラスロード完了状態
+    /// </summary>
     public bool IsLoaded => State == States.Loaded;
 
+    /// <summary>
+    /// 親クラスアンロード完了状態
+    /// </summary>
     public bool IsUnLoaded => State == States.UnLoaded;
+
+    #endregion
+
+    #region Request
+
+    /// <summary>
+    /// リクエスト一覧
+    /// </summary>
+    private enum Requests : int
+    {
+        None = 0,
+        Load,
+        UnLoad,
+    }
+
+    /// <summary>
+    /// リクエスト
+    /// </summary>
+    private Requests Request { get; set; } = Requests.Load;
 
     /// <summary>
     /// リクエスト処理
     /// </summary>
-    private void ProcRequest()
+    private void OnRequest()
     {
+        // 親クラスのリクエスト処理
         var req = Request;
 
-        if ( req == Requests.None )
+        if ( req != Requests.None )
         {
-            return;
+            // リクエストクリア
+            Request = Requests.None;
+
+            // リクエスト処理
+            switch ( req )
+            {
+                case Requests.Load:
+                    {
+                        OnLoad();
+
+                        State = States.Loading;
+                    }
+                    break;
+                case Requests.UnLoad:
+                    {
+                        OnUnLoad();
+
+                        State = States.UnLoading;
+                    }
+                    break;
+            }
         }
 
-        // リクエストクリア
-        Request = Requests.None;
-
-        // リクエスト処理
-        switch ( req )
-        {
-            case Requests.Load:
-                {
-                    OnLoad();
-
-                    State = States.Loading;
-                }
-                break;
-            case Requests.UnLoad:
-                {
-                    OnUnLoad();
-
-                    State = States.UnLoading;
-                }
-                break;
-        }
+        // 子クラスのリクエスト処理
+        OnRequestSelf();
     }
 
     /// <summary>
-    /// ロード処理
+    /// ロード処理（子クラス用）
     /// </summary>
-    private void OnLoad()
-    {
-        // 子クラスのロード処理
-        OnLoadSelf();
-
-        // 親クラスのロード処理
-        if ( _ProcessingEnable )
-        {
-            _Processing ??= new
-                (
-                    ScreenDrawRect._x + ScreenDrawRect._width  / 2F,
-                    ScreenDrawRect._y + ScreenDrawRect._height / 2F,
-                    DrawSet.ProcessingRadius,
-                    DrawSet.ProcessingRect
-                );
-        }
-    }
-
-    /// <summary>
-    /// ロード処理
-    /// </summary>
-    protected virtual void OnLoadSelf()
-    {        
-    }
-
-    /// <summary>
-    /// アンロード処理
-    /// </summary>
-    private void OnUnLoad()
-    {
-        // 子クラスのアンロード処理
-        OnUnLoadSelf();
-
-        // 親クラスのアンロード処理
-        _Processing?.Dispose();
-    }
-
-    /// <summary>
-    /// アンロード処理
-    /// </summary>
-    protected virtual void OnUnLoadSelf()
+    protected virtual void OnRequestSelf()
     {
     }
 
     #endregion
 
-    #region Input Event
+    #region Activate処理
+
+    /// <summary>
+    /// アクティブ化状態フラグ
+    /// </summary>
+    protected bool IsActivate { get; private set; } = false;
+
+    public void OnActivate( bool aActivate )
+    {
+        IsActivate = aActivate;
+
+        OnActivateSelf( aActivate );
+
+        if ( !aActivate )
+        {
+            // 親スクリーンをアクティブ化
+            GetParentScreen()?.OnActivate( !aActivate );
+        }
+    }
+
+    /// <summary>
+    /// アクティブ化／非アクティブ化 イベント（子クラス用）
+    /// </summary>
+    protected virtual void OnActivateSelf( bool aActivate )
+    {
+    }
+
+    #endregion
+
+    #region Input処理
 
     /// <summary>
     /// 入力変換マップ
@@ -211,7 +317,19 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     /// <summary>
     /// 入力イベント処理
     /// </summary>
-    private void ProcInputEvent()
+    private void OnInputEvent()
+    {
+        if ( IsActivate )
+        {
+            // 子クラスの入力イベント処理
+            OnInputEventSelf( _InputMap );
+        }
+    }
+
+    /// <summary>
+    /// 入力イベント処理（子クラス用）
+    /// </summary>
+    protected virtual void OnInputEventSelf( InputMap aInputMap )
     {
     }
 
@@ -221,18 +339,21 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
 
     public void OnMove( double aFrameTime )
     {
-        // 親クラスのリクエスト処理
-        ProcRequest();
+        // 親子クラスのリクエスト処理
+        OnRequest();
 
-        // 親クラスの入力イベント処理
-        ProcInputEvent();
+        // 親子クラスの入力イベント処理
+        OnInputEvent();
 
         // 親クラスのフレーム処理
         switch ( State )
         {
             case States.Loading:
                 {
-                    _Processing?.Move( aFrameTime );
+                    if ( _ProcessingEnable )
+                    {
+                        _Processing?.Move( aFrameTime );
+                    }
 
                     if ( OnLoaded() )
                     {
@@ -265,52 +386,6 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     }
 
     /// <summary>
-    /// ロード完了処理
-    /// </summary>
-    /// <returns>true:処理完了、false:処理中</returns>
-    private bool OnLoaded()
-    {
-        // 子スクリーンのロード完了チェック
-        var flag = _ChildScreenList.Count == 0 || _ChildScreenList.All( screen => screen.IsLoaded == true );
-
-        // 子クラスと子スクリーンのロード完了チェック
-        return OnLoadedSelf() && flag;
-    }
-
-    /// <summary>
-    /// ロード完了処理
-    /// </summary>
-    /// <returns>true:処理完了、false:処理中</returns>
-    protected virtual bool OnLoadedSelf()
-    {
-        return true;
-    }
-
-    /// <summary>
-    /// アンロード完了処理
-    /// </summary>
-    /// <returns>true:処理完了、false:処理中</returns>
-    private bool OnUnLoaded()
-    {
-        // 子スクリーンのアンロード完了チェック
-        if ( _ChildScreenList.All( screen => screen.IsUnLoaded == true ) )
-        {
-            _ChildScreenList.Clear();
-        }
-        // 子クラスのアンロード完了チェック
-        return OnUnLoadedSelf();
-    }
-
-    /// <summary>
-    /// アンロード完了処理
-    /// </summary>
-    /// <returns>true:処理完了、false:処理中</returns>
-    protected virtual bool OnUnLoadedSelf()
-    {
-        return true;
-    }
-
-    /// <summary>
     /// フレーム処理
     /// </summary>
     /// <param name="aFrameTime"></param>
@@ -331,24 +406,23 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
         {
             case States.Loading:
                 {
-                    if ( !_ProcessingEnable )
+                    if ( _ProcessingEnable )
                     {
-                        break;
+                        _Processing?.Draw( aArgs.DrawingSession );
                     }
-                    _Processing?.Draw( aArgs.DrawingSession );
                 }
-                return;
+                break;
 
-            case States.UnLoading:
-            case States.UnLoaded:
-                return;
-        }
-
-        // 子クラスの描画処理
-        if ( OnDrawSelf( aArgs ) )
-        {
-            // 子スクリーンの描画処理
-            _ChildScreenList.ForEach( screen => screen.OnDraw( aArgs ) );
+            case States.Loaded:
+                {
+                    // 子クラスの描画処理
+                    if ( OnDrawSelf( aArgs ) )
+                    {
+                        // 子スクリーンの描画処理
+                        _ChildScreenList.ForEach( screen => screen.OnDraw( aArgs ) );
+                    }
+                }
+                break;
         }
     }
 
