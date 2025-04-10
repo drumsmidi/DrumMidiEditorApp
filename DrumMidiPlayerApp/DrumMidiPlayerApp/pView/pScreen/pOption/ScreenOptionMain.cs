@@ -8,34 +8,22 @@ using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pIO;
 using DrumMidiPlayerApp.pModel;
-using DrumMidiPlayerApp.pView.pScreen.pOption;
-using DrumMidiPlayerApp.pView.pScreen.pPlayer;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.System;
 
-namespace DrumMidiPlayerApp.pView.pScreen.pSongList;
+namespace DrumMidiPlayerApp.pView.pScreen.pOption;
 
 /// <summary>
 /// スクリーン：曲選択
 /// </summary>
-public class ScreenSongList() : ScreenBase( true )
+public class ScreenOptionMain() : ScreenBase( true )
 {
     #region Screen情報
 
     /// <summary>
-    /// スクリーン：曲再生
-    /// </summary>
-    private ScreenPlayer? _ScreenPlayer;
-
-    /// <summary>
-    /// スクリーン：オプション
-    /// </summary>
-    private ScreenOptionMain? _ScreenOptionMain;
-
-    /// <summary>
     /// 曲リストスクロールリスト
     /// </summary>
-    private ItemSongScrollList? _SongScrollList;
+    private ItemOptionScrollList? _SongScrollList;
 
     #endregion
 
@@ -44,15 +32,12 @@ public class ScreenSongList() : ScreenBase( true )
     protected override void OnLoadSelf()
     {
         // スクリーンサイズ設定
+        ScreenDrawRect.X      = Config.Panel.BaseScreenSize.Width / 2D;
         ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
         ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
 
         // アイテム：曲スクロールリスト作成
         _SongScrollList ??= new();
-
-        // 子スクリーン作成
-        AddChildScreen( _ScreenPlayer     ??= new() );
-        AddChildScreen( _ScreenOptionMain ??= new() );
 
         // 入力マップ設定
         _InputMap.KeyMap.Clear();
@@ -60,22 +45,16 @@ public class ScreenSongList() : ScreenBase( true )
         _InputMap.KeyMap.Add( VirtualKey.Down   , VirtualKey.GamepadDPadDown );
         _InputMap.KeyMap.Add( VirtualKey.Back   , VirtualKey.GamepadA );
         _InputMap.KeyMap.Add( VirtualKey.Enter  , VirtualKey.GamepadB );
-        _InputMap.KeyMap.Add( VirtualKey.M      , VirtualKey.GamepadMenu );
-
-        // スコア検索
-        Request = Requests.ScoreSearch;
+        _InputMap.KeyMap.Add( VirtualKey.Escape , VirtualKey.Escape );
     }
 
     protected override bool OnLoadedSelf()
     {
-        return State == States.SongListSelectMode;
+        return true;
     }
 
     protected override void OnUnLoadSelf()
     {
-        _ScreenPlayer       = null;
-        _ScreenOptionMain   = null;
-
         // アイテム：曲スクロールリスト破棄
         _SongScrollList?.Dispose();
     }
@@ -90,11 +69,7 @@ public class ScreenSongList() : ScreenBase( true )
     public enum States : int
     {
         None = 0,
-        ScoreSearching,
-        SongListInitializing,
-        SongListSelectMode,
-        PlayerMode,
-        OptionMode,
+        OptionSelectMode,
     }
 
     /// <summary>
@@ -112,11 +87,8 @@ public class ScreenSongList() : ScreenBase( true )
     private enum Requests : int
     {
         None = 0,
-        ScoreSearch,
-        SongListInit,
-        SongListSelectMode,
-        PlayerMode,
-        OptionMode,
+        OptionSelectMode,
+        Close,
     }
 
     /// <summary>
@@ -139,45 +111,18 @@ public class ScreenSongList() : ScreenBase( true )
         // リクエスト処理
         switch ( req )
         {
-            case Requests.ScoreSearch:
-                {
-                    // スコア検索
-                    SearchScoreFilesAsync();
-
-                    State = States.ScoreSearching;
-                }
-                break;
-            case Requests.SongListInit:
-                {
-                    // SongList検索
-                    SearchSongList();
-
-                    State = States.SongListInitializing;
-                }
-                break;
-            case Requests.SongListSelectMode:
+            case Requests.OptionSelectMode:
                 {
                     OnActivate( true );
 
-                    State = States.SongListSelectMode;
+                    State = States.OptionSelectMode;
                 }
                 break;
-            case Requests.PlayerMode:
+            case Requests.Close:
                 {
                     OnActivate( false );
 
-                    _ScreenPlayer?.OnActivate( true );
-
-                    State = States.PlayerMode;
-                }
-                break;
-            case Requests.OptionMode:
-                {
-                    OnActivate( false );
-
-                    _ScreenOptionMain?.OnActivate( true );
-
-                    State = States.OptionMode;
+                    State = States.None;
                 }
                 break;
         }
@@ -191,13 +136,12 @@ public class ScreenSongList() : ScreenBase( true )
     {
         switch ( State )
         {
-            case States.PlayerMode:
-            case States.OptionMode:
+            case States.None:
                 {
                     if ( aActivate )
                     {
                         // 曲スクロールリスト選択状態
-                        Request = Requests.SongListSelectMode;
+                        Request = Requests.OptionSelectMode;
                     }
                 }
                 break;
@@ -212,7 +156,7 @@ public class ScreenSongList() : ScreenBase( true )
     {
         switch ( State )
         {
-            case States.SongListSelectMode:
+            case States.OptionSelectMode:
                 {
                     var inputStateList = InputControl.GetInputState( aInputMap );
 
@@ -247,23 +191,11 @@ public class ScreenSongList() : ScreenBase( true )
 
                                     SystemSound.SoundPlayFocus();
 
-                                    // 曲選択
-                                    if ( item != null && item.FilePath != null )
-                                    {
-                                        if ( FileIO.LoadScore( item.FilePath, out var score ) )
-                                        {
-                                            DMS.SCORE = score;
-
-                                            Request = Requests.PlayerMode;
-                                            return;
-                                        }
-                                    }
                                 }
                                 break;
-                            case VirtualKey.GamepadMenu:
+                            case VirtualKey.Escape:
                                 {
-                                    // オプション選択
-                                    Request = Requests.OptionMode;
+                                    Request = Requests.Close;
                                 }
                                 return;
                         }
@@ -282,7 +214,7 @@ public class ScreenSongList() : ScreenBase( true )
         // 子クラス 状態別 フレーム処理
         switch ( State )
         {
-            case States.SongListSelectMode:
+            case States.OptionSelectMode:
                 {
                     _SongScrollList?.Move( aFrameTime );
                 }
@@ -300,9 +232,16 @@ public class ScreenSongList() : ScreenBase( true )
     {
         switch ( State )
         {
-            case States.SongListSelectMode:
-            case States.OptionMode:
+            case States.OptionSelectMode:
                 {
+                    HelperWin2D.DrawFormatRect
+                    ( 
+                        aArgs.DrawingSession, 
+                        ScreenDrawRect.GetRect(), 
+                        Config.ScreenBase.ProcessingRect,
+                        string.Empty
+                    );
+
                     _SongScrollList?.Draw( aArgs.DrawingSession );
                 }
                 break;
@@ -313,65 +252,6 @@ public class ScreenSongList() : ScreenBase( true )
     #endregion
 
     #region 個別処理
-
-    /// <summary>
-    /// スコア検索
-    /// </summary>
-    private async void SearchScoreFilesAsync()
-    {
-        try
-        {
-            await Task.Run
-            ( 
-                () =>
-                {
-                    var list = new SourceList();
-
-                    // ファイル検索
-                    Config.File.FolderDms.ForEach
-                    ( 
-                        baseFolderPath => 
-                        { 
-                            list.SearchSource( baseFolderPath, "*.dms" );
-
-                            // DB登録
-                            DBIO.MeargeSongList( list.Sources );
-                        }
-                    );
-
-                    Request = Requests.SongListInit;
-                }
-            );
-        }
-        catch ( Exception e )
-        {
-            Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            Request = Requests.SongListInit;
-        }
-    }
-
-    /// <summary>
-    /// SongList取得
-    /// </summary>
-    private void SearchSongList()
-    {
-        try
-        {
-            var songlist = DBIO.SelectSongList();
-            songlist.Sort();
-
-            _SongScrollList?.SetSongList( songlist );
-
-            Request = Requests.SongListSelectMode;
-        }
-        catch ( Exception e )
-        {
-            Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            Request = Requests.SongListSelectMode;
-        }
-    }
 
     #endregion
 }

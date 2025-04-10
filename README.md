@@ -236,6 +236,61 @@ MP4ファイルの作成は、[opencvsharp](https://github.com/shimat/opencvshar
 
 <img width="936" alt="image" src="https://github.com/user-attachments/assets/6be021e8-4ace-43e7-a492-b432dc416f6d" />
 
+#### DarkMode
+
+プレイヤーのダークモードON/OFF切替（未実装）
+
+#### 現在のBpm表示
+
+再生位置のBPM値表示ON/OFFを切替えます。
+
+#### 音量によるノートサイズ変更
+
+ノート音量に合わせてノートサイズ変更を行うかON/OFFを切替えます。
+
+> テキスト表示のノートには適用されません
+
+#### 音量０のノート表示
+
+音量０ノート表示ON/OFFを切替えます。
+
+#### ノートテキスト表示
+
+MidiMapタブで"ScaleText"に入力した先頭１文字のテキストで表示を行うかON/OFFを切替えます。
+
+#### カーソル塗潰し
+
+再生位置を表示するカーソルより前の表示塗潰しON/OFFを切替えます。
+
+#### 背景色
+
+プレイヤーの背景色を指定します。
+
+#### 小節番号高さ
+
+小節番号表示エリアの高さを指定します。
+
+#### ノート間隔 高さ・横幅
+
+1セル間の高さと横幅を指定します。
+
+#### ノート 高さ・横幅
+
+ノート音量最大値のノートサイズを指定します。
+
+#### 小節線
+
+縦線の横幅サイズと色を指定します。
+
+#### 表示設定
+
+表へ追加したレイアウトで、プレイヤーの譜面情報を表示します。  
+表示するノート位置は、MidiMapタブページのScaleKeyとで紐づけて描画されます。  
+
+Display項目は、横線（太線）の表示ON/OFFを切替えます。  
+
+> システム共通の設定です
+
 ### プレイヤー個別設定：Sequence
 
 未メンテ
@@ -410,29 +465,31 @@ MidiMapSet を設定する画面です。
 ```XML
 <DMS VERSION="1.0">
   <MIDIMAPSET CHANNEL="0">
-    <MIDIMAPGROUP DISPLAY="0" KEY="0" NAME="[Cowbell]" VOLUME="27">
-      <MIDIMAP DISPLAY="1" KEY="0" NAME="Hit" MIDI="56" VOLUME="0" COLOR="#FFFFFF00" SCALE="" />
+    <MIDIMAPGROUP DISPLAY="1" KEY="2" NAME="[Hi-Hat]" VOLUME="0" SCALEKEY="HH">
+      <MIDIMAP DISPLAY="1" KEY="60" NAME="Open Edge 4" MIDI="60" VOLUME="-17" COLOR="#FF008080" SCALE="" SCALEKEYTEXT="O" />
+      <MIDIMAP DISPLAY="1" KEY="26" NAME="Open Edge 3" MIDI="26" VOLUME="-17" COLOR="#FF6FFFFF" SCALE="" SCALEKEYTEXT="O" />
     </MIDIMAPGROUP>
-    <MIDIMAPGROUP DISPLAY="1" KEY="1" NAME="[Hi-Hat]" VOLUME="27">
-      <MIDIMAP DISPLAY="1" KEY="3" NAME="Open 3" MIDI="26" VOLUME="0" COLOR="#FF6FFFFF" SCALE="" />
-      <MIDIMAP DISPLAY="1" KEY="2" NAME="Open 2" MIDI="25" VOLUME="0" COLOR="#FF00FFFF" SCALE="" />
-      <MIDIMAP DISPLAY="1" KEY="1" NAME="Open 1" MIDI="24" VOLUME="0" COLOR="#FF80FFFF" SCALE="" />
+    <MIDIMAPGROUP DISPLAY="1" KEY="3" NAME="[Snare]" VOLUME="0" SCALEKEY="SD">
+      <MIDIMAP DISPLAY="1" KEY="38" NAME="Center" MIDI="38" VOLUME="0" COLOR="#FFDABE0A" SCALE="SD" SCALEKEYTEXT="" />
+      <MIDIMAP DISPLAY="1" KEY="33" NAME="Edge" MIDI="33" VOLUME="0" COLOR="#FFFFFF80" SCALE="" SCALEKEYTEXT="E" />
+    </MIDIMAPGROUP>
+    <MIDIMAPGROUP DISPLAY="1" KEY="5" NAME="[Kick]" VOLUME="0" SCALEKEY="BD">
+      <MIDIMAP DISPLAY="1" KEY="0" NAME="Left" MIDI="35" VOLUME="0" COLOR="#FFFF6767" SCALE="" SCALEKEYTEXT="" />
     </MIDIMAPGROUP>
     <PLAYER MODE="Sequence">
-      <PLAYERGROUP KEY="0" X="100" Y="100" MAGNIFICATION="1" />
-      <PLAYERGROUP KEY="1" X="100" Y="100" MAGNIFICATION="1" />
-    </PLAYER>
-    <PLAYER MODE="SequenceVertical">
-      <PLAYERGROUP KEY="0" X="100" Y="100" MAGNIFICATION="1" />
-      <PLAYERGROUP KEY="1" X="100" Y="100" MAGNIFICATION="1" />
-    </PLAYER>
-    <PLAYER MODE="Score">
-      <PLAYERGROUP KEY="0" X="100" Y="100" MAGNIFICATION="1" />
-      <PLAYERGROUP KEY="1" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="2" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="3" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="5" X="100" Y="100" MAGNIFICATION="1" />
     </PLAYER>
     <PLAYER MODE="Simuration">
-      <PLAYERGROUP KEY="0" X="100" Y="100" MAGNIFICATION="1" />
-      <PLAYERGROUP KEY="1" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="2" X="74.66669" Y="377.3333" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="3" X="146.66669" Y="444.66663" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="5" X="233.33331" Y="518" MAGNIFICATION="1" />
+   </PLAYER>
+    <PLAYER MODE="ScoreType2">
+      <PLAYERGROUP KEY="2" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="3" X="100" Y="100" MAGNIFICATION="1" />
+      <PLAYERGROUP KEY="5" X="100" Y="100" MAGNIFICATION="1" />
     </PLAYER>
   </MIDIMAPSET>
 </DMS>
