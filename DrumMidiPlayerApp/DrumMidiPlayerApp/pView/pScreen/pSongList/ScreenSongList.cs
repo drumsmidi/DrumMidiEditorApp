@@ -18,7 +18,7 @@ namespace DrumMidiPlayerApp.pView.pScreen.pSongList;
 /// <summary>
 /// スクリーン：曲選択
 /// </summary>
-public class ScreenSongList() : ScreenBase( true )
+public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
 {
     #region Screen情報
 
@@ -44,7 +44,7 @@ public class ScreenSongList() : ScreenBase( true )
     protected override void OnLoadSelf()
     {
         // スクリーンサイズ設定
-        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
+        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width;
         ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
 
         // アイテム：曲スクロールリスト作成

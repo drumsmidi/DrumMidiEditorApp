@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using DrumMidiLibrary.pUtil;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace DrumMidiPlayerApp.pView.pScreen;
 
@@ -52,4 +53,9 @@ public interface IScreen
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     T? GetParentScreen<T>();
+
+    /// <summary>
+    /// スクリーン描画範囲設定
+    /// </summary>
+    void SetScreenDrawRect( RectClass aRectClass );
 }

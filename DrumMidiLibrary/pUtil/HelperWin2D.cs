@@ -9,10 +9,10 @@ namespace DrumMidiLibrary.pUtil;
 /// </summary>
 public static class HelperWin2D
 {
-    #region Win2D
+    #region FormatRect
 
     /// <summary>
-    /// ラベル描画
+    /// 四角形描画（背景塗りつぶし＋外枠描画＋テキスト描画）
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
@@ -26,33 +26,55 @@ public static class HelperWin2D
         }
 
         // 背景色
-        DrawFormatRectFillRectangle
-            (
-                aGraphics,
-                aDrawRect,
-                aFormatRect
-            );
+        DrawFormatRectFillRectangle( aGraphics, aDrawRect, aFormatRect );
 
         // テキスト
+        DrawFormatText( aGraphics, aDrawRect, aFormatRect.Text, aLabelText );
+
+        // 外枠
+        DrawFormatRectOutlineRectangle( aGraphics, aDrawRect, aFormatRect );
+    }
+
+    /// <summary>
+    /// 四角形描画（背景＋外枠）
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatRect"></param>
+    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null )
+        {
+            return;
+        }
+
+        // 背景色
+        DrawFormatRectFillRectangle( aGraphics, aDrawRect, aFormatRect );
+
+        // 外枠
+        DrawFormatRectOutlineRectangle( aGraphics, aDrawRect, aFormatRect );
+    }
+
+    /// <summary>
+    /// 四角形描画（テキスト）
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatRect"></param>
+    /// <param name="aLabelText"></param>
+    public static void DrawFormatRectText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
+    {
         DrawFormatText
             (
                 aGraphics,
                 aDrawRect,
-                aFormatRect.Text,
+                aFormatRect?.Text,
                 aLabelText
-            );
-
-        // 外枠
-        DrawFormatRectOutlineRectangle
-            (
-                aGraphics,
-                aDrawRect,
-                aFormatRect
             );
     }
 
     /// <summary>
-    /// 描画
+    /// 四角形描画（背景）
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
@@ -68,7 +90,23 @@ public static class HelperWin2D
     }
 
     /// <summary>
-    /// 描画
+    /// 四角形描画（外枠）
+    /// </summary>
+    /// <param name="aGraphics"></param>
+    /// <param name="aDrawRect"></param>
+    /// <param name="aFormatRect"></param>
+    public static void DrawFormatRectOutlineRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    {
+        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        {
+            return;
+        }
+
+        aGraphics.DrawRectangle( aDrawRect, aFormatRect.Line.LineColor.Color, aFormatRect.Line.LineSize );
+    }
+
+    /// <summary>
+    /// 円描画（背景）
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
@@ -82,39 +120,20 @@ public static class HelperWin2D
 
         aGraphics.FillEllipse
             (
-                (float)( aDrawRect.X +  aDrawRect.Width / 2  ),
-                (float)( aDrawRect.Y +  aDrawRect.Height / 2  ),
-                aDrawRect._width / 2,
+                (float)( aDrawRect.X + aDrawRect.Width  / 2 ),
+                (float)( aDrawRect.Y + aDrawRect.Height / 2 ),
+                aDrawRect._width  / 2,
                 aDrawRect._height / 2,
                 aFormatRect.Background.Color
             );
     }
 
-
     /// <summary>
-    /// 描画
+    /// 円描画（外枠）
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
-    /// <param name="aLineColor"></param>
-    /// <param name="aLineSize"></param>
-    public static void DrawFormatRectOutlineRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
-    {
-        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
-        {
-            return;
-        }
-
-        aGraphics.DrawRectangle( aDrawRect, aFormatRect.Line.LineColor.Color, aFormatRect.Line.LineSize );
-    }
-
-    /// <summary>
-    /// 描画
-    /// </summary>
-    /// <param name="aGraphics"></param>
-    /// <param name="aDrawRect"></param>
-    /// <param name="aLineColor"></param>
-    /// <param name="aLineSize"></param>
+    /// <param name="aFormatRect"></param>
     public static void DrawFormatRectOutlineEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
     {
         if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
@@ -124,9 +143,9 @@ public static class HelperWin2D
 
         aGraphics.DrawEllipse
             (
-                (float)( aDrawRect.X +  aDrawRect.Width / 2  ),
-                (float)( aDrawRect.Y +  aDrawRect.Height / 2  ),
-                aDrawRect._width / 2,
+                (float)( aDrawRect.X + aDrawRect.Width  / 2 ),
+                (float)( aDrawRect.Y + aDrawRect.Height / 2 ),
+                aDrawRect._width  / 2,
                 aDrawRect._height / 2,
                 aFormatRect.Line.LineColor.Color,
                 aFormatRect.Line.LineSize
@@ -134,12 +153,11 @@ public static class HelperWin2D
     }
 
     /// <summary>
-    /// 描画
+    /// ジオメトリ描画
     /// </summary>
     /// <param name="aGraphics"></param>
-    /// <param name="aDrawRect"></param>
-    /// <param name="aLineColor"></param>
-    /// <param name="aLineSize"></param>
+    /// <param name="aCanvasGeometry"></param>
+    /// <param name="aFormatRect"></param>
     public static void DrawFormatRectOutlineGeometry( CanvasDrawingSession aGraphics, CanvasGeometry aCanvasGeometry, FormatRect? aFormatRect )
     {
         if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
@@ -147,36 +165,15 @@ public static class HelperWin2D
             return;
         }
 
-        aGraphics.DrawGeometry
-                (
-                    aCanvasGeometry,
-                    aFormatRect.Line.LineColor.Color,
-                    aFormatRect.Line.LineSize
-                );
+        aGraphics.DrawGeometry( aCanvasGeometry, aFormatRect.Line.LineColor.Color, aFormatRect.Line.LineSize );
     }
 
+    #endregion
+
+    #region FormatText
 
     /// <summary>
-    /// 描画
-    /// </summary>
-    /// <param name="aGraphics"></param>
-    /// <param name="aDrawRect"></param>
-    /// <param name="aLineColor"></param>
-    /// <param name="aLineSize"></param>
-    public static void DrawFormatRectText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
-    {
-        DrawFormatText
-            (
-                aGraphics,
-                aDrawRect,
-                aFormatRect?.Text,
-                aLabelText
-            );
-    }
-
-
-    /// <summary>
-    /// ラベル描画
+    /// テキスト描画
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
@@ -198,8 +195,12 @@ public static class HelperWin2D
             );
     }
 
+    #endregion
+
+    #region FormatLine
+
     /// <summary>
-    /// ラベル描画
+    /// 直線描画
     /// </summary>
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
@@ -208,19 +209,23 @@ public static class HelperWin2D
         => DrawFormatLine( aGraphics, (float)aDrawRect.Left, (float)aDrawRect.Top, (float)aDrawRect.Right, (float)aDrawRect.Bottom, aFormatLine );
 
     /// <summary>
-    /// ラベル描画
+    /// 直線描画
     /// </summary>
     /// <param name="aGraphics"></param>
-    /// <param name="aDrawRect"></param>
+    /// <param name="aP1"></param>
+    /// <param name="aP2"></param>
     /// <param name="aFormatLine"></param>
     public static void DrawFormatLine( CanvasDrawingSession aGraphics, Point aP1, Point aP2, FormatLine? aFormatLine )
         => DrawFormatLine( aGraphics, aP1._x, aP1._y, aP2._x, aP2._y, aFormatLine );
 
     /// <summary>
-    /// ラベル描画
+    /// 直線描画
     /// </summary>
     /// <param name="aGraphics"></param>
-    /// <param name="aDrawRect"></param>
+    /// <param name="aX1"></param>
+    /// <param name="aY1"></param>
+    /// <param name="aX2"></param>
+    /// <param name="aY2"></param>
     /// <param name="aFormatLine"></param>
     public static void DrawFormatLine( CanvasDrawingSession aGraphics, float aX1, float aY1, float aX2, float aY2, FormatLine? aFormatLine )
     {

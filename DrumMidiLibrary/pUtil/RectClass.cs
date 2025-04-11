@@ -42,6 +42,8 @@ public record class RectClass
 
     #endregion
 
+    #region プロパティ
+
     public Rect GetRect() => _Rect;
 
     public double X
@@ -94,5 +96,21 @@ public record class RectClass
     {
         get => _Rect._height;
         set => _Rect._height = value;
+    }
+
+    #endregion
+
+    /// <summary>
+    /// 指定したサイズ分 上下左右の範囲をカット
+    /// </summary>
+    /// <param name="aTrimmingSize"></param>
+    public void Trimming( double aTrimmingSize )
+    {
+        var size = aTrimmingSize * 2;
+
+        _Rect.X         += aTrimmingSize;
+        _Rect.Y         += aTrimmingSize;
+        _Rect.Width     -= ( _Rect.Width  - size >= 0 ) ? size : _Rect.Width ;
+        _Rect.Height    -= ( _Rect.Height - size >= 0 ) ? size : _Rect.Height;
     }
 }

@@ -10,8 +10,8 @@ namespace DrumMidiPlayerApp.pView.pScreen;
 /// <summary>
 /// スクリーン基底クラス
 /// </summary>
-/// <param name="aProcessing">処理中表示フラグ</param>
-public abstract class ScreenBase( bool aProcessing ) : IScreen
+/// <param name="aScreenBaseOption">オプション設定</param>
+public abstract class ScreenBase( ScreenBaseOption aScreenBaseOption ) : IScreen
 {
     #region Screen情報
 
@@ -59,19 +59,32 @@ public abstract class ScreenBase( bool aProcessing ) : IScreen
     /// <param name="aScreen"></param>
     protected void AddChildScreen( IScreen aScreen )
     {
+        // 親スクリーンの描画範囲を子スクリーンに設定
+        aScreen.SetScreenDrawRect( ScreenDrawRect );
+
+        // 親スクリーンを設定
         aScreen.SetParentScreen( this );
+
         _ChildScreenList.Add( aScreen );
+    }
+
+    public void SetScreenDrawRect( RectClass aRectClass )
+    {
+        ScreenDrawRect.X        = aRectClass.X;
+        ScreenDrawRect.Y        = aRectClass.Y;
+        ScreenDrawRect.Width    = aRectClass.Width;
+        ScreenDrawRect.Height   = aRectClass.Height;
     }
 
     /// <summary>
     /// スクリーン描画範囲
     /// </summary>
-    public RectClass ScreenDrawRect { get; set; } = new( 0, 0, 0, 0 );
+    protected RectClass ScreenDrawRect { get; private set; } = new( 0, 0, 0, 0 );
 
     /// <summary>
     /// 処理中描画アイテム表示フラグ
     /// </summary>
-    private readonly bool _ProcessingEnable = aProcessing;
+    private readonly bool _ProcessingEnable = aScreenBaseOption.Processing;
 
     /// <summary>
     /// 処理中描画アイテム

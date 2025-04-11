@@ -1,29 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
-using DrumMidiLibrary.pAudio;
+﻿using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pInput;
-using DrumMidiLibrary.pIO.pDatabase;
-using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
-using DrumMidiPlayerApp.pIO;
-using DrumMidiPlayerApp.pModel;
+using DrumMidiPlayerApp.pModel.pOption;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.System;
 
 namespace DrumMidiPlayerApp.pView.pScreen.pOption;
 
 /// <summary>
-/// スクリーン：曲選択
+/// スクリーン：オプション選択
 /// </summary>
-public class ScreenOptionMain() : ScreenBase( true )
+public class ScreenOptionMain() : ScreenBase( new(){ Processing = true } )
 {
     #region Screen情報
 
     /// <summary>
-    /// 曲リストスクロールリスト
+    /// オプションリストスクロールリスト
     /// </summary>
-    private ItemOptionScrollList? _SongScrollList;
+    private ItemOptionScrollList? _OptionScrollList;
 
     #endregion
 
@@ -31,13 +26,23 @@ public class ScreenOptionMain() : ScreenBase( true )
 
     protected override void OnLoadSelf()
     {
-        // スクリーンサイズ設定
-        ScreenDrawRect.X      = Config.Panel.BaseScreenSize.Width / 2D;
-        ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width / 2D;
-        ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
+        // パッティング設定
+        ScreenDrawRect.Trimming( 120 );
 
-        // アイテム：曲スクロールリスト作成
-        _SongScrollList ??= new();
+        // アイテム：オプションスクロールリスト作成
+        _OptionScrollList ??= new();
+        _OptionScrollList.DrawRect.X = ScreenDrawRect.X + 20;
+        _OptionScrollList.DrawRect.Y = ScreenDrawRect.Y + 20;
+
+        var optionList = new OptionList( "Option" );
+        optionList.Add( new( "Option/OptionA" ) );
+        optionList.Add( new( "Option/OptionB" ) );
+        optionList.Add( new( "Option/OptionB/OptionB1" ) );
+        optionList.Add( new( "Option/OptionB/OptionB2" ) );
+        optionList.Add( new( "Option/OptionC" ) );
+
+        _OptionScrollList.SetSongList( optionList );
+        _OptionScrollList.GoSongList();
 
         // 入力マップ設定
         _InputMap.KeyMap.Clear();
@@ -56,7 +61,7 @@ public class ScreenOptionMain() : ScreenBase( true )
     protected override void OnUnLoadSelf()
     {
         // アイテム：曲スクロールリスト破棄
-        _SongScrollList?.Dispose();
+        _OptionScrollList?.Dispose();
     }
 
     #endregion
@@ -113,8 +118,6 @@ public class ScreenOptionMain() : ScreenBase( true )
         {
             case Requests.OptionSelectMode:
                 {
-                    OnActivate( true );
-
                     State = States.OptionSelectMode;
                 }
                 break;
@@ -140,7 +143,7 @@ public class ScreenOptionMain() : ScreenBase( true )
                 {
                     if ( aActivate )
                     {
-                        // 曲スクロールリスト選択状態
+                        // オプションスクロールリスト選択状態
                         Request = Requests.OptionSelectMode;
                     }
                 }
@@ -166,29 +169,28 @@ public class ScreenOptionMain() : ScreenBase( true )
                         {
                             case VirtualKey.GamepadDPadUp:
                                 {
-                                    _SongScrollList?.PreviewSongList();
+                                    _OptionScrollList?.PreviewSongList();
 
                                     SystemSound.SoundPlayMovePrevious();
                                 }
                                 break;
                             case VirtualKey.GamepadDPadDown:
                                 {
-                                    _SongScrollList?.NextSongList();
+                                    _OptionScrollList?.NextSongList();
 
                                     SystemSound.SoundPlayMoveNext();
                                 }
                                 break;
                             case VirtualKey.GamepadA:
                                 {
-                                    _SongScrollList?.GoBackSongList();
+                                    _OptionScrollList?.GoBackSongList();
 
                                     SystemSound.SoundPlayGoBack();
                                 }
                                 break;
                             case VirtualKey.GamepadB:
                                 {
-                                    var item = _SongScrollList?.GoSongList();
-
+                                    var item = _OptionScrollList?.GoSongList();
                                     SystemSound.SoundPlayFocus();
 
                                 }
@@ -216,7 +218,7 @@ public class ScreenOptionMain() : ScreenBase( true )
         {
             case States.OptionSelectMode:
                 {
-                    _SongScrollList?.Move( aFrameTime );
+                    _OptionScrollList?.Move( aFrameTime );
                 }
                 break;
         }
@@ -234,15 +236,16 @@ public class ScreenOptionMain() : ScreenBase( true )
         {
             case States.OptionSelectMode:
                 {
+                    // 背景描画
                     HelperWin2D.DrawFormatRect
                     ( 
                         aArgs.DrawingSession, 
                         ScreenDrawRect.GetRect(), 
-                        Config.ScreenBase.ProcessingRect,
-                        string.Empty
+                        Config.ScreenOptionMain.BackgroundRect
                     );
 
-                    _SongScrollList?.Draw( aArgs.DrawingSession );
+                    // オプションスクロールリスト描画
+                    _OptionScrollList?.Draw( aArgs.DrawingSession );
                 }
                 break;
         }

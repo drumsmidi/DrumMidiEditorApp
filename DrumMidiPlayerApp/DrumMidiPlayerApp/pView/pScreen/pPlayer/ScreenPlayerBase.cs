@@ -18,7 +18,7 @@ namespace DrumMidiPlayerApp.pView.pScreen.pPlayer;
 /// <summary>
 /// スクリーン：プレイヤー
 /// </summary>
-public abstract class ScreenPlayerBase() : ScreenBase( false )
+public abstract class ScreenPlayerBase() : ScreenBase( new() )
 {
     #region Screen情報
 
@@ -78,6 +78,12 @@ public abstract class ScreenPlayerBase() : ScreenBase( false )
 
     protected override void OnLoadSelf()
     {
+        // スクリーンサイズ設定
+        //ScreenDrawRect.X      = 0;
+        //ScreenDrawRect.Y      = 0;        
+        //ScreenDrawRect.Width  = Config.Panel.BaseScreenSize.Width;
+        //ScreenDrawRect.Height = Config.Panel.BaseScreenSize.Height;
+
         // 入力マップ設定
         _InputMap.KeyMap.Clear();
         _InputMap.KeyMap.Add( VirtualKey.Up     , VirtualKey.GamepadDPadUp );

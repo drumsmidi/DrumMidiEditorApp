@@ -5,27 +5,21 @@ using Microsoft.Graphics.Canvas.Text;
 namespace DrumMidiPlayerApp.pConfig;
 
 /// <summary>
-/// スクリーン設定：ベース
+/// スクリーン設定：オプション
 /// </summary>
-public class ConfigScreenBase
+public class ConfigScreenOptionMain
 {
     /// <summary>
-    /// 処理中表示：半径
+    /// 背景：書式
     /// </summary>
     [JsonInclude]
-    public float ProcessingRadius { get; set; } = 80F;
-
-    /// <summary>
-    /// 処理中表示：書式
-    /// </summary>
-    [JsonInclude]
-    public FormatRect ProcessingRect
+    public FormatRect BackgroundRect
     {
         get; set;
     } = new()
         {
-            Background  = new( HelperColor.GetColor( "#AA999999" ) ),
-            Line        = new( HelperColor.GetColor( "#00000000" ), 0F ),
+            Background  = new( HelperColor.GetColor( "#EE000066" ) ),
+            Line        = new( HelperColor.GetColor( "#FF000000" ), 4F ),
             Text        = new( HelperColor.GetColor( "#AA999999" ),
                                 new()
                                 {

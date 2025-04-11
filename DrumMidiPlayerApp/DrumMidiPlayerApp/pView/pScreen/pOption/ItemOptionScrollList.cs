@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DrumMidiLibrary.pModel.pSongList;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
+using DrumMidiPlayerApp.pModel.pOption;
 using Microsoft.Graphics.Canvas;
 using Windows.Foundation;
 
@@ -12,16 +12,15 @@ namespace DrumMidiPlayerApp.pView.pScreen.pOption;
 /// </summary>
 internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
 {
-
     /// <summary>
     /// 曲リスト
     /// </summary>
-    private SongList? _SongListCurrent = null;
+    private OptionList? _SongListCurrent = null;
 
     /// <summary>
     /// 曲リスト階層別 選択曲リスト
     /// </summary>
-    private readonly Stack<SongList> _SongListByHierarchyStack = new();
+    private readonly Stack<OptionList> _SongListByHierarchyStack = new();
 
     /// <summary>
     /// 曲リスト 選択位置
@@ -75,7 +74,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// 曲リスト設定
     /// </summary>
     /// <param name="aSongList"></param>
-    public void SetSongList( SongList aSongList )
+    public void SetSongList( OptionList aSongList )
     {
         _SongListCurrent        = aSongList;
         _SongListCurrentIndex   = 0;
@@ -86,7 +85,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// <summary>
     /// 選択中の曲リストアイテム
     /// </summary>
-    private SongListItem? CurrentSongListItem
+    private OptionListItem? CurrentSongListItem
         => _SongListCurrent?.ItemList [ _SongListCurrentIndex ] ?? null ;
 
     /// <summary>
@@ -99,7 +98,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// 前の曲へ
     /// </summary>
     /// <returns></returns>
-    public SongListItem? PreviewSongList()
+    public OptionListItem? PreviewSongList()
     {
         _SongListCurrentIndex--;
 
@@ -115,7 +114,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// 次の曲へ
     /// </summary>
     /// <returns></returns>
-    public SongListItem? NextSongList()
+    public OptionListItem? NextSongList()
     {
         _SongListCurrentIndex++;
 
@@ -131,7 +130,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// 前のディレクトリへ
     /// </summary>
     /// <returns></returns>
-    public SongListItem? GoBackSongList()
+    public OptionListItem? GoBackSongList()
     {
         if ( _SongListIndexByHierarchyStack.Count == 0 )
         {
@@ -149,21 +148,21 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
     /// 次のディレクトリへ
     /// </summary>
     /// <returns></returns>
-    public SongListItem? GoSongList()
+    public OptionListItem? GoSongList()
     {
         if ( _SongListCurrent == null || _SongListCurrentIndex >= CurrentSongListCount )
         {
             return null;
         }
 
-        if ( _SongListCurrent?.ItemList [ _SongListCurrentIndex ].IsFile ?? true )
-        {
-            return CurrentSongListItem;
-        }
+        //if ( _SongListCurrent?.ItemList [ _SongListCurrentIndex ].IsFile ?? true )
+        //{
+        //    return CurrentSongListItem;
+        //}
 
         _SongListByHierarchyStack.Push( _SongListCurrent );
 
-        _SongListCurrent = _SongListCurrent?.ItemList[ _SongListCurrentIndex ].SongList;
+        _SongListCurrent = _SongListCurrent?.ItemList[ _SongListCurrentIndex ].OptionList;
 
         _SongListIndexByHierarchyStack.Push( _SongListCurrentIndex );
 
@@ -185,9 +184,9 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
 
         if ( parent != null && list != null )
         {
-            var rect = new Rect( 20, 20, 1000, 60 );
+            var rect = new Rect( DrawRect.X, DrawRect.Y, 400, 60 );
 
-            var icon = parent.IsDirectory ? "📁" : "　 " ;
+            var icon = ""; //parent.IsDirectory ? "📁" : "　 " ;
 
             HelperWin2D.DrawFormatRect( aGraphics, rect, _ActiveFormatRect, $"{icon}{parent.ItemName}" );
 
@@ -195,7 +194,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
             rect.Y += rect.Height + 40;
             rect.Width -= 40;
 
-            for ( var i = -5; i < 6; i++ )
+            for ( var i = -4; i < 5; i++ )
             {
                 var x = ( index + i ) % list.Count;
 
@@ -206,7 +205,7 @@ internal partial class ItemOptionScrollList() : ItemBase( 0, 0, 0, 0, 0 )
 
                 var item = list[ x ];
 
-                icon = item.IsDirectory ? "📁" : "　 " ;
+                //icon = item.IsDirectory ? "📁" : "　 " ;
 
                 HelperWin2D.DrawFormatRect
                 ( 

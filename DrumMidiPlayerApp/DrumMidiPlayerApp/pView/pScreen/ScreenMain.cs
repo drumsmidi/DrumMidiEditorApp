@@ -7,7 +7,7 @@ namespace DrumMidiPlayerApp.pView.pScreen;
 /// <summary>
 /// スクリーン：メイン
 /// </summary>
-public class ScreenMain() : ScreenBase( false )
+public class ScreenMain() : ScreenBase( new() )
 {
     #region Screen情報
 

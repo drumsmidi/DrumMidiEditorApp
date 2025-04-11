@@ -55,5 +55,11 @@ public static class Config
     /// </summary>
     public static ConfigScreenSongList ScreenSongList { get; set; } = new();
 
+    /// <summary>
+    /// ConfigScreenOptionMain設定
+    /// </summary>
+    public static ConfigScreenOptionMain ScreenOptionMain { get; set; } = new();
 
+
+    
 }
