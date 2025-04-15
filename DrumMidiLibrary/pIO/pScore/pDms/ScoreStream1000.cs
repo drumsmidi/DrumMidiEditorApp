@@ -288,7 +288,7 @@ internal class ScoreStream1000 : ScoreStreamBase
             #region <FILEPATH/>
             else if ( aReader.LocalName.Equals( TAG_SCORE_FILEPATH ) )
             {
-                aScore.BgmFilePath = new( aReader.ReadString() );
+                aScore.BgmFilePath = new( aReader.ReadString(), _DmsFilePath.BaseFolderPath );
             }
             #endregion
             #region <RPP/>

@@ -14,6 +14,11 @@ namespace DrumMidiLibrary.pIO.pScore.pDms;
 /// </summary>
 internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 {
+    /// <summary>
+    /// DMSファイルパス
+    /// </summary>
+    protected GeneralPath _DmsFilePath = new();
+
     #region Reader
 
     public bool Validation( GeneralPath aGeneralPath )
@@ -63,6 +68,9 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public void Read( GeneralPath aGeneralPath, out Score aScore )
     {
+        // BGMファイルが相対パスの場合、DMSファイルパスからの相対パスを取得する
+        _DmsFilePath = new( aGeneralPath );
+
         using var reader = XmlReader.Create( aGeneralPath.AbsoulteFilePath );
 
         OnReadScore( reader, out aScore );
@@ -70,6 +78,9 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public void Read( GeneralPath aGeneralPath, out MidiMapSet aMidiMapSet )
     {
+        // BGMファイルが相対パスの場合、DMSファイルパスからの相対パスを取得する
+        _DmsFilePath = new( aGeneralPath );
+
         using var reader = XmlReader.Create( aGeneralPath.AbsoulteFilePath );
 
         OnReadScore( reader, out var score );
