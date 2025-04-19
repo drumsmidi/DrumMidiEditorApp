@@ -2,9 +2,6 @@
 
 public record struct PointInt
 {
-    public int X { get; set; } = 0;
-    public int Y { get; set; } = 0;
-
     public PointInt( int aXY )
     {
         X = aXY;
@@ -16,4 +13,7 @@ public record struct PointInt
         X = aX;
         Y = aY;
     }
+
+    public int X { get; set; } = 0;
+    public int Y { get; set; } = 0;
 }

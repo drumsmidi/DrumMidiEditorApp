@@ -9,40 +9,7 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class InfoNote : InfoBase
 {
-    #region Member
-
-    /// <summary>
-    /// チェンネル番号
-    /// </summary>
-    public byte ChannelNo { get; private set; } = MidiNet.ChannelDrum;
-
-    /// <summary>
-    /// MidiMapキー
-    /// </summary>
-    public int MidiMapKey { get; private set; } = ConfigLib.System.MidiMapKeyNotSelect;
-
-    /// <summary>
-    /// 音量（127基準）
-    /// </summary>
-    public int Volume { get; set; } = MidiNet.MidiMinVolume;
-
-    /// <summary>
-    /// ノートON有無
-    /// </summary>
-    public bool NoteOn { get; set; } = false;
-
-    /// <summary>
-    /// ノートOFF有無
-    /// </summary>
-    public bool NoteOff { get; set; } = false;
-
-    /// <summary>
-    /// 検索キー（MidiMapキー✕1,000,000＋小節番号✕1,000＋小節内ノート位置）
-    /// </summary>
-    public override int SearchKey
-        => ( MidiMapKey * 1000000 ) + ( MeasureNo * 1000 ) + NotePos;
-
-    #endregion
+    #region コンストラクタ
 
     /// <summary>
     /// コンストラクタ
@@ -111,6 +78,43 @@ public partial class InfoNote : InfoBase
         NoteOff     = aNoteOff;
     }
 
+    #endregion
+
+    #region Member
+
+    /// <summary>
+    /// チェンネル番号
+    /// </summary>
+    public byte ChannelNo { get; private set; } = MidiNet.ChannelDrum;
+
+    /// <summary>
+    /// MidiMapキー
+    /// </summary>
+    public int MidiMapKey { get; private set; } = ConfigLib.System.MidiMapKeyNotSelect;
+
+    /// <summary>
+    /// 音量（127基準）
+    /// </summary>
+    public int Volume { get; set; } = MidiNet.MidiMinVolume;
+
+    /// <summary>
+    /// ノートON有無
+    /// </summary>
+    public bool NoteOn { get; set; } = false;
+
+    /// <summary>
+    /// ノートOFF有無
+    /// </summary>
+    public bool NoteOff { get; set; } = false;
+
+    /// <summary>
+    /// 検索キー（MidiMapキー✕1,000,000＋小節番号✕1,000＋小節内ノート位置）
+    /// </summary>
+    public override int SearchKey
+        => ( MidiMapKey * 1000000 ) + ( MeasureNo * 1000 ) + NotePos;
+
+    #endregion
+
     /// <summary>
     /// NOTE情報を設定
     /// </summary>
@@ -121,7 +125,7 @@ public partial class InfoNote : InfoBase
 
         if ( aInfo is not InfoNote info )
         {
-            throw new InvalidCastException();
+            throw new ArgumentException( $"Invalid type. Expected {nameof( InfoNote )}, but received {aInfo.GetType().Name}.", nameof( aInfo ) );
         }
 
         ChannelNo   = info.ChannelNo;

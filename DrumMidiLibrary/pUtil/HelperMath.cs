@@ -16,12 +16,13 @@ public static class HelperMath
     /// <param name="aCenterY">基準値Y</param>
     /// <param name="aRadius">半径</param>
     /// <param name="aAngle">角度(360度)</param>
-    /// <returns>X座標、Y座標</returns>
+    /// <returns>円周上の位置 (例: X=1.0, Y=0.0)</returns>
     public static (float X, float Y) GetCirclePosition( float aCenterX, float aCenterY, float aRadius, float aAngle )
     {        
-        var angole = aAngle / 360F * MathF.Tau;
+        var angle = aAngle / 360F * MathF.Tau;
 
-        return ( aCenterX + aRadius * MathF.Cos( angole ), aCenterY + aRadius * MathF.Sin( angole ) );
+        return ( aCenterX + aRadius * MathF.Cos( angle ), 
+                 aCenterY + aRadius * MathF.Sin( angle ) );
     }
     #endregion
 
@@ -39,7 +40,7 @@ public static class HelperMath
     /// <returns>ベジェ曲線曲線 位置</returns>
     public static float GetBezierCurvePosition( float aStartXorY, float aCtrl1XorY, float aCtrl2XorY, float aEndXorY, float aWeight )
     {
-        return  MathF.Pow( 1 - aWeight, 3 ) * aStartXorY 
+        return MathF.Pow( 1 - aWeight, 3 ) * aStartXorY 
             +  3 * MathF.Pow( 1 - aWeight, 2 ) * aWeight * aCtrl1XorY 
             +  3 * ( 1 - aWeight ) * MathF.Pow( aWeight, 2 ) * aCtrl2XorY 
             +  MathF.Pow( aWeight, 3 ) * aEndXorY ;

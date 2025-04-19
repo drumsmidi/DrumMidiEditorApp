@@ -37,7 +37,7 @@ public static class DBIO
             {
                 var aRecordDmsFile = new RecordDmsFile()
                 {
-                    FilePath        = song.AbsoulteFilePath,
+                    FilePath        = song.AbsoluteFilePath,
                     BaseFolderPath  = song.BaseFolderPath,
                 };
 
@@ -80,6 +80,4 @@ public static class DBIO
         var table = conn.GetCollection<RecordDmsFile>( "SongList" );
         table.DeleteAll();
     }
-
-
 }

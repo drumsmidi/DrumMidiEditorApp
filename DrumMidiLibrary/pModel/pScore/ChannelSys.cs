@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pModel.pScore;
@@ -9,6 +10,29 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class ChannelSys : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            ClearAll();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -27,26 +51,6 @@ public partial class ChannelSys : DisposeBaseClass
     public int MaxMeasureNo { get; private set; } = 0;
 
     #endregion
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                ClearAll();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     #region Measure
 
@@ -162,7 +166,7 @@ public partial class ChannelSys : DisposeBaseClass
         {
             if ( item.Value.Clone() is not InfoBpm info )
             {
-                throw new InvalidCastException();
+                throw new InvalidOperationException( "Invalid clone operation for InfoBpm." );
             }
 
             channelSys.BpmInfoList.Add( item.Key, info );
@@ -181,19 +185,28 @@ public partial class ChannelSys : DisposeBaseClass
     /// </summary>
     public void ClearAll()
     {
-        foreach ( var de in BpmInfoList )
-        {
-            de.Value.Dispose();
-        }
-        BpmInfoList.Clear();
+        Log.TryCatch
+        (
+            () =>
+            {
+                foreach ( var de in BpmInfoList )
+                {
+                    de.Value.Dispose();
+                }
+                BpmInfoList.Clear();
 
-        foreach ( var obj in MeasureList )
-        {
-            obj.Value.Dispose();
-        }
-        MeasureList.Clear();
-
-        MaxMeasureNo = 0;
+                foreach ( var obj in MeasureList )
+                {
+                    obj.Value.Dispose();
+                }
+                MeasureList.Clear();
+            },
+            null,
+            () =>
+            {
+                MaxMeasureNo = 0;
+            }
+        );
     }
 
     #endregion

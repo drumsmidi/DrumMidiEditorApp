@@ -97,7 +97,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
                     ConfigFile.FolderBgm,
                     ( filepath ) =>
                     {
-                        MusicInfo.BgmFilePath.AbsoulteFilePath = filepath.AbsoulteFilePath;
+                        MusicInfo.BgmFilePath.AbsoluteFilePath = filepath.AbsoluteFilePath;
 
                         ReloadMusicInfo();
                     }

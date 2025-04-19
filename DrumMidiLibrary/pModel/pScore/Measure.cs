@@ -8,6 +8,33 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class Measure : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            foreach ( var de in NoteLines )
+            {
+                de.Value.Dispose();
+            }
+            NoteLines.Clear();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -16,30 +43,6 @@ public partial class Measure : DisposeBaseClass
     public Dictionary<int, MeasureLine<InfoNote>> NoteLines { get; private set; } = [];
 
     #endregion
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                foreach ( var de in NoteLines )
-                {
-                    de.Value.Dispose();
-                }
-                NoteLines.Clear();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     /// <summary>
     /// 小節ライン（NOTE）取得
@@ -76,11 +79,11 @@ public partial class Measure : DisposeBaseClass
         if ( !NoteLines.TryGetValue( aInfo.MidiMapKey, out var measure_line ) )
         {
             measure_line = new();
+
+            NoteLines [ aInfo.MidiMapKey ] = measure_line;
         }
 
         measure_line.AddInfo( aInfo );
-
-        NoteLines [ aInfo.MidiMapKey ] = measure_line;
     }
 
     /// <summary>

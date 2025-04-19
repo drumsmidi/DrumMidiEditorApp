@@ -11,27 +11,6 @@ namespace DrumMidiLibrary.pUtil;
 public class FormatText
 {
     /// <summary>
-    /// テキスト色
-    /// </summary>
-    [JsonInclude]
-    public FormatColor TextColor = new();
-
-    /// <summary>
-    /// テキスト書式
-    /// </summary>
-    [JsonInclude]
-    public CanvasTextFormat TextFormat
-    {
-        get; set;
-    } = new()
-        {
-            FontFamily          = ConfigLib.Media.DefaultFontFamily,
-            FontSize            = 8,
-            HorizontalAlignment = CanvasHorizontalAlignment.Center,
-            VerticalAlignment   = CanvasVerticalAlignment.Center,
-        };
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public FormatText()
@@ -41,11 +20,29 @@ public class FormatText
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="aTextColor"></param>
-    /// <param name="aTextFormat"></param>
+    /// <param name="aTextColor">テキストの色</param>
+    /// <param name="aTextFormat">テキストの書式</param>
     public FormatText( Color aTextColor, CanvasTextFormat aTextFormat )
     {
         TextColor   = new( aTextColor );
         TextFormat  = aTextFormat;
     }
+
+    /// <summary>
+    /// テキスト色
+    /// </summary>
+    [JsonInclude]
+    public FormatColor TextColor { get; set; } = new();
+
+    /// <summary>
+    /// テキスト書式
+    /// </summary>
+    [JsonInclude]
+    public CanvasTextFormat TextFormat { get; set; } = new()
+    {
+        FontFamily          = ConfigLib.Media.DefaultFontFamily,
+        FontSize            = 8,
+        HorizontalAlignment = CanvasHorizontalAlignment.Center,
+        VerticalAlignment   = CanvasVerticalAlignment.Center,
+    };
 }

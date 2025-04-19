@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 
@@ -9,6 +10,31 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class MidiMapGroup : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            RemoveMidiMaps();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member 
+
     /// <summary>
     /// 表示設定
     /// </summary>
@@ -54,25 +80,7 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// </summary>
     public bool AnySelected => Selected || ScaleKeySelected;
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                RemoveMidiMaps();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// MidiMapGroupにMidiMapを追加。
@@ -82,6 +90,11 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// <param name="aMidiMap">追加するMidiMap情報</param>
     public void AddMidiMap( MidiMap aMidiMap )
     {
+        if ( aMidiMap == null )
+        {
+            throw new ArgumentNullException( nameof( aMidiMap ), "MidiMap cannot be null." );
+        }
+
         var midiMap = aMidiMap.Clone();
         midiMap.Group = this;
 
@@ -94,6 +107,11 @@ public partial class MidiMapGroup : DisposeBaseClass
     /// <param name="aMidiMapIndex">MidiMap連番（0-）</param>
     public void RemoveMidiMap( int aMidiMapIndex )
     {
+        if ( aMidiMapIndex < 0 || MidiMaps.Count <= aMidiMapIndex  )
+        {
+            throw new ArgumentOutOfRangeException( nameof( aMidiMapIndex ), "Index is out of range." );
+        }
+
         var midiMap = MidiMaps[ aMidiMapIndex ];
         if ( midiMap == null )
         {

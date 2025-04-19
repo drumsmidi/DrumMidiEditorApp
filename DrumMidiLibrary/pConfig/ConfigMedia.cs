@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using DrumMidiLibrary.pModel.pScore;
 
@@ -124,7 +125,7 @@ public class ConfigMedia
     /// 初期値：フォント
     /// </summary>
     [JsonIgnore]
-    public string DefaultFontFamily { get; private set; } = $"system-ui";
+    public string DefaultFontFamily { get; private set; } = "system-ui";
 
     #endregion
 
@@ -155,6 +156,13 @@ public class ConfigMedia
     public double BpmMaxVolume { get; private set; } = 999;
 
     /// <summary>
+    /// 小節番号書式フォーマット
+    /// （MeasureMaxNumber の設定を元に計算）
+    /// </summary>
+    [JsonIgnore]
+    public string BpmNumberFormat { get; private set; } = $"{0:000.00}";
+
+    /// <summary>
     /// BGM再生開始位置（秒）：最小値
     /// </summary>
     [JsonIgnore]
@@ -180,13 +188,21 @@ public class ConfigMedia
     /// 動画出力FPS：最小値
     /// </summary>
     [JsonIgnore]
-    public int OutputVideoFpsMin { get; set; } = 30;
+    public int OutputVideoFpsMin { get; private set; } = 30;
 
     /// <summary>
     /// 動画出力FPS：最大値
     /// </summary>
     [JsonIgnore]
-    public int OutputVideoFpsMax { get; set; } = 120;
+    public int OutputVideoFpsMax { get; private set; } = 120;
+
+    /// <summary>
+    /// 動画出力FPSチェック
+    /// </summary>
+    /// <param name="aOutputVideoFps">動画出力FPS</param>
+    /// <returns>範囲内の音量(30-120)</returns>
+    public int CheckOutputVideoFps( int aOutputVideoFps )
+        => Math.Clamp( aOutputVideoFps, OutputVideoFpsMin, OutputVideoFpsMax );
 
     /// <summary>
     /// MP4出力コーデック
@@ -251,6 +267,7 @@ public class ConfigMedia
 
     /// <summary>
     /// MIDIインポート時のBPM倍率
+    /// TODO: MIDIインポート時のBPM倍率 仮作成
     /// </summary>
     [JsonIgnore]
     public float MidiImportZoom { get; set; } = 1;
@@ -273,23 +290,33 @@ public class ConfigMedia
     /// <param name="aVolume">音量</param>
     /// <returns>範囲内の音量(0-127)</returns>
     public int CheckMidiAddVolume( int aVolume )
-    {
-        if ( aVolume < MidiAddMinVolume )
-        {
-            return MidiAddMinVolume;
-        }
-        else if ( aVolume > MidiAddMaxVolume )
-        {
-            return MidiAddMaxVolume;
-        }
-        return aVolume;
-    }
+        => Math.Clamp( aVolume, MidiAddMinVolume, MidiAddMaxVolume );
 
     /// <summary>
     /// MIDI-OUT遅延時間（秒）
     /// </summary>
     [JsonInclude]
     public double MidiOutLatency { get; set; } = 0;
+
+    /// <summary>
+    /// MIDI-OUT遅延時間（秒）：最小値
+    /// </summary>
+    [JsonIgnore]
+    public double MidiOutLatencyMin { get; private set; } = 0;
+
+    /// <summary>
+    /// MIDI-OUT遅延時間（秒）：最大値
+    /// </summary>
+    [JsonIgnore]
+    public double MidiOutLatencyMax { get; private set; } = 4;
+
+    /// <summary>
+    /// MIDI-OUT遅延時間（秒）チェック
+    /// </summary>
+    /// <param name="aMidiOutLatency">音量</param>
+    /// <returns>範囲内の音量(0-127)</returns>
+    public double CheckMidiOutLatency( double aMidiOutLatency )
+        => Math.Clamp( aMidiOutLatency, MidiOutLatencyMin, MidiOutLatencyMax );
 
     #endregion
 

@@ -26,21 +26,23 @@ public partial class LogBlock : DisposeBaseClass
 
     protected override void Dispose( bool aDisposing )
     {
-        if ( !_Disposed )
+        if ( _Disposed )
         {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                Log.EndInfo( _BlockName );
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
+            return;
         }
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            Log.EndInfo( _BlockName );
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
     }
     private bool _Disposed = false;
 }

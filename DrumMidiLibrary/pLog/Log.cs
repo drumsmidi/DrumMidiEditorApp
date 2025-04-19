@@ -22,30 +22,24 @@ public static class Log
     /// <summary>
     /// 情報ログラベル
     /// </summary>
-    private static readonly string _LABEL_INFO = "[INFO]";
+    private static readonly string _LABEL_INFO = "■□□ [INFO]";
 
     /// <summary>
     /// 警告ログラベル
     /// </summary>
-    private static readonly string _LABEL_WARNING = "[WARN]";
+    private static readonly string _LABEL_WARNING = "■■□ [WARN]";
 
     /// <summary>
     /// エラーログラベル
     /// </summary>
-    private static readonly string _LABEL_ERROR = "[ERR] ";
-
-    /// <summary>
-    /// 情報ログ
-    /// </summary>
-    /// <param name="aText">出力内容</param>
-    public static void Info( string aText ) => Info( aText, false );
+    private static readonly string _LABEL_ERROR = "■■■ [ERR] ";
 
     /// <summary>
     /// 情報ログ
     /// </summary>
     /// <param name="aText">出力内容</param>
     /// <param name="aCallback">True:通知、False:非通知</param>
-    public static void Info( string aText, bool aCallback )
+    public static void Info( string aText, bool aCallback = false )
     {
         SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aText}" );
 
@@ -59,14 +53,8 @@ public static class Log
     /// 警告ログ
     /// </summary>
     /// <param name="aText">出力内容</param>
-    public static void Warning( string aText ) => Warning( aText, false );
-
-    /// <summary>
-    /// 警告ログ
-    /// </summary>
-    /// <param name="aText">出力内容</param>
     /// <param name="aCallback">True:通知、False:非通知</param>
-    public static void Warning( string aText, bool aCallback )
+    public static void Warning( string aText, bool aCallback = false )
     {
         SetLog( $"{_LABEL_WARNING} {Log.GetTimeAndThreadInfo} {aText}" );
 
@@ -81,20 +69,15 @@ public static class Log
     /// </summary>
     /// <param name="aText">出力内容</param>
     [Conditional( "DEBUG" )]
-    public static void Error( Exception aException ) => SetLog( $"{aException.StackTrace}" );
-
-    /// <summary>
-    /// エラーログ
-    /// </summary>
-    /// <param name="aText">出力内容</param>
-    public static void Error( string aText ) => Error( aText, true );
+    public static void Error( Exception aException ) 
+        => SetLog( $"{aException.StackTrace}" );
 
     /// <summary>
     /// エラーログ
     /// </summary>
     /// <param name="aText">出力内容</param>
     /// <param name="aCallback">True:通知、False:非通知</param>
-    public static void Error( string aText, bool aCallback )
+    public static void Error( string aText, bool aCallback = false )
     {
         SetLog( $"{_LABEL_ERROR} {Log.GetTimeAndThreadInfo} {aText}" );
 
@@ -134,6 +117,117 @@ public static class Log
     }
 
     /// <summary>
+    /// 共通 例外処理
+    /// </summary>
+    /// <param name="aAction"></param>
+    /// <param name="aFallback"></param>
+    /// <param name="aFinally"></param>
+    public static void TryCatch( Action aAction, Action<Exception>? aFallback = null, Action? aFinally = null )
+    {
+        try
+        {
+            aAction();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
+            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+
+            aFallback?.Invoke( e );
+        }
+        finally
+        {
+            aFinally?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// 共通 例外処理
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="aAction"></param>
+    /// <param name="aFallback"></param>
+    /// <param name="aFinally"></param>
+    /// <returns></returns>
+    public static T? TryCatch<T>( Func<T> aAction, Action<Exception>? aFallback = null, Action? aFinally = null )
+    {
+        try
+        {
+            return aAction();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
+            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+
+            aFallback?.Invoke( e );
+            return default;
+        }
+        finally
+        {
+            aFinally?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// 共通 例外処理
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="aAction"></param>
+    /// <param name="aFallback"></param>
+    /// <param name="aFinally"></param>
+    /// <returns></returns>
+    public static T? TryCatch<T>( Func<T> aAction, Func<Exception, T>? aFallback = null, Action? aFinally = null )
+    {
+        try
+        {
+            return aAction();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
+            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+
+            if ( aFallback == null )
+            {
+                return default;
+            }
+            return aFallback( e );
+        }
+        finally
+        {
+            aFinally?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// 共通 例外処理
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="aAction"></param>
+    /// <param name="aFallback"></param>
+    /// <param name="aFinally"></param>
+    /// <returns></returns>
+    public static T TryCatchNotNull<T>( Func<T> aAction, Func<Exception, T> aFallback, Action? aFinally = null )
+    {
+        try
+        {
+            return aAction();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
+            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+
+            return aFallback( e );
+        }
+        finally
+        {
+            aFinally?.Invoke();
+        }
+    }
+
+    /// <summary>
     /// ログ出力
     /// </summary>
     /// <param name="aText">出力内容</param>
@@ -142,17 +236,21 @@ public static class Log
     /// <summary>
     /// 現在実行中のメソッド名を取得
     /// </summary>
-    public static string GetThisMethodName
+    public static string GetThisMethodName => GetMethodName( 1 );
+
+    /// <summary>
+    /// メソッド内を取得
+    /// </summary>
+    /// <param name="aSkipFrame"></param>
+    /// <returns></returns>
+    private static string GetMethodName( int aSkipFrame )
     {
-        get
-        {
-            var prevFrame   = new StackFrame( 1, false );
+        var prevFrame   = new StackFrame( aSkipFrame, false );
 
-            var className   = prevFrame.GetMethod()?.ReflectedType?.Name  ?? string.Empty ;
-            var methodName  = prevFrame.GetMethod()?.Name                 ?? string.Empty ;
+        var className   = prevFrame.GetMethod()?.ReflectedType?.Name  ?? string.Empty ;
+        var methodName  = prevFrame.GetMethod()?.Name                 ?? string.Empty ;
 
-            return $"{className}.{methodName}()";
-        }
+        return $"{className}.{methodName}()";
     }
 
     /// <summary>
@@ -193,17 +291,19 @@ public static class Log
     {
         foreach ( var callback in LogOutputCallback )
         {
-            callback( aLevel, aText );
+            Log.TryCatch
+            (
+                () => { callback( aLevel, aText ); }
+            );
         }
     }
 
     /// <summary>
     /// ログファイルへTraceログを出力するように設定
     /// </summary>
-    public static void SetLogFile( GeneralPath aLogPath )
+    public static void SetLogFile( GeneralPath aLogPath )    
     {
-        var log_file = File.Create( aLogPath.AbsoulteFilePath );
-
+        var log_file = File.Create( aLogPath.AbsoluteFilePath );
         _ = Trace.Listeners.Add( new TextWriterTraceListener( log_file ) );
         Trace.AutoFlush = true;
     }

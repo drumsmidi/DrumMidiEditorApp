@@ -7,7 +7,7 @@ using DrumMidiLibrary.pUtil;
 namespace DrumMidiLibrary.pIO.pScore.pDms;
 
 /// <summary>
-/// Score入出力
+/// Score入出力：DMSファイル
 /// </summary>
 internal class ScoreStream0950 : ScoreStreamBase
 {
@@ -406,7 +406,7 @@ internal class ScoreStream0950 : ScoreStreamBase
                         aWriter.WriteAttributeString( ATR_NAME, $"{midiMap.MidiMapName}" );
                         aWriter.WriteAttributeString( ATR_MIDI, $"{midiMap.Midi}" );
                         aWriter.WriteAttributeString( ATR_VOLUME, $"{midiMap.VolumeAdd}" );
-                        aWriter.WriteAttributeString( ATR_COLOR, $"{HelperColor.GetColor( midiMap.Color )}" );
+                        aWriter.WriteAttributeString( ATR_COLOR, $"{HelperColor.GetColorText( midiMap.Color )}" );
                         aWriter.WriteAttributeString( ATR_SCALE, $"{midiMap.Scale}" );
                         aWriter.WriteEndElement();
                         #endregion

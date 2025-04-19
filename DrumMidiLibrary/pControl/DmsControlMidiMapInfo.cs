@@ -16,6 +16,31 @@ namespace DrumMidiLibrary.pControl;
 /// <param name="aVolumeAdd">音量増減値</param>
 internal partial class DmsControlMidiMapInfo( byte aChannel, byte aMidi, int aVolumeAdd ) : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            AudioFactory.Release( _Audio );
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// ノート再生
     /// </summary>
@@ -26,25 +51,7 @@ internal partial class DmsControlMidiMapInfo( byte aChannel, byte aMidi, int aVo
     /// </summary>
     private readonly int _VolumeAdd = aVolumeAdd;
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                AudioFactory.Release( _Audio );
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// MidiMapに設定されている音量増減値を加算して再生

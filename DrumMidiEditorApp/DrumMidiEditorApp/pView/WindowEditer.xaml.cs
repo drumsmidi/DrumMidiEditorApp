@@ -40,7 +40,7 @@ public sealed partial class WindowEditer : Window
         // 独自のタイトルバー設定
         ExtendsContentIntoTitleBar = true;
         SetTitleBar( _AppTitleBar );
-        SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
+        SetSubTitle( $"[{DMS.OpenFilePath.AbsoluteFilePath}]" );
 
         // ウィンドウ初期サイズ変更
         UpdateWindowsSize();
@@ -109,9 +109,9 @@ public sealed partial class WindowEditer : Window
     {
         try
         {
-            // NOTE: DPIスケール取得できない？WindowsAPI仕様が必要？
+            // TASK: DPIスケール取得できない？WindowsAPI仕様が必要？
             // DPIスケール取得
-            Config.Window.DpiScale = 1.5; // Content.RasterizationScale;
+            Config.Window.SetDpiScale( 1.5 ); // Content.RasterizationScale;
 
             var width  = Config.Window.WindowSizeWidthDpiScale;
             var height = Config.Window.WindowSizeHeightDpiScale;

@@ -10,7 +10,7 @@ using DrumMidiLibrary.pUtil;
 namespace DrumMidiLibrary.pIO.pScore.pDms;
 
 /// <summary>
-/// Score入出力
+/// Score入出力：DMSファイル
 /// </summary>
 internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 {
@@ -23,41 +23,37 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public bool Validation( GeneralPath aGeneralPath )
     {
-        var errorFlag = false;
-
-        try
-        {
-            var xsdMarkup = GetValidation();
-
-            using var xsd_reader = new XmlTextReader( new StringReader( xsdMarkup ) );
-
-            var setting = new XmlReaderSettings();
-            _ = setting.Schemas.Add( string.Empty, xsd_reader );
-
-            setting.ValidationType = ValidationType.Schema;
-            setting.ValidationEventHandler += new ValidationEventHandler
-                (
-                    ( sender, e ) =>
-                    {
-                        errorFlag = true;
-                        Log.Warning( $"Validation Error:{e.Message}" );
-                    }
-                );
-
-            using var xml_reader = XmlReader.Create( aGeneralPath.AbsoulteFilePath, setting );
-
-            while ( xml_reader.Read() )
+        return Log.TryCatch<bool>
+        (
+            () =>
             {
-            }
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+                var errorFlag = false;
+                var xsdMarkup = GetValidation();
 
-            errorFlag = true;
-        }
+                using var xsd_reader = new XmlTextReader( new StringReader( xsdMarkup ) );
 
-        return !errorFlag;
+                var setting = new XmlReaderSettings();
+                _ = setting.Schemas.Add( string.Empty, xsd_reader );
+
+                setting.ValidationType = ValidationType.Schema;
+                setting.ValidationEventHandler += new ValidationEventHandler
+                    (
+                        ( sender, e ) =>
+                        {
+                            errorFlag = true;
+                            Log.Warning( $"Validation Error:{e.Message}" );
+                        }
+                    );
+
+                using var xml_reader = XmlReader.Create( aGeneralPath.AbsoluteFilePath , setting );
+
+                while ( xml_reader.Read() ) { }
+
+                return !errorFlag;
+
+            },
+            ( e ) => false
+        );
     }
 
     /// <summary>
@@ -71,7 +67,7 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
         // BGMファイルが相対パスの場合、DMSファイルパスからの相対パスを取得する
         _DmsFilePath = new( aGeneralPath );
 
-        using var reader = XmlReader.Create( aGeneralPath.AbsoulteFilePath );
+        using var reader = XmlReader.Create( aGeneralPath.AbsoluteFilePath );
 
         OnReadScore( reader, out aScore );
     }
@@ -81,7 +77,7 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
         // BGMファイルが相対パスの場合、DMSファイルパスからの相対パスを取得する
         _DmsFilePath = new( aGeneralPath );
 
-        using var reader = XmlReader.Create( aGeneralPath.AbsoulteFilePath );
+        using var reader = XmlReader.Create( aGeneralPath.AbsoluteFilePath );
 
         OnReadScore( reader, out var score );
 
@@ -104,7 +100,7 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public void Write( GeneralPath aGeneralPath, Score aScore )
     {
-        using var writer = new XmlTextWriter( aGeneralPath.AbsoulteFilePath, Encoding.UTF8 );
+        using var writer = new XmlTextWriter( aGeneralPath.AbsoluteFilePath, Encoding.UTF8 );
 
         writer.Formatting = Formatting.Indented;
 
@@ -122,7 +118,7 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public void Write( GeneralPath aGeneralPath, MidiMapSet aMidiMapSet )
     {
-        using var writer = new XmlTextWriter( aGeneralPath.AbsoulteFilePath, Encoding.UTF8 );
+        using var writer = new XmlTextWriter( aGeneralPath.AbsoluteFilePath, Encoding.UTF8 );
 
         writer.Formatting = Formatting.Indented;
 

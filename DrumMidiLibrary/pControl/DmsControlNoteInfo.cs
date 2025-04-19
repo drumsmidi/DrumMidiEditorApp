@@ -10,6 +10,46 @@ namespace DrumMidiLibrary.pControl;
 internal partial class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComparable<DmsControlNoteInfo>
 {
     /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="aPlaySecond">ノート再生位置の時間（秒）</param>
+    /// <param name="aVolume">ノート音量（127基準）</param>
+    /// <param name="aNoteOn">ノートONフラグ(true:ON,false:OFF)</param>
+    /// <param name="aMidiMapInfo">ノートが属するMidiMap情報</param>
+    public DmsControlNoteInfo( double aPlaySecond, int aVolume, bool aNoteOn, ref DmsControlMidiMapInfo aMidiMapInfo )
+    {
+        PlaySecond      = aPlaySecond;
+        _Volume         = aVolume;
+        NoteOn          = aNoteOn;
+        _MidiMapInfo    = aMidiMapInfo;
+    }
+
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _MidiMapInfo = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
+    /// <summary>
     /// ノート音量（127基準）
     /// </summary>
     private readonly int _Volume = MidiNet.MidiMaxVolume;
@@ -29,40 +69,7 @@ internal partial class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComp
     /// </summary>
     public bool NoteOn { get; private set; } = false;
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aPlaySecond">ノート再生位置の時間（秒）</param>
-    /// <param name="aVolume">ノート音量（127基準）</param>
-    /// <param name="aNoteOn">ノートONフラグ(true:ON,false:OFF)</param>
-    /// <param name="aMidiMapInfo">ノートが属するMidiMap情報</param>
-    public DmsControlNoteInfo( double aPlaySecond, int aVolume, bool aNoteOn, ref DmsControlMidiMapInfo aMidiMapInfo )
-    {
-        PlaySecond      = aPlaySecond;
-        _Volume         = aVolume;
-        NoteOn          = aNoteOn;
-        _MidiMapInfo    = aMidiMapInfo;
-    }
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _MidiMapInfo = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// ノートの音量＋MidiMapに設定されている音量増減値を加算して再生
@@ -78,6 +85,8 @@ internal partial class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComp
             _MidiMapInfo?.Stop();
         }
     }
+
+    #region IComparable
 
     /// <summary>
     /// ノート再生順 並替用
@@ -114,4 +123,6 @@ internal partial class DmsControlNoteInfo : DisposeBaseClass, IComparable, IComp
             ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
             : CompareTo( aOther as DmsControlNoteInfo );
     }
+
+    #endregion
 }

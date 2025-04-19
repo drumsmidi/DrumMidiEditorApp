@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using OpenCvSharp;
 
@@ -10,6 +12,31 @@ namespace DrumMidiLibrary.pIO.pVideo;
 /// </summary>
 public partial class Mp4IO : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            Close();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// Video書込
     /// </summary>
@@ -24,6 +51,8 @@ public partial class Mp4IO : DisposeBaseClass
     /// フレーム書込用Bitmap
     /// </summary>
     private Bitmap? _Bmp = null;
+
+    #endregion
 
     /// <summary>
     /// ファイルオープン
@@ -40,7 +69,7 @@ public partial class Mp4IO : DisposeBaseClass
 
         _Writer = new VideoWriter
             (
-                aGeneralPath.AbsoulteFilePath,
+                aGeneralPath.AbsoluteFilePath,
                 string.IsNullOrEmpty( aCodec ) ? FourCC.Default : FourCC.FromString( aCodec ),
                 aFrameRate,
                 new( aWidth, aHeight )
@@ -50,26 +79,6 @@ public partial class Mp4IO : DisposeBaseClass
 
         return _Bmp;
     }
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                Close();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     /// <summary>
     /// フレーム追加
@@ -82,29 +91,44 @@ public partial class Mp4IO : DisposeBaseClass
             return false;
         }
 
-        var bmpData = _Bmp.LockBits
-            (
-                new( 0, 0, _Bmp.Width, _Bmp.Height ),
-                ImageLockMode.ReadOnly,
-                _Bmp.PixelFormat
-            );
+        BitmapData? bmpData = null;
 
-        var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
+        return Log.TryCatch<bool>
+        (
+            () =>
+            {
+                bmpData = _Bmp.LockBits
+                    (
+                        new( 0, 0, _Bmp.Width, _Bmp.Height ),
+                        ImageLockMode.ReadOnly,
+                        _Bmp.PixelFormat
+                    );
 
-        if ( buffer == null )
-        {
-            return false;
-        }
+                var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
 
-        using var mat = Mat.FromImageData( buffer );
-//      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
-//      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
+                if ( buffer == null )
+                {
+                    return false;
+                }
 
-        _Writer.Write( mat );
+                using var mat = Mat.FromImageData( buffer );
+        //      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
+        //      using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
-        _Bmp.UnlockBits( bmpData );
+                _Writer.Write( mat );
 
-        return true;
+                return true;
+            },
+            ( e ) => throw new Exception( $"Failure Add Frame", e ),
+            () =>
+            {
+                if ( bmpData != null )
+                {
+                    // Bitmapのロック解除
+                    _Bmp.UnlockBits( bmpData );
+                }
+            }
+        );
     }
 
     /// <summary>

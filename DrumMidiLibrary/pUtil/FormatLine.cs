@@ -9,18 +9,6 @@ namespace DrumMidiLibrary.pUtil;
 public class FormatLine
 {
     /// <summary>
-    /// ライン色
-    /// </summary>
-    [JsonInclude]
-    public FormatColor LineColor = new();
-
-    /// <summary>
-    /// ラインサイズ
-    /// </summary>
-    [JsonInclude]
-    public float LineSize = 1;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public FormatLine()
@@ -37,4 +25,16 @@ public class FormatLine
         LineColor   = new( aLineColor );
         LineSize    = aLineSize;
     }
+
+    /// <summary>
+    /// ライン色
+    /// </summary>
+    [JsonInclude]
+    public FormatColor LineColor { get; set; } = new();
+
+    /// <summary>
+    /// ラインサイズ
+    /// </summary>
+    [JsonInclude]
+    public float LineSize { get; set; } = 1;
 }

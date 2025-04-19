@@ -7,6 +7,29 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class MeasureSys : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            BpmLine.Dispose();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -15,26 +38,6 @@ public partial class MeasureSys : DisposeBaseClass
     public MeasureLine<InfoBpm> BpmLine { get; private set; } = new();
 
     #endregion
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                BpmLine.Dispose();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     /// <summary>
     /// BPM情報有無判定

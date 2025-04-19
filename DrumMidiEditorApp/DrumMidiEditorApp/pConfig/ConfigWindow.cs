@@ -12,8 +12,8 @@ public class ConfigWindow : ConfigWindowBase
     /// </summary>
     public ConfigWindow() : base()
     {
-        AppName                     = $"DrumMidiEditer";
-        WindowSizeWidthDpiNoScale   = 1600;
-        WindowSizeHeightDpiNoScale  = 900;
+        AppName = "DrumMidiEditer";
+
+        SetWindowSizeDpiNoScale( 1600, 900 );
     }
 }

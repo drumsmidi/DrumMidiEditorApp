@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using Windows.UI;
 
@@ -9,6 +11,15 @@ namespace DrumMidiLibrary.pConfig;
 /// </summary>
 public class ConfigSystem
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public ConfigSystem()
+    {
+        // MeasureMaxNumber の設定を元に計算
+        SetMeasureMaxNumber( MeasureMaxNumber );
+    }
+
     #region Deault:Score
 
     /// <summary>
@@ -156,17 +167,40 @@ public class ConfigSystem
     #region System
 
     /// <summary>
+    /// 小節最大数設定（0から999まで）
+    /// </summary>
+    /// <param name="aMeasureMaxNumber">小節最大数</param>
+    private void SetMeasureMaxNumber( int aMeasureMaxNumber )
+    {
+        var min = 0;
+        var max = 999;
+
+        if ( aMeasureMaxNumber < min || max < aMeasureMaxNumber )
+        {
+            Log.Warning( $"Invalid MeasureMaxNumber: {aMeasureMaxNumber}" );
+        }
+
+        MeasureMaxNumber = Math.Clamp( aMeasureMaxNumber, min, max );
+
+        // MeasureMaxNumber の設定を元に計算
+        MeasureNumberFormat = $"{{0:{new string( '0', MeasureMaxNumber.ToString().Length)}}}";
+        MeasureCount        = MeasureMaxNumber + 1;
+        NoteCount           = MeasureCount * MeasureNoteNumber;
+    }
+
+    /// <summary>
     /// 小節最大数（0から開始）。
     /// 4桁以上に設定すると動かなくなります。
     /// </summary>
     [JsonIgnore]
-    public int MeasureMaxNumber { get; private set; } = 999;
+    public int MeasureMaxNumber{ get; private set; } = 999;
 
     /// <summary>
     /// 小節番号書式フォーマット
+    /// （MeasureMaxNumber の設定を元に計算）
     /// </summary>
     [JsonIgnore]
-    public string MeasureNumberFormat { get; private set; } = "{0:000}";
+    public string MeasureNumberFormat { get; private set; } = string.Empty;
 
     /// <summary>
     /// 1小節辺りのノート数
@@ -188,15 +222,17 @@ public class ConfigSystem
 
     /// <summary>
     /// 小節最大数
+    /// （MeasureMaxNumber の設定を元に計算）
     /// </summary>
     [JsonIgnore]
-    public int MeasureCount => MeasureMaxNumber + 1;
+    public int MeasureCount { get; private set; }
 
     /// <summary>
     /// １行辺りの全小節分のノート数
+    /// （MeasureMaxNumber の設定を元に計算）
     /// </summary>
     [JsonIgnore]
-    public int NoteCount => MeasureCount * MeasureNoteNumber;
+    public int NoteCount { get; private set; }
 
     #endregion
 
@@ -208,8 +244,11 @@ public class ConfigSystem
     /// </summary>
     public enum PlayerSurfaceMode : int
     {
+        /// <summary>シーケンスモード</summary>
         Sequence = 0,
+        /// <summary>シミュレーションモード</summary>
         Simuration,
+        /// <summary>スコアモード</summary>
         ScoreType2,
     }
 

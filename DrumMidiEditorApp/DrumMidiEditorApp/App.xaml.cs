@@ -84,7 +84,7 @@ public partial class App : Application
                     {
                         DMS.AppStartDmsPath = new( data.Files [ 0 ].Path ?? string.Empty );
 
-                        Log.Info( $"起動ファイル={DMS.AppStartDmsPath.AbsoulteFilePath}" );
+                        Log.Info( $"起動ファイル={DMS.AppStartDmsPath.AbsoluteFilePath}" );
                     }
                 }
             }

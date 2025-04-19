@@ -359,11 +359,11 @@ public abstract class ScreenPlayerBase() : ScreenBase( new() )
 
                     #region DmsControlの完了待
 
-                    while ( DmsControl.PlayReq != DmsControl.PlayRequest.PrePlay )
+                    while ( DmsControl.PlayerReq != DmsControl.PlayerRequest.PrePlay )
                     {
                         await Task.Delay( 1 );
                     }
-                    DmsControl.PlayReq = DmsControl.PlayRequest.None;
+                    DmsControl.PlayerReq = DmsControl.PlayerRequest.None;
 
                     DmsControl.WaitAudio();
 

@@ -17,6 +17,38 @@ namespace DrumMidiLibrary.pAudio;
 /// </summary>
 public partial class NAudioData : DisposeBaseClass
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="aFilePath">オーディオファイルパス</param>
+    public NAudioData( GeneralPath aFilePath )
+    {
+        CreateStreamFromFile( aFilePath.AbsoluteFilePath );
+    }
+
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            RemoveStream();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -56,34 +88,7 @@ public partial class NAudioData : DisposeBaseClass
 
     #endregion
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="aFilePath">オーディオファイルパス</param>
-    public NAudioData( GeneralPath aFilePath )
-    {
-        CreateStreamFromFile( aFilePath.AbsoulteFilePath );
-    }
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                RemoveStream();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #region FileStream
 
     /// <summary>
     /// オーディオファイルストリーム作成
@@ -91,14 +96,21 @@ public partial class NAudioData : DisposeBaseClass
     /// <param name="aFilePath">オーディオファイルパス</param>
     private void CreateStreamFromFile( string aFilePath )
     {
-        lock ( _LockObj )
-        {
-            _Reader = new( aFilePath );
-            _Sample = new( _Reader );
-            _Wave   = new();
+        Log.TryCatch
+        (
+            () =>
+            {
+                lock ( _LockObj )
+                {
+                    _Reader = new( aFilePath );
+                    _Sample = new( _Reader );
+                    _Wave   = new();
 
-            _Wave.Init( _Sample );
-        }
+                    _Wave.Init( _Sample );
+                }
+            },
+            ( e ) => throw new InvalidOperationException( $"Failure load audio:{aFilePath}" )
+        );
     }
 
     /// <summary>
@@ -106,17 +118,23 @@ public partial class NAudioData : DisposeBaseClass
     /// </summary>
     private void RemoveStream()
     {
-        lock ( _LockObj )
-        {
-            // オーディオ読込解放
-            _Wave?.Dispose();
-            _Sample?.Dispose();
-            _Reader?.Dispose();
+        Log.TryCatch
+        (
+            () =>
+            {
+                lock ( _LockObj )
+                {
+                    // オーディオ読込解放
+                    _Wave?.Dispose();
+                    _Sample?.Dispose();
+                    _Reader?.Dispose();
 
-            _FFTBuffer = null;
+                    _FFTBuffer = null;
 
-            _EqualizerBand?.Clear();
-        }
+                    _EqualizerBand?.Clear();
+                }
+            }
+        );
     }
 
     /// <summary>
@@ -124,6 +142,8 @@ public partial class NAudioData : DisposeBaseClass
     /// </summary>
     /// <returns>True:読込完了、False:読込未完了</returns>
     public bool IsEnable() => _Reader != null && _Wave != null;
+
+    #endregion
 
     #region Playback
 
@@ -291,17 +311,7 @@ public partial class NAudioData : DisposeBaseClass
     /// <param name="aVolume">音量</param>
     /// <returns>範囲内の音量(0-100)</returns>
     public static int CheckVolume( int aVolume )
-    {
-        if ( aVolume < MinVolume )
-        {
-            return MinVolume;
-        }
-        else if ( aVolume > MaxVolume )
-        {
-            return MaxVolume;
-        }
-        return aVolume;
-    }
+        => Math.Clamp( aVolume, MinVolume, MaxVolume );
 
     #endregion
 
@@ -369,6 +379,8 @@ public partial class NAudioData : DisposeBaseClass
 
         if ( _FFTBuffer != null && aOffset < _FFTBuffer.GetLength( 0 ) )
         {
+            list.Capacity = _FFTBuffer.GetLength( 1 );
+
             for ( var k = 0; k < _FFTBuffer.GetLength( 1 ); k++ )
             {
                 list.Add( _FFTBuffer [ aOffset, k ] );
@@ -581,10 +593,41 @@ public partial class NAudioData : DisposeBaseClass
     /// <param name="aSourceProvider"></param>
     private partial class Sampling( ISampleProvider aSourceProvider ) : DisposeBaseClass, ISampleProvider, IWaveProvider
     {
+        protected override void Dispose( bool aDisposing )
+        {
+            if ( _Disposed )
+            {
+                return;
+            }
+
+            // マネージドリソースの解放
+            if ( aDisposing )
+            {
+                _EqualizerFilter = null;
+                _EqualizerBandList.Clear();
+            }
+
+            // アンマネージドリソースの解放
+            {
+            }
+
+            _Disposed = true;
+
+            base.Dispose( aDisposing );
+        }
+        private bool _Disposed = false;
+
+        #region member
+
         /// <summary>
         /// サンプリングプロバイダー
         /// </summary>
         private readonly ISampleProvider _SampleProvider = aSourceProvider;
+
+        /// <summary>
+        /// 波形フォーマット
+        /// </summary>
+        public WaveFormat WaveFormat => _SampleProvider.WaveFormat;
 
         /// <summary>
         /// イコライザーフィルター
@@ -601,26 +644,7 @@ public partial class NAudioData : DisposeBaseClass
         /// </summary>
         private readonly List<EqualizerBand> _EqualizerBandList = [];
 
-        protected override void Dispose( bool aDisposing )
-        {
-            if ( !_Disposed )
-            {
-                if ( aDisposing )
-                {
-                    // Dispose managed resources.
-                    _EqualizerFilter = null;
-                    _EqualizerBandList.Clear();
-                }
-
-                // Dispose unmanaged resources.
-
-                _Disposed = true;
-
-                // Note disposing has been done.
-                base.Dispose( aDisposing );
-            }
-        }
-        private bool _Disposed = false;
+        #endregion
 
         /// <summary>
         /// イコライザ設定反映
@@ -644,11 +668,6 @@ public partial class NAudioData : DisposeBaseClass
 
             _UpdateEqualizer = true;
         }
-
-        /// <summary>
-        /// 波形フォーマット
-        /// </summary>
-        public WaveFormat WaveFormat => _SampleProvider.WaveFormat;
 
         /// <summary>
         /// オーディオバッファ読込

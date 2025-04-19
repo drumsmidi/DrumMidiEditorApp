@@ -4,6 +4,7 @@ using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pInput;
 using DrumMidiLibrary.pIO.pDatabase;
 using DrumMidiLibrary.pLog;
+using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pIO;
@@ -252,7 +253,13 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
                                     {
                                         if ( FileIO.LoadScore( item.FilePath, out var score ) )
                                         {
+                                            // TASK:見直しが必要
+                                            score.BgmFilePath = new( score.BgmFilePath.RelativeFilePath, score.FilePath.AbsoluteFolderPath );
+                                            score.BgmFilePath.PrintPath();
+
                                             DMS.SCORE = score;
+
+
 
                                             Request = Requests.PlayerMode;
                                             return;

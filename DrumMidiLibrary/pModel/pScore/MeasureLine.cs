@@ -9,6 +9,29 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class MeasureLine<T> : DisposeBaseClass where T : InfoBase
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            InfoStates.Clear();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -17,26 +40,6 @@ public partial class MeasureLine<T> : DisposeBaseClass where T : InfoBase
     public Dictionary<int, T> InfoStates { get; private set; } = [];
 
     #endregion
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                InfoStates.Clear();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     /// <summary>
     /// 情報有無判定
@@ -85,7 +88,7 @@ public partial class MeasureLine<T> : DisposeBaseClass where T : InfoBase
         {
             if ( item.Value.Clone() is not T info )
             {
-                throw new InvalidCastException();
+                throw new InvalidCastException( $"Failed to clone item of type {typeof( T )}." );
             }
 
             measureLine.InfoStates.Add( item.Key, info );

@@ -51,7 +51,7 @@ public class Fps
     /// <summary>
     /// FPS制御
     /// </summary>
-    private TimeCount? _TimeCount;
+    private TimeCount _TimeCount = new();
 
     /// <summary>
     /// FPS設定
@@ -78,13 +78,10 @@ public class Fps
     /// </summary>
     public void Reset()
     {
-        if ( _TimeCount != null )
-        {
-            _TimeCount.TotalTime      = 0;
-            _TimeCount.TotalTimeBef   = 0;
-            _TimeCount.FrameTime      = 0;
-            _TimeCount.FpsWeightNext  = _TimeCount.FpsWeight;
-        }
+        _TimeCount.TotalTime      = 0;
+        _TimeCount.TotalTimeBef   = 0;
+        _TimeCount.FrameTime      = 0;
+        _TimeCount.FpsWeightNext  = _TimeCount.FpsWeight;
 
         _StopWatch.Reset();
     }
@@ -99,10 +96,7 @@ public class Fps
     /// </summary>
     public void Tick()
     {
-        if ( _TimeCount != null )
-        {
-            _TimeCount.TotalTime = NowTotalTime;
-        }
+        _TimeCount.TotalTime = NowTotalTime;
     }
 
     /// <summary>
@@ -113,13 +107,12 @@ public class Fps
     /// <summary>
     /// フレーム更新制御
     /// </summary>
-    /// <param name="aKey">設定キー</param>
     /// <returns>True:フレーム更新タイミング、False:処理待ち</returns>
     public bool TickFpsWeight()
     {
         Tick();
 
-        if ( _TimeCount == null || !_TimeCount.TickFpsWeight )
+        if ( !_TimeCount.TickFpsWeight )
         {
             return false;
         }
@@ -135,5 +128,5 @@ public class Fps
     /// フレーム時間（秒）取得
     /// </summary>
     /// <returns>フレーム時間（秒）</returns>
-    public double GetFrameTime() => _TimeCount?.FrameTime ?? 0 ;
+    public double GetFrameTime() => _TimeCount.FrameTime;
 }

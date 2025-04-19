@@ -10,36 +10,47 @@ namespace DrumMidiLibrary.pIO.pJson.pConverter;
 /// </summary>
 internal class CanvasTextFormatConverter : JsonConverter<CanvasTextFormat>
 {
-    public override bool CanConvert( Type aTypeToConvert )
-        => typeof( CanvasTextFormat ).IsAssignableFrom( aTypeToConvert );
-
     public override CanvasTextFormat Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
     {
         var textFormat = new CanvasTextFormat();
 
+        var prop = string.Empty;
+
         while ( aReader.Read() && aReader.TokenType != JsonTokenType.EndObject )
         {
-            if ( aReader.TokenType == JsonTokenType.PropertyName )
+            switch ( aReader.TokenType )
             {
-                var prop = aReader.GetString();
-
-                _ = aReader.Read();
-
-                switch ( prop )
-                {
-                    case "FontFamily":
-                        textFormat.FontFamily = aReader.GetString() ?? string.Empty;
-                        break;
-                    case "FontSize":
-                        textFormat.FontSize = aReader.GetSingle();
-                        break;
-                    case "HorizontalAlignment":
-                        textFormat.HorizontalAlignment = (CanvasHorizontalAlignment)aReader.GetInt32();
-                        break;
-                    case "VerticalAlignment":
-                        textFormat.VerticalAlignment = (CanvasVerticalAlignment)aReader.GetInt32();
-                        break;
-                }
+                case JsonTokenType.PropertyName:
+                    {
+                        prop = aReader.GetString() ?? string.Empty;
+                    }
+                    break;
+                case JsonTokenType.Number:
+                    {
+                        switch ( prop )
+                        {
+                            case "FontSize":
+                                textFormat.FontSize = aReader.GetSingle();
+                                break;
+                            case "HorizontalAlignment":
+                                textFormat.HorizontalAlignment = (CanvasHorizontalAlignment)aReader.GetInt32();
+                                break;
+                            case "VerticalAlignment":
+                                textFormat.VerticalAlignment = (CanvasVerticalAlignment)aReader.GetInt32();
+                                break;
+                        }
+                    }
+                    break;
+                case JsonTokenType.String:
+                    {
+                        switch ( prop )
+                        {
+                            case "FontFamily":
+                                textFormat.FontFamily = aReader.GetString() ?? string.Empty;
+                                break;
+                        }
+                    }
+                    break;
             }
         }
 

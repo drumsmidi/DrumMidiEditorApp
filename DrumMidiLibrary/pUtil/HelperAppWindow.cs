@@ -106,6 +106,7 @@ public static class HelperAppWindow
     /// <param name="aHasTitleBar"></param>
     public static void SetPresenter( AppWindow aAppWindow, bool aMaximizable, bool aMinimizable, bool aResizable, bool aAlwaysOnTop, bool aModal, bool aHasBorder, bool aHasTitleBar )
     {
+        // TASK：詳細は未確認
         // OverlappedPresenter.IsMaximizable=falseを設定しても
         // 拡張タイトルバーをダブルクリックするとサイズ変更できてしまう症状あり
         // https://github.com/microsoft/microsoft-ui-xaml/issues/8846

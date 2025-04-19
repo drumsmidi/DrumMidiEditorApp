@@ -118,7 +118,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     {
         try
         {
-            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoulteFilePath}" );
+            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoluteFilePath}" );
 
             if ( FileIO.LoadScore( aFilePath, out var score ) )
             {
@@ -142,7 +142,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     {
         try
         {
-            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoulteFilePath}" );
+            Log.Info( $"{Log.GetThisMethodName}:{aFilePath.AbsoluteFilePath}" );
 
             aFilePath.Extension = ConfigFile.ExtentionDms;
 
@@ -195,7 +195,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// タイトルバーに編集中のファイル名を設定
     /// </summary>
     private void SetSubTitle()
-        => ControlAccess.MainWindow?.SetSubTitle( $"[{DMS.OpenFilePath.AbsoulteFilePath}]" );
+        => ControlAccess.MainWindow?.SetSubTitle( $"[{DMS.OpenFilePath.AbsoluteFilePath}]" );
 
     /// <summary>
     /// メニュー：DMS新規作成
@@ -270,7 +270,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         {
             PlayerStop();
 
-            var edit_filepath = new GeneralPath( DMS.OpenFilePath.AbsoulteFilePath );
+            var edit_filepath = new GeneralPath( DMS.OpenFilePath.AbsoluteFilePath );
 
             if ( !edit_filepath.IsExistFile )
             {

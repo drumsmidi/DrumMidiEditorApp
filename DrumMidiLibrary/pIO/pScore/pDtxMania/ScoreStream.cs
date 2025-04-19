@@ -20,19 +20,11 @@ internal partial class ScoreStream : IScoreReader
 
     public bool Validation( GeneralPath aGeneralPath )
     {
-        var errorFlag = false;
-
-        try
-        {
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            errorFlag = true;
-        }
-
-        return !errorFlag;
+        return Log.TryCatch<bool>
+        (
+            () => true,
+            ( e ) => false
+        );
     }
 
     public void Read( GeneralPath aGeneralPath, out Score aScore )
@@ -41,7 +33,7 @@ internal partial class ScoreStream : IScoreReader
 
         aScore = new();
 
-        using var reader = new StreamReader( aGeneralPath.AbsoulteFilePath, Encoding.GetEncoding("UTF-8") );
+        using var reader = new StreamReader( aGeneralPath.AbsoluteFilePath , Encoding.GetEncoding("UTF-8") );
 
         var midiMapSet = aScore.Channels[ MidiNet.ChannelDrum ].MidiMapSet;
 

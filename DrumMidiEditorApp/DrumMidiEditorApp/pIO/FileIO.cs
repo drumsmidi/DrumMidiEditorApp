@@ -94,11 +94,11 @@ public static class FileIO
         {
             config = JsonIO.LoadFile<T>( aGeneralPath );
 
-            Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aGeneralPath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
         return config;
@@ -174,11 +174,11 @@ public static class FileIO
         {
             JsonIO.SaveFile<T>( aConfig, aGeneralPath );
 
-            Log.Info( $"Succeeded in writing [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in writing [{aGeneralPath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aGeneralPath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
@@ -272,7 +272,7 @@ public static class FileIO
                             #endregion
                         }
 
-                        Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+                        Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
 
                         ControlAccess.PageStatusBar?.ReloadProgressBar( 0 );
 
@@ -282,7 +282,7 @@ public static class FileIO
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 
             ControlAccess.UCPlayerPanel?.GetFrameEnd();
@@ -375,13 +375,13 @@ public static class FileIO
                 #endregion
             }
 
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
 
             ControlAccess.UCPlayerPanel?.GetFrameEnd();
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 
             ControlAccess.UCPlayerPanel?.GetFrameEnd();
@@ -443,11 +443,11 @@ public static class FileIO
 
             _ = aFolderPath.CreateDirectory();
 
-            Log.Info( $"Folder creation successful [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Info( $"Folder creation successful [{aFolderPath.AbsoluteFolderPath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Folder creation failure [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Error( $"Folder creation failure [{aFolderPath.AbsoluteFolderPath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
@@ -487,11 +487,11 @@ public static class FileIO
                 throw new NotSupportedException( $"Extension {ext} is not supported" );
             }
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }
@@ -512,11 +512,11 @@ public static class FileIO
         {
             ScoreIO.SaveFile( aFilePath, aScore );
 
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }
@@ -537,11 +537,11 @@ public static class FileIO
         {
             ScoreIO.SaveMidiFile( aFilePath, aScore );
 
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]", true );
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }
@@ -562,11 +562,11 @@ public static class FileIO
         {
             ScoreIO.LoadFile( aFilePath, out aMidiMapSet );
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
 
             aMidiMapSet = new();
@@ -589,11 +589,11 @@ public static class FileIO
         {
             ScoreIO.SaveFile( aFilePath, aMidiMapSet );
 
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }
@@ -628,7 +628,7 @@ public static class FileIO
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }

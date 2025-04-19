@@ -17,17 +17,8 @@ internal class TimeTable
     public readonly Lock LockObj = new();
 
     /// <summary>
-    /// TimeTable更新フラグ
-    /// </summary>
-    private bool _FlagUpdate = true;
-
-    /// <summary>
-    /// TimeTable
-    /// </summary>
-    private double[] _TimeTables = new double[ 10 ];
-
-    /// <summary>
-    /// ノート位置（絶対値）、Bpm入力値
+    /// ノート位置のBPM値検索用
+    /// ＜ノート位置（絶対値）、Bpm入力値＞
     /// </summary>
     private readonly Dictionary<int, double> _BpmDic = [];
 
@@ -35,6 +26,11 @@ internal class TimeTable
     /// ベースBPM
     /// </summary>
     private double _BaseBpm = ConfigLib.System.DefaultBpm;
+
+    /// <summary>
+    /// TimeTable
+    /// </summary>
+    private double[] _TimeTables = new double[ 10 ];
 
     /// <summary>
     /// TimeTableへのアクセス。＜排他制御なし＞
@@ -80,32 +76,27 @@ internal class TimeTable
     /// <returns>BPM値</returns>
     public double GetBpm( int aAbsoluteNotePos )
     {
-        double bpm;
-
         lock ( LockObj )
         {
-            bpm = _BpmDic [ 0 ];
+            if ( _BpmDic.TryGetValue( aAbsoluteNotePos, out var bpm ) )
+            {
+                return bpm;
+            }
 
-            var pos = 0;
+            var closestBpm = _BpmDic[ 0 ];
+            var closestPos = 0;
 
             foreach ( var item in _BpmDic )
             {
-                if ( item.Key == aAbsoluteNotePos )
+                if ( item.Key < aAbsoluteNotePos && item.Key > closestPos )
                 {
-                    bpm = item.Value;
-                    break;
-                }
-                else if ( item.Key < aAbsoluteNotePos )
-                {
-                    if ( item.Key > pos )
-                    {
-                        bpm = item.Value;
-                        pos = item.Key;
-                    }
+                    closestBpm = item.Value;
+                    closestPos = item.Key;
                 }
             }
+
+            return closestBpm;
         }
-        return bpm;
     }
 
     /// <summary>
@@ -139,6 +130,11 @@ internal class TimeTable
         }
         return 0;
     }
+
+    /// <summary>
+    /// TimeTable更新フラグ
+    /// </summary>
+    private bool _FlagUpdate = true;
 
     /// <summary>
     /// TimeTable更新フラグを立てます。

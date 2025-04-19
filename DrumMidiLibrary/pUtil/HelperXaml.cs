@@ -20,6 +20,14 @@ public static class HelperXaml
 {
     #region Dialog
 
+    /// <summary>
+    /// メッセージダイアログ（OK）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aContent"></param>
+    /// <param name="aButtonText"></param>
+    /// <param name="aAction"></param>
     public static async void MessageDialogOk( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
     {
         var cd = new ContentDialog
@@ -38,6 +46,15 @@ public static class HelperXaml
         }
     }
 
+    /// <summary>
+    /// メッセージダイアログ（Yes/No）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aContent"></param>
+    /// <param name="aYesButtonText"></param>
+    /// <param name="aNoButtonText"></param>
+    /// <param name="aAction"></param>
     public static async void MessageDialogYesNoAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aYesButtonText, string aNoButtonText, Action aAction )
     {
         var cd = new ContentDialog
@@ -57,6 +74,13 @@ public static class HelperXaml
         }
     }
 
+    /// <summary>
+    /// 入力ダイアログ（Ok/Cancel）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aPageContent"></param>
+    /// <param name="aAction"></param>
     public static void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, Action aAction )
         => InputDialogOkCancelAsync
             (
@@ -68,6 +92,15 @@ public static class HelperXaml
                 aAction
             );
 
+    /// <summary>
+    /// 入力ダイアログ（Ok/Cancel）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aPageContent"></param>
+    /// <param name="aYesButtonText"></param>
+    /// <param name="aCancelButtonText"></param>
+    /// <param name="aAction"></param>
     public static async void InputDialogOkCancelAsync( XamlRoot aContentXamlRoot, string aTitle, object aPageContent, string aYesButtonText, string aCancelButtonText, Action aAction )
     {
         var cd = new ContentDialog
@@ -185,7 +218,6 @@ public static class HelperXaml
         }
     }
 
-
     /// <summary>
     /// ファイルを開くダイアログ共通処理
     /// </summary>
@@ -195,13 +227,8 @@ public static class HelperXaml
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public static async void OpenDialogAsync( Window? aOwnerWindow, List<string> aFileTypeFilters, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
+    public static async void OpenDialogAsync( Window aOwnerWindow, List<string> aFileTypeFilters, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
-        if ( aOwnerWindow == null )
-        {
-            return;
-        }
-
         try
         {
             // 参考URL：ピッカーでファイルやフォルダーを開く
@@ -256,13 +283,8 @@ public static class HelperXaml
     /// <param name="aSettingsIdentifier">ピッカー設定名</param>
     /// <param name="aAction">ファイル選択時の後続処理</param>
     /// <returns>True:選択、False:未選択</returns>
-    public static async void SaveDialogAsync( Window? aOwnerWindow, List<string> aFileTypeChoices, string aSaveFileName, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
+    public static async void SaveDialogAsync( Window aOwnerWindow, List<string> aFileTypeChoices, string aSaveFileName, PickerLocationId aInitialLocation, string aSettingsIdentifier, Action<GeneralPath> aAction )
     {
-        if ( aOwnerWindow == null )
-        {
-            return;
-        }
-
         try
         {
             // 参考URL：ピッカーでファイルやフォルダーを開く
@@ -325,25 +347,46 @@ public static class HelperXaml
         return true;
     }
 
+    /// <summary>
+    /// スレッドアクセスを持たない場合、aActionイベントを実行する
+    /// </summary>
+    /// <param name="aWindow"></param>
+    /// <param name="aAction"></param>
+    /// <returns>True:スレッドアクセスあり、False:スレッドアクセスなし</returns>
+    public static bool DispatcherQueueHasThreadAccess( Window aWindow, Action aAction )
+    {
+        if ( !aWindow.DispatcherQueue.HasThreadAccess )
+        {
+            _ = aWindow.DispatcherQueue.TryEnqueue( DispatcherQueuePriority.Normal, () => aAction() );
+            return false;
+        }
+        return true;
+    }
+
     #endregion
 
     #region NumberBox
 
+    /// <summary>
+    /// NumberBox の入力書式生成
+    /// </summary>
+    /// <param name="aIntegerDigits">整数桁数</param>
+    /// <param name="aFractionDigits">小数桁数</param>
+    /// <param name="aIncrement">丸め単位</param>
+    /// <returns></returns>
     public static INumberFormatter2 CreateNumberFormatter( int aIntegerDigits, int aFractionDigits, double aIncrement )
     {
-        // NumberBox の入力書式設定
-
         return new DecimalFormatter
         {
-            IntegerDigits = aIntegerDigits,
-            FractionDigits = aFractionDigits,
-            NumberRounder = new IncrementNumberRounder
+            IntegerDigits   = aIntegerDigits,
+            FractionDigits  = aFractionDigits,
+            NumberRounder   = new IncrementNumberRounder
             {
-                Increment = aIncrement,
-                RoundingAlgorithm = RoundingAlgorithm.RoundHalfToEven,
+                Increment           = aIncrement,
+                RoundingAlgorithm   = RoundingAlgorithm.RoundHalfToEven,
             },
-            IsGrouped = true,
-            IsZeroSigned = true,
+            IsGrouped       = true,
+            IsZeroSigned    = true,
         };
     }
 
@@ -351,13 +394,13 @@ public static class HelperXaml
     /// 共通：NumberBox 必須入力チェック
     /// 未入力の場合、変更前の値に戻す。
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    public static bool NumberBox_RequiredInputValidation( NumberBox sender, NumberBoxValueChangedEventArgs args )
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    public static bool NumberBox_RequiredInputValidation( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
-        if ( double.IsNaN( args.NewValue ) )
+        if ( double.IsNaN( aArgs.NewValue ) )
         {
-            sender.Value = args.OldValue;
+            aSender.Value = aArgs.OldValue;
             return false;
         }
         return true;
@@ -375,8 +418,8 @@ public static class HelperXaml
     /// <returns>True:範囲内にある、False:範囲外にある</returns>
     public static bool CheckRange( in Point aMousePos, in Rect aRange )
     {
-        return aRange.Left <= aMousePos.X && aMousePos.X <= aRange.Right
-                 && aRange.Top <= aMousePos.Y && aMousePos.Y <= aRange.Bottom;
+        return aRange.Left <= aMousePos.X && aMousePos.X <= aRange.Right &&
+               aRange.Top  <= aMousePos.Y && aMousePos.Y <= aRange.Bottom;
     }
 
     /// <summary>

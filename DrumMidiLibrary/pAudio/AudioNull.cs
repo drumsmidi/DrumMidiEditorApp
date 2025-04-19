@@ -1,14 +1,8 @@
 ﻿namespace DrumMidiLibrary.pAudio;
 
 /// <summary>
-/// オーディオダミー
+/// Audio ダミー
 /// </summary>
-internal partial class AudioNull : AudioBase
+internal partial class AudioNull() : AudioBase
 {
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public AudioNull()
-    {
-    }
 }

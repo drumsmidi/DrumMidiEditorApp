@@ -24,7 +24,7 @@ public class ConfigFile
     [JsonIgnore]
     public GeneralPath FolderConfig
      // => new( FolderDocBase.AbsoulteFolderPath );
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config\\" ) );
+        => new( FolderDocBase.CombineWithSubFolder( "Config\\" ) );
 
     /// <summary>
     /// DMSフォルダパス

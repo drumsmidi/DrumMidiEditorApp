@@ -8,6 +8,8 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class MidiMapGroupPosition : DisposeBaseClass
 {
+    #region member
+
     /// <summary>
     /// プレイヤー表示位置X座標
     /// </summary>
@@ -22,6 +24,8 @@ public partial class MidiMapGroupPosition : DisposeBaseClass
     /// プレイヤー表示倍率
     /// </summary>
     public float Magnification { get; set; } = ConfigLib.System.DefaultMidiMapGroupMagnification;
+
+    #endregion
 
     /// <summary>
     /// 複製

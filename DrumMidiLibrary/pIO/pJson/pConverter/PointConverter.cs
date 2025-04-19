@@ -10,30 +10,34 @@ namespace DrumMidiLibrary.pIO.pJson.pConverter;
 /// </summary>
 internal class PointConverter : JsonConverter<Point>
 {
-    public override bool CanConvert( Type aTypeToConvert )
-        => typeof( Point ).IsAssignableFrom( aTypeToConvert );
-
     public override Point Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
     {
-        var item = new Point();
+        var item = new Point( 0, 0 );
+
+        var prop = string.Empty;
 
         while ( aReader.Read() && aReader.TokenType != JsonTokenType.EndObject )
         {
-            if ( aReader.TokenType == JsonTokenType.PropertyName )
+            switch ( aReader.TokenType )
             {
-                var prop = aReader.GetString();
-
-                _ = aReader.Read();
-
-                switch ( prop )
-                {
-                    case "X":
-                        item.X = aReader.GetSingle();
-                        break;
-                    case "Y":
-                        item.Y = aReader.GetSingle();
-                        break;
-                }
+                case JsonTokenType.PropertyName:
+                    {
+                        prop = aReader.GetString() ?? string.Empty;
+                    }
+                    break;
+                case JsonTokenType.Number:
+                    {
+                        switch ( prop )
+                        {
+                            case "X":
+                                item.X = aReader.GetDouble();
+                                break;
+                            case "Y":
+                                item.Y = aReader.GetDouble();
+                                break;
+                        }
+                    }
+                    break;
             }
         }
 

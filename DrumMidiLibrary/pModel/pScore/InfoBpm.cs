@@ -8,20 +8,7 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class InfoBpm : InfoBase
 {
-    #region Member
-
-    /// <summary>
-    /// BPM
-    /// </summary>
-    public double Bpm { get; set; } = ConfigLib.System.DefaultBpm;
-
-    /// <summary>
-    /// 検索キー（小節番号✕1,000＋小節内ノート位置）
-    /// </summary>
-    public override int SearchKey
-        => ( MeasureNo * 1000 ) + NotePos;
-
-    #endregion
+    #region コンストラクタ
 
     /// <summary>
     /// コンストラクタ
@@ -66,6 +53,23 @@ public partial class InfoBpm : InfoBase
         Bpm = aBpm;
     }
 
+    #endregion
+
+    #region Member
+
+    /// <summary>
+    /// BPM
+    /// </summary>
+    public double Bpm { get; set; } = ConfigLib.System.DefaultBpm;
+
+    /// <summary>
+    /// 検索キー（小節番号✕1,000＋小節内ノート位置）
+    /// </summary>
+    public override int SearchKey
+        => ( MeasureNo * 1000 ) + NotePos;
+
+    #endregion
+
     /// <summary>
     /// BPM情報を設定
     /// </summary>
@@ -76,7 +80,7 @@ public partial class InfoBpm : InfoBase
 
         if ( aInfo is not InfoBpm info )
         {
-            throw new InvalidCastException();
+            throw new ArgumentException( $"Invalid type. Expected {nameof( InfoBpm )}, but received {aInfo.GetType().Name}.", nameof( aInfo ) );
         }
 
         Bpm = info.Bpm;

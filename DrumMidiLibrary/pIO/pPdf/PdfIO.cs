@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using OpenCvSharp;
 
@@ -14,6 +15,29 @@ namespace DrumMidiLibrary.pIO.pPdf;
 /// </summary>
 public partial class PdfIO : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            Close();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region member
 
     /// <summary>
@@ -39,12 +63,12 @@ public partial class PdfIO : DisposeBaseClass
     /// <summary>
     /// 改行コード文字列
     /// </summary>
-    private const string CRLF = "\r\n";
+    private readonly string CRLF = Environment.NewLine; // "\r\n";
 
     /// <summary>
     /// オブジェクト位置情報
     /// </summary>
-    private readonly ArrayList _ObjectXref = [];
+    private readonly List<long> _ObjectXref = [];
 
     #endregion
 
@@ -62,7 +86,7 @@ public partial class PdfIO : DisposeBaseClass
 
         _Writer = new FileStream
             (
-                aGeneralPath.AbsoulteFilePath,
+                aGeneralPath.AbsoluteFilePath,
                 FileMode.Create,
                 FileAccess.Write
             );
@@ -122,26 +146,6 @@ public partial class PdfIO : DisposeBaseClass
         return _Bmp;
     }
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                Close();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
-
     /// <summary>
     /// フレーム追加
     /// </summary>
@@ -153,117 +157,132 @@ public partial class PdfIO : DisposeBaseClass
             return false;
         }
 
-        var bmpData = _Bmp.LockBits
-            (
-                new( 0, 0, _Bmp.Width, _Bmp.Height ),
-                ImageLockMode.ReadOnly,
-                _Bmp.PixelFormat
-            );
+        BitmapData? bmpData = null;
 
-        var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
+        return Log.TryCatch<bool>
+        (
+            () =>
+            {
+                bmpData = _Bmp.LockBits
+                    (
+                        new( 0, 0, _Bmp.Width, _Bmp.Height ),
+                        ImageLockMode.ReadOnly,
+                        _Bmp.PixelFormat
+                    );
 
-        if ( buffer == null )
-        {
-            return false;
-        }
+                var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
 
-        using var mat = Mat.FromImageData( buffer );
-    //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
-    //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
+                if ( buffer == null )
+                {
+                    return false;
+                }
 
-        // オブジェクトの開始バイト位置
-        var obj_pos = _Writer?.Length ?? 0 ;
+                using var mat = Mat.FromImageData( buffer );
+            //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
+            //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
 
-        #region ページ
-        {
-            AddObjectXref();
+                // オブジェクトの開始バイト位置
+                var obj_pos = _Writer?.Length ?? 0 ;
 
-            _ObjectNo++;
+                #region ページ
+                {
+                    AddObjectXref();
 
-            WriteLine( $"{_ObjectNo} 0 obj" );
-            WriteLine( $"<<" );
-            WriteLine( $"/Contents [ {_ObjectNo + 2} 0 R ]" );
-            WriteLine( $"/CropBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );
-            WriteLine( $"/MediaBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );     // ページの領域
-            WriteLine( $"/Parent 2 0 R" );
-            WriteLine( $"/Resources {_ObjectNo + 3} 0 R" );
-            WriteLine( $"/Rotate 0" );
-            WriteLine( $"/Type /Page" );
-            WriteLine( $">>" );
-            WriteLine( $"endobj" );
-        }
-        #endregion
+                    _ObjectNo++;
 
-        #region 画像：
-        {
-            AddObjectXref();
+                    WriteLine( $"{_ObjectNo} 0 obj" );
+                    WriteLine( $"<<" );
+                    WriteLine( $"/Contents [ {_ObjectNo + 2} 0 R ]" );
+                    WriteLine( $"/CropBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );
+                    WriteLine( $"/MediaBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );     // ページの領域
+                    WriteLine( $"/Parent 2 0 R" );
+                    WriteLine( $"/Resources {_ObjectNo + 3} 0 R" );
+                    WriteLine( $"/Rotate 0" );
+                    WriteLine( $"/Type /Page" );
+                    WriteLine( $">>" );
+                    WriteLine( $"endobj" );
+                }
+                #endregion
 
-            _ObjectNo++;
+                #region 画像：
+                {
+                    AddObjectXref();
 
-            var img = mat.ToBytes( ".jpg" );
+                    _ObjectNo++;
 
-            WriteLine( $"{_ObjectNo} 0 obj" );
-            WriteLine( $"<<" );
-            WriteLine( $"/BitsPerComponent 8" );
-            WriteLine( $"/ColorSpace /DeviceRGB" );
-            WriteLine( $"/Filter /DCTDecode" );
-            WriteLine( $"/Height {_Bmp.Height}" );
-            WriteLine( $"/Length {img.LongLength}" );
-            WriteLine( $"/Subtype /Image" );
-            WriteLine( $"/Type /XObject" );
-            WriteLine( $"/Width {_Bmp.Width}" );
-            WriteLine( $">>" );
-            WriteLine( $"stream" );
-            WriteLine( img );
-            WriteLine( $"endstream" );
-            WriteLine( $"endobj" );
-        }
-        #endregion
+                    var img = mat.ToBytes( ".jpg" );
 
-        #region 描画位置など
-        {
-            AddObjectXref();
+                    WriteLine( $"{_ObjectNo} 0 obj" );
+                    WriteLine( $"<<" );
+                    WriteLine( $"/BitsPerComponent 8" );
+                    WriteLine( $"/ColorSpace /DeviceRGB" );
+                    WriteLine( $"/Filter /DCTDecode" );
+                    WriteLine( $"/Height {_Bmp.Height}" );
+                    WriteLine( $"/Length {img.LongLength}" );
+                    WriteLine( $"/Subtype /Image" );
+                    WriteLine( $"/Type /XObject" );
+                    WriteLine( $"/Width {_Bmp.Width}" );
+                    WriteLine( $">>" );
+                    WriteLine( $"stream" );
+                    WriteLine( img );
+                    WriteLine( $"endstream" );
+                    WriteLine( $"endobj" );
+                }
+                #endregion
 
-            _ObjectNo++;
+                #region 描画位置など
+                {
+                    AddObjectXref();
 
-            // 参考：https://azelpg.gitlab.io/azsky2/note/prog/pdf/13_image.html
-            // (100, 500) に移動して 200 に拡大
-            // 200 0 0 200 100 500 cm
+                    _ObjectNo++;
 
-            var pos = GetBytes( $"q{CRLF}{_Bmp.Width} 0 0 {_Bmp.Height} 0 0 cm{CRLF}/Image1 Do{CRLF}Q" );
+                    // 参考：https://azelpg.gitlab.io/azsky2/note/prog/pdf/13_image.html
+                    // (100, 500) に移動して 200 に拡大
+                    // 200 0 0 200 100 500 cm
 
-            WriteLine( $"{_ObjectNo} 0 obj" );
-            WriteLine( $"<<" );
-        //  WriteLine( $"/Filter /FlateDecode" );
-            WriteLine( $"/Length {pos.LongLength}" );
-            WriteLine( $">>" );
-            WriteLine( $"stream" );
-            WriteLine( pos );
-            WriteLine( $"endstream" );
-            WriteLine( $"endobj" );
-        }
-        #endregion
+                    var pos = GetBytes( $"q{CRLF}{_Bmp.Width} 0 0 {_Bmp.Height} 0 0 cm{CRLF}/Image1 Do{CRLF}Q" );
 
-        #region ページ内のリソースディクショナリ設定
-        {
-            AddObjectXref();
+                    WriteLine( $"{_ObjectNo} 0 obj" );
+                    WriteLine( $"<<" );
+                //  WriteLine( $"/Filter /FlateDecode" );
+                    WriteLine( $"/Length {pos.LongLength}" );
+                    WriteLine( $">>" );
+                    WriteLine( $"stream" );
+                    WriteLine( pos );
+                    WriteLine( $"endstream" );
+                    WriteLine( $"endobj" );
+                }
+                #endregion
 
-            _ObjectNo++;
+                #region ページ内のリソースディクショナリ設定
+                {
+                    AddObjectXref();
 
-            WriteLine( $"{_ObjectNo} 0 obj" );
-            WriteLine( $"<<" );
-            WriteLine( $"/XObject" );
-            WriteLine( $"<<" );
-            WriteLine( $"/Image1 {_ObjectNo - 2} 0 R" );
-            WriteLine( $">>" );
-            WriteLine( $">>" );
-            WriteLine( $"endobj" );
-        }
-        #endregion
+                    _ObjectNo++;
 
-        _Bmp.UnlockBits( bmpData );
+                    WriteLine( $"{_ObjectNo} 0 obj" );
+                    WriteLine( $"<<" );
+                    WriteLine( $"/XObject" );
+                    WriteLine( $"<<" );
+                    WriteLine( $"/Image1 {_ObjectNo - 2} 0 R" );
+                    WriteLine( $">>" );
+                    WriteLine( $">>" );
+                    WriteLine( $"endobj" );
+                }
+                #endregion
 
-        return true;
+                return true;
+            },
+            ( e ) => { throw new Exception( $"Failure Add Frame", e ); },
+            () =>
+            {
+                if ( bmpData != null )
+                {
+                    // Bitmapのロック解除
+                    _Bmp.UnlockBits( bmpData );
+                }
+            }
+        );
     }
 
     /// <summary>
@@ -303,14 +322,18 @@ public partial class PdfIO : DisposeBaseClass
         }
         #endregion
 
-        _Writer?.Close();
-        _Writer?.Dispose();
-        _Writer = null;
+        #region リソースクリア
+        {
+            _Writer?.Close();
+            _Writer?.Dispose();
+            _Writer = null;
 
-        _Bmp?.Dispose();
-        _Bmp = null;
+            _Bmp?.Dispose();
+            _Bmp = null;
 
-        _ObjectXref.Clear();
+            _ObjectXref.Clear();
+        }
+        #endregion
     }
 
     /// <summary>
@@ -320,7 +343,7 @@ public partial class PdfIO : DisposeBaseClass
     private void WriteLine( byte [] aBuffer )
     {
         _Writer?.Write( aBuffer, 0, aBuffer.Length );
-        WriteLine( $"" );
+        WriteLine( string.Empty );
     }
 
     /// <summary>
@@ -346,5 +369,5 @@ public partial class PdfIO : DisposeBaseClass
     /// オブジェクト位置情報追加
     /// </summary>
     private void AddObjectXref()
-        => _ObjectXref.Add( _Writer?.Length );
+        => _ObjectXref.Add( _Writer?.Length ?? 0 );
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
@@ -10,26 +11,6 @@ namespace DrumMidiLibrary.pAudio;
 
 internal partial class MidiOutDeviceWatcher : DisposeBaseClass
 {
-    /// <summary>
-    /// MIDI-OUTデバイス全検索文字列
-    /// </summary>
-    private readonly string _MidiSelector = MidiOutPort.GetDeviceSelector();
-
-    /// <summary>
-    /// MIDI-OUTデバイスウオッチャー
-    /// </summary>
-    private readonly DeviceWatcher _DeviceWatcher;
-
-    /// <summary>
-    /// MIDI-OUTデバイス検索完了フラグ
-    /// </summary>
-    private bool _EnumerationCompleted = false;
-
-    /// <summary>
-    /// MIDI-OUTデバイス一覧（デバイス名、デバイス情報）
-    /// </summary>
-    public readonly Dictionary<string, DeviceInformation> MidiOutDeviceDic = [];
-
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -45,26 +26,63 @@ internal partial class MidiOutDeviceWatcher : DisposeBaseClass
 
     protected override void Dispose( bool aDisposing )
     {
-        if ( !_Disposed )
+        if ( _Disposed )
         {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-            }
+            return;
+        }
 
-            // Dispose unmanaged resources.
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+        }
+
+        // アンマネージドリソースの解放
+        {
             _DeviceWatcher.Added                -= DeviceWatcher_Added;
             _DeviceWatcher.Removed              -= DeviceWatcher_Removed;
             _DeviceWatcher.Updated              -= DeviceWatcher_Updated;
             _DeviceWatcher.EnumerationCompleted -= DeviceWatcher_EnumerationCompleted;
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
         }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
     }
     private bool _Disposed = false;
+
+    #region member
+
+    /// <summary>
+    /// ロックオブジェクト
+    /// </summary>
+    private readonly Lock _LockObj = new();
+
+    /// <summary>
+    /// MIDI-OUTデバイス全検索文字列
+    /// </summary>
+    private readonly string _MidiSelector = MidiOutPort.GetDeviceSelector();
+
+    /// <summary>
+    /// MIDI-OUTデバイスウオッチャー
+    /// </summary>
+    private readonly DeviceWatcher _DeviceWatcher;
+
+    /// <summary>
+    /// MIDI-OUTデバイス検索完了フラグ
+    /// </summary>
+    private volatile bool _EnumerationCompleted = false;
+
+    /// <summary>
+    /// MIDI-OUTデバイス検索完了タスク
+    /// </summary>
+    private readonly TaskCompletionSource<bool> _EnumerationCompletedTask = new();
+
+    /// <summary>
+    /// MIDI-OUTデバイス一覧（デバイス名、デバイス情報）
+    /// </summary>
+    public readonly Dictionary<string, DeviceInformation> MidiOutDeviceDic = [];
+
+    #endregion
 
     /// <summary>
     /// Start the Device Watcher
@@ -91,66 +109,106 @@ internal partial class MidiOutDeviceWatcher : DisposeBaseClass
     /// <summary>
     /// Update UI on device added
     /// </summary>
-    /// <param name="sender">The active DeviceWatcher instance</param>
-    /// <param name="args">Event arguments</param>
-    private void DeviceWatcher_Added( DeviceWatcher sender, DeviceInformation args )
+    /// <param name="aSender">The active DeviceWatcher instance</param>
+    /// <param name="aArgs">Event arguments</param>
+    private async void DeviceWatcher_Added( DeviceWatcher aSender, DeviceInformation aArgs )
     {
-        if ( _EnumerationCompleted )
+        try
         {
-            UpdateDevices();
+            if ( _EnumerationCompleted )
+            {
+                await UpdateDevices();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}:{e.Message}", false );
         }
     }
 
     /// <summary>
     /// Update UI on device removed
     /// </summary>
-    /// <param name="sender">The active DeviceWatcher instance</param>
-    /// <param name="args">Event arguments</param>
-    private void DeviceWatcher_Removed( DeviceWatcher sender, DeviceInformationUpdate args )
+    /// <param name="aSender">The active DeviceWatcher instance</param>
+    /// <param name="aArgs">Event arguments</param>
+    private async void DeviceWatcher_Removed( DeviceWatcher aSender, DeviceInformationUpdate aArgs )
     {
-        if ( _EnumerationCompleted )
+        try
         {
-            UpdateDevices();
+            if ( _EnumerationCompleted )
+            {
+                await UpdateDevices();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}:{e.Message}", false );
         }
     }
 
     /// <summary>
     /// Update UI on device updated
     /// </summary>
-    /// <param name="sender">The active DeviceWatcher instance</param>
-    /// <param name="args">Event arguments</param>
-    private void DeviceWatcher_Updated( DeviceWatcher sender, DeviceInformationUpdate args )
+    /// <param name="aSender">The active DeviceWatcher instance</param>
+    /// <param name="aArgs">Event arguments</param>
+    private async void DeviceWatcher_Updated( DeviceWatcher aSender, DeviceInformationUpdate aArgs )
     {
-        if ( _EnumerationCompleted )
+        try
         {
-            UpdateDevices();
+            if ( _EnumerationCompleted )
+            {
+                await UpdateDevices();
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}:{e.Message}", false );
         }
     }
 
     /// <summary>
     /// Update UI on device enumeration completed.
     /// </summary>
-    /// <param name="sender">The active DeviceWatcher instance</param>
-    /// <param name="args">Event arguments</param>
-    private void DeviceWatcher_EnumerationCompleted( DeviceWatcher sender, object args )
+    /// <param name="aSender">The active DeviceWatcher instance</param>
+    /// <param name="aArgs">Event arguments</param>
+    private async void DeviceWatcher_EnumerationCompleted( DeviceWatcher aSender, object aArgs )
     {
-        _EnumerationCompleted = true;
+        try
+        {
+            _EnumerationCompleted = true;
 
-        UpdateDevices();
+            await UpdateDevices();
+
+            _EnumerationCompletedTask.TrySetResult( true );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}:{e.Message}", false );
+        }
     }
 
     /// <summary>
     /// Add any connected MIDI devices to the list
     /// </summary>
-    private async void UpdateDevices()
+    private async Task UpdateDevices()
     {
-        var deviceInformationCollection = await DeviceInformation.FindAllAsync( _MidiSelector );
-
-        MidiOutDeviceDic.Clear();
-
-        foreach ( var device in deviceInformationCollection )
+        try
         {
-            MidiOutDeviceDic.Add( device.Name, device );
+            var deviceInformationCollection = await DeviceInformation.FindAllAsync( _MidiSelector );
+
+            lock ( _LockObj )
+            {
+                MidiOutDeviceDic.Clear();
+
+                foreach ( var device in deviceInformationCollection )
+                {
+                    MidiOutDeviceDic.Add( device.Name, device );
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}:{e.Message}", false );
         }
     }
 
@@ -167,7 +225,7 @@ internal partial class MidiOutDeviceWatcher : DisposeBaseClass
         {
             if ( !_EnumerationCompleted )
             {
-                await Task.Delay( 3000 );
+                await _EnumerationCompletedTask.Task;
             }
 
             if ( MidiOutDeviceDic.TryGetValue( aMidiOutDeviceName, out var device ) )

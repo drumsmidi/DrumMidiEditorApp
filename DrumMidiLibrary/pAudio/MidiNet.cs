@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using DrumMidiLibrary.pLog;
 using Windows.Devices.Midi;
 using Windows.Storage.Streams;
@@ -12,6 +13,8 @@ namespace DrumMidiLibrary.pAudio;
 /// </summary>
 public static partial class MidiNet
 {
+    #region member
+
     /// <summary>
     /// ロック用
     /// </summary>
@@ -26,6 +29,8 @@ public static partial class MidiNet
     /// MIDI-OUTデバイス
     /// </summary>
     private static IMidiOutPort? _CurrentMidiOutputDevice;
+
+    #endregion
 
     #region Midi define
 
@@ -42,10 +47,7 @@ public static partial class MidiNet
     /// <summary>
     /// チャンネル番号リスト（0-15）
     /// </summary>
-    public static List<byte> ChannelNoList
-    {
-        get; private set;
-    } =
+    public static List<byte> ChannelNoList { get; private set; } =
     [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     ];
@@ -76,17 +78,7 @@ public static partial class MidiNet
     /// <param name="aMidi">MIDIノート番号</param>
     /// <returns>範囲内のMIDIノート番号(0-127)</returns>
     public static byte CheckMidiNote( int aMidi )
-    {
-        if ( aMidi < MidiNoteMin )
-        {
-            return MidiNoteMin;
-        }
-        else if ( aMidi > MidiNoteMax )
-        {
-            return MidiNoteMax;
-        }
-        return (byte)aMidi;
-    }
+        => (byte)Math.Clamp( aMidi, MidiNoteMin, MidiNoteMax );
 
     /// <summary>
     /// MIDI音量チェック
@@ -94,17 +86,7 @@ public static partial class MidiNet
     /// <param name="aVolume">音量</param>
     /// <returns>範囲内の音量(0-127)</returns>
     public static int CheckMidiVolume( int aVolume )
-    {
-        if ( aVolume < MidiMinVolume )
-        {
-            return MidiMinVolume;
-        }
-        else if ( aVolume > MidiMaxVolume )
-        {
-            return MidiMaxVolume;
-        }
-        return aVolume;
-    }
+        => Math.Clamp( aVolume, MidiMinVolume, MidiMaxVolume );
 
     /// <summary>
     /// Drum midiチャンネル
@@ -120,6 +102,7 @@ public static partial class MidiNet
     /// </summary>
     public static void MidiOutDeviceWatcher()
     {
+        _CurrentMidiOutputDevice?.Dispose();
         _MidiOutDeviceWatcher?.Dispose();
         _MidiOutDeviceWatcher = new();
         _MidiOutDeviceWatcher.DeviceStart();
@@ -129,7 +112,7 @@ public static partial class MidiNet
     /// MIDI-OUTデバイス初期化
     /// </summary>
     /// <param name="aMidiOutDeviceName">MIDI-OUTデバイス名</param>
-    public static async void InitDeviceAsync( string aMidiOutDeviceName )
+    public static async Task InitDeviceAsync( string aMidiOutDeviceName )
     {
         if ( _MidiOutDeviceWatcher == null )
         {
@@ -155,12 +138,18 @@ public static partial class MidiNet
 
         if ( _MidiOutDeviceWatcher != null )
         {
-            foreach ( var device in _MidiOutDeviceWatcher.MidiOutDeviceDic.Values )
-            {
-                list.Add( device.Name );
+            Log.TryCatch
+            (
+                () =>
+                {
+                    foreach ( var device in _MidiOutDeviceWatcher.MidiOutDeviceDic.Values )
+                    {
+                        list.Add( device.Name );
 
-                Log.Info( $"{device.Id}:{device.Name}", false );
-            }
+                        Log.Info( $"{device.Id}:{device.Name}", false );
+                    }
+                }
+            );
         }
         return list;
     }
@@ -204,7 +193,6 @@ public static partial class MidiNet
     public static void ControlChange( byte aChannel, byte aController, byte aControlValue )
         => MidiOutShortMsg( new MidiControlChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aController ), Convert.ToByte( aControlValue ) ) );
 
-
     /// <summary>
     /// プログラムの変更を指定する MIDI メッセージ
     /// </summary>
@@ -212,7 +200,6 @@ public static partial class MidiNet
     /// <param name="aProgram">プログラムNO(0-127)</param>
     public static void ProgramChange( byte aChannel, byte aProgram )
         => MidiOutShortMsg( new MidiProgramChangeMessage( Convert.ToByte( aChannel ), Convert.ToByte( aProgram ) ) );
-
 
     /// <summary>
     /// チャネル圧力を指定する MIDI メッセージ
@@ -236,29 +223,35 @@ public static partial class MidiNet
     /// <param name="aSysExMessage">システムメッセージ</param>
     public static void SystemExclusive( string aSysExMessage )
     {
-        var sysExMessageLength = aSysExMessage.Length;
+        Log.TryCatch
+        (
+            () =>
+            {
+                var sysExMessageLength = aSysExMessage.Length;
 
-        // Do not send a blank SysEx message
-        if ( sysExMessageLength == 0 )
-        {
-            return;
-        }
+                // Do not send a blank SysEx message
+                if ( sysExMessageLength == 0 )
+                {
+                    return;
+                }
 
-        var dataWriter = new DataWriter();
+                var dataWriter = new DataWriter();
 
-        // SysEx messages are two characters long with 1-character space in between them
-        // So we add 1 to the message length, so that it is perfectly divisible by 3
-        // The loop count tracks the number of individual message pieces
-        var loopCount = (sysExMessageLength + 1) / 3;
+                // SysEx messages are two characters long with 1-character space in between them
+                // So we add 1 to the message length, so that it is perfectly divisible by 3
+                // The loop count tracks the number of individual message pieces
+                var loopCount = ( sysExMessageLength + 1 ) / 3;
 
-        // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
-        for ( var i = 0; i < loopCount; i++ )
-        {
-            var messageString = aSysExMessage.Substring(3 * i, 2);
-            var messageByte = Convert.ToByte(messageString, 16);
-            dataWriter.WriteByte( messageByte );
-        }
-        MidiOutShortMsg( new MidiSystemExclusiveMessage( dataWriter.DetachBuffer() ) );
+                // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
+                for ( var i = 0; i < loopCount; i++ )
+                {
+                    var messageString = aSysExMessage.Substring( 3 * i, 2 );
+                    var messageByte   = Convert.ToByte( messageString, 16 );
+                    dataWriter.WriteByte( messageByte );
+                }
+                MidiOutShortMsg( new MidiSystemExclusiveMessage( dataWriter.DetachBuffer() ) );
+            }
+        );
     }
 
     /// <summary>
@@ -330,7 +323,15 @@ public static partial class MidiNet
     /// </summary>
     /// <param name="aMidiMessage">MIDIメッセージ</param>
     private static void MidiOutShortMsg( IMidiMessage aMidiMessage )
-        => _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
+    {
+        Log.TryCatch
+        (
+            () =>
+            {
+                _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
+            }
+        );
+    }
 
     #endregion
 }

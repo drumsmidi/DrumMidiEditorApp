@@ -29,7 +29,7 @@ public sealed partial class PageDebugShell : Page
     [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void OpenButton_Click( object aSender, RoutedEventArgs aArgs )
     {
-        Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoulteFolderPath}" );
+        Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoluteFolderPath}" );
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]

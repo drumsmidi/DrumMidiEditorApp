@@ -53,7 +53,7 @@ public sealed partial class WindowPlayer : Window
         ControlAccess.MainWindow = this;
 
         // 環境音有効化
-        SystemSound.SoundOn();
+        SystemSound.SoundOn( this );
 
         // 再生コントロール開始
         DmsControl.Start();
@@ -145,13 +145,12 @@ public sealed partial class WindowPlayer : Window
     {
         try
         {
-            // NOTE: DPIスケール取得できない？WindowsAPI仕様が必要？
+            // TASK: DPIスケール取得できない？WindowsAPI仕様が必要？
             // DPIスケール取得
-            Config.Window.DpiScale = 1.5; // Content.RasterizationScale;
+            Config.Window.SetDpiScale( 1.5 ); // Content.RasterizationScale;
 
             // パネルの解像度にに合わせてウィンドウサイズを変更する
-            Config.Window.WindowSizeWidthDpiNoScale     = (int)Config.Panel.ResolutionScreenWidth;
-            Config.Window.WindowSizeHeightDpiNoScale    = (int)Config.Panel.ResolutionScreenHeight;
+            Config.Window.SetWindowSizeDpiNoScale( (int)Config.Panel.ResolutionScreenWidth, (int)Config.Panel.ResolutionScreenHeight );
 
             var width  = Config.Window.WindowSizeWidthDpiScale;
             var height = Config.Window.WindowSizeHeightDpiScale;

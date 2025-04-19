@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DrumMidiLibrary.pConfig;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pModel.pScore;
@@ -15,6 +16,29 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// <param name="aChannelNo">チャンネル番号(0-15)</param>
 public partial class Channel( byte aChannelNo ) : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            ClearAll();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -44,26 +68,6 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
 
     #endregion
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                ClearAll();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
-
     #region Measure
 
     /// <summary>
@@ -72,7 +76,7 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
     /// <param name="aMeasureNo">小節番号</param>
     /// <returns>取得：小節情報、未取得：null</returns>
     public Measure? GetMeasure( int aMeasureNo ) 
-        => !MeasureList.TryGetValue( aMeasureNo, out var measure ) ? null : measure;
+        => MeasureList.TryGetValue( aMeasureNo, out var measure ) ? measure : null ;
 
     #endregion
 
@@ -86,7 +90,7 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
     /// <param name="aNotePos">小節内ノート位置</param>
     /// <returns>True：あり、False：なし</returns>
     public bool IsNote( int aMidiMapKey, int aMeasureNo, int aNotePos )
-        => GetMeasure( aMeasureNo )?.IsNote( aMidiMapKey, aNotePos ) ?? false;
+        => GetMeasure( aMeasureNo )?.IsNote( aMidiMapKey, aNotePos ) ?? false ;
 
     /// <summary>
     /// NOTE情報取得
@@ -242,7 +246,7 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
         {
             if ( item.Value.Clone() is not InfoNote info )
             {
-                throw new InvalidCastException();
+                throw new InvalidOperationException( "Invalid clone operation for InfoNote." );
             }
 
             channel.NoteInfoList.Add( item.Key, info );
@@ -261,19 +265,28 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
     /// </summary>
     public void ClearAll()
     {
-        foreach ( var de in NoteInfoList )
-        {
-            de.Value.Dispose();
-        }
-        NoteInfoList.Clear();
+        Log.TryCatch
+        (
+            () =>
+            {
+                foreach ( var de in NoteInfoList )
+                {
+                    de.Value.Dispose();
+                }
+                NoteInfoList.Clear();
 
-        foreach ( var obj in MeasureList )
-        {
-            obj.Value.Dispose();
-        }
-        MeasureList.Clear();
-
-        MaxMeasureNo = 0;
+                foreach ( var obj in MeasureList )
+                {
+                    obj.Value.Dispose();
+                }
+                MeasureList.Clear();
+            },
+            null,
+            () => 
+            {
+                MaxMeasureNo = 0;
+            }
+        );
     }
 
     /// <summary>

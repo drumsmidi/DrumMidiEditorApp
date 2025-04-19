@@ -18,13 +18,8 @@ public static class HelperWin2D
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
     /// <param name="aLabelText"></param>
-    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
+    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect, string aLabelText )
     {
-        if ( aFormatRect == null )
-        {
-            return;
-        }
-
         // 背景色
         DrawFormatRectFillRectangle( aGraphics, aDrawRect, aFormatRect );
 
@@ -41,13 +36,8 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    public static void DrawFormatRect( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null )
-        {
-            return;
-        }
-
         // 背景色
         DrawFormatRectFillRectangle( aGraphics, aDrawRect, aFormatRect );
 
@@ -62,15 +52,9 @@ public static class HelperWin2D
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
     /// <param name="aLabelText"></param>
-    public static void DrawFormatRectText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect, string aLabelText )
+    public static void DrawFormatRectText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect, string aLabelText )
     {
-        DrawFormatText
-            (
-                aGraphics,
-                aDrawRect,
-                aFormatRect?.Text,
-                aLabelText
-            );
+        DrawFormatText( aGraphics, aDrawRect, aFormatRect.Text, aLabelText );
     }
 
     /// <summary>
@@ -79,9 +63,9 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRectFillRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    public static void DrawFormatRectFillRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null )
+        if ( !IsValidFormatRect( aFormatRect ) )
         {
             return;
         }
@@ -95,9 +79,9 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRectOutlineRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    public static void DrawFormatRectOutlineRectangle( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        if ( !IsValidFormatRectOutline( aFormatRect ) )
         {
             return;
         }
@@ -111,9 +95,9 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRectFillEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    public static void DrawFormatRectFillEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null )
+        if ( !IsValidFormatRect( aFormatRect ) )
         {
             return;
         }
@@ -134,9 +118,9 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRectOutlineEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect? aFormatRect )
+    public static void DrawFormatRectOutlineEllipse( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        if ( !IsValidFormatRectOutline( aFormatRect ) )
         {
             return;
         }
@@ -158,15 +142,31 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aCanvasGeometry"></param>
     /// <param name="aFormatRect"></param>
-    public static void DrawFormatRectOutlineGeometry( CanvasDrawingSession aGraphics, CanvasGeometry aCanvasGeometry, FormatRect? aFormatRect )
+    public static void DrawFormatRectOutlineGeometry( CanvasDrawingSession aGraphics, CanvasGeometry aCanvasGeometry, FormatRect aFormatRect )
     {
-        if ( aFormatRect == null || aFormatRect.Line.LineSize <= 0 )
+        if ( !IsValidFormatRectOutline( aFormatRect ) )
         {
             return;
         }
 
         aGraphics.DrawGeometry( aCanvasGeometry, aFormatRect.Line.LineColor.Color, aFormatRect.Line.LineSize );
     }
+
+    /// <summary>
+    /// 共通入力チェック：FormatRect 塗潰
+    /// </summary>
+    /// <param name="aFormatRect"></param>
+    /// <returns></returns>
+    private static bool IsValidFormatRect( FormatRect aFormatRect )
+        => aFormatRect != null;
+
+    /// <summary>
+    /// 共通入力チェック：FormatRect 外枠
+    /// </summary>
+    /// <param name="aFormatRect"></param>
+    /// <returns></returns>
+    private static bool IsValidFormatRectOutline( FormatRect aFormatRect )
+        => aFormatRect != null && aFormatRect.Line.LineSize > 0;
 
     #endregion
 
@@ -179,9 +179,9 @@ public static class HelperWin2D
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatText"></param>
     /// <param name="aLabelText"></param>
-    public static void DrawFormatText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatText? aFormatText, string aLabelText )
+    public static void DrawFormatText( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatText aFormatText, string aLabelText )
     {
-        if ( aFormatText == null || aFormatText.TextFormat.FontSize <= 0 || aLabelText.Length == 0 )
+        if ( !IsValidFormatText( aFormatText, aLabelText ) )
         {
             return;
         }
@@ -195,6 +195,15 @@ public static class HelperWin2D
             );
     }
 
+    /// <summary>
+    /// 共通入力チェック：FormatText
+    /// </summary>
+    /// <param name="aFormatText"></param>
+    /// <param name="aLabelText"></param>
+    /// <returns></returns>
+    private static bool IsValidFormatText( FormatText aFormatText, string aLabelText )
+        => aFormatText != null && aFormatText.TextFormat.FontSize > 0 && aLabelText.Length != 0;
+
     #endregion
 
     #region FormatLine
@@ -205,7 +214,7 @@ public static class HelperWin2D
     /// <param name="aGraphics"></param>
     /// <param name="aDrawRect"></param>
     /// <param name="aFormatLine"></param>
-    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatLine? aFormatLine )
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Rect aDrawRect, FormatLine aFormatLine )
         => DrawFormatLine( aGraphics, (float)aDrawRect.Left, (float)aDrawRect.Top, (float)aDrawRect.Right, (float)aDrawRect.Bottom, aFormatLine );
 
     /// <summary>
@@ -215,7 +224,7 @@ public static class HelperWin2D
     /// <param name="aP1"></param>
     /// <param name="aP2"></param>
     /// <param name="aFormatLine"></param>
-    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Point aP1, Point aP2, FormatLine? aFormatLine )
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, Point aP1, Point aP2, FormatLine aFormatLine )
         => DrawFormatLine( aGraphics, aP1._x, aP1._y, aP2._x, aP2._y, aFormatLine );
 
     /// <summary>
@@ -227,9 +236,9 @@ public static class HelperWin2D
     /// <param name="aX2"></param>
     /// <param name="aY2"></param>
     /// <param name="aFormatLine"></param>
-    public static void DrawFormatLine( CanvasDrawingSession aGraphics, float aX1, float aY1, float aX2, float aY2, FormatLine? aFormatLine )
+    public static void DrawFormatLine( CanvasDrawingSession aGraphics, float aX1, float aY1, float aX2, float aY2, FormatLine aFormatLine )
     {
-        if ( aFormatLine == null || aFormatLine.LineSize <= 0 )
+        if ( !IsValidFormatLine( aFormatLine ) )
         {
             return;
         }
@@ -244,6 +253,14 @@ public static class HelperWin2D
                 aFormatLine.LineSize
             );
     }
+
+    /// <summary>
+    /// 共通入力チェック：FormatRect 外枠
+    /// </summary>
+    /// <param name="aFormatLine"></param>
+    /// <returns></returns>
+    private static bool IsValidFormatLine( FormatLine aFormatLine )
+        => aFormatLine != null && aFormatLine.LineSize > 0;
 
     #endregion
 }

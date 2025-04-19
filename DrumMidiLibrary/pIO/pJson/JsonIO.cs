@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
-using DrumMidiLibrary.pIO.pJson.pConverter;
+using System.Text.Json.Serialization;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 
@@ -19,21 +22,16 @@ public static class JsonIO
     /// <returns>読込済みオブジェクト</returns>
     public static T? LoadFile<T>( GeneralPath aGeneralPath )
     {
-        if ( !aGeneralPath.IsExistFile )
-        {
-            Log.Warning( $"{Log.GetThisMethodName}:file not found... [{aGeneralPath.AbsoulteFilePath}]" );
-            return default;
-        }
+        return Log.TryCatch<T?>
+        (
+            () =>
+            {
+                var dat = File.ReadAllText( aGeneralPath.AbsoluteFilePath );
 
-        var dat = File.ReadAllText( aGeneralPath.AbsoulteFilePath );
-
-        var opt = new JsonSerializerOptions()
-        {
-        };
-
-        SetConverter( opt );
-
-        return JsonSerializer.Deserialize<T>( dat, opt );
+                return JsonSerializer.Deserialize<T>( dat, _JsonSerializerOptions );
+            },
+            ( e ) => { throw new FileLoadException( "Failed to load file.", aGeneralPath.AbsoluteFilePath, e ); }
+        );
     }
 
     /// <summary>
@@ -44,24 +42,64 @@ public static class JsonIO
     /// <param name="aGeneralPath">書込ファイルパス</param>
     public static void SaveFile<T>( T aSerializeObject, GeneralPath aGeneralPath )
     {
+        Log.TryCatch
+        (
+            () =>
+            {
+                File.WriteAllText( aGeneralPath.AbsoluteFilePath, JsonSerializer.Serialize<T>( aSerializeObject, _JsonSerializerOptions ) );
+            },
+            ( e ) => { throw new FileLoadException( "Failed to save file...", aGeneralPath.AbsoluteFilePath, e ); }
+        );
+    }
+
+    /// <summary>
+    /// 共通JSONシリアライズオプション
+    /// </summary>
+    private static readonly JsonSerializerOptions _JsonSerializerOptions = CreateJsonSerializerOptionsAll();
+
+    /// <summary>
+    /// JSONコンバーター設定（全Converter）
+    /// </summary>
+    /// <param name="aOption">シリアライズオプション</param>
+    private static JsonSerializerOptions CreateJsonSerializerOptionsAll()
+    {
         var opt = new JsonSerializerOptions()
         {
             WriteIndented = true,
         };
 
-        SetConverter( opt );
+        // カスタムコンバーターの手動登録
+        //SetConverter
+        //(
+        //    opt,
+        //    new ColorConverter(),
+        //    new CanvasTextFormatConverter(),
+        //    new PointConverter()
+        //);
 
-        File.WriteAllText( aGeneralPath.AbsoulteFilePath, JsonSerializer.Serialize<T>( aSerializeObject, opt ) );
-    }
+        // GitHub Copilot提案
+        // カスタムコンバーターの自動登録
+        var converters = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where
+                ( 
+                    t => 
+                        t.IsSubclassOf( typeof( JsonConverter ) ) &&
+                        t.Namespace == "DrumMidiLibrary.pIO.pJson.pConverter" &&
+                        !t.IsAbstract 
+                )
+            .Select( t => Activator.CreateInstance( t ) as JsonConverter );
 
-    /// <summary>
-    /// JSONコンバーター設定
-    /// </summary>
-    /// <param name="aOption">シリアライズオプション</param>
-    private static void SetConverter( JsonSerializerOptions aOption )
-    {
-        aOption.Converters.Add( new ColorConverter() );
-        aOption.Converters.Add( new CanvasTextFormatConverter() );
-        aOption.Converters.Add( new PointConverter() );
+        foreach ( var converter in converters )
+        {
+            if ( converter != null )
+            {
+                opt.Converters.Add( converter );
+
+                Log.Info( $"Set JsonConverter Type={converter.GetType().FullName}" );
+            }
+        }
+
+        return opt;
     }
 }

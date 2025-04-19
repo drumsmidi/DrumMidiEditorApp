@@ -45,6 +45,8 @@ public static class ScoreIO
             if ( reader.Validation( aGeneralPath ) )
             {
                 reader.Read( aGeneralPath, out aScore );
+
+                aScore.FilePath = aGeneralPath;
                 return;
             }
         }

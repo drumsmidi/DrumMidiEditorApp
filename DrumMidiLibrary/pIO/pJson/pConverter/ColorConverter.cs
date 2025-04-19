@@ -11,27 +11,31 @@ namespace DrumMidiLibrary.pIO.pJson.pConverter;
 /// </summary>
 internal class ColorConverter : JsonConverter<Color>
 {
-    public override bool CanConvert( Type aTypeToConvert )
-        => typeof( Color ).IsAssignableFrom( aTypeToConvert );
-
     public override Color Read( ref Utf8JsonReader aReader, Type aTypeToConvert, JsonSerializerOptions aOptions )
     {
-        var c = Color.FromArgb( 255, 255, 255, 255 );
+        var c = HelperColor.EmptyColor;;
+
+        var prop = string.Empty;
 
         while ( aReader.Read() && aReader.TokenType != JsonTokenType.EndObject )
         {
-            if ( aReader.TokenType == JsonTokenType.PropertyName )
+            switch ( aReader.TokenType )
             {
-                var prop = aReader.GetString();
-
-                _ = aReader.Read();
-
-                switch ( prop )
-                {
-                    case "ColorArgb":
-                        c = HelperColor.GetColor( aReader.GetString() ?? string.Empty );
-                        break;
-                }
+                case JsonTokenType.PropertyName:
+                    {
+                        prop = aReader.GetString() ?? string.Empty;
+                    }
+                    break;
+                case JsonTokenType.String:
+                    {
+                        switch ( prop )
+                        {
+                            case "ColorArgb":
+                                c = HelperColor.GetColor( aReader.GetString() ?? string.Empty );
+                                break;
+                        }
+                    }
+                    break;
             }
         }
 
@@ -42,7 +46,7 @@ internal class ColorConverter : JsonConverter<Color>
     {
         aWriter.WriteStartObject();
         aWriter.WritePropertyName( "ColorArgb" );
-        aWriter.WriteStringValue( HelperColor.GetColor( aValue ) );
+        aWriter.WriteStringValue( HelperColor.GetColorText( aValue ) );
         aWriter.WriteEndObject();
     }
 }

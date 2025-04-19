@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pLog;
 
 namespace DrumMidiLibrary.pUtil;
 
@@ -8,28 +9,7 @@ namespace DrumMidiLibrary.pUtil;
 /// </summary>
 public class GeneralPath
 {
-    /// <summary>
-    /// ファイル絶対パス
-    /// </summary>
-    [JsonIgnore]
-    private string _FullPath = string.Empty;
-
-    /// <summary>
-    /// 基準フォルダパス
-    /// </summary>
-    [JsonIgnore]
-    private readonly string _BasePath = ConvertPath( StartupFolderPath );
-
-    /// <summary>
-    /// パス文字 変更前
-    /// </summary>
-    [JsonIgnore]
-    private static readonly char _ConvertBef = Path.AltDirectorySeparatorChar; // '/'
-    /// <summary>
-    /// パス文字 変更後
-    /// </summary>
-    [JsonIgnore]
-    private static readonly char _ConvertAft = Path.DirectorySeparatorChar; // '\\'
+    #region コンストラクタ
 
     /// <summary>
     /// コンストラクタ
@@ -55,7 +35,7 @@ public class GeneralPath
     public GeneralPath( string aPath )
     {
         _FullPath = Path.GetFullPath( ConvertPath( aPath ), StartupFolderPath );
-        _BasePath = AbsoulteFolderPath;
+        _BasePath = AbsoluteFolderPath;
     }
 
     /// <summary>
@@ -68,6 +48,22 @@ public class GeneralPath
         _FullPath = Path.GetFullPath( ConvertPath( aPath ), ConvertPath( aBaseFolderPath ) );
         _BasePath = ConvertPath( aBaseFolderPath );
     }
+
+    #endregion
+
+    #region パス情報
+
+    /// <summary>
+    /// ファイル絶対パス
+    /// </summary>
+    [JsonIgnore]
+    private string _FullPath = string.Empty;
+
+    /// <summary>
+    /// 基準フォルダパス
+    /// </summary>
+    [JsonIgnore]
+    private readonly string _BasePath = ConvertPath( StartupFolderPath );
 
     /// <summary>
     /// ファイル絶対パスの長さ
@@ -92,7 +88,7 @@ public class GeneralPath
     /// ファイル絶対パス
     /// </summary>
     [JsonInclude]
-    public string AbsoulteFilePath
+    public string AbsoluteFilePath
     {
         get => _FullPath;
         set => _FullPath = Path.GetFullPath( ConvertPath( value ), _BasePath );
@@ -109,8 +105,8 @@ public class GeneralPath
     /// ディレクトリ絶対パス
     /// </summary>
     [JsonIgnore]
-    public string AbsoulteFolderPath
-        => Path.GetDirectoryName( AbsoulteFilePath ) ?? string.Empty;
+    public string AbsoluteFolderPath
+        => Path.GetDirectoryName( AbsoluteFilePath ) ?? string.Empty;
 
     /// <summary>
     /// ディレクトリ相対パス
@@ -122,8 +118,8 @@ public class GeneralPath
     /// <summary>
     /// ディレクトリ一覧（絶対パス）
     /// </summary>
-    public string [] AbsoulteFolderList
-        => AbsoulteFolderPath.Split( _ConvertAft );
+    public string [] AbsoluteFolderList
+        => AbsoluteFolderPath.Split( _ConvertAft );
 
     /// <summary>
     /// ディレクトリ一覧（相対パス）
@@ -138,7 +134,7 @@ public class GeneralPath
     public string FileName
     {
         get => Path.GetFileName( _FullPath ) ?? string.Empty;
-        set => _FullPath = $"{AbsoulteFolderPath}{_ConvertAft}{ConvertPath( value )}";
+        set => _FullPath = $"{AbsoluteFolderPath}{_ConvertAft}{ConvertPath( value )}";
     }
 
     /// <summary>
@@ -155,8 +151,20 @@ public class GeneralPath
     public string Extension
     {
         get => Path.GetExtension( _FullPath ) ?? string.Empty;
-        set => _FullPath = $"{AbsoulteFolderPath}{_ConvertAft}{FileNameWithoutExtension}{ConvertPath( value )}";
+        set => _FullPath = $"{AbsoluteFolderPath}{_ConvertAft}{FileNameWithoutExtension}{ConvertPath( value )}";
     }
+
+    /// <summary>
+    /// ディレクトリ絶対パスにサブフォルダを結合して返す
+    /// </summary>
+    /// <param name="aSubFolder"></param>
+    /// <returns></returns>
+    public string CombineWithSubFolder( string aSubFolder )
+        => Path.Combine( AbsoluteFolderPath, aSubFolder );
+
+    #endregion
+
+    #region チェック
 
     /// <summary>
     /// ファイル存在チェック
@@ -168,12 +176,32 @@ public class GeneralPath
     /// ディレクトリ存在チェック
     /// </summary>
     [JsonIgnore]
-    public bool IsExistDirectory => Directory.Exists( AbsoulteFolderPath );
+    public bool IsExistDirectory => Directory.Exists( AbsoluteFolderPath );
+
+    #endregion
+
+    #region ディレクトリ・ファイル操作
 
     /// <summary>
     /// ディレクトリ作成
     /// </summary>
-    public DirectoryInfo CreateDirectory() => Directory.CreateDirectory( AbsoulteFolderPath );
+    public DirectoryInfo CreateDirectory() => Directory.CreateDirectory( AbsoluteFolderPath );
+
+    #endregion
+
+    #region パス文字列変換
+
+    /// <summary>
+    /// パス文字 変更前
+    /// </summary>
+    [JsonIgnore]
+    private static readonly char _ConvertBef = Path.AltDirectorySeparatorChar; // '/'
+
+    /// <summary>
+    /// パス文字 変更後
+    /// </summary>
+    [JsonIgnore]
+    private static readonly char _ConvertAft = Path.DirectorySeparatorChar; // '\\'
 
     /// <summary>
     /// '/' ⇒ '\\' に変換
@@ -183,13 +211,19 @@ public class GeneralPath
     private static string ConvertPath( string aPath )
         => aPath.Replace( _ConvertBef, _ConvertAft );
 
+    #endregion
 
     /// <summary>
-    /// ディレクトリ絶対パスにサブフォルダを結合して返す
+    /// パス情報をログ出力
     /// </summary>
-    /// <param name="aSubFolder"></param>
-    /// <returns></returns>
-    public string GetAbsoulteFolderPathCombineSubFolder( string aSubFolder )
-        => Path.Combine( AbsoulteFolderPath, aSubFolder );
-
+    public void PrintPath()
+    {
+        Log.Info( $"---------------------------------------------------------------------" );
+        Log.Info( $"--AbsoluteFilePath   : {AbsoluteFilePath}" );
+        Log.Info( $"--RelativeFilePath   : {RelativeFilePath}" );
+        Log.Info( $"--AbsoluteFolderPath : {AbsoluteFolderPath}" );
+        Log.Info( $"--RelativeFolderPath : {RelativeFolderPath}" );
+        Log.Info( $"--BaseFolderPath     : {BaseFolderPath}" );
+        Log.Info( $"---------------------------------------------------------------------" );
+    }
 }

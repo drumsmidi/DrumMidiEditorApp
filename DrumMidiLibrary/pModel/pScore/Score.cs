@@ -12,12 +12,48 @@ namespace DrumMidiLibrary.pModel.pScore;
 public partial class Score : DisposeBaseClass
 {
     /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public Score()
+    {
+        for ( var channel_no = MidiNet.ChannelMinNo; channel_no <= MidiNet.ChannelMaxNo; channel_no++ )
+        {
+            Channels.Add( channel_no, new( channel_no ) );
+        }
+    }
+
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            ClearChannel();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
+    /// <summary>
     /// スコアロック用オブジェクト
     /// </summary>
     public readonly Lock LockObj = new();
 
     /// <summary>
-    /// ファイルパス（現状未使用）
+    /// ファイルパス
     /// </summary>
     public GeneralPath FilePath { get; set; } = ConfigLib.System.DefaultScoreFilePath;
 
@@ -75,36 +111,7 @@ public partial class Score : DisposeBaseClass
         set => Channels [ EditChannelNo ].MidiMapSet = value;
     }
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public Score()
-    {
-        for ( var channel_no = MidiNet.ChannelMinNo; channel_no <= MidiNet.ChannelMaxNo; channel_no++ )
-        {
-            Channels.Add( channel_no, new( channel_no ) );
-        }
-    }
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                ClearChannel();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     #region Function
 

@@ -67,11 +67,11 @@ public static class FileIO
         {
             config = JsonIO.LoadFile<T>( aGeneralPath );
 
-            Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aGeneralPath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
         return config;
@@ -127,11 +127,11 @@ public static class FileIO
         {
             JsonIO.SaveFile<T>( aConfig, aGeneralPath );
 
-            Log.Info( $"Succeeded in writing [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in writing [{aGeneralPath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aGeneralPath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to write [{aGeneralPath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
@@ -192,11 +192,11 @@ public static class FileIO
 
             _ = aFolderPath.CreateDirectory();
 
-            Log.Info( $"Folder creation successful [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Info( $"Folder creation successful [{aFolderPath.AbsoluteFolderPath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Folder creation failure [{aFolderPath.AbsoulteFolderPath}]" );
+            Log.Error( $"Folder creation failure [{aFolderPath.AbsoluteFolderPath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
         }
     }
@@ -228,11 +228,11 @@ public static class FileIO
                 throw new NotSupportedException( $"Extension {ext} is not supported" );
             }
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoulteFilePath}]" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
             Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
             return false;
         }

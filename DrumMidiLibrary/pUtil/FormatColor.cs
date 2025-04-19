@@ -10,32 +10,6 @@ namespace DrumMidiLibrary.pUtil;
 public class FormatColor
 {
     /// <summary>
-    /// 色
-    /// </summary>
-    [JsonInclude]
-    public Color Color = HelperColor.EmptyColor;
-
-    /// <summary>
-    /// 色
-    /// </summary>
-    [JsonIgnore]
-    public string ColorText
-    {
-        get => HelperColor.GetColor( Color );
-        set => Color = HelperColor.GetColor( value );
-    }
-
-    /// <summary>
-    /// 色
-    /// </summary>
-    [JsonIgnore]
-    public Brush ColorBrush
-    {
-        get => new SolidColorBrush( Color );
-        set => Color = ( value as SolidColorBrush )?.Color ?? HelperColor.EmptyColor;
-    }
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public FormatColor()
@@ -45,9 +19,35 @@ public class FormatColor
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="aColor"></param>
+    /// <param name="aColor">初期化する色</param>
     public FormatColor( Color aColor )
     {
         Color = aColor;
+    }
+
+    /// <summary>
+    /// 色
+    /// </summary>
+    [JsonInclude]
+    public Color Color { get; set; } = HelperColor.EmptyColor;
+
+    /// <summary>
+    /// 色を文字列形式で取得または設定
+    /// </summary>
+    [JsonIgnore]
+    public string ColorText
+    {
+        get => HelperColor.GetColorText( Color );
+        set => Color = HelperColor.GetColor( value );
+    }
+
+    /// <summary>
+    /// 色をブラシ形式で取得または設定
+    /// </summary>
+    [JsonIgnore]
+    public Brush ColorBrush
+    {
+        get => HelperColor.GetColorBrush( Color );
+        set => Color = HelperColor.GetColor( value );
     }
 }

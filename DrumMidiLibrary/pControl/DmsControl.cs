@@ -23,40 +23,40 @@ public static class DmsControl
     private static Task? _MusicTask = null;
 
     /// <summary>
-    /// 音楽再生タスク 停止フラグ
+    /// 音楽再生タスク キャンセルトークン
     /// </summary>
-    private static bool _FlagStopMusicTask = true;
+    private static CancellationTokenSource? _CancellationTokenSource;
 
     /// <summary>
     /// 音楽再生タスク開始
     /// </summary>
     public static void Start()
     {
-        try
-        {
-            End();
+        Log.TryCatch
+        (
+            () =>
+            {
+                End();
 
-            _TimeTable.Refresh();
-            _TimeTable.Update( _TmpScore );
+                _TimeTable.Refresh();
+                _TimeTable.Update( _TmpScore );
 
-            _FlagStopMusicTask = false;
+                _CancellationTokenSource?.Dispose();
+                _CancellationTokenSource = new();
 
-            // 粒度の細かいシステムではなく、タスクが長時間実行され、
-            // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
-            // これは、TaskScheduler に対し、オーバーサブスクリプションを許可してもよいことを示します。
-            // オーバーサブスクリプションを使用すると、使用可能なハードウェア スレッドよりも多くのスレッドを作成できます。
-            // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
-            // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
-            _MusicTask = Task.Factory.StartNew( ProcSequenceAsync, TaskCreationOptions.LongRunning );
+                // 粒度の細かいシステムではなく、タスクが長時間実行され、
+                // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
+                // これは、TaskScheduler に対し、オーバーサブスクリプションを許可してもよいことを示します。
+                // オーバーサブスクリプションを使用すると、使用可能なハードウェア スレッドよりも多くのスレッドを作成できます。
+                // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
+                // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
+                _MusicTask = Task.Factory.StartNew( () => ProcSequenceAsync( _CancellationTokenSource.Token ), TaskCreationOptions.LongRunning );
 
-            //_MusicTask = Task.Run(() => { ProcSequenceAsync(); });
+                //_MusicTask = Task.Run(() => { ProcSequenceAsync(); });
 
-            Log.Info( $"{Log.GetThisMethodName}:start thread" );
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
+                Log.Info( $"{Log.GetThisMethodName}:start thread" );
+            }
+        );
     }
 
     /// <summary>
@@ -64,24 +64,25 @@ public static class DmsControl
     /// </summary>
     public static void End()
     {
-        try
-        {
-            _FlagStopMusicTask = true;
-
-            if ( _MusicTask != null )
+        Log.TryCatch
+        (
+            () =>
             {
-                // ロックしないように、10秒のみ待つ
-                _ = _MusicTask.Wait( 10000 );
-                _MusicTask.Dispose();
-                _MusicTask = null;
+                _CancellationTokenSource?.Cancel();
 
-                Log.Info( $"{Log.GetThisMethodName}:end thread" );
+                if ( _MusicTask != null )
+                {
+                    // ロックしないように、10秒のみ待つ
+                    _ = _MusicTask.Wait( 10000 );
+                    _MusicTask.Dispose();
+                    _MusicTask = null;
+
+                    Log.Info( $"{Log.GetThisMethodName}:end thread" );
+                }
+
+                _CancellationTokenSource?.Dispose();
             }
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
+        );
     }
 
     #endregion
@@ -138,7 +139,7 @@ public static class DmsControl
         lock ( _TimeTable.LockObj )
         {
             while ( _NoteSecPos < max_note
-                && _TimeTable [ _NoteSecPos ] < aPlayTime
+                && _TimeTable [ _NoteSecPos ]     <  aPlayTime
                 && _TimeTable [ _NoteSecPos + 1 ] <= aPlayTime )
             {
                 _NoteSecPos += 1;
@@ -180,7 +181,7 @@ public static class DmsControl
 
     #endregion
 
-    #region リクエスト
+    #region State
 
     /// <summary>
     /// 音楽再生状態 一覧
@@ -206,30 +207,96 @@ public static class DmsControl
     /// </summary>
     private static DmsState _State = DmsState.DmsState_None;
 
+    #endregion
+
+    #region リクエスト
+
     /// <summary>
-    /// 音楽再生リクエスト
+    /// 音楽再生状態 一覧
     /// </summary>
-    private static DmsState _RequestState = DmsState.DmsState_None;
+    private enum DmsRequest : int
+    {
+        DmsRequest_None = 0,
+        DmsRequest_Play,
+        DmsRequest_LoopPlay,
+        DmsRequest_Stop,
+        DmsRequest_Record,
+    }
 
     /// <summary>
     /// 通常再生リクエスト
     /// </summary>
-    public static void PlayPreSequence() => _RequestState = DmsState.DmsState_PrePlay;
+    public static void PlayPreSequence() => _Request = DmsRequest.DmsRequest_Play;
 
     /// <summary>
     /// ループ再生リクエスト
     /// </summary>
-    public static void PlayPreLoopSequence() => _RequestState = DmsState.DmsState_PreLoopPlay;
+    public static void PlayPreLoopSequence() => _Request = DmsRequest.DmsRequest_LoopPlay;
 
     /// <summary>
     /// 停止リクエスト
     /// </summary>
-    public static void StopPreSequence() => _RequestState = DmsState.DmsState_PreStop;
+    public static void StopPreSequence() => _Request = DmsRequest.DmsRequest_Stop;
 
     /// <summary>
     /// レコード再生リクエスト
     /// </summary>
-    public static void RecordPreSequence() => _RequestState = DmsState.DmsState_PreRecord;
+    public static void RecordPreSequence() => _Request = DmsRequest.DmsRequest_Record;
+
+    /// <summary>
+    /// 音楽再生リクエスト
+    /// </summary>
+    private static DmsRequest _Request = DmsRequest.DmsRequest_None;
+
+    /// <summary>
+    /// リクエスト処理
+    /// </summary>
+    private static void ProcRequest()
+    {
+        if ( _Request == DmsRequest.DmsRequest_None )
+        {
+            return;
+        }
+
+        // 初期化＆プレイヤー側へのリクエストを設定
+        // プレイヤー側からリクエストの状態を監視する作りとする
+        switch ( _Request )
+        {
+            case DmsRequest.DmsRequest_Play:
+                {
+                    WaitEventReset();
+
+                    PlayerReq   = PlayerRequest.PrePlay;
+                    _State      = DmsState.DmsState_PrePlay;
+                }
+                break;
+            case DmsRequest.DmsRequest_LoopPlay:
+                {
+                    WaitEventReset();
+
+                    PlayerReq   = PlayerRequest.PreLoopPlay;
+                    _State      = DmsState.DmsState_PreLoopPlay;
+                }
+                break;
+            case DmsRequest.DmsRequest_Stop:
+                {
+                    PlayerReq   = PlayerRequest.PreStop;
+                    _State      = DmsState.DmsState_PreStop;
+                }
+                break;
+            case DmsRequest.DmsRequest_Record:
+                {
+                    WaitEventReset();
+
+                    PlayerReq   = PlayerRequest.PreRecord;
+                    _State      = DmsState.DmsState_PreRecord;
+                }
+                break;
+        }
+
+        // リクエストクリア
+        _Request = DmsRequest.DmsRequest_None;
+    }
 
     #endregion
 
@@ -238,7 +305,7 @@ public static class DmsControl
     /// <summary>
     /// プレイヤー再生リクエスト一覧
     /// </summary>
-    public enum PlayRequest : int
+    public enum PlayerRequest : int
     {
         None = 0,
         PreStop,
@@ -250,41 +317,29 @@ public static class DmsControl
     /// <summary>
     /// プレイヤー再生リクエスト
     /// </summary>
-    public static PlayRequest PlayReq { get; set; } = PlayRequest.None;
+    public static PlayerRequest PlayerReq { get; set; } = PlayerRequest.None;
 
     #endregion
 
-    #region 同期制御（力技）
+    #region 同期制御
 
     /// <summary>
     /// 描画側準備完了フラグ
     /// </summary>
-    private static bool _FlagUpdatePlayer = false;
+    private static readonly ManualResetEventSlim _PlayerWaitEvent = new();
 
     /// <summary>
     /// 音楽再生準備完了フラグ
     /// </summary>
-    private static bool _FlagUpdateAudio = false;
+    private static readonly ManualResetEventSlim _AudioWaitEvent = new();
 
     /// <summary>
-    /// 待機フラグリセット
+    /// 待機イベントリセット
     /// </summary>
-    private static void WaitFlagReset()
+    private static void WaitEventReset()
     {
-        _FlagUpdatePlayer = false;
-        _FlagUpdateAudio  = false;
-    }
-
-    /// <summary>
-    /// 録画準備が整ったら呼び出す
-    /// （音楽再生準備の完了を待つ）
-    /// </summary>
-    public static void WaitRecorder()
-    {
-        while ( !_FlagUpdatePlayer && !_FlagUpdateAudio )
-        {
-            Thread.Sleep( 1 );
-        }
+        _AudioWaitEvent.Reset();
+        _PlayerWaitEvent.Reset();
     }
 
     /// <summary>
@@ -293,14 +348,11 @@ public static class DmsControl
     /// </summary>
     private static void WaitPlayer()
     {
-        _FlagUpdateAudio = true;
+        // Audio再生準備が整った
+        _AudioWaitEvent.Set();
 
-        while ( !_FlagUpdatePlayer )
-        {
-            Thread.Sleep( 1 );
-        }
-
-        Log.Info( $"{Log.GetThisMethodName}:OK" );
+        // プレイヤーの準備完了を待つ
+        _PlayerWaitEvent.Wait( 5000 );
     }
 
     /// <summary>
@@ -309,14 +361,18 @@ public static class DmsControl
     /// </summary>
     public static void WaitAudio()
     {
-        _FlagUpdatePlayer = true;
+        _PlayerWaitEvent.Set();
 
-        while ( !_FlagUpdateAudio )
-        {
-            Thread.Sleep( 1 );
-        }
+        _AudioWaitEvent.Wait( 5000 );
+    }
 
-        Log.Info( $"{Log.GetThisMethodName}:OK" );
+    /// <summary>
+    /// 録画準備が整ったら呼び出す
+    /// （音楽再生準備の完了を待つ）
+    /// </summary>
+    public static void WaitRecorder()
+    {
+        _AudioWaitEvent.Wait( 5000 );
     }
 
     #endregion
@@ -367,7 +423,7 @@ public static class DmsControl
     /// <summary>
     /// 音楽再生処理
     /// </summary>
-    private static async void ProcSequenceAsync()
+    private static async void ProcSequenceAsync( CancellationToken aCancellationToken )
     {
         var     range_play      = false;
         int     loop_start;
@@ -389,52 +445,14 @@ public static class DmsControl
             _State = DmsState.DmsState_Stop;
 
             // スレッドプール
-            while ( !_FlagStopMusicTask )
+            while ( !aCancellationToken.IsCancellationRequested )
             {
-                //Thread.Sleep( sleeptime );
-                await Task.Delay( sleeptime );
+                await Task.Delay( sleeptime, aCancellationToken );
 
                 try
                 {
-                    #region リクエスト受付＆初期化
-
-                    if ( _RequestState != DmsState.DmsState_None )
-                    {
-                        // 初期化＆プレイヤー側へのリクエストを設定
-                        // プレイヤー側からリクエストの状態を監視する作りとする
-                        switch ( _RequestState )
-                        {
-                            case DmsState.DmsState_PrePlay:
-                                {
-                                    WaitFlagReset();
-                                    PlayReq = PlayRequest.PrePlay;
-                                }
-                                break;
-                            case DmsState.DmsState_PreLoopPlay:
-                                {
-                                    WaitFlagReset();
-                                    PlayReq = PlayRequest.PreLoopPlay;
-                                }
-                                break;
-                            case DmsState.DmsState_PreStop:
-                                {
-                                    PlayReq = PlayRequest.PreStop;
-                                }
-                                break;
-                            case DmsState.DmsState_PreRecord:
-                                {
-                                    WaitFlagReset();
-                                    PlayReq = PlayRequest.PreRecord;
-                                }
-                                break;
-                        }
-
-                        // 状態更新
-                        _State          = _RequestState;
-                        _RequestState   = DmsState.DmsState_None;
-                    }
-
-                    #endregion
+                    // リクエスト受付＆初期化
+                    ProcRequest();
 
                     #region 状態別処理
 
@@ -638,7 +656,7 @@ public static class DmsControl
 
                 #region ノート再生
 
-                // TODO: チャンネル別再生ON/OFFなど対応が必要
+                // TASK:チャンネル別再生ON/OFFなど対応が必要
                 if ( note_play_on )
                 {
                     foreach ( var seq_info in sounds )
@@ -658,7 +676,7 @@ public static class DmsControl
                     {
                         _State = DmsState.DmsState_PreLoopPlay;
 
-                        PlayReq = PlayRequest.PreLoopPlay;
+                        PlayerReq = PlayerRequest.PreLoopPlay;
                     }
                 }
                 else
@@ -667,18 +685,21 @@ public static class DmsControl
                     {
                         _State = DmsState.DmsState_PreStop;
 
-                        PlayReq = PlayRequest.PrePlay;
+                        PlayerReq = PlayerRequest.PrePlay;
                     }
                 }
 
                 #endregion
             }
         }
-        catch ( Exception )
+        catch ( OperationCanceledException )
         {
-            _FlagStopMusicTask = true;
-
-            throw;
+            // タスクキャンセル
+            Log.Info( $"{Log.GetThisMethodName}:cancel thread" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"{Log.GetThisMethodName}: {e.Message}" );
         }
         finally
         {
@@ -702,9 +723,7 @@ public static class DmsControl
                 _TmpScore.Dispose();
                 _TmpScore = ConfigLib.Media.SCORE;
 
-                // TODO: 見直し検討
-
-                // ループ処理内での即時反映用
+                // ループ処理内でのBOM音量 即時反映用
                 ConfigLib.Media.BgmVolume = _TmpScore.BgmVolume;
             }
         }
@@ -721,7 +740,8 @@ public static class DmsControl
     {
         try
         {
-            // TODO: 回避できていない
+            // TASK: 回避できていない
+
             // 暫定回避策
             // 停止せずに再生終了した場合、再生できなくなる為
             // その場合は再度BGMを読み込むようにする。

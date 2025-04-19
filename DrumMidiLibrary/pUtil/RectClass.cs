@@ -4,8 +4,6 @@ namespace DrumMidiLibrary.pUtil;
 
 public record class RectClass
 {
-    private Rect _Rect = new();
-
     #region コンストラクタ
 
     public RectClass( double aX, double aY, double aWidth, double aHeight )
@@ -44,6 +42,8 @@ public record class RectClass
 
     #region プロパティ
 
+    private Rect _Rect = new();
+
     public Rect GetRect() => _Rect;
 
     public double X
@@ -70,28 +70,24 @@ public record class RectClass
         set => _Rect.Height = value;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE1006:命名スタイル", Justification = "<保留中>" )]
     public float _x 
     { 
         get => _Rect._x;
         set => _Rect._x = value;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE1006:命名スタイル", Justification = "<保留中>" )]
     public float _y
     {
         get => _Rect._y;
         set => _Rect._y = value;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE1006:命名スタイル", Justification = "<保留中>" )]
     public float _width
     {
         get => _Rect._width;
         set => _Rect._width = value;
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE1006:命名スタイル", Justification = "<保留中>" )]
     public float _height
     {
         get => _Rect._height;

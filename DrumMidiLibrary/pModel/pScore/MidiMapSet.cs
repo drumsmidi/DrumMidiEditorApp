@@ -11,6 +11,44 @@ namespace DrumMidiLibrary.pModel.pScore;
 /// </summary>
 public partial class MidiMapSet : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            DisplayMidiMapGroups.Clear();
+            DisplayMidiMaps.Clear();
+            DisplayMidiMapCountByGroup.Clear();
+            MidiMaps.Clear();
+            MidiMapGroupPositions.Clear();
+
+            foreach ( var group in MidiMapGroups )
+            {
+                group.Dispose();
+            }
+            MidiMapGroups.Clear();
+
+            MidiMapGroupKeys.Clear();
+            MidiMapKeys.Clear();
+            DisplayMidiMapGroupKeys.Clear();
+            DisplayMidiMapKeys.Clear();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
     #region Member
 
     /// <summary>
@@ -22,10 +60,7 @@ public partial class MidiMapSet : DisposeBaseClass
     /// MidiMapGroup位置情報リスト（サブデータ）
     /// （描画モード、MidiMapGroupキー、位置情報）
     /// </summary>
-    public Dictionary<ConfigSystem.PlayerSurfaceMode, Dictionary<int, MidiMapGroupPosition>> MidiMapGroupPositions
-    {
-        get; private set;
-    } = [];
+    public Dictionary<ConfigSystem.PlayerSurfaceMode, Dictionary<int, MidiMapGroupPosition>> MidiMapGroupPositions { get; private set; } = [];
 
     /// <summary>
     /// MidiMapリスト
@@ -78,41 +113,6 @@ public partial class MidiMapSet : DisposeBaseClass
     public List<int> DisplayMidiMapKeys { get; private set; } = [];
 
     #endregion
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                DisplayMidiMapGroups.Clear();
-                DisplayMidiMaps.Clear();
-                DisplayMidiMapCountByGroup.Clear();
-                MidiMaps.Clear();
-                MidiMapGroupPositions.Clear();
-
-                foreach ( var group in MidiMapGroups )
-                {
-                    group.Dispose();
-                }
-                MidiMapGroups.Clear();
-
-                MidiMapGroupKeys.Clear();
-                MidiMapKeys.Clear();
-                DisplayMidiMapGroupKeys.Clear();
-                DisplayMidiMapKeys.Clear();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
 
     #region MidiMapGroup / MidiMap 取得
 
@@ -626,7 +626,7 @@ public partial class MidiMapSet : DisposeBaseClass
     {
         var index = GetMidiMapIndex( aMidiMapKey );
 
-        if ( index == -1 )
+        if ( index == ConfigLib.System.MidiMapKeyNotSelect )
         {
             return string.Empty;
         }

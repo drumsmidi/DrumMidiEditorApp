@@ -27,24 +27,27 @@ public abstract class DisposeBaseClass : IDisposable
     /// <summary>
     /// 破棄（継承先で必要に応じて定義）
     /// </summary>
-    /// <param name="aDisposing"></param>
+    /// <param name="aDisposing">true:マネージドリソースの解放, false:アンマネージドリソースの解放</param>
     protected virtual void Dispose( bool aDisposing )
     {
-        if ( !_Disposed )
+        if ( _Disposed )
         {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                //component.Dispose();
-            }
+            return;
+        }
 
-            // Dispose unmanaged resources.
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            //component.Dispose();
+        }
+
+        // アンマネージドリソースの解放
+        {
             //WinApi.CloseHandle( handle );
             //handle = IntPtr.Zero;
-
-            // Note disposing has been done.
-            _Disposed = true;
         }
+
+        _Disposed = true;
     }
     private bool _Disposed = false;
 }

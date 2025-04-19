@@ -28,7 +28,7 @@
             <StackPanel Orientation="Vertical" Spacing="6">
 
                 <TextBox x:Uid="InputBgmFilePath" 
-                    Text="{x:Bind MusicInfo.BgmFilePath.AbsoulteFilePath, Mode=OneWay}" 
+                    Text="{x:Bind MusicInfo.BgmFilePath.AbsoluteFilePath, Mode=OneWay}" 
                     VerticalAlignment="Bottom"
                     TextChanged="MusicInfoBgmFilePathTextBox_TextChanged" />
             

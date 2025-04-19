@@ -10,7 +10,7 @@ using DrumMidiLibrary.pUtil;
 namespace DrumMidiLibrary.pIO.pScore.pMidi;
 
 /// <summary>
-/// Score入出力
+/// Score入出力：MIDIファイル
 /// </summary>
 internal class ScoreStream : IScoreReader, IScoreWriter
 {
@@ -18,19 +18,11 @@ internal class ScoreStream : IScoreReader, IScoreWriter
 
     public bool Validation( GeneralPath aGeneralPath )
     {
-        var errorFlag = false;
-
-        try
-        {
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-
-            errorFlag = true;
-        }
-
-        return !errorFlag;
+        return Log.TryCatch<bool>
+        (
+            () => true,
+            ( e ) => false
+        );
     }
 
     public void Read( GeneralPath aGeneralPath, out Score aScore )
@@ -41,7 +33,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
 
         var pos = 0;
 
-        var buffer = File.ReadAllBytes( aGeneralPath.AbsoulteFilePath );
+        var buffer = File.ReadAllBytes( aGeneralPath.AbsoluteFilePath  );
 
         Log.Info( $"---------------------------------" );
         Log.Info( $"File Size : {buffer.Length}" );
@@ -320,7 +312,8 @@ internal class ScoreStream : IScoreReader, IScoreWriter
         aScore.UpdateInfoAllMidiMaps();
     }
 
-    public void Read( GeneralPath aGeneralPath, out MidiMapSet aMidiMapSet ) => aMidiMapSet = new();
+    public void Read( GeneralPath aGeneralPath, out MidiMapSet aMidiMapSet ) 
+        => aMidiMapSet = new();
 
     /// <summary>
     /// MIDI数値取得
@@ -410,7 +403,7 @@ internal class ScoreStream : IScoreReader, IScoreWriter
 
     public void Write( GeneralPath aGeneralPath, Score aScore )
     {
-        using var writer = new FileStream( aGeneralPath.AbsoulteFilePath, FileMode.Create );
+        using var writer = new FileStream( aGeneralPath.AbsoluteFilePath, FileMode.Create );
 
         var data_list = new List<byte>();
 

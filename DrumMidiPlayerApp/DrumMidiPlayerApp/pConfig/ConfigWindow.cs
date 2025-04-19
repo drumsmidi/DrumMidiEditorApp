@@ -12,8 +12,8 @@ public class ConfigWindow : ConfigWindowBase
     /// </summary>
     public ConfigWindow() : base() 
     {
-        AppName                     = $"DrumMidiPlayer";
-        WindowSizeWidthDpiNoScale   = (int)Config.Panel.ResolutionScreenWidth;
-        WindowSizeHeightDpiNoScale  = (int)Config.Panel.ResolutionScreenHeight;
+        AppName = "DrumMidiPlayer";
+
+        SetWindowSizeDpiNoScale( (int)Config.Panel.ResolutionScreenWidth, (int)Config.Panel.ResolutionScreenHeight );
     }
 }

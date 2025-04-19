@@ -23,7 +23,7 @@ public class ConfigFile
     [JsonIgnore]
     public GeneralPath FolderConfig
      // => new( FolderDocBase.AbsoulteFolderPath );
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Config\\" ) );
+        => new( FolderDocBase.CombineWithSubFolder( "Config\\" ) );
 
     /// <summary>
     /// Modelフォルダ（機械学習用データ格納）
@@ -31,7 +31,7 @@ public class ConfigFile
     [JsonIgnore]
     public GeneralPath FolderModel
      // => new( FolderDocBase.AbsoulteFolderPath );
-        => new( FolderDocBase.GetAbsoulteFolderPathCombineSubFolder( "Model\\" ) );
+        => new( FolderDocBase.CombineWithSubFolder( "Model\\" ) );
 
     /// <summary>
     /// FilePicker用：Bgmフォルダ（BGM格納）

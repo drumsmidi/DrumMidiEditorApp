@@ -112,24 +112,24 @@ public class PlayerSurfaceBase : IPlayerSurface
     {
         #region リクエスト処理
         {
-            var req = DmsControl.PlayReq;
+            var req = DmsControl.PlayerReq;
 
-            if (  req != DmsControl.PlayRequest.None )
+            if (  req != DmsControl.PlayerRequest.None )
             {
-                DmsControl.PlayReq = DmsControl.PlayRequest.None;
+                DmsControl.PlayerReq = DmsControl.PlayerRequest.None;
 
                 switch ( req )
                 {
-                    case DmsControl.PlayRequest.PrePlay:
+                    case DmsControl.PlayerRequest.PrePlay:
                         _DmsPlayState = PlayState.PrePlayStart;
                         break;
-                    case DmsControl.PlayRequest.PreLoopPlay:
+                    case DmsControl.PlayerRequest.PreLoopPlay:
                         _DmsPlayState = PlayState.PreLoopPlayStart;
                         break;
-                    case DmsControl.PlayRequest.PreStop:
+                    case DmsControl.PlayerRequest.PreStop:
                         _DmsPlayState = PlayState.Stop;
                         break;
-                    case DmsControl.PlayRequest.PreRecord:
+                    case DmsControl.PlayerRequest.PreRecord:
                         _DmsPlayState = PlayState.PreRecord;
                         break;
                 }
