@@ -16,8 +16,6 @@ namespace DrumMidiEditorApp;
 /// </summary>
 public partial class App : Application
 {
-    private Window? _MainWindow;
-
     /// <summary>
     /// シングルトンアプリケーションオブジェクトを初期化します。 
     /// これは、実行される作成済みコードの最初の行であり、
@@ -27,15 +25,11 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        Log.SetLogFile( new( $"{HelperAppDirectory.LocalFolder.Path}\\TraceLog.log" ) );
+        Log.SetLogFile( TraceLogPath );
 
         #region インスタンス管理
 
-        // 既定で、単一インスタンス アプリ なので多重起動の制御は不要
-
-        // GetInstancesに現在のインスタンスを追加と記載があったが
-        // 実行しないでも登録されている？
-        //AppInstance.GetCurrent();
+        // 既定で、単一インスタンス アプリ なので多重起動の制御は不要な想定
 
         // AppInstanceに登録されているインスタンスの一覧
         foreach ( var instance in AppInstance.GetInstances() )
@@ -46,6 +40,20 @@ public partial class App : Application
         #endregion
     }
 
+    #region member
+
+    /// <summary>
+    /// メインウィンドウ
+    /// </summary>
+    private Window? _MainWindow;
+
+    /// <summary>
+    /// トレースログパス
+    /// </summary>
+    public GeneralPath TraceLogPath { get; private set; } = new( $"{HelperAppDirectory.LocalFolder.Path}\\TraceLog.log" );
+
+    #endregion
+
     /// <summary>
     /// アプリケーションがエンドユーザーによって正常に起動されたときに呼び出されます。 
     /// アプリケーションを起動して特定のファイルを開くときなど、他のエントリポイントが使用されます。
@@ -53,6 +61,8 @@ public partial class App : Application
     /// <param name="aArgs">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs aArgs )
     {
+        using var _ = new LogBlock( "App" );
+
         #region デバッグ設定
 #if DEBUG
         // [エラーになる]フレーム レートとフレームごとの CPU 使用率情報を表示するかどうか

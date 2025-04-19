@@ -23,37 +23,37 @@ internal abstract class ScoreStreamBase : IScoreReader, IScoreWriter
 
     public bool Validation( GeneralPath aGeneralPath )
     {
-        return Log.TryCatch<bool>
-        (
-            () =>
-            {
-                var errorFlag = false;
-                var xsdMarkup = GetValidation();
+        try
+        {
+            var errorFlag = false;
+            var xsdMarkup = GetValidation();
 
-                using var xsd_reader = new XmlTextReader( new StringReader( xsdMarkup ) );
+            using var xsd_reader = new XmlTextReader( new StringReader( xsdMarkup ) );
 
-                var setting = new XmlReaderSettings();
-                _ = setting.Schemas.Add( string.Empty, xsd_reader );
+            var setting = new XmlReaderSettings();
+            _ = setting.Schemas.Add( string.Empty, xsd_reader );
 
-                setting.ValidationType = ValidationType.Schema;
-                setting.ValidationEventHandler += new ValidationEventHandler
-                    (
-                        ( sender, e ) =>
-                        {
-                            errorFlag = true;
-                            Log.Warning( $"Validation Error:{e.Message}" );
-                        }
-                    );
+            setting.ValidationType = ValidationType.Schema;
+            setting.ValidationEventHandler += new ValidationEventHandler
+                (
+                    ( sender, e ) =>
+                    {
+                        errorFlag = true;
+                        Log.Warning( $"Validation Error:{e.Message}" );
+                    }
+                );
 
-                using var xml_reader = XmlReader.Create( aGeneralPath.AbsoluteFilePath , setting );
+            using var xml_reader = XmlReader.Create( aGeneralPath.AbsoluteFilePath , setting );
 
-                while ( xml_reader.Read() ) { }
+            while ( xml_reader.Read() ) { }
 
-                return !errorFlag;
-
-            },
-            ( e ) => false
-        );
+            return !errorFlag;
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( $"{Log.GetThisMethodName}: {e.Message}" );
+            return false;
+        }
     }
 
     /// <summary>

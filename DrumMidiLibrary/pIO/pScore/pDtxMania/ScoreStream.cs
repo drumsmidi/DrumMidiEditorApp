@@ -20,11 +20,7 @@ internal partial class ScoreStream : IScoreReader
 
     public bool Validation( GeneralPath aGeneralPath )
     {
-        return Log.TryCatch<bool>
-        (
-            () => true,
-            ( e ) => false
-        );
+        return true;
     }
 
     public void Read( GeneralPath aGeneralPath, out Score aScore )

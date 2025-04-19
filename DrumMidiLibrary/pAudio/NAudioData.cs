@@ -96,21 +96,22 @@ public partial class NAudioData : DisposeBaseClass
     /// <param name="aFilePath">オーディオファイルパス</param>
     private void CreateStreamFromFile( string aFilePath )
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            lock ( _LockObj )
             {
-                lock ( _LockObj )
-                {
-                    _Reader = new( aFilePath );
-                    _Sample = new( _Reader );
-                    _Wave   = new();
+                _Reader = new( aFilePath );
+                _Sample = new( _Reader );
+                _Wave   = new();
 
-                    _Wave.Init( _Sample );
-                }
-            },
-            ( e ) => throw new InvalidOperationException( $"Failure load audio:{aFilePath}" )
-        );
+                _Wave.Init( _Sample );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+            throw new InvalidOperationException( $"Failure load audio:{aFilePath}" );
+        }
     }
 
     /// <summary>
@@ -118,23 +119,24 @@ public partial class NAudioData : DisposeBaseClass
     /// </summary>
     private void RemoveStream()
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            lock ( _LockObj )
             {
-                lock ( _LockObj )
-                {
-                    // オーディオ読込解放
-                    _Wave?.Dispose();
-                    _Sample?.Dispose();
-                    _Reader?.Dispose();
+                // オーディオ読込解放
+                _Wave?.Dispose();
+                _Sample?.Dispose();
+                _Reader?.Dispose();
 
-                    _FFTBuffer = null;
+                _FFTBuffer = null;
 
-                    _EqualizerBand?.Clear();
-                }
+                _EqualizerBand?.Clear();
             }
-        );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 
     /// <summary>

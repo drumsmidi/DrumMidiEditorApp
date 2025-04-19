@@ -138,18 +138,19 @@ public static partial class MidiNet
 
         if ( _MidiOutDeviceWatcher != null )
         {
-            Log.TryCatch
-            (
-                () =>
+            try
+            {
+                foreach ( var device in _MidiOutDeviceWatcher.MidiOutDeviceDic.Values )
                 {
-                    foreach ( var device in _MidiOutDeviceWatcher.MidiOutDeviceDic.Values )
-                    {
-                        list.Add( device.Name );
+                    list.Add( device.Name );
 
-                        Log.Info( $"{device.Id}:{device.Name}", false );
-                    }
+                    Log.Info( $"{device.Id}:{device.Name}" );
                 }
-            );
+            }
+            catch ( Exception e )
+            {
+                Log.Warning( e );
+            }
         }
         return list;
     }
@@ -223,35 +224,36 @@ public static partial class MidiNet
     /// <param name="aSysExMessage">システムメッセージ</param>
     public static void SystemExclusive( string aSysExMessage )
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            var sysExMessageLength = aSysExMessage.Length;
+
+            // Do not send a blank SysEx message
+            if ( sysExMessageLength == 0 )
             {
-                var sysExMessageLength = aSysExMessage.Length;
-
-                // Do not send a blank SysEx message
-                if ( sysExMessageLength == 0 )
-                {
-                    return;
-                }
-
-                var dataWriter = new DataWriter();
-
-                // SysEx messages are two characters long with 1-character space in between them
-                // So we add 1 to the message length, so that it is perfectly divisible by 3
-                // The loop count tracks the number of individual message pieces
-                var loopCount = ( sysExMessageLength + 1 ) / 3;
-
-                // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
-                for ( var i = 0; i < loopCount; i++ )
-                {
-                    var messageString = aSysExMessage.Substring( 3 * i, 2 );
-                    var messageByte   = Convert.ToByte( messageString, 16 );
-                    dataWriter.WriteByte( messageByte );
-                }
-                MidiOutShortMsg( new MidiSystemExclusiveMessage( dataWriter.DetachBuffer() ) );
+                return;
             }
-        );
+
+            var dataWriter = new DataWriter();
+
+            // SysEx messages are two characters long with 1-character space in between them
+            // So we add 1 to the message length, so that it is perfectly divisible by 3
+            // The loop count tracks the number of individual message pieces
+            var loopCount = ( sysExMessageLength + 1 ) / 3;
+
+            // Expecting a string of format "F0 NN NN NN NN.... F7", where NN is a byte in hex
+            for ( var i = 0; i < loopCount; i++ )
+            {
+                var messageString = aSysExMessage.Substring( 3 * i, 2 );
+                var messageByte   = Convert.ToByte( messageString, 16 );
+                dataWriter.WriteByte( messageByte );
+            }
+            MidiOutShortMsg( new MidiSystemExclusiveMessage( dataWriter.DetachBuffer() ) );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 
     /// <summary>
@@ -324,13 +326,14 @@ public static partial class MidiNet
     /// <param name="aMidiMessage">MIDIメッセージ</param>
     private static void MidiOutShortMsg( IMidiMessage aMidiMessage )
     {
-        Log.TryCatch
-        (
-            () =>
-            {
-                _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
-            }
-        );
+        try
+        {
+            _CurrentMidiOutputDevice?.SendMessage( aMidiMessage );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 
     #endregion

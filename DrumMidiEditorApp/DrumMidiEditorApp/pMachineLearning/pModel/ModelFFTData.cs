@@ -17,7 +17,7 @@ internal class ModelFFTData
     /// ノート位置
     /// </summary>
     [LoadColumn( 1 )]
-    public int AbsoultNotePos { get; set; } = 0;
+    public int AbsoluteNotePos { get; set; } = 0;
 
     /// <summary>
     /// Hz中心

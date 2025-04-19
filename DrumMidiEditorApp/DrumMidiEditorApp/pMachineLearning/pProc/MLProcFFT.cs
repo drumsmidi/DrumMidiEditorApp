@@ -80,7 +80,7 @@ internal class MLProcFFT : MLProcBase
                         new()
                         {
                             DrumPattern     = aPrediction ? string.Empty : DMS.SCORE.EditChannel.GetMLData( note_pos ) ?? string.Empty,
-                            AbsoultNotePos  = note_pos,
+                            AbsoluteNotePos = note_pos,
                             HzCenter        = bgm.GetHz( offset_y + ( (int)range.Height / 2 ) ),
                             FFTBuffer       = [ .. bgm.GetFFTBuffer( range, Config.Scale.VolumeLevelLow ) ],
                         }
@@ -300,7 +300,7 @@ internal class MLProcFFT : MLProcBase
                 DMS.SCORE_PREDICT.EditChannel.AddNote
                     (
                         int.Parse( drumKey ),
-                        en.Current.AbsoultNotePos,
+                        en.Current.AbsoluteNotePos,
                         MidiNet.MidiMaxVolume,
                         true,
                         false,
@@ -308,7 +308,7 @@ internal class MLProcFFT : MLProcBase
                     );
             }
 
-            Log.Info( $"{en.Current.AbsoultNotePos / Config.System.MeasureNoteNumber}-{en.Current.AbsoultNotePos % Config.System.MeasureNoteNumber}-{result.DrumPattern}" );
+            Log.Info( $"{en.Current.AbsoluteNotePos / Config.System.MeasureNoteNumber}-{en.Current.AbsoluteNotePos % Config.System.MeasureNoteNumber}-{result.DrumPattern}" );
         }
 
         EventManage.Event_Editer_UpdateScorePredict();

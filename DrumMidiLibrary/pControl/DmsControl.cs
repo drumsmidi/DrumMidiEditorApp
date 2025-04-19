@@ -32,31 +32,33 @@ public static class DmsControl
     /// </summary>
     public static void Start()
     {
-        Log.TryCatch
-        (
-            () =>
-            {
-                End();
+        try
+        {
+            End();
 
-                _TimeTable.Refresh();
-                _TimeTable.Update( _TmpScore );
+            _TimeTable.Refresh();
+            _TimeTable.Update( _TmpScore );
 
-                _CancellationTokenSource?.Dispose();
-                _CancellationTokenSource = new();
+            _CancellationTokenSource?.Dispose();
+            _CancellationTokenSource = new();
 
-                // 粒度の細かいシステムではなく、タスクが長時間実行され、
-                // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
-                // これは、TaskScheduler に対し、オーバーサブスクリプションを許可してもよいことを示します。
-                // オーバーサブスクリプションを使用すると、使用可能なハードウェア スレッドよりも多くのスレッドを作成できます。
-                // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
-                // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
-                _MusicTask = Task.Factory.StartNew( () => ProcSequenceAsync( _CancellationTokenSource.Token ), TaskCreationOptions.LongRunning );
+            // 粒度の細かいシステムではなく、タスクが長時間実行され、
+            // 少量の大きなコンポーネントを含む粒度の粗い操作とすることを指定します。
+            // これは、TaskScheduler に対し、オーバーサブスクリプションを許可してもよいことを示します。
+            // オーバーサブスクリプションを使用すると、使用可能なハードウェア スレッドよりも多くのスレッドを作成できます。
+            // これは、タスクの処理に追加のスレッドが必要になる可能性があるというヒントをタスク スケジューラに提供し、
+            // 他のスレッドまたはローカル スレッド プール キューの作業項目の進行をスケジューラがブロックするのを防ぎます。
+            _MusicTask = Task.Factory.StartNew( () => ProcSequenceAsync( _CancellationTokenSource.Token ), TaskCreationOptions.LongRunning );
 
-                //_MusicTask = Task.Run(() => { ProcSequenceAsync(); });
+            //_MusicTask = Task.Run(() => { ProcSequenceAsync(); });
 
-                Log.Info( $"{Log.GetThisMethodName}:start thread" );
-            }
-        );
+            Log.Info( $"MusicTask Start" );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+            throw;
+        }
     }
 
     /// <summary>
@@ -64,25 +66,27 @@ public static class DmsControl
     /// </summary>
     public static void End()
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            _CancellationTokenSource?.Cancel();
+
+            if ( _MusicTask != null )
             {
-                _CancellationTokenSource?.Cancel();
+                // ロックしないように、10秒のみ待つ
+                _ = _MusicTask.Wait( 10000 );
+                _MusicTask.Dispose();
+                _MusicTask = null;
 
-                if ( _MusicTask != null )
-                {
-                    // ロックしないように、10秒のみ待つ
-                    _ = _MusicTask.Wait( 10000 );
-                    _MusicTask.Dispose();
-                    _MusicTask = null;
-
-                    Log.Info( $"{Log.GetThisMethodName}:end thread" );
-                }
-
-                _CancellationTokenSource?.Dispose();
+                Log.Info( $"MusicTask End" );
             }
-        );
+
+            _CancellationTokenSource?.Dispose();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+            throw;
+        }
     }
 
     #endregion

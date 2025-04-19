@@ -38,38 +38,40 @@ public static partial class HelperColor
     /// <exception cref="ArgumentException">無効な色形式の場合にスローされます</exception>
     public static Color GetColor( string aColorText )
     {
-        return Log.TryCatch
-        (
-            () =>
+        try
+        {
+            // 先頭の#を除去。文字列を全角に変換
+            var colorText = aColorText.StartsWith( '#' ) ? aColorText[1..].ToUpper() : aColorText.ToUpper();
+
+            if ( !ColorRegex().IsMatch( colorText ) )
             {
-                // 先頭の#を除去。文字列を全角に変換
-                var colorText = aColorText.StartsWith( '#' ) ? aColorText[1..].ToUpper() : aColorText.ToUpper();
+                throw new ArgumentException( $"Invalid color format", nameof( aColorText ) );
+            }
 
-                if ( !ColorRegex().IsMatch( colorText ) )
-                {
-                    throw new ArgumentException( $"Invalid color format", nameof( aColorText ) );
-                }
+            // #RGB
+            // #ARGB
+            // #RRGGBB
+            // #AARRGGBB
 
-                // #RGB
-                // #ARGB
-                // #RRGGBB
-                // #AARRGGBB
+            var length = colorText.Length;
+            var keta   = length / 4;
+            var alpha  = length is 4 or 8 ? Convert.ToByte( colorText[ ..keta  ], 16 ) : (byte)255 ;
+            var offset = length is 4 or 8 ? keta : 0 ;
 
-                var length = colorText.Length;
-                var keta   = length / 4;
-                var alpha  = length is 4 or 8 ? Convert.ToByte( colorText[ ..keta  ], 16 ) : (byte)255 ;
-                var offset = length is 4 or 8 ? keta : 0 ;
+            return Color.FromArgb
+                (
+                    alpha,
+                    Convert.ToByte( colorText.Substring( offset            , keta ), 16 ),
+                    Convert.ToByte( colorText.Substring( offset + keta     , keta ), 16 ),
+                    Convert.ToByte( colorText.Substring( offset + keta * 2 , keta ), 16 )
+                );
+        }
+        catch ( Exception e ) 
+        {
+            Log.Error( e );
 
-                return Color.FromArgb
-                    (
-                        alpha,
-                        Convert.ToByte( colorText.Substring( offset            , keta ), 16 ),
-                        Convert.ToByte( colorText.Substring( offset + keta     , keta ), 16 ),
-                        Convert.ToByte( colorText.Substring( offset + keta * 2 , keta ), 16 )
-                    );
-            },
-            ( e ) => { throw new ArgumentException( $"Color conversion error: {e.Message}", nameof( aColorText ), e ); }
-        );
+            throw new ArgumentException( $"Color conversion error: {e.Message}", nameof( aColorText ), e );
+        }
     }
 
     [GeneratedRegex( "^(?:[0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$" )]

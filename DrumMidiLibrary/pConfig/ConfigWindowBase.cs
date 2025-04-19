@@ -56,7 +56,7 @@ public abstract class ConfigWindowBase
         #region WindowSizeWidthDpiNoScale
         {
             var min = 320;
-            var max = 1280;
+            var max = 7680;
 
             if ( aWidth < min || max < aWidth )
             {

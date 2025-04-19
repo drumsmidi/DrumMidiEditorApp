@@ -1,4 +1,5 @@
-﻿using DrumMidiLibrary.pLog;
+﻿using System;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiLibrary.pAudio;
@@ -17,17 +18,21 @@ public class AudioFactory
     /// <returns>Audioデータ</returns>
     public static IAudio CreateMidi( byte aChannel, byte aMidi, int aVolume )
     {
-        return Log.TryCatchNotNull<IAudio>
-        (
-            () =>
-            {
-                var audio = new AudioMidi( aChannel, aMidi );
-                audio.SetVolume( aVolume );
+        IAudio audio;
 
-                return audio;
-            },
-            ( e ) => new AudioNull()
-        );
+        try
+        {
+            audio = new AudioMidi( aChannel, aMidi );
+            audio.SetVolume( aVolume );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+
+            audio = new AudioNull();
+        }
+
+        return audio;
     }
 
     /// <summary>
@@ -38,17 +43,21 @@ public class AudioFactory
     /// <returns>Audioデータ</returns>
     public static IAudio CreateBgm( GeneralPath aFilePath, int aVolume )
     {
-        return Log.TryCatchNotNull<IAudio>
-        (
-            () =>
-            {
-                var audio = new AudioBgm( aFilePath );
-                audio.SetVolume( aVolume );
+        IAudio audio;
 
-                return audio;
-            },
-            ( e ) => new AudioNull()
-        );
+        try
+        {
+            audio = new AudioBgm( aFilePath );
+            audio.SetVolume( aVolume );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+
+            audio = new AudioNull();
+        }
+
+        return audio;
     }
 
     /// <summary>
@@ -57,10 +66,14 @@ public class AudioFactory
     /// <param name="aAudio">Audioデータ</param>
     public static void Release( IAudio? aAudio )
     {
-        Log.TryCatch
-        (
-            () => aAudio?.Release()
-        );
+        try
+        {
+            aAudio?.Release();
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 
     /// <summary>
@@ -71,14 +84,15 @@ public class AudioFactory
     /// <param name="aVolume">音量（127基準）</param>
     public static void SinglePlay( byte aChannel, byte aMidi, int aVolume )
     {
-        Log.TryCatch
-        (
-            () =>
-            {
-                using var audio = CreateMidi( aChannel, aMidi, aVolume ) as AudioMidi;
+        try
+        {
+            using var audio = CreateMidi( aChannel, aMidi, aVolume ) as AudioMidi;
 
-                audio?.Play();
-            }
-        );
+            audio?.Play();
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 }

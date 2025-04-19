@@ -12,7 +12,7 @@ internal abstract class MLProcBase
 {
     /// <summary>
     /// 機械学習＆予測処理（試作）
-    /// TODO: お試しで作成したもの、今のところ実装予定なし
+    /// TASK: お試しで作成したもの、今のところ実装予定なし
     /// </summary>
     public void Start()
     {
@@ -67,7 +67,7 @@ internal abstract class MLProcBase
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -76,34 +76,28 @@ internal abstract class MLProcBase
     /// </summary>
     /// <param name="aMLContext">MLコンテキスト</param>
     /// <returns>トレーニングデータセット</returns>
-    protected virtual IDataView? CreateTrainingDataSet( MLContext aMLContext )
-        => null;
+    protected abstract IDataView? CreateTrainingDataSet( MLContext aMLContext );
 
     /// <summary>
     /// 予測対象データセット作成
     /// </summary>
     /// <param name="aMLContext">MLコンテキスト</param>
     /// <returns>予測対象データセット</returns>
-    protected virtual IDataView? CreatePredictionDataSet( MLContext aMLContext )
-        => null;
+    protected abstract IDataView? CreatePredictionDataSet( MLContext aMLContext );
 
     /// <summary>
     /// ビルド&トレーニング&評価
     /// </summary>
     /// <param name="aMLContext">MLコンテキスト</param>
     /// <param name="aTrainingData">トレーニングデータセット</param>
-    protected virtual void BuildAndTrainAndEvaluate( MLContext aMLContext, IDataView aTrainingData )
-    {
-    }
+    protected abstract void BuildAndTrainAndEvaluate( MLContext aMLContext, IDataView aTrainingData );
 
     /// <summary>
     /// 予測
     /// </summary>
     /// <param name="aMLContext">MLコンテキスト</param>
     /// <param name="aPredictInputData">予測対象データセット</param>
-    protected virtual void Predict( MLContext aMLContext, IDataView aPredictInputData )
-    {
-    }
+    protected abstract void Predict( MLContext aMLContext, IDataView aPredictInputData );
 
     /// <summary>
     /// 評価結果（多クラス分類）

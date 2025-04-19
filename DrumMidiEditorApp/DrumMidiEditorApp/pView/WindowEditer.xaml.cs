@@ -15,18 +15,13 @@ namespace DrumMidiEditorApp.pView;
 public sealed partial class WindowEditer : Window
 {
     /// <summary>
-    /// 本ウィンドウへのアクセス
-    /// </summary>
-    private readonly AppWindow _AppWindow;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public WindowEditer()
     {
         // Midiデバイス初期化
         MidiNet.MidiOutDeviceWatcher();
-        MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
+        _ = MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
 
         // ウィンドウ構築
         InitializeComponent();
@@ -54,12 +49,20 @@ public sealed partial class WindowEditer : Window
         DmsControl.Start();
     }
 
+    #region member
+
+    /// <summary>
+    /// 本ウィンドウへのアクセス
+    /// </summary>
+    private readonly AppWindow _AppWindow;
+
+    #endregion
+
     /// <summary>
     /// アクティブ状態更新
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Window_Activated( object aSender, WindowActivatedEventArgs aArgs )
     {
         try
@@ -81,7 +84,6 @@ public sealed partial class WindowEditer : Window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Window_Closed( object aSender, WindowEventArgs aArgs )
     {
         try
@@ -96,9 +98,14 @@ public sealed partial class WindowEditer : Window
             // 設定ファイル保存
             _ = FileIO.SaveConfig();
         }
-        catch ( Exception )
+        catch ( Exception e )
         {
-            //Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+        }
+        finally
+        {
+            // トレースログファイルを開く
+            Log.OpenLogFile();
         }
     }
 

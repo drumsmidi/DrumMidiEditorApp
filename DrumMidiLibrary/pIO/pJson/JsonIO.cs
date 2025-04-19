@@ -22,16 +22,18 @@ public static class JsonIO
     /// <returns>読込済みオブジェクト</returns>
     public static T? LoadFile<T>( GeneralPath aGeneralPath )
     {
-        return Log.TryCatch<T?>
-        (
-            () =>
-            {
-                var dat = File.ReadAllText( aGeneralPath.AbsoluteFilePath );
+        try
+        {
+            var dat = File.ReadAllText( aGeneralPath.AbsoluteFilePath );
 
-                return JsonSerializer.Deserialize<T>( dat, _JsonSerializerOptions );
-            },
-            ( e ) => { throw new FileLoadException( "Failed to load file.", aGeneralPath.AbsoluteFilePath, e ); }
-        );
+            return JsonSerializer.Deserialize<T>( dat, _JsonSerializerOptions );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+
+            throw new FileLoadException( "Failed to load file.", aGeneralPath.AbsoluteFilePath, e );
+        }
     }
 
     /// <summary>
@@ -42,14 +44,16 @@ public static class JsonIO
     /// <param name="aGeneralPath">書込ファイルパス</param>
     public static void SaveFile<T>( T aSerializeObject, GeneralPath aGeneralPath )
     {
-        Log.TryCatch
-        (
-            () =>
-            {
-                File.WriteAllText( aGeneralPath.AbsoluteFilePath, JsonSerializer.Serialize<T>( aSerializeObject, _JsonSerializerOptions ) );
-            },
-            ( e ) => { throw new FileLoadException( "Failed to save file...", aGeneralPath.AbsoluteFilePath, e ); }
-        );
+        try
+        {
+            File.WriteAllText( aGeneralPath.AbsoluteFilePath, JsonSerializer.Serialize<T>( aSerializeObject, _JsonSerializerOptions ) );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+
+            throw new FileLoadException( "Failed to save file.", aGeneralPath.AbsoluteFilePath, e );
+        }
     }
 
     /// <summary>

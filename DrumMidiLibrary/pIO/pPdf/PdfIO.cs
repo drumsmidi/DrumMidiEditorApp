@@ -159,130 +159,131 @@ public partial class PdfIO : DisposeBaseClass
 
         BitmapData? bmpData = null;
 
-        return Log.TryCatch<bool>
-        (
-            () =>
+        try
+        {
+            bmpData = _Bmp.LockBits
+                (
+                    new( 0, 0, _Bmp.Width, _Bmp.Height ),
+                    ImageLockMode.ReadOnly,
+                    _Bmp.PixelFormat
+                );
+
+            var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
+
+            if ( buffer == null )
             {
-                bmpData = _Bmp.LockBits
-                    (
-                        new( 0, 0, _Bmp.Width, _Bmp.Height ),
-                        ImageLockMode.ReadOnly,
-                        _Bmp.PixelFormat
-                    );
-
-                var buffer = (byte[]?)_Converter.ConvertTo( _Bmp, typeof( byte[] ) );
-
-                if ( buffer == null )
-                {
-                    return false;
-                }
-
-                using var mat = Mat.FromImageData( buffer );
-            //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
-            //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
-
-                // オブジェクトの開始バイト位置
-                var obj_pos = _Writer?.Length ?? 0 ;
-
-                #region ページ
-                {
-                    AddObjectXref();
-
-                    _ObjectNo++;
-
-                    WriteLine( $"{_ObjectNo} 0 obj" );
-                    WriteLine( $"<<" );
-                    WriteLine( $"/Contents [ {_ObjectNo + 2} 0 R ]" );
-                    WriteLine( $"/CropBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );
-                    WriteLine( $"/MediaBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );     // ページの領域
-                    WriteLine( $"/Parent 2 0 R" );
-                    WriteLine( $"/Resources {_ObjectNo + 3} 0 R" );
-                    WriteLine( $"/Rotate 0" );
-                    WriteLine( $"/Type /Page" );
-                    WriteLine( $">>" );
-                    WriteLine( $"endobj" );
-                }
-                #endregion
-
-                #region 画像：
-                {
-                    AddObjectXref();
-
-                    _ObjectNo++;
-
-                    var img = mat.ToBytes( ".jpg" );
-
-                    WriteLine( $"{_ObjectNo} 0 obj" );
-                    WriteLine( $"<<" );
-                    WriteLine( $"/BitsPerComponent 8" );
-                    WriteLine( $"/ColorSpace /DeviceRGB" );
-                    WriteLine( $"/Filter /DCTDecode" );
-                    WriteLine( $"/Height {_Bmp.Height}" );
-                    WriteLine( $"/Length {img.LongLength}" );
-                    WriteLine( $"/Subtype /Image" );
-                    WriteLine( $"/Type /XObject" );
-                    WriteLine( $"/Width {_Bmp.Width}" );
-                    WriteLine( $">>" );
-                    WriteLine( $"stream" );
-                    WriteLine( img );
-                    WriteLine( $"endstream" );
-                    WriteLine( $"endobj" );
-                }
-                #endregion
-
-                #region 描画位置など
-                {
-                    AddObjectXref();
-
-                    _ObjectNo++;
-
-                    // 参考：https://azelpg.gitlab.io/azsky2/note/prog/pdf/13_image.html
-                    // (100, 500) に移動して 200 に拡大
-                    // 200 0 0 200 100 500 cm
-
-                    var pos = GetBytes( $"q{CRLF}{_Bmp.Width} 0 0 {_Bmp.Height} 0 0 cm{CRLF}/Image1 Do{CRLF}Q" );
-
-                    WriteLine( $"{_ObjectNo} 0 obj" );
-                    WriteLine( $"<<" );
-                //  WriteLine( $"/Filter /FlateDecode" );
-                    WriteLine( $"/Length {pos.LongLength}" );
-                    WriteLine( $">>" );
-                    WriteLine( $"stream" );
-                    WriteLine( pos );
-                    WriteLine( $"endstream" );
-                    WriteLine( $"endobj" );
-                }
-                #endregion
-
-                #region ページ内のリソースディクショナリ設定
-                {
-                    AddObjectXref();
-
-                    _ObjectNo++;
-
-                    WriteLine( $"{_ObjectNo} 0 obj" );
-                    WriteLine( $"<<" );
-                    WriteLine( $"/XObject" );
-                    WriteLine( $"<<" );
-                    WriteLine( $"/Image1 {_ObjectNo - 2} 0 R" );
-                    WriteLine( $">>" );
-                    WriteLine( $">>" );
-                    WriteLine( $"endobj" );
-                }
-                #endregion
-
-                return true;
-            },
-            ( e ) => { throw new Exception( $"Failure Add Frame", e ); },
-            () =>
-            {
-                if ( bmpData != null )
-                {
-                    // Bitmapのロック解除
-                    _Bmp.UnlockBits( bmpData );
-                }
+                return false;
             }
-        );
+
+            using var mat = Mat.FromImageData( buffer );
+        //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGBA2RGB );
+        //  using var mat = Mat.FromImageData( buffer ).CvtColor( ColorConversionCodes.RGB2BGR );
+
+            // オブジェクトの開始バイト位置
+            var obj_pos = _Writer?.Length ?? 0 ;
+
+            #region ページ
+            {
+                AddObjectXref();
+
+                _ObjectNo++;
+
+                WriteLine( $"{_ObjectNo} 0 obj" );
+                WriteLine( $"<<" );
+                WriteLine( $"/Contents [ {_ObjectNo + 2} 0 R ]" );
+                WriteLine( $"/CropBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );
+                WriteLine( $"/MediaBox [ 0.0 0.0 {_Bmp.Width} {_Bmp.Height} ]" );     // ページの領域
+                WriteLine( $"/Parent 2 0 R" );
+                WriteLine( $"/Resources {_ObjectNo + 3} 0 R" );
+                WriteLine( $"/Rotate 0" );
+                WriteLine( $"/Type /Page" );
+                WriteLine( $">>" );
+                WriteLine( $"endobj" );
+            }
+            #endregion
+
+            #region 画像：
+            {
+                AddObjectXref();
+
+                _ObjectNo++;
+
+                var img = mat.ToBytes( ".jpg" );
+
+                WriteLine( $"{_ObjectNo} 0 obj" );
+                WriteLine( $"<<" );
+                WriteLine( $"/BitsPerComponent 8" );
+                WriteLine( $"/ColorSpace /DeviceRGB" );
+                WriteLine( $"/Filter /DCTDecode" );
+                WriteLine( $"/Height {_Bmp.Height}" );
+                WriteLine( $"/Length {img.LongLength}" );
+                WriteLine( $"/Subtype /Image" );
+                WriteLine( $"/Type /XObject" );
+                WriteLine( $"/Width {_Bmp.Width}" );
+                WriteLine( $">>" );
+                WriteLine( $"stream" );
+                WriteLine( img );
+                WriteLine( $"endstream" );
+                WriteLine( $"endobj" );
+            }
+            #endregion
+
+            #region 描画位置など
+            {
+                AddObjectXref();
+
+                _ObjectNo++;
+
+                // 参考：https://azelpg.gitlab.io/azsky2/note/prog/pdf/13_image.html
+                // (100, 500) に移動して 200 に拡大
+                // 200 0 0 200 100 500 cm
+
+                var pos = GetBytes( $"q{CRLF}{_Bmp.Width} 0 0 {_Bmp.Height} 0 0 cm{CRLF}/Image1 Do{CRLF}Q" );
+
+                WriteLine( $"{_ObjectNo} 0 obj" );
+                WriteLine( $"<<" );
+            //  WriteLine( $"/Filter /FlateDecode" );
+                WriteLine( $"/Length {pos.LongLength}" );
+                WriteLine( $">>" );
+                WriteLine( $"stream" );
+                WriteLine( pos );
+                WriteLine( $"endstream" );
+                WriteLine( $"endobj" );
+            }
+            #endregion
+
+            #region ページ内のリソースディクショナリ設定
+            {
+                AddObjectXref();
+
+                _ObjectNo++;
+
+                WriteLine( $"{_ObjectNo} 0 obj" );
+                WriteLine( $"<<" );
+                WriteLine( $"/XObject" );
+                WriteLine( $"<<" );
+                WriteLine( $"/Image1 {_ObjectNo - 2} 0 R" );
+                WriteLine( $">>" );
+                WriteLine( $">>" );
+                WriteLine( $"endobj" );
+            }
+            #endregion
+
+            return true;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+            throw new InvalidOperationException( $"Failure Add Frame", e );
+        }
+        finally
+        {
+            if ( bmpData != null )
+            {
+                // Bitmapのロック解除
+                _Bmp.UnlockBits( bmpData );
+            }
+        }
     }
 
     /// <summary>

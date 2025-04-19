@@ -1,4 +1,5 @@
-﻿using DrumMidiLibrary.pLog;
+﻿using System;
+using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 
@@ -56,16 +57,17 @@ public static partial class SystemSound
             return;
         }
 
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            if ( ElementSoundPlayer.State == ElementSoundPlayerState.On )
             {
-                if ( ElementSoundPlayer.State == ElementSoundPlayerState.On )
-                {
-                    ElementSoundPlayer.Play( aElementSoundKind );
-                }
+                ElementSoundPlayer.Play( aElementSoundKind );
             }
-        );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 
     public static void SoundPlayMoveNext() => SoundPlay( ElementSoundKind.MoveNext );

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using DrumMidiLibrary.pLog;
 
@@ -21,22 +22,30 @@ public class SourceList
     /// <param name="aSearchPattern">検索パターン</param>
     public void SearchSource( GeneralPath aFolderPath, string aSearchPattern )
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            // ファイル取得
+            foreach ( var filepath in Directory.EnumerateFiles( aFolderPath.AbsoluteFolderPath, aSearchPattern ) )
             {
-                // ファイル取得
-                foreach ( var filepath in Directory.EnumerateFiles( aFolderPath.AbsoluteFolderPath, aSearchPattern ) )
-                {
-                    Sources.Add( new( filepath, aFolderPath.BaseFolderPath ) );
-                }
-
-                // サブディレクトリ検索
-                foreach ( var folderpath in Directory.EnumerateDirectories( aFolderPath.AbsoluteFolderPath ) )
-                {
-                    SearchSource( new( $"{folderpath}\\", aFolderPath.BaseFolderPath ), aSearchPattern );
-                }
+                Sources.Add( new( filepath, aFolderPath.BaseFolderPath ) );
             }
-        );
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
+
+        try
+        {
+            // サブディレクトリ検索
+            foreach ( var folderpath in Directory.EnumerateDirectories( aFolderPath.AbsoluteFolderPath ) )
+            {
+                SearchSource( new( $"{folderpath}\\", aFolderPath.BaseFolderPath ), aSearchPattern );
+            }
+        }
+        catch ( Exception e )
+        {
+            Log.Warning( e );
+        }
     }
 }

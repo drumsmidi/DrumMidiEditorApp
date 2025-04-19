@@ -35,13 +35,23 @@ public static class Log
     private static readonly string _LABEL_ERROR = "■■■ [ERR] ";
 
     /// <summary>
+    /// ブロックラベル開始
+    /// </summary>
+    private static readonly string _LABEL_BLOCK_START = "▼▼▼ [INFO]";
+
+    /// <summary>
+    /// ブロックラベル終了
+    /// </summary>
+    private static readonly string _LABEL_BLOCK_END = "▲▲▲ [INFO]";
+
+    /// <summary>
     /// 情報ログ
     /// </summary>
     /// <param name="aText">出力内容</param>
     /// <param name="aCallback">True:通知、False:非通知</param>
     public static void Info( string aText, bool aCallback = false )
     {
-        SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aText}" );
+        SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aText}" );
 
         if ( aCallback )
         {
@@ -52,11 +62,28 @@ public static class Log
     /// <summary>
     /// 警告ログ
     /// </summary>
+    /// <param name="aException">出力内容</param>
+    /// <param name="aCallback">True:通知、False:非通知</param>
+    public static void Info( Exception aException, bool aCallback = false )
+    {
+        SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aException.Message}" );
+        SetLog( $"{aException.StackTrace}" );
+
+        if ( aCallback )
+        {
+            Callback( 0, aException.Message );
+        }
+    }
+
+
+    /// <summary>
+    /// 警告ログ
+    /// </summary>
     /// <param name="aText">出力内容</param>
     /// <param name="aCallback">True:通知、False:非通知</param>
     public static void Warning( string aText, bool aCallback = false )
     {
-        SetLog( $"{_LABEL_WARNING} {Log.GetTimeAndThreadInfo} {aText}" );
+        SetLog( $"{_LABEL_WARNING} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aText}" );
 
         if ( aCallback )
         {
@@ -65,12 +92,20 @@ public static class Log
     }
 
     /// <summary>
-    /// エラーログ
+    /// 警告ログ
     /// </summary>
-    /// <param name="aText">出力内容</param>
-    [Conditional( "DEBUG" )]
-    public static void Error( Exception aException ) 
-        => SetLog( $"{aException.StackTrace}" );
+    /// <param name="aException">出力内容</param>
+    /// <param name="aCallback">True:通知、False:非通知</param>
+    public static void Warning( Exception aException, bool aCallback = false )
+    {
+        SetLog( $"{_LABEL_WARNING} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aException.Message}" );
+        SetLog( $"{aException.StackTrace}" );
+
+        if ( aCallback )
+        {
+            Callback( 1, aException.Message );
+        }
+    }
 
     /// <summary>
     /// エラーログ
@@ -79,11 +114,27 @@ public static class Log
     /// <param name="aCallback">True:通知、False:非通知</param>
     public static void Error( string aText, bool aCallback = false )
     {
-        SetLog( $"{_LABEL_ERROR} {Log.GetTimeAndThreadInfo} {aText}" );
+        SetLog( $"{_LABEL_ERROR} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aText}" );
 
         if ( aCallback )
         {
             Callback( 2, aText );
+        }
+    }
+
+    /// <summary>
+    /// エラーログ
+    /// </summary>
+    /// <param name="aException">出力内容</param>
+    /// <param name="aCallback">True:通知、False:非通知</param>
+    public static void Error( Exception aException, bool aCallback = false )
+    {
+        SetLog( $"{_LABEL_ERROR} {Log.GetTimeAndThreadInfo} {GetBackMethodName} {aException.Message}" );
+        SetLog( $"{aException.StackTrace}" );
+
+        if ( aCallback )
+        {
+            Callback( 2, aException.Message );
         }
     }
 
@@ -93,7 +144,7 @@ public static class Log
     /// <param name="aBlockName">ブロック名</param>
     public static void BeginInfo( string aBlockName )
     {
-        SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aBlockName} === Begin ===" );
+        SetLog( $"{_LABEL_BLOCK_START} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} === Begin ===" );
 
         _BlockTime.Push( DateTime.Now );
     }
@@ -108,14 +159,16 @@ public static class Log
         {
             var ms = ( DateTime.Now - startTime ).TotalMilliseconds;
 
-            SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aBlockName} ===  End  === {ms}ms " );
+            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} ===  End  === {ms}ms " );
         }
         else
         {
-            SetLog( $"{_LABEL_INFO} {Log.GetTimeAndThreadInfo} {aBlockName} ===  End  === " );
+            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} ===  End  === " );
         }
     }
 
+
+#if false // 使いにくいので削除
     /// <summary>
     /// 共通 例外処理
     /// </summary>
@@ -130,8 +183,8 @@ public static class Log
         }
         catch ( Exception e )
         {
-            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
-            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+            Log.Error( $"{GetBackMethodName}:{e.Message}" );
+            Log.Error( $"{GetBackMethodName}:{e.StackTrace}" );
 
             aFallback?.Invoke( e );
         }
@@ -185,8 +238,8 @@ public static class Log
         }
         catch ( Exception e )
         {
-            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
-            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+            Log.Error( $"{GetBackMethodName}:{e.Message}" );
+            Log.Error( $"{GetBackMethodName}:{e.StackTrace}" );
 
             if ( aFallback == null )
             {
@@ -216,8 +269,8 @@ public static class Log
         }
         catch ( Exception e )
         {
-            Log.Error( $"{GetMethodName( 2 )}:{e.Message}" );
-            Log.Error( $"{GetMethodName( 2 )}:{e.StackTrace}" );
+            Log.Error( $"{GetBackMethodName}:{e.Message}" );
+            Log.Error( $"{GetBackMethodName}:{e.StackTrace}" );
 
             return aFallback( e );
         }
@@ -226,6 +279,7 @@ public static class Log
             aFinally?.Invoke();
         }
     }
+#endif
 
     /// <summary>
     /// ログ出力
@@ -237,6 +291,16 @@ public static class Log
     /// 現在実行中のメソッド名を取得
     /// </summary>
     public static string GetThisMethodName => GetMethodName( 1 );
+
+    /// <summary>
+    /// 呼び出し元のメソッド名を取得
+    /// </summary>
+    private static string GetBackMethodName => GetMethodName( 3 );
+
+    /// <summary>
+    /// 呼び出し元のメソッド名を取得
+    /// </summary>
+    private static string GetBackMethodNameBlock => GetMethodName( 4 );
 
     /// <summary>
     /// メソッド内を取得
@@ -291,21 +355,43 @@ public static class Log
     {
         foreach ( var callback in LogOutputCallback )
         {
-            Log.TryCatch
-            (
-                () => { callback( aLevel, aText ); }
-            );
+            try
+            {
+                callback( aLevel, aText );
+            }
+            catch ( Exception e )
+            {
+                Log.Warning( e );
+            }
         }
     }
+
+    private static GeneralPath _TraceLogPath = new();
 
     /// <summary>
     /// ログファイルへTraceログを出力するように設定
     /// </summary>
     public static void SetLogFile( GeneralPath aLogPath )    
     {
-        var log_file = File.Create( aLogPath.AbsoluteFilePath );
+        _TraceLogPath = aLogPath;
+
+        var log_file = File.Create( _TraceLogPath.AbsoluteFilePath );
         _ = Trace.Listeners.Add( new TextWriterTraceListener( log_file ) );
         Trace.AutoFlush = true;
+    }
+
+    /// <summary>
+    /// ログファイルを開く
+    /// </summary>
+    public static void OpenLogFile()
+    {
+        try
+        {
+            Process.Start( "EXPLORER.EXE", _TraceLogPath.AbsoluteFilePath );
+        }
+        catch ( Exception )
+        {            
+        }
     }
 
     #endregion

@@ -265,28 +265,29 @@ public partial class Channel( byte aChannelNo ) : DisposeBaseClass
     /// </summary>
     public void ClearAll()
     {
-        Log.TryCatch
-        (
-            () =>
+        try
+        {
+            foreach ( var de in NoteInfoList )
             {
-                foreach ( var de in NoteInfoList )
-                {
-                    de.Value.Dispose();
-                }
-                NoteInfoList.Clear();
-
-                foreach ( var obj in MeasureList )
-                {
-                    obj.Value.Dispose();
-                }
-                MeasureList.Clear();
-            },
-            null,
-            () => 
-            {
-                MaxMeasureNo = 0;
+                de.Value.Dispose();
             }
-        );
+            NoteInfoList.Clear();
+
+            foreach ( var obj in MeasureList )
+            {
+                obj.Value.Dispose();
+            }
+            MeasureList.Clear();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+            throw;
+        }
+        finally
+        {
+            MaxMeasureNo = 0;
+        }
     }
 
     /// <summary>
