@@ -1,8 +1,8 @@
-﻿using DrumMidiEditorApp.pIO;
+﻿using DrumMidiEditorApp.pConfig;
+using DrumMidiEditorApp.pIO;
 using DrumMidiEditorApp.pModel;
 using DrumMidiEditorApp.pView;
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Activation;
@@ -25,7 +25,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        Log.SetLogFile( TraceLogPath );
+        Config.Log.SetTraceLog();
 
         #region インスタンス管理
 
@@ -47,11 +47,6 @@ public partial class App : Application
     /// </summary>
     private Window? _MainWindow;
 
-    /// <summary>
-    /// トレースログパス
-    /// </summary>
-    public GeneralPath TraceLogPath { get; private set; } = new( $"{HelperAppDirectory.LocalFolder.Path}\\TraceLog.log" );
-
     #endregion
 
     /// <summary>
@@ -61,7 +56,7 @@ public partial class App : Application
     /// <param name="aArgs">起動リクエストとプロセスに関する詳細</param>
     protected override void OnLaunched( LaunchActivatedEventArgs aArgs )
     {
-        using var _ = new LogBlock( "App" );
+        using var _ = new LogBlock( "App.OnLaunched" );
 
         #region デバッグ設定
 #if DEBUG

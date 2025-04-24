@@ -14,4 +14,9 @@ public static class ConfigLib
     /// Audio/Midi/Video設定
     /// </summary>
     public static ConfigMedia Media { get; set; } = new();
+
+    /// <summary>
+    /// Log設定
+    /// </summary>
+    public static ConfigLog Log { get; set; } = new();
 }

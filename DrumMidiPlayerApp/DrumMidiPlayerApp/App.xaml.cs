@@ -1,5 +1,5 @@
 using DrumMidiLibrary.pLog;
-using DrumMidiLibrary.pUtil;
+using DrumMidiPlayerApp.pConfig;
 using DrumMidiPlayerApp.pIO;
 using DrumMidiPlayerApp.pView;
 using Microsoft.UI.Xaml;
@@ -12,8 +12,6 @@ namespace DrumMidiPlayerApp;
 /// </summary>
 public partial class App : Application
 {
-    private Window? _MainWindow;
-
     /// <summary>
     /// シングルトンアプリケーションオブジェクトを初期化します。 
     /// これは、実行される作成済みコードの最初の行であり、
@@ -23,7 +21,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        Log.SetLogFile( new( $"{HelperAppDirectory.LocalFolder.Path}\\TraceLog.log" ) );
+        Config.Log.SetTraceLog();
 
         #region インスタンス管理
 
@@ -42,13 +40,24 @@ public partial class App : Application
         #endregion
     }
 
+    #region member
+
+    /// <summary>
+    /// メインウィンドウ
+    /// </summary>
+    private Window? _MainWindow;
+
+    #endregion
+
     /// <summary>
     /// アプリケーションがエンドユーザーによって正常に起動されたときに呼び出されます。 
     /// アプリケーションを起動して特定のファイルを開くときなど、他のエントリポイントが使用されます。
     /// </summary>
-    /// <param name="args">起動リクエストとプロセスに関する詳細</param>
-    protected override void OnLaunched( LaunchActivatedEventArgs args )
+    /// <param name="aArgs">起動リクエストとプロセスに関する詳細</param>
+    protected override void OnLaunched( LaunchActivatedEventArgs aArgs )
     {
+        using var _ = new LogBlock( "App.OnLaunched" );
+
         // Configファイル読込
         FileIO.LoadConfig();
 

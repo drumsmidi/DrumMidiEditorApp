@@ -24,7 +24,16 @@ public static class Config
         get => ConfigLib.Media;
         set => ConfigLib.Media = value;
     }
-    
+
+    /// <summary>
+    /// Log設定
+    /// </summary>
+    public static ConfigLog Log
+    {
+        get => ConfigLib.Log;
+        set => ConfigLib.Log = value;
+    }
+
     /// <summary>
     /// Panel設定
     /// </summary>

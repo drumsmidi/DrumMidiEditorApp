@@ -26,6 +26,15 @@ public static class Config
     }
 
     /// <summary>
+    /// Log設定
+    /// </summary>
+    public static ConfigLog Log
+    {
+        get => ConfigLib.Log;
+        set => ConfigLib.Log = value;
+    }
+
+    /// <summary>
     /// File設定
     /// </summary>
     public static ConfigFile File { get; set; } = new();

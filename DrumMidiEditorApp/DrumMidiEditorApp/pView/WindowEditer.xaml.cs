@@ -75,14 +75,14 @@ public sealed partial class WindowEditer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
     /// <summary>
     /// ウィンドウ終了処理
     /// </summary>
-    /// <param name="sender"></param>
+    /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
     private void Window_Closed( object aSender, WindowEventArgs aArgs )
     {
@@ -100,12 +100,15 @@ public sealed partial class WindowEditer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
         finally
         {
             // トレースログファイルを開く
-            Log.OpenLogFile();
+            if ( Config.Log.OpenTraceLogFileWhenAppQuit )
+            {
+                Log.OpenLogFile();
+            }
         }
     }
 
@@ -116,9 +119,9 @@ public sealed partial class WindowEditer : Window
     {
         try
         {
-            // TASK: DPIスケール取得できない？WindowsAPI仕様が必要？
-            // DPIスケール取得
-            Config.Window.SetDpiScale( 1.5 ); // Content.RasterizationScale;
+            // DPI値 取得&設定
+            var dpi = HelperAppWindow.GetDpiScale( this, Config.Window.DefaultDpi );
+            Config.Window.SetDpiScale( dpi );
 
             var width  = Config.Window.WindowSizeWidthDpiScale;
             var height = Config.Window.WindowSizeHeightDpiScale;
@@ -130,7 +133,7 @@ public sealed partial class WindowEditer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -148,7 +151,7 @@ public sealed partial class WindowEditer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.UI;
+﻿using System;
+using System.Runtime.InteropServices;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using WinRT.Interop;
@@ -10,6 +12,8 @@ namespace DrumMidiLibrary.pUtil;
 /// </summary>
 public static class HelperAppWindow
 {
+    #region Window
+
     /// <summary>
     /// AppWindow取得
     /// </summary>
@@ -50,6 +54,30 @@ public static class HelperAppWindow
     /// <param name="aHeight"></param>
     public static void ResizeWindowClient( AppWindow aAppWindow, int aWidth, int aHeight )
         => aAppWindow.ResizeClient( new( aWidth, aHeight ) );
+
+
+    /// <summary>
+    /// DPI値取得
+    /// </summary>
+    /// <param name="aWindow"></param>
+    /// <param name="aDefaultDpi"></param>
+    /// <returns></returns>
+    public static float GetDpiScale( this Window aWindow, float aDefaultDpi )
+    {
+        var hwnd = WindowNative.GetWindowHandle( aWindow );
+        var dpi  = GetDpiForWindow( hwnd );
+        return dpi / aDefaultDpi;
+    }
+
+    /// <summary>
+    /// WindowsAPI
+    /// </summary>
+    /// <param name="aHwnd"></param>
+    /// <returns></returns>
+    [DllImport( "user32.dll" )]
+    private static extern uint GetDpiForWindow( IntPtr aHwnd );
+
+    #endregion
 
     #region Presenter
 

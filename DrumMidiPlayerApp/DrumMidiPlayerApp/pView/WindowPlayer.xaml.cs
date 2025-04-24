@@ -16,18 +16,13 @@ namespace DrumMidiPlayerApp.pView;
 public sealed partial class WindowPlayer : Window
 {
     /// <summary>
-    /// 本ウィンドウへのアクセス
-    /// </summary>
-    private readonly AppWindow _AppWindow;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public WindowPlayer()
     {
         // Midiデバイス初期化
         MidiNet.MidiOutDeviceWatcher();
-        MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
+        _ = MidiNet.InitDeviceAsync( Config.Media.MidiOutDeviceName );
 
         // ウィンドウ構築
         InitializeComponent();
@@ -68,6 +63,15 @@ public sealed partial class WindowPlayer : Window
         InputControl.StartTime();
     }
 
+    #region member
+
+    /// <summary>
+    /// 本ウィンドウへのアクセス
+    /// </summary>
+    private readonly AppWindow _AppWindow;
+
+    #endregion
+
     /// <summary>
     /// アクティブ状態更新
     /// </summary>
@@ -85,7 +89,7 @@ public sealed partial class WindowPlayer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -115,9 +119,17 @@ public sealed partial class WindowPlayer : Window
             // 設定ファイル保存
             _ = FileIO.SaveConfig();
         }
-        catch ( Exception )
+        catch ( Exception e )
         {
-            //Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
+        }
+        finally
+        {
+            // トレースログファイルを開く
+            if ( Config.Log.OpenTraceLogFileWhenAppQuit )
+            {
+                Log.OpenLogFile();
+            }
         }
     }
 
@@ -134,7 +146,7 @@ public sealed partial class WindowPlayer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -145,9 +157,9 @@ public sealed partial class WindowPlayer : Window
     {
         try
         {
-            // TASK: DPIスケール取得できない？WindowsAPI仕様が必要？
-            // DPIスケール取得
-            Config.Window.SetDpiScale( 1.5 ); // Content.RasterizationScale;
+            // DPI値 取得&設定
+            var dpi = HelperAppWindow.GetDpiScale( this, Config.Window.DefaultDpi );
+            Config.Window.SetDpiScale( dpi );
 
             // パネルの解像度にに合わせてウィンドウサイズを変更する
             Config.Window.SetWindowSizeDpiNoScale( (int)Config.Panel.ResolutionScreenWidth, (int)Config.Panel.ResolutionScreenHeight );
@@ -162,7 +174,7 @@ public sealed partial class WindowPlayer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -180,7 +192,7 @@ public sealed partial class WindowPlayer : Window
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }
