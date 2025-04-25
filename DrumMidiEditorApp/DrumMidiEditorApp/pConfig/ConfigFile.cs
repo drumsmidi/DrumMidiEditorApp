@@ -80,6 +80,12 @@ public class ConfigFile
     public static readonly string FileNameConfigMedia = "ConfigMedia.json";
 
     /// <summary>
+    /// 設定ファイル名：ログ設定
+    /// </summary>
+    [JsonIgnore]
+    public static readonly string FileNameConfigLog = "ConfigLog.json";
+
+    /// <summary>
     /// 設定ファイル名：Editerタブ設定
     /// </summary>
     [JsonIgnore]

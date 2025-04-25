@@ -5,6 +5,9 @@ namespace DrumMidiEditorApp.pView.pUserControl;
 
 public sealed partial class GroupBox : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public GroupBox()
     {
         InitializeComponent();
@@ -95,7 +98,6 @@ public sealed partial class GroupBox : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void HeaderTitle_LayoutUpdated( object aSender, object aArgs ) 
         => _Border.Margin = new( _HeaderTitle.ActualWidth + 10, 10, 3, 3 );
 }

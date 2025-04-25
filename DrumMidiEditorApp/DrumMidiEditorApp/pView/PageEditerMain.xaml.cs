@@ -12,11 +12,6 @@ namespace DrumMidiEditorApp.pView;
 public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
 {
     /// <summary>
-    /// プレイヤー設定
-    /// </summary>
-    private ConfigPlayer ConfigPlayer => Config.Player;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public PageEditerMain()
@@ -25,6 +20,15 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
 
         ControlAccess.PageEditerMain = this;
     }
+
+    #region member
+
+    /// <summary>
+    /// プレイヤー設定
+    /// </summary>
+    private ConfigPlayer ConfigPlayer => Config.Player;
+
+    #endregion
 
     #region INotifyPropertyChanged
 
@@ -36,7 +40,17 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     /// <summary>
     /// x:Bind OneWay/TwoWay 再読み込み
     /// </summary>
-    public void ReloadPlayer() => OnPropertyChanged( "ConfigPlayer" );
+    public void ReloadPlayer()
+    {
+        try
+        {
+            OnPropertyChanged( "ConfigPlayer" );
+}
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
     #endregion
 
@@ -45,7 +59,6 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Page_SizeChanged( object aSender, SizeChangedEventArgs aArgs )
     {
         try
@@ -54,7 +67,7 @@ public sealed partial class PageEditerMain : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

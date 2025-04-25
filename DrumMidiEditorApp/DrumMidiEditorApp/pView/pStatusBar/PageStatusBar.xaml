@@ -15,7 +15,7 @@
                 IsOpen="False"
                 IsClosable="True" />
 
-            <ProgressBar
+            <ProgressBar x:Name="_ProgressBar"
                 Value="{x:Bind _ProgressBarValue, Mode=OneWay}" />
             
         </StackPanel>

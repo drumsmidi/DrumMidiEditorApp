@@ -5,6 +5,9 @@ namespace DrumMidiEditorApp.pView.pUserControl;
 
 public sealed partial class HGroup : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public HGroup()
     {
         InitializeComponent();

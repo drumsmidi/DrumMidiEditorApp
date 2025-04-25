@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pEvent;
 using DrumMidiEditorApp.pIO;
@@ -20,6 +21,36 @@ namespace DrumMidiEditorApp.pView.pMenuBar;
 
 public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageMenuBar()
+    {
+        InitializeComponent();
+
+        ControlAccess.PageMenuBar = this;
+
+        #region NumberBox の入力書式設定
+
+        _LoopPlayMeasureStartNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureEndNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureConnectNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureStartNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureEndNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+        #endregion
+
+        if ( DMS.AppStartDmsPath.IsExistFile )
+        {
+            LoadSocre( DMS.AppStartDmsPath );
+        }
+    }
+
     #region Member
 
     /// <summary>
@@ -54,36 +85,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
 
     #endregion
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public PageMenuBar()
-    {
-        InitializeComponent();
-
-        ControlAccess.PageMenuBar = this;
-
-        #region NumberBox の入力書式設定
-
-        _LoopPlayMeasureStartNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-        _LoopPlayMeasureEndNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-        _LoopPlayMeasureConnectNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-        _LoopPlayMeasureStartNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-        _LoopPlayMeasureEndNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-        #endregion
-
-        if ( DMS.AppStartDmsPath.IsExistFile )
-        {
-            LoadSocre( DMS.AppStartDmsPath );
-        }
-    }
-
     #region INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -104,7 +105,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -130,7 +131,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -157,7 +158,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -178,10 +179,9 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
-
 
     #region Menu
 
@@ -202,7 +202,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemNew_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -227,7 +226,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -236,9 +235,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemOpen_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -254,7 +257,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -263,9 +266,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemSave_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -286,15 +293,12 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
             }
             else
             {
-                if ( !FileIO.SaveScore( edit_filepath, DMS.SCORE ) )
-                {
-                    return;
-                }
+                FileIO.SaveScore( edit_filepath, DMS.SCORE );
             }
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -303,9 +307,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemSaveAs_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -322,7 +330,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -331,9 +339,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemExportMidi_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -345,18 +357,12 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     DMS.OpenFilePath.FileNameWithoutExtension,
                     PickerLocationId.DocumentsLibrary,
                     ConfigFile.FolderExport,
-                    ( filepath ) =>
-                    {
-                        if ( !FileIO.SaveMidi( filepath, DMS.SCORE ) )
-                        {
-                            return;
-                        }
-                    }
+                    ( filepath ) => FileIO.SaveMidi( filepath, DMS.SCORE )
                 );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -365,9 +371,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemExportVideo_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -383,14 +393,23 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
                     {
                         filepath.Extension = ConfigFile.ExtentionMp4;
 
-                        // TODO: 非同期処理時の操作制限の実装が必要
-                        FileIO.SaveVideoAsync( filepath );
+                        var cancel = new CancellationTokenSource ();
+
+                        HelperXaml.ProcDialogCancelAsync
+                            (
+                                Content.XamlRoot,
+                                HelperResources.GetString( "DialogMenuItemExportVideo/Title" ),
+                                HelperResources.GetString( "DialogMenuItemExportVideo/Content" ),
+                                HelperResources.GetString( "Dialog/Cancel" ),
+                                () => FileIO.SaveVideoAsync( filepath, cancel.Token ),
+                                () => cancel.Cancel()
+                            );
                     }
                 );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -399,9 +418,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemExportPdf_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -423,7 +446,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -432,9 +455,13 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MenuItemImportMidi_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             PlayerStop();
@@ -478,7 +505,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -491,7 +518,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ChannelNoComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -502,7 +528,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -511,7 +537,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void PlayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -520,7 +545,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -529,7 +554,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void StopButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -538,7 +562,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -547,7 +571,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void LoopPlayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -556,7 +579,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -579,7 +602,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -588,7 +611,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void LoopPlayMeasureConnectToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -597,7 +619,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -619,14 +641,7 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         var max     = (int)_LoopPlayMeasureEndNumberBox.Maximum;
         var on      = _LoopPlayMeasureConnectToggleSwitch.IsOn;
 
-        if ( start < min )
-        {
-            start = min;
-        }
-        if ( start > max )
-        {
-            start = max;
-        }
+        start = Math.Clamp( start, min, max );
 
         if ( on )
         {
@@ -651,21 +666,18 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void PlayerDisplayToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not ToggleSwitch item )
+            if ( aSender is ToggleSwitch item )
             {
-                return;
+                EventManage.Event_Player_ChangeDisplay( item?.IsOn ?? false );
             }
-
-            EventManage.Event_Player_ChangeDisplay( item?.IsOn ?? false );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

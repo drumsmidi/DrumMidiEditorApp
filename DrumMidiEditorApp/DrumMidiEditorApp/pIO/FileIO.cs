@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiEditorApp.pModel;
@@ -31,11 +32,9 @@ public static class FileIO
     /// <returns>Trueのみ</returns>
     public static bool LoadConfig()
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Load Configs" );
 
-#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.File.FolderConfig );
-#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName    = ConfigFile.FileNameConfigSystem;
@@ -44,6 +43,10 @@ public static class FileIO
         // ConfigMedia
         path.FileName    = ConfigFile.FileNameConfigMedia;
         Config.Media     = LoadConfig<ConfigMedia>( path ) ?? Config.Media;
+
+        // ConfigLog
+        path.FileName    = ConfigFile.FileNameConfigLog;
+        Config.Log       = LoadConfig<ConfigLog>( path ) ?? Config.Log;
 
         // ConfigEditer
         path.FileName    = ConfigFile.FileNameConfigEditer;
@@ -99,7 +102,7 @@ public static class FileIO
         catch ( Exception e )
         {
             Log.Error( $"Failed to read [{aGeneralPath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
         return config;
     }
@@ -110,14 +113,12 @@ public static class FileIO
     /// <returns>Trueのみ</returns>
     public static bool SaveConfig()
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Save Configs" );
 
         // サブフォルダ作成
         DocumentFolderStructure();
 
-#pragma warning disable IDE0017 // オブジェクトの初期化を簡略化します
         var path = new GeneralPath( Config.File.FolderConfig );
-#pragma warning restore IDE0017 // オブジェクトの初期化を簡略化します
 
         // ConfigSystem
         path.FileName = ConfigFile.FileNameConfigSystem;
@@ -126,6 +127,10 @@ public static class FileIO
         // ConfigMedia
         path.FileName = ConfigFile.FileNameConfigMedia;
         SaveConfig( path, Config.Media );
+
+        // ConfigLog
+        path.FileName = ConfigFile.FileNameConfigLog;
+        SaveConfig( path, Config.Log );
 
         // ConfigEditer
         path.FileName = ConfigFile.FileNameConfigEditer;
@@ -179,7 +184,7 @@ public static class FileIO
         catch ( Exception e )
         {
             Log.Error( $"Failed to write [{aGeneralPath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -189,10 +194,11 @@ public static class FileIO
     /// スコア - Video保存
     /// </summary>
     /// <param name="aFilePath">出力先ファイルパス</param>
-    /// <returns>True:保存成功、False:保存失敗</returns>
-    public static async void SaveVideoAsync( GeneralPath aFilePath )
+    /// <param name="aCancellationToken">キャンセルトークン</param>
+    /// <returns></returns>
+    public static async Task SaveVideoAsync( GeneralPath aFilePath, CancellationToken aCancellationToken )
     {
-        _ = new LogBlock( Log.GetThisMethodName );
+        using var _a = new LogBlock( "Save Video" );
 
         try
         {
@@ -230,14 +236,15 @@ public static class FileIO
 
             var log_cnt = 0;
 
-            // TODO: 非同期処理中に別操作に対する制限など未実装
-
             await Task.Run
-                (
+                ( 
                     () =>
                     {
                         for ( var time = 0D; time <= DmsControl.EndPlayTime; time += frameTime )
                         {
+                            // キャンセルチェック
+                            aCancellationToken.ThrowIfCancellationRequested();
+
                             if ( log_cnt++ % fps == 0 )
                             {
                                 ControlAccess.PageStatusBar?.ReloadProgressBar( time * 100 / DmsControl.EndPlayTime );
@@ -273,18 +280,22 @@ public static class FileIO
                         }
 
                         Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
-
-                        ControlAccess.PageStatusBar?.ReloadProgressBar( 0 );
-
-                        ControlAccess.UCPlayerPanel?.GetFrameEnd();
-                    }
+                    },
+                    aCancellationToken
                 );
+        }
+        catch ( OperationCanceledException )
+        {
+            Log.Info( $"Cancel in writing [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
+        }
+        finally
+        {
+            ControlAccess.PageStatusBar?.ReloadProgressBar( 0 );
             ControlAccess.UCPlayerPanel?.GetFrameEnd();
         }
     }
@@ -293,10 +304,10 @@ public static class FileIO
     /// スコア - Pdf保存
     /// </summary>
     /// <param name="aFilePath">出力先ファイルパス</param>
-    /// <returns>True:保存成功、False:保存失敗</returns>
+    /// <returns></returns>
     public static void SavePdf( GeneralPath aFilePath )
     {
-        _ = new LogBlock( Log.GetThisMethodName );
+        using var _a = new LogBlock( "Save Pdf" );
 
         try
         {
@@ -376,14 +387,14 @@ public static class FileIO
             }
 
             Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
-
-            ControlAccess.UCPlayerPanel?.GetFrameEnd();
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
+        }
+        finally
+        {
             ControlAccess.UCPlayerPanel?.GetFrameEnd();
         }
     }
@@ -393,7 +404,7 @@ public static class FileIO
     /// <summary>
     /// ドキュメントフォルダを構築
     /// </summary>
-    public static void DocumentFolderStructure()
+    private static void DocumentFolderStructure()
     {
         var folderList = new List<GeneralPath>()
         {
@@ -424,7 +435,7 @@ public static class FileIO
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -448,7 +459,7 @@ public static class FileIO
         catch ( Exception e )
         {
             Log.Error( $"Folder creation failure [{aFolderPath.AbsoluteFolderPath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -462,7 +473,7 @@ public static class FileIO
     /// <returns>True:読込成功、False:読込失敗</returns>
     public static bool LoadScore( GeneralPath aFilePath, out Score aScore )
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Load Score" );
 
         aScore = new();
 
@@ -487,12 +498,12 @@ public static class FileIO
                 throw new NotSupportedException( $"Extension {ext} is not supported" );
             }
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
             return false;
         }
         return true;
@@ -506,7 +517,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveScore( GeneralPath aFilePath, Score aScore )
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Save Score" );
 
         try
         {
@@ -516,8 +527,8 @@ public static class FileIO
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
             return false;
         }
         return true;
@@ -531,7 +542,7 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveMidi( GeneralPath aFilePath, Score aScore )
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Save Midi" );
 
         try
         {
@@ -541,8 +552,8 @@ public static class FileIO
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
             return false;
         }
         return true;
@@ -556,18 +567,18 @@ public static class FileIO
     /// <returns>True:読込成功、False:読込失敗</returns>
     public static bool LoadMidiMapSet( GeneralPath aFilePath, out MidiMapSet aMidiMapSet )
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Load MidiMapSet" );
 
         try
         {
             ScoreIO.LoadFile( aFilePath, out aMidiMapSet );
 
-            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]" );
+            Log.Info( $"Succeeded in reading [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
 
             aMidiMapSet = new();
             return false;
@@ -583,18 +594,18 @@ public static class FileIO
     /// <returns>True:保存成功、False:保存失敗</returns>
     public static bool SaveMidiMapSet( GeneralPath aFilePath, MidiMapSet aMidiMapSet )
     {
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Save MidiMapSet" );
 
         try
         {
             ScoreIO.SaveFile( aFilePath, aMidiMapSet );
 
-            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]" );
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
             return false;
         }
         return true;
@@ -607,9 +618,9 @@ public static class FileIO
     /// <returns>True:インポート成功、False:インポート失敗</returns>
     public static bool ImportScore( GeneralPath aFilePath )
     {
-        // TODO: この辺は改良の余地あり。
+        // TASK: 放置中
 
-        using var _ = new LogBlock( Log.GetThisMethodName );
+        using var _ = new LogBlock( "Import Midi" );
 
         try
         {
@@ -624,12 +635,12 @@ public static class FileIO
                 throw new NotSupportedException( $"Extension {ext} is not supported" );
             }
 
-            //Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]" );
+            //Log.Info( $"Succeeded in reading [{aFilePath.AbsoulteFilePath}]", true );
         }
         catch ( Exception e )
         {
-            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]" );
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( $"Failed to read [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
             return false;
         }
         //return true;

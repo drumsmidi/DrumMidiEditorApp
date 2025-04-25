@@ -572,4 +572,10 @@ BPMノートを含める</value>
   <data name="InputCursorRectDisplay.Header" xml:space="preserve">
     <value>カーソル塗潰し</value>
   </data>
+  <data name="DialogMenuItemExportVideo.Content" xml:space="preserve">
+    <value>処理を中断する場合は、Cancelボタンを押下してください。</value>
+  </data>
+  <data name="DialogMenuItemExportVideo.Title" xml:space="preserve">
+    <value>ビデオ出力中</value>
+  </data>
 </root>

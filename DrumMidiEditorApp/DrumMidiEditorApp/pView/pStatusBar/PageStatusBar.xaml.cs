@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml.Controls;
@@ -10,11 +11,6 @@ namespace DrumMidiEditorApp.pView.pStatusBar;
 public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 {
     /// <summary>
-    /// 進捗バー（０～１００）
-    /// </summary>
-    private double _ProgressBarValue = 0;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public PageStatusBar()
@@ -23,9 +19,21 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
 
         ControlAccess.PageStatusBar = this;
 
+        _ProgressBar.Minimum = Config.System.ProgressBarMinValue;
+        _ProgressBar.Maximum = Config.System.ProgressBarMaxValue;
+
         // ログ出力の通知を受け取る
         Log.LogOutputCallback.Enqueue( SetStatusText );
     }
+
+    #region member
+
+    /// <summary>
+    /// 進捗バー
+    /// </summary>
+    private double _ProgressBarValue = 0;
+
+    #endregion
 
     #region INotifyPropertyChanged
 
@@ -49,13 +57,13 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
                 return;
             }
 
-            _ProgressBarValue = aProgressBarValue;
+            _ProgressBarValue = Math.Clamp( aProgressBarValue, _ProgressBar.Minimum, _ProgressBar.Maximum );
 
             OnPropertyChanged( "_ProgressBarValue" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -87,7 +95,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -113,7 +121,7 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

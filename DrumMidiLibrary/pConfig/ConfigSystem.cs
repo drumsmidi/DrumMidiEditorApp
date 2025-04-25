@@ -234,6 +234,18 @@ public class ConfigSystem
     [JsonIgnore]
     public int NoteCount { get; private set; }
 
+    /// <summary>
+    /// 進捗バー最小値
+    /// </summary>
+    [JsonIgnore]
+    public int ProgressBarMinValue { get; private set; } = 0;
+
+    /// <summary>
+    /// 進捗バー最大値
+    /// </summary>
+    [JsonIgnore]
+    public int ProgressBarMaxValue { get; private set; } = 100;
+
     #endregion
 
     #region エディター内のプレイヤー描画モード

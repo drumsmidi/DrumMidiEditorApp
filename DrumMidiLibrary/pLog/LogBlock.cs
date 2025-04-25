@@ -9,11 +9,6 @@ namespace DrumMidiLibrary.pLog;
 public partial class LogBlock : DisposeBaseClass
 {
     /// <summary>
-    /// ブロック名
-    /// </summary>
-    private readonly string _BlockName;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     /// <param name="aBlockName">ブロック名</param>
@@ -45,4 +40,9 @@ public partial class LogBlock : DisposeBaseClass
         base.Dispose( aDisposing );
     }
     private bool _Disposed = false;
+
+    /// <summary>
+    /// ブロック名
+    /// </summary>
+    private readonly string _BlockName;
 }

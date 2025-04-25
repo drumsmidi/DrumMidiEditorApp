@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DrumMidiLibrary.pLog;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -21,6 +22,44 @@ public static class HelperXaml
     #region Dialog
 
     /// <summary>
+    /// 非同期処理中ダイアログ（Cancel）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aContent"></param>
+    /// <param name="aButtonText"></param>
+    /// <param name="aAsyncAction"></param>
+    /// <param name="aCancelAction"></param>
+    public static async void ProcDialogCancelAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Func<Task> aAsyncAction, Action aCancelAction )
+    {
+        var cd = new ContentDialog
+        {
+            Title           = aTitle,
+            Content         = aContent,
+            CloseButtonText = aButtonText,
+            XamlRoot        = aContentXamlRoot,
+        };
+
+        // 非同期処理スタート
+        _ = Task.Run
+            ( 
+                async () =>
+                {
+                    await aAsyncAction();
+
+                    cd.DispatcherQueue.TryEnqueue( () => cd.Hide() );
+                } 
+            );
+
+        var result = await cd.ShowAsync();
+
+        if ( result == ContentDialogResult.None )
+        {
+            aCancelAction();
+        }
+    }
+
+    /// <summary>
     /// メッセージダイアログ（OK）を表示する
     /// </summary>
     /// <param name="aContentXamlRoot"></param>
@@ -28,14 +67,40 @@ public static class HelperXaml
     /// <param name="aContent"></param>
     /// <param name="aButtonText"></param>
     /// <param name="aAction"></param>
-    public static async void MessageDialogOk( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
+    public static async void MessageDialogOkAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
+    {
+        var cd = new ContentDialog
+        {
+            Title               = aTitle,
+            Content             = aContent,
+            PrimaryButtonText   = aButtonText,
+            XamlRoot            = aContentXamlRoot,
+        };
+
+        var result = await cd.ShowAsync();
+
+        if ( result == ContentDialogResult.Primary )
+        {
+            aAction();
+        }
+    }
+
+    /// <summary>
+    /// メッセージダイアログ（Cancel）を表示する
+    /// </summary>
+    /// <param name="aContentXamlRoot"></param>
+    /// <param name="aTitle"></param>
+    /// <param name="aContent"></param>
+    /// <param name="aButtonText"></param>
+    /// <param name="aAction"></param>
+    public static async void MessageDialogCancelAsync( XamlRoot aContentXamlRoot, string aTitle, string aContent, string aButtonText, Action aAction )
     {
         var cd = new ContentDialog
         {
             Title           = aTitle,
             Content         = aContent,
             CloseButtonText = aButtonText,
-            XamlRoot        = aContentXamlRoot
+            XamlRoot        = aContentXamlRoot,
         };
 
         var result = await cd.ShowAsync();
@@ -63,7 +128,7 @@ public static class HelperXaml
             Content             = aContent,
             PrimaryButtonText   = aYesButtonText,
             CloseButtonText     = aNoButtonText,
-            XamlRoot            = aContentXamlRoot
+            XamlRoot            = aContentXamlRoot,
         };
 
         var result = await cd.ShowAsync();
@@ -183,7 +248,7 @@ public static class HelperXaml
     /// <param name="aContentXamlRoot"></param>
     /// <param name="aColor"></param>
     /// <param name="aAction"></param>
-    public static async void ColorDialog( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
+    public static async void ColorDialogAsync( XamlRoot aContentXamlRoot, Color aColor, Action<Color> aAction )
     {
         var content = new ColorPicker
         {
