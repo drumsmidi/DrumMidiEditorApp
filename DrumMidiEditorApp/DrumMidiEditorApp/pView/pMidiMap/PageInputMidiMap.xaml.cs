@@ -10,6 +10,14 @@ namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class PageInputMidiMap : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageInputMidiMap()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -25,32 +33,31 @@ public sealed partial class PageInputMidiMap : Page
     #endregion
 
     /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public PageInputMidiMap()
-    {
-        InitializeComponent();
-    }
-
-    /// <summary>
     /// MidiMapリスト作成
     /// </summary>
     public void LoadMidiMap()
     {
-        foreach ( var group in Score.EditMidiMapSet.MidiMapGroups )
+        try
         {
-            foreach ( var midiMap in group.MidiMaps )
+            foreach ( var group in Score.EditMidiMapSet.MidiMapGroups )
             {
-                var name = $"{midiMap.MidiMapKey,-3} {Score.EditMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey )}";
-
-                _MidiMapListBox.Items.Add( name );
-
-                if ( midiMap.MidiMapKey == SelectMidiMapKey )
+                foreach ( var midiMap in group.MidiMaps )
                 {
-                    _MidiMapListBox.SelectedIndex = _MidiMapListBox.Items.Count - 1;
-                    _MidiMapBeforeTextBlock.Text  = name;
+                    var name = $"{midiMap.MidiMapKey,-3} {Score.EditMidiMapSet.GetGroupAndMidiMapName( midiMap.MidiMapKey )}";
+
+                    _MidiMapListBox.Items.Add( name );
+
+                    if ( midiMap.MidiMapKey == SelectMidiMapKey )
+                    {
+                        _MidiMapListBox.SelectedIndex = _MidiMapListBox.Items.Count - 1;
+                        _MidiMapBeforeTextBlock.Text  = name;
+                    }
                 }
             }
+        }
+        catch ( Exception e ) 
+        {
+            Log.Error( e );
         }
     }
 
@@ -59,7 +66,6 @@ public sealed partial class PageInputMidiMap : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapListBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -80,7 +86,7 @@ public sealed partial class PageInputMidiMap : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

@@ -2,6 +2,7 @@
 using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pMenuBar;
@@ -14,10 +15,6 @@ public sealed partial class PageImportMidi : Page
     public PageImportMidi()
     {
         InitializeComponent();
-
-        // NumberBox の入力書式設定
-        _BpmZoomNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 4, 0.0125 );
     }
 
     #region member
@@ -28,6 +25,28 @@ public sealed partial class PageImportMidi : Page
     public float BpmZoom { get; set; } = Config.Media.MidiImportZoom;
 
     #endregion
+
+    /// <summary>
+    /// ページロード完了後処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            #region NumberBox の入力書式設定
+
+            _BpmZoomNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 4, 0.0125 );
+
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
     /// <summary>
     /// ＢＰＭ取込倍率変更

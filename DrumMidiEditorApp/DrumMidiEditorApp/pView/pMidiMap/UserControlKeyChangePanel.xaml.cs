@@ -15,6 +15,16 @@ namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class UserControlKeyChangePanel : UserControl, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlKeyChangePanel()
+    {
+        InitializeComponent();
+
+        ControlAccess.UCKeyChangePanel = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -30,16 +40,21 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlKeyChangePanel()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
-
-        ControlAccess.UCKeyChangePanel = this;
-
-        // 初回表示時に読み込んでおく
-        ReloadMidiMapNoteList();
+        try
+        {
+            // 初回表示時に読み込んでおく
+            ReloadMidiMapNoteList();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -80,7 +95,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -91,7 +106,6 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void DisplayButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -111,7 +125,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -120,7 +134,6 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void KeyChangeButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -179,7 +192,7 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

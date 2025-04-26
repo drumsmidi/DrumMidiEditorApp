@@ -14,6 +14,14 @@ namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlPlayerScoreType2ScaleItem()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -29,15 +37,21 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlPlayerScoreType2ScaleItem()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
-
-        // 初回表示時に読み込んでおく
-        ReloadScaleItemList();
+        try
+        {
+            // 初回表示時に読み込んでおく
+            ReloadScaleItemList();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -63,7 +77,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -76,7 +90,6 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScaleItemApplyButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -94,7 +107,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -103,7 +116,6 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScaleItemAddButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -112,7 +124,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -121,7 +133,6 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScaleItemRemoveButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -135,7 +146,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -144,7 +155,6 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScaleItemGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
@@ -158,7 +168,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -167,7 +177,6 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScaleItemGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
@@ -186,7 +195,7 @@ public sealed partial class UserControlPlayerScoreType2ScaleItem : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

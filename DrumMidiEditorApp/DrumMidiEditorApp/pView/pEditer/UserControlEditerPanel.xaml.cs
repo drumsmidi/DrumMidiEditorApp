@@ -28,6 +28,14 @@ namespace DrumMidiEditorApp.pView.pEditer;
 
 public sealed partial class UserControlEditerPanel : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlEditerPanel()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -181,7 +189,6 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// </summary>
     private readonly DmsItemVolumeRange _VolumeRange = new();
 
-
     /// <summary>
     /// マウス位置：ノート範囲移動時のタイマー処理用
     /// </summary>
@@ -190,11 +197,22 @@ public sealed partial class UserControlEditerPanel : UserControl
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// Win2D アンロード処理
     /// </summary>
-    public UserControlEditerPanel()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
+        try
+        {
+            // Win2D アンロード
+            //_EditerCanvas.RemoveFromVisualTree();
+            //_EditerCanvas = null;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region Mouse Event
@@ -392,7 +410,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -489,7 +507,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -578,7 +596,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
         finally
         {
@@ -2908,7 +2926,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -2961,7 +2979,7 @@ public sealed partial class UserControlEditerPanel : UserControl
                     }
                     catch ( Exception e )
                     {
-                        Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+                        Log.Error( e );
                     }
                 }
             );
@@ -3133,25 +3151,15 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// キャンバス描画更新
     /// </summary>
-    public void Refresh() => _EditerCanvas.Invalidate();
-
-    /// <summary>
-    /// Win2D アンロード処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
-    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
+    public void Refresh()
     {
         try
         {
-            // Win2D アンロード
-            //_EditerCanvas.RemoveFromVisualTree();
-            //_EditerCanvas = null;
+            _EditerCanvas.Invalidate();
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -3546,7 +3554,7 @@ public sealed partial class UserControlEditerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

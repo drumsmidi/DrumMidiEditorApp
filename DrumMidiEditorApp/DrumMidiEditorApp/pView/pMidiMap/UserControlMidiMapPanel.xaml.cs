@@ -20,6 +20,16 @@ namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class UserControlMidiMapPanel : UserControl, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlMidiMapPanel()
+    {
+        InitializeComponent();
+
+        ControlAccess.UCMidiMapPanel = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -55,16 +65,21 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlMidiMapPanel()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
-
-        ControlAccess.UCMidiMapPanel = this;
-
-        // 初回表示時に読み込んでおく
-        ReloadMidiMapSet();
+        try
+        {
+            // 初回表示時に読み込んでおく
+            ReloadMidiMapSet();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -93,7 +108,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -125,7 +140,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -150,7 +165,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -163,7 +178,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ApplyButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -179,7 +193,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -188,9 +202,13 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ImportButton_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             HelperXaml.OpenDialogAsync
@@ -242,7 +260,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -251,9 +269,13 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ExportButton_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             HelperXaml.SaveDialogAsync
@@ -278,7 +300,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -308,7 +330,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGroupGridView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -317,7 +338,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -356,7 +377,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -365,7 +386,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGroupRemoveButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -392,7 +412,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -401,7 +421,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGroupGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
@@ -411,18 +430,16 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
 
-            if ( aArgs.Items [ 0 ] is not MidiMapGroup group )
+            if ( aArgs.Items [ 0 ] is MidiMapGroup group )
             {
-                return;
+                _BeforeMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
+
+                aArgs.Data.RequestedOperation = DataPackageOperation.Move;
             }
-
-            _BeforeMoveIndex = _TmpMidiMapGroupList.IndexOf( group );
-
-            aArgs.Data.RequestedOperation = DataPackageOperation.Move;
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -431,7 +448,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGroupGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
@@ -474,7 +490,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -487,7 +503,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapAddButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -518,7 +533,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -558,7 +573,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -567,7 +582,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
@@ -577,18 +591,16 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
                 return;
             }
 
-            if ( aArgs.Items [ 0 ] is not MidiMap midiMap )
+            if ( aArgs.Items [ 0 ] is MidiMap midiMap )
             {
-                return;
+                _BeforeMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
+
+                aArgs.Data.RequestedOperation = DataPackageOperation.Move;
             }
-
-            _BeforeMoveIndex = _TmpMidiMapList.IndexOf( midiMap );
-
-            aArgs.Data.RequestedOperation = DataPackageOperation.Move;
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -597,7 +609,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiMapGridView_DragItemsCompleted( ListViewBase aSender, DragItemsCompletedEventArgs aArgs )
     {
         try
@@ -631,7 +642,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -658,7 +669,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -681,7 +692,7 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -690,29 +701,26 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not Button item )
+            if ( aSender is Button item )
             {
-                return;
-            }
-
-            HelperXaml.ColorDialog
-                (
-                    item,
-                    ( item.Background as SolidColorBrush )?.Color ?? Config.System.DefaultMidiMapColor,
-                    ( color ) =>
+                HelperXaml.ColorDialog
+                    (
+                        item,
+                        ( item.Background as SolidColorBrush )?.Color ?? Config.System.DefaultMidiMapColor,
+                        ( color ) =>
                         {
                             item.Background = new SolidColorBrush( color );
                         }
-                );
+                    );
+            }
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

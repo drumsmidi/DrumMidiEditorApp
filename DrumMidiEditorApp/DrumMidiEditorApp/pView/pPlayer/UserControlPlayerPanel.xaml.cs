@@ -19,6 +19,16 @@ namespace DrumMidiEditorApp.pView.pPlayer;
 
 public sealed partial class UserControlPlayerPanel : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlPlayerPanel()
+    {
+        InitializeComponent();
+
+        ControlAccess.UCPlayerPanel = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -34,28 +44,52 @@ public sealed partial class UserControlPlayerPanel : UserControl
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlPlayerPanel()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
+        try
+        {
+            // スワップチェイン作成
+            _PlayerCanvas.SwapChain = new CanvasSwapChain
+                (
+                    new CanvasDevice(),
+                    DrawSet.ResolutionScreenWidth,
+                    DrawSet.ResolutionScreenHeight,
+                    Config.Window.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
+                    DirectXPixelFormat.R8G8B8A8UIntNormalized,
+                //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                    2,
+                    CanvasAlphaMode.Premultiplied
+                );
 
-        ControlAccess.UCPlayerPanel = this;
+            DrawTaskStart();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
-        // スワップチェイン作成
-        _PlayerCanvas.SwapChain = new CanvasSwapChain
-            (
-                new CanvasDevice(),
-                DrawSet.ResolutionScreenWidth,
-                DrawSet.ResolutionScreenHeight,
-                Config.Window.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
-                DirectXPixelFormat.R8G8B8A8UIntNormalized,
-            //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
-                2,
-                CanvasAlphaMode.Premultiplied
-            );
-
-        DrawTaskStart();
+    /// <summary>
+    /// Win2D アンロード処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            // Win2D アンロード
+            _PlayerCanvas.RemoveFromVisualTree();
+            _PlayerCanvas = null;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region 描画スレッドプール
@@ -94,7 +128,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -161,7 +195,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -170,8 +204,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
     /// </summary>
     /// <param name="aCanvasCommandList"></param>
     /// <returns></returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Performance", "CA1859:可能な場合は具象型を使用してパフォーマンスを向上させる", Justification = "<保留中>" )]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "CodeQuality", "IDE0079:不要な抑制を削除します", Justification = "<保留中>" )]
     private static ICanvasImage? GetEffectImage( CanvasCommandList aCanvasCommandList )
     {
         return new AtlasEffect
@@ -723,7 +755,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -763,7 +795,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -815,7 +847,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
             return null;
         }
     }
@@ -836,7 +868,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -900,7 +932,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -917,7 +949,7 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -934,29 +966,9 @@ public sealed partial class UserControlPlayerPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
     #endregion
-
-    /// <summary>
-    /// Win2D アンロード処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
-    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // Win2D アンロード
-            _PlayerCanvas.RemoveFromVisualTree();
-            _PlayerCanvas = null;
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
 }

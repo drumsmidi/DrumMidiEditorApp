@@ -3,6 +3,7 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pConfig;
@@ -10,21 +11,42 @@ namespace DrumMidiEditorApp.pView.pConfig;
 public sealed partial class PageConfigVideo : Page
 {
     /// <summary>
-    /// Media設定
-    /// </summary>
-    private ConfigMedia ConfigMedia => Config.Media;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public PageConfigVideo()
     {
-        // 初期化
         InitializeComponent();
+    }
 
-        // NumberBox の入力書式設定
-        _VideoFpsNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+    #region member
+
+    /// <summary>
+    /// Media設定
+    /// </summary>
+    private ConfigMedia ConfigMedia => Config.Media;
+
+    #endregion
+
+    /// <summary>
+    /// ページロード完了後処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            #region NumberBox の入力書式設定
+
+            _VideoFpsNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region Video
@@ -46,7 +68,7 @@ public sealed partial class PageConfigVideo : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

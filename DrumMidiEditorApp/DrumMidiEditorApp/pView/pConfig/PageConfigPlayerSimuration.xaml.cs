@@ -10,6 +10,14 @@ namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigPlayerSimuration : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfigPlayerSimuration()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -20,19 +28,25 @@ public sealed partial class PageConfigPlayerSimuration : Page
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageConfigPlayerSimuration()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
+        try
+        {
+            #region NumberBox の入力書式設定
 
-        #region NumberBox の入力書式設定
+            //_Line128NumberBox.NumberFormatter
+            //	= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
 
-        //_Line128NumberBox.NumberFormatter
-        //	= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-
-        #endregion
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -40,29 +54,26 @@ public sealed partial class PageConfigPlayerSimuration : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not Button item )
+            if ( aSender is Button item )
             {
-                return;
+                HelperXaml.ColorDialog
+                    (
+                        item,
+                        ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
+                        ( color ) =>
+                        {
+                            item.Background = new SolidColorBrush( color );
+                        }
+                    );
             }
-
-            HelperXaml.ColorDialog
-                (
-                    item,
-                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
-                    ( color ) =>
-                    {
-                        item.Background = new SolidColorBrush( color );
-                    }
-                );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

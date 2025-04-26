@@ -14,6 +14,14 @@ namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfigPlayerSequence()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -29,49 +37,55 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageConfigPlayerSequence()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
-
-        #region 描画方向リスト作成
-
-        foreach ( var name in Enum.GetNames<ConfigPlayerSequence.DrawDirectionMode>() )
+        try
         {
-            _DrawDirectionModeList.Add( name );
+            #region 描画方向リスト作成
+
+            foreach ( var name in Enum.GetNames<ConfigPlayerSequence.DrawDirectionMode>() )
+            {
+                _DrawDirectionModeList.Add( name );
+            }
+
+            #endregion
+
+            #region NumberBox の入力書式設定
+
+            _NoteTermHeightNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteTermWidthNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteHeightNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteWidthNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+            _Line128NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line064NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line032NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line016NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line008NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line004NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line001NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+            #endregion
         }
-
-        #endregion
-
-        #region NumberBox の入力書式設定
-
-        _NoteTermHeightNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteTermWidthNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteHeightNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteWidthNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-        _Line128NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line064NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line032NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line016NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line008NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line004NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line001NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-        #endregion
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -94,7 +108,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -105,7 +119,6 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void DrawDirectionModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -114,7 +127,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -123,7 +136,6 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -132,7 +144,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -155,7 +167,7 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -164,29 +176,26 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not Button item )
+            if ( aSender is Button item )
             {
-                return;
+                HelperXaml.ColorDialog
+                    (
+                        item,
+                        ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
+                        ( color ) =>
+                        {
+                            item.Background = new SolidColorBrush( color );
+                        }
+                    );
             }
-
-            HelperXaml.ColorDialog
-                (
-                    item,
-                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
-                    ( color ) =>
-                    {
-                        item.Background = new SolidColorBrush( color );
-                    }
-                );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -195,24 +204,21 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void HeaderGroupToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not ToggleSwitch item )
+            if ( aSender is ToggleSwitch item )
             {
-                return;
+                DrawSet.HeaderGroupOn = item.IsOn;
+
+                ReloadConfig();
+                EventManage.Event_Player_UpdateScore();
             }
-
-            DrawSet.HeaderGroupOn = item.IsOn;
-
-            ReloadConfig();
-            EventManage.Event_Player_UpdateScore();
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

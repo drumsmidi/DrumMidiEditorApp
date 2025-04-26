@@ -12,6 +12,18 @@ namespace DrumMidiEditorApp.pView.pPlayer;
 public sealed partial class PagePlayer : Page
 {
     /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PagePlayer()
+    {
+        InitializeComponent();
+
+        ControlAccess.PagePlayer = this;
+    }
+
+    #region member
+
+    /// <summary>
     /// 描画設定
     /// </summary>
     private static ConfigPlayer DrawSet => Config.Player;
@@ -21,16 +33,23 @@ public sealed partial class PagePlayer : Page
     /// </summary>
     private Thickness _PageMargin = new();
 
+    #endregion
+
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PagePlayer()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
-
-        ControlAccess.PagePlayer = this;
-
-        UpdatePageSize();
+        try
+        {
+            UpdatePageSize();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region Mouse Event
@@ -60,7 +79,6 @@ public sealed partial class PagePlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Page_PointerPressed( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
@@ -88,7 +106,7 @@ public sealed partial class PagePlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -99,7 +117,6 @@ public sealed partial class PagePlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Page_PointerMoved( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
@@ -123,7 +140,7 @@ public sealed partial class PagePlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -134,7 +151,6 @@ public sealed partial class PagePlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Page_PointerReleased( object aSender, PointerRoutedEventArgs aArgs )
     {
         try
@@ -158,7 +174,7 @@ public sealed partial class PagePlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
         finally
         {
@@ -194,7 +210,7 @@ public sealed partial class PagePlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

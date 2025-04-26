@@ -3,12 +3,23 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
 public sealed partial class PageInputBpm : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageInputBpm()
+    {
+        InitializeComponent();
+    }
+
+    #region member
+
     /// <summary>
     /// メディア設定
     /// </summary>
@@ -24,16 +35,28 @@ public sealed partial class PageInputBpm : Page
     /// </summary>
     public double Bpm { get; set; } = Config.System.DefaultBpm;
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public PageInputBpm()
-    {
-        InitializeComponent();
+    #endregion
 
-        // NumberBox の入力書式設定
-        _BpmNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
+    /// <summary>
+    /// ページロード完了後処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            #region NumberBox の入力書式設定
+
+            _BpmNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
+
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -53,7 +76,7 @@ public sealed partial class PageInputBpm : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -62,7 +85,6 @@ public sealed partial class PageInputBpm : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void BpmRadioButtons_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -96,7 +118,7 @@ public sealed partial class PageInputBpm : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

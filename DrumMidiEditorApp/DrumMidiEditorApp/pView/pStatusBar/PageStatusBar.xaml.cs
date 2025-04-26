@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pStatusBar;
@@ -18,12 +19,6 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
         InitializeComponent();
 
         ControlAccess.PageStatusBar = this;
-
-        _ProgressBar.Minimum = Config.System.ProgressBarMinValue;
-        _ProgressBar.Maximum = Config.System.ProgressBarMaxValue;
-
-        // ログ出力の通知を受け取る
-        Log.LogOutputCallback.Enqueue( SetStatusText );
     }
 
     #region member
@@ -34,6 +29,27 @@ public sealed partial class PageStatusBar : Page, INotifyPropertyChanged
     private double _ProgressBarValue = 0;
 
     #endregion
+
+    /// <summary>
+    /// ページロード完了後処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            _ProgressBar.Minimum = Config.System.ProgressBarMinValue;
+            _ProgressBar.Maximum = Config.System.ProgressBarMaxValue;
+
+            // ログ出力の通知を受け取る
+            Log.LogOutputCallback.Enqueue( SetStatusText );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
     #region INotifyPropertyChanged
 

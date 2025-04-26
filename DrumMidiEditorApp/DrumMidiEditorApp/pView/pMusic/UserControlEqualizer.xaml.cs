@@ -15,6 +15,16 @@ namespace DrumMidiEditorApp.pView.pMusic;
 
 public sealed partial class UserControlEqualizer : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlEqualizer()
+    {
+        InitializeComponent();
+
+        ControlAccess.UCEqualizer = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -45,19 +55,43 @@ public sealed partial class UserControlEqualizer : UserControl
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlEqualizer()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
+        try
+        {
+            // イコライザ描画範囲初期化
+            UpdateRange();
 
-        ControlAccess.UCEqualizer = this;
+            // イコライザ反映処理設定
+            DmsControl.ApplyEqualizerCallback = ApplyEqulizer;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
-        // イコライザ描画範囲初期化
-        UpdateRange();
-
-        // イコライザ反映処理設定
-        DmsControl.ApplyEqualizerCallback = ApplyEqulizer;
+    /// <summary>
+    /// Win2D アンロード処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            // Win2D アンロード（ページキャッシュしているので処理しない）
+            //_EqualizerCanvas.RemoveFromVisualTree();
+            //_EqualizerCanvas = null;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -65,12 +99,19 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     public void ApplyEqulizer()
     {
-        if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ApplyEqulizer ) )
+        try
         {
-            return;
-        }
+            if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ApplyEqulizer ) )
+            {
+                return;
+            }
 
-        UpdateEqualizerAudio();
+            UpdateEqualizerAudio();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -78,13 +119,20 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     public void ResetEqualizer()
     {
-        if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ResetEqualizer ) )
+        try
         {
-            return;
-        }
+            if ( !HelperXaml.DispatcherQueueHasThreadAccess( this, ResetEqualizer ) )
+            {
+                return;
+            }
 
-        ResetEqualizerAudio();
-        Refresh();
+            ResetEqualizerAudio();
+            Refresh();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region CommanBar Event
@@ -94,7 +142,6 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void EqualizerResetAppBarButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -104,7 +151,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -113,7 +160,6 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void EqualizerAppBarToggleButton_CheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -123,7 +169,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -132,7 +178,6 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void EqualizerAppBarToggleButton_UncheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -142,7 +187,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -151,31 +196,28 @@ public sealed partial class UserControlEqualizer : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void EqualizerWaveFormAppBarToggleButton_CheckChanged( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not AppBarToggleButton item )
+            if ( aSender is AppBarToggleButton item )
             {
-                return;
-            }
+                var ischecked = item?.IsChecked ?? false ;
 
-            var ischecked = item?.IsChecked ?? false ;
-
-            // 波形描画用のタイマー設定
-            if ( ischecked )
-            {
-                StartWaveFormAsync();
-            }
-            else
-            {
-                StopWaveForm();
+                // 波形描画用のタイマー設定
+                if ( ischecked )
+                {
+                    StartWaveFormAsync();
+                }
+                else
+                {
+                    StopWaveForm();
+                }
             }
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -269,7 +311,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -303,7 +345,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
 
             _ActionState = EActionState.None;
         }
@@ -364,7 +406,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
         finally
         {
@@ -551,7 +593,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -575,7 +617,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -613,14 +655,23 @@ public sealed partial class UserControlEqualizer : UserControl
     /// <summary>
     /// イコライザキャンバス描画更新
     /// </summary>
-    public void Refresh() => _EqualizerCanvas.Invalidate();
+    public void Refresh()
+    {
+        try
+        {
+            _EqualizerCanvas.Invalidate();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
     /// <summary>
     /// イコライザキャンバス描画
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void EqualizerCanvas_Draw( CanvasControl aSender, CanvasDrawEventArgs aArgs )
     {
         try
@@ -797,27 +848,7 @@ public sealed partial class UserControlEqualizer : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
-        }
-    }
-
-    /// <summary>
-    /// Win2D アンロード処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
-    private void Page_Unloaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // Win2D アンロード（ページキャッシュしているので処理しない）
-            //_EqualizerCanvas.RemoveFromVisualTree();
-            //_EqualizerCanvas = null;
-        }
-        catch ( Exception e )
-        {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

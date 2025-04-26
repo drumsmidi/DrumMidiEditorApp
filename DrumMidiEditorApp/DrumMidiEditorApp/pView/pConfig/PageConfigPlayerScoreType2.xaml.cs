@@ -14,6 +14,14 @@ namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfigPlayerScoreType2()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -29,42 +37,48 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageConfigPlayerScoreType2()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
+        try
+        {
+            #region NumberBox の入力書式設定
 
-        #region NumberBox の入力書式設定
+            _MeasureNoHeightSizeNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteTermHeightNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteTermWidthNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteHeightNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteWidthNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
 
-        _MeasureNoHeightSizeNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteTermHeightNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteTermWidthNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteHeightNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteWidthNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line128NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line064NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line032NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line016NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line008NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line004NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _Line001NumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
 
-        _Line128NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line064NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line032NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line016NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line008NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line004NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _Line001NumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-        #endregion
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -83,28 +97,35 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
         // x:bindでは更新するすべが現状ない？
         // https://github.com/microsoft/microsoft-ui-xaml/issues/5473
 
-        foreach ( var item2 in _SettingStackPanel.Children )
+        try
         {
-            var prop = item2.GetType().GetProperty( "Name", BindingFlags.Public | BindingFlags.Instance );
-
-            var val = prop?.GetValue( item2 )?.ToString();
-
-            //Log.Info( $"{val}" );
-
-            if ( val != null && val.Length != 0 )
+            foreach ( var item2 in _SettingStackPanel.Children )
             {
-                if ( item2 is NumberBox num )
+                var prop = item2.GetType().GetProperty( "Name", BindingFlags.Public | BindingFlags.Instance );
+
+                var val = prop?.GetValue( item2 )?.ToString();
+
+                //Log.Info( $"{val}" );
+
+                if ( val != null && val.Length != 0 )
                 {
-                    var bind = num.GetBindingExpression( NumberBox.ValueProperty );
-                    bind?.UpdateSource();
+                    if ( item2 is NumberBox num )
+                    {
+                        var bind = num.GetBindingExpression( NumberBox.ValueProperty );
+                        bind?.UpdateSource();
+                    }
+                    else if ( item2 is Button btn )
+                    {
+                        var bind = btn.GetBindingExpression( Button.BackgroundProperty );
+                        bind?.UpdateSource();
+                    }
+                    OnPropertyChanged( val );
                 }
-                else if ( item2 is Button btn )
-                {
-                    var bind = btn.GetBindingExpression( Button.BackgroundProperty );
-                    bind?.UpdateSource();
-                }
-                OnPropertyChanged( val );
             }
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
         }
     }
 
@@ -117,7 +138,6 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void DarkModeToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -127,7 +147,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -150,7 +170,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -159,7 +179,6 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -168,7 +187,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -177,29 +196,26 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not Button item )
+            if ( aSender is Button item )
             {
-                return;
+                HelperXaml.ColorDialog
+                    (
+                        item,
+                        ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
+                        ( color ) =>
+                        {
+                            item.Background = new SolidColorBrush( color );
+                        }
+                    );
             }
-
-            HelperXaml.ColorDialog
-                (
-                    item,
-                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
-                    ( color ) =>
-                    {
-                        item.Background = new SolidColorBrush( color );
-                    }
-                );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

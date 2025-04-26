@@ -17,6 +17,16 @@ namespace DrumMidiPlayerApp.pView.pPlayer;
 
 public sealed partial class UserControlPanel : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlPanel()
+    {
+        InitializeComponent();
+
+        ControlAccess.MainPanel = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -26,39 +36,42 @@ public sealed partial class UserControlPanel : UserControl
 
     #endregion
 
-    #region コンストラクタ / アンロード
-
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public UserControlPanel()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
+        try
+        {
+            // スワップチェイン作成
+            _Canvas.SwapChain = new CanvasSwapChain
+                (
+                    new CanvasDevice(),
+                    Config.Panel.ResolutionScreenWidth,
+                    Config.Panel.ResolutionScreenHeight,
+                    Config.Window.DefaultDpi,
+                    DirectXPixelFormat.R8G8B8A8UIntNormalized,
+                    2,
+                    CanvasAlphaMode.Premultiplied
+                );
 
-        ControlAccess.MainPanel = this;
+            // 描画タスク開始
+            DrawTaskStart();
 
-        // スワップチェイン作成
-        _Canvas.SwapChain = new CanvasSwapChain
-            (
-                new CanvasDevice(),
-                Config.Panel.ResolutionScreenWidth,
-                Config.Panel.ResolutionScreenHeight,
-                Config.Window.DefaultDpi,
-                DirectXPixelFormat.R8G8B8A8UIntNormalized,
-                2,
-                CanvasAlphaMode.Premultiplied
-            );
-
-        // 描画タスク開始
-        DrawTaskStart();
-
-        // マウスイベントキャプチャ
-        _Canvas.PointerPressed      += InputControl.PointerPressed;
-        _Canvas.PointerMoved        += InputControl.PointerMoved;
-        _Canvas.PointerExited       += InputControl.PointerReleased;
-        _Canvas.PointerCanceled     += InputControl.PointerReleased;
-        _Canvas.PointerCaptureLost  += InputControl.PointerReleased;
-        _Canvas.PointerReleased     += InputControl.PointerReleased;
+            // マウスイベントキャプチャ
+            _Canvas.PointerPressed      += InputControl.PointerPressed;
+            _Canvas.PointerMoved        += InputControl.PointerMoved;
+            _Canvas.PointerExited       += InputControl.PointerReleased;
+            _Canvas.PointerCanceled     += InputControl.PointerReleased;
+            _Canvas.PointerCaptureLost  += InputControl.PointerReleased;
+            _Canvas.PointerReleased     += InputControl.PointerReleased;
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -66,7 +79,6 @@ public sealed partial class UserControlPanel : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -85,11 +97,9 @@ public sealed partial class UserControlPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
-
-    #endregion
 
     #region 描画スレッドプール
 
@@ -127,7 +137,7 @@ public sealed partial class UserControlPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -187,7 +197,7 @@ public sealed partial class UserControlPanel : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

@@ -15,7 +15,6 @@ public sealed partial class PageConfig : Page
     /// </summary>
     public PageConfig()
     {
-        // 初期化
         InitializeComponent();
     }
 
@@ -24,7 +23,6 @@ public sealed partial class PageConfig : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -34,7 +32,7 @@ public sealed partial class PageConfig : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -60,7 +58,6 @@ public sealed partial class PageConfig : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void NaviLinkListView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -71,7 +68,7 @@ public sealed partial class PageConfig : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

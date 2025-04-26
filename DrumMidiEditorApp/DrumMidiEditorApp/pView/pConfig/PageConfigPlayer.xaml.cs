@@ -13,6 +13,14 @@ namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigPlayer : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfigPlayer()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -38,39 +46,45 @@ public sealed partial class PageConfigPlayer : Page
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageConfigPlayer()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
-
-        #region プレイヤー描画モードリスト作成
-
-        foreach ( var name in Enum.GetNames<ConfigSystem.PlayerSurfaceMode>() )
+        try
         {
-            _PlayerSurfaceModeList.Add( name );
+            #region プレイヤー描画モードリスト作成
+
+            foreach ( var name in Enum.GetNames<ConfigSystem.PlayerSurfaceMode>() )
+            {
+                _PlayerSurfaceModeList.Add( name );
+            }
+
+            #endregion
+
+            #region プレイヤー描画エフェクトモードリスト作成
+
+            foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceEffectMode>() )
+            {
+                _PlayerSurfaceEffectModeList.Add( name );
+            }
+
+            #endregion
+
+            #region スクリーンサイズ作成
+
+            foreach ( var size in DrawSet.ResolutionScreenList )
+            {
+                _PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
+            }
+
+            #endregion
         }
-
-        #endregion
-
-        #region プレイヤー描画エフェクトモードリスト作成
-
-        foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceEffectMode>() )
+        catch ( Exception e )
         {
-            _PlayerSurfaceEffectModeList.Add( name );
+            Log.Error( e );
         }
-
-        #endregion
-
-        #region スクリーンサイズ作成
-
-        foreach ( var size in DrawSet.ResolutionScreenList )
-        {
-            _PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
-        }
-
-        #endregion
     }
 
     /// <summary>
@@ -78,7 +92,6 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void PlayerSurfaceModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -93,7 +106,7 @@ public sealed partial class PageConfigPlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -102,7 +115,6 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void PlayerSurfaceEffectModeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -117,7 +129,7 @@ public sealed partial class PageConfigPlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -126,7 +138,6 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void PlayerScreenSizeComboBox_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
@@ -141,7 +152,7 @@ public sealed partial class PageConfigPlayer : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -150,29 +161,26 @@ public sealed partial class PageConfigPlayer : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ColorButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
         {
-            if ( aSender is not Button item )
+            if ( aSender is Button item )
             {
-                return;
+                HelperXaml.ColorDialog
+                    (
+                        item,
+                        ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
+                        ( color ) =>
+                        {
+                            item.Background = new SolidColorBrush( color );
+                        }
+                    );
             }
-
-            HelperXaml.ColorDialog
-                (
-                    item,
-                    ( item.Background as SolidColorBrush )?.Color ?? HelperColor.EmptyColor,
-                    ( color ) =>
-                    {
-                        item.Background = new SolidColorBrush( color );
-                    }
-                );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

@@ -26,13 +26,23 @@ public sealed partial class PageDebugShell : Page
         InitializeComponent();
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
+    /// <summary>
+    /// 設定ファイル格納フォルダを開く
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
     private void OpenButton_Click( object aSender, RoutedEventArgs aArgs )
     {
-        Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoluteFolderPath}" );
+        try
+        {
+            Process.Start( "EXPLORER.EXE", $"{Config.File.FolderConfig.AbsoluteFolderPath}" );        
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToastShowButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         //try
@@ -264,7 +274,6 @@ public sealed partial class PageDebugShell : Page
         //}
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToastUpdateButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -274,19 +283,18 @@ public sealed partial class PageDebugShell : Page
                 SequenceNumber = 0,      // 0(常に更新する)
             };
 
-            data.Values [ "progressValue" ] = "1.0";
-            data.Values [ "progressValueString" ] = "26/26 songs";
-            data.Values [ "progressStatus" ] = "Finished";
+            data.Values [ "progressValue" ]         = "1.0";
+            data.Values [ "progressValueString" ]   = "26/26 songs";
+            data.Values [ "progressStatus" ]        = "Finished";
 
             ToastNotificationManager.CreateToastNotifier().Update( data, "TagName", "GroupName" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToastClearButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         //try
@@ -309,7 +317,6 @@ public sealed partial class PageDebugShell : Page
         //}
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void BadgeNumberButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -327,11 +334,10 @@ public sealed partial class PageDebugShell : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void BadgeGlyphButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -364,11 +370,10 @@ public sealed partial class PageDebugShell : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void BadgeClearButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -378,11 +383,10 @@ public sealed partial class PageDebugShell : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private async void TaskBarRegistButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -413,11 +417,10 @@ public sealed partial class PageDebugShell : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void RestartAppButton_Click( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -474,7 +477,7 @@ public sealed partial class PageDebugShell : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

@@ -11,22 +11,44 @@ namespace DrumMidiEditorApp.pView.pScore;
 public sealed partial class PageScore : Page
 {
     /// <summary>
-    /// スコア設定
-    /// </summary>
-    private ConfigScore DrawSet => Config.Score;
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     public PageScore()
     {
         InitializeComponent();
+    }
 
-        // NumberBox の入力書式設定
-        _NoteHeightNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-        _NoteWidthNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+    #region member
+
+    /// <summary>
+    /// スコア設定
+    /// </summary>
+    private ConfigScore DrawSet => Config.Score;
+
+    #endregion
+
+    /// <summary>
+    /// ページロード完了後処理
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
+    {
+        try
+        {
+            #region NumberBox の入力書式設定
+
+            _NoteHeightNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+            _NoteWidthNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     /// <summary>
@@ -39,7 +61,6 @@ public sealed partial class PageScore : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ToggleSwitch_Toggled( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -48,7 +69,7 @@ public sealed partial class PageScore : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -71,7 +92,7 @@ public sealed partial class PageScore : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

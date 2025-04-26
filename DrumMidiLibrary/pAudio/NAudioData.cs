@@ -714,7 +714,7 @@ public partial class NAudioData : DisposeBaseClass
                                 );
                         }
 
-                        Log.Info( $"hz:{band.Hz} gain:{band.Gain}" );
+                        //Log.Info( $"hz:{band.Hz} gain:{band.Gain}" );
                     }
 
                     _UpdateEqualizer = false;

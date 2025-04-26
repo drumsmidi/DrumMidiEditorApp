@@ -15,6 +15,16 @@ namespace DrumMidiEditorApp.pView.pScore;
 
 public sealed partial class UserControlScore : UserControl
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public UserControlScore()
+    {
+        InitializeComponent();
+
+        ControlAccess.UCScore = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -33,16 +43,6 @@ public sealed partial class UserControlScore : UserControl
     private CanvasBitmap? _ScoreBitmap = null;
 
     #endregion
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public UserControlScore()
-    {
-        InitializeComponent();
-
-        ControlAccess.UCScore = this;
-    }
 
     #region Move
 
@@ -64,7 +64,7 @@ public sealed partial class UserControlScore : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -269,14 +269,23 @@ public sealed partial class UserControlScore : UserControl
     /// <summary>
     /// キャンバス再描画リクエスト
     /// </summary>
-    public void Refresh() => _ScoreCanvas.Invalidate();
+    public void Refresh() 
+    {
+        try
+        {
+            _ScoreCanvas.Invalidate();
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
 
     /// <summary>
     /// 描画
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ScoreCanvas_Draw( CanvasControl aSender, CanvasDrawEventArgs aArgs )
     {
         try
@@ -291,7 +300,7 @@ public sealed partial class UserControlScore : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -300,7 +309,6 @@ public sealed partial class UserControlScore : UserControl
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void UserControl_Unloaded( object aSender, RoutedEventArgs aArgs )
     {
         try
@@ -311,7 +319,7 @@ public sealed partial class UserControlScore : UserControl
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

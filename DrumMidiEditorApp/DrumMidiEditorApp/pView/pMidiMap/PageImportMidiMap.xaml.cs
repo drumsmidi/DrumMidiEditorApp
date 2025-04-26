@@ -13,6 +13,14 @@ namespace DrumMidiEditorApp.pView.pMidiMap;
 
 public sealed partial class PageImportMidiMap : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageImportMidiMap()
+    {
+        InitializeComponent();
+    }
+
     #region Member
 
     /// <summary>
@@ -31,14 +39,6 @@ public sealed partial class PageImportMidiMap : Page
     private readonly ObservableCollection<ImportMidiMapData> _ImportDataList = [];
 
     #endregion
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    public PageImportMidiMap()
-    {
-        InitializeComponent();
-    }
 
     /// <summary>
     /// MidiMapリスト読込
@@ -104,7 +104,7 @@ public sealed partial class PageImportMidiMap : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -134,22 +134,19 @@ public sealed partial class PageImportMidiMap : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void ImportMidiMapGridView_DragItemsStarting( object aSender, DragItemsStartingEventArgs aArgs )
     {
         try
         {
-            if ( aArgs.Items [ 0 ] is not ImportMidiMapData data )
+            if ( aArgs.Items [ 0 ] is ImportMidiMapData data )
             {
-                return;
+                aArgs.Data.SetData( "midimapdata", data.AfterName );
+                aArgs.Data.RequestedOperation = DataPackageOperation.Copy;
             }
-
-            aArgs.Data.SetData( "midimapdata", data.AfterName );
-            aArgs.Data.RequestedOperation = DataPackageOperation.Copy;
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -186,7 +183,7 @@ public sealed partial class PageImportMidiMap : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -195,7 +192,6 @@ public sealed partial class PageImportMidiMap : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void TextBlock_DragEnter( object aSender, DragEventArgs aArgs )
     {
         try
@@ -204,7 +200,7 @@ public sealed partial class PageImportMidiMap : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -213,7 +209,6 @@ public sealed partial class PageImportMidiMap : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void TextBlock_DragLeave( object aSender, DragEventArgs aArgs )
     {
         try
@@ -222,7 +217,7 @@ public sealed partial class PageImportMidiMap : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 }

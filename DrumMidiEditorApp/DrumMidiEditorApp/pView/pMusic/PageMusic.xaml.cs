@@ -16,6 +16,16 @@ namespace DrumMidiEditorApp.pView.pMusic;
 
 public sealed partial class PageMusic : Page, INotifyPropertyChanged
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageMusic()
+    {
+        InitializeComponent();
+
+        ControlAccess.PageMusic = this;
+    }
+
     #region Member
 
     /// <summary>
@@ -31,24 +41,29 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     #endregion
 
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageMusic()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        InitializeComponent();
+        try
+        {
+            #region NumberBox の入力書式設定
 
-        ControlAccess.PageMusic = this;
+            _MusicInfoBpmNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
+            _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+            _MusicInfoBgmVolumeNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
 
-        #region NumberBox の入力書式設定
-
-        _MusicInfoBpmNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
-        _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
-        _MusicInfoBgmVolumeNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-        #endregion
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region INotifyPropertyChanged
@@ -71,7 +86,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -84,9 +99,13 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MusicInfoBgmFilePathButton_Click( object aSender, RoutedEventArgs aArgs )
     {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
         try
         {
             HelperXaml.OpenDialogAsync
@@ -105,7 +124,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -114,7 +133,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MusicInfoBgmFilePathTextBox_TextChanged( object aSender, TextChangedEventArgs aArgs )
     {
         try
@@ -123,7 +141,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -146,7 +164,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -169,7 +187,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -192,7 +210,7 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

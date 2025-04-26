@@ -6,12 +6,23 @@ using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pConfig;
 
 public sealed partial class PageConfigDevice : Page
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    public PageConfigDevice()
+    {
+        InitializeComponent();
+    }
+
+    #region member
+
     /// <summary>
     /// Media設定
     /// </summary>
@@ -22,20 +33,31 @@ public sealed partial class PageConfigDevice : Page
     /// </summary>
     private readonly ObservableCollection<string> _MidiDeviceList = [];
 
+    #endregion
+
     /// <summary>
-    /// コンストラクタ
+    /// ページロード完了後処理
     /// </summary>
-    public PageConfigDevice()
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
     {
-        // 初期化
-        InitializeComponent();
+        try
+        {
+            // Midiデバイス読込
+            LoadMidiDeviceList();
 
-        // Midiデバイス読込
-        LoadMidiDeviceList();
+            #region NumberBox の入力書式設定
 
-        // NumberBox の入力書式設定
-        _MidiOutLatencyNumberBox.NumberFormatter
-            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+            _MidiOutLatencyNumberBox.NumberFormatter
+                = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+
+            #endregion
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
     }
 
     #region Midi device
@@ -55,16 +77,15 @@ public sealed partial class PageConfigDevice : Page
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage( "Style", "IDE0060:未使用のパラメーターを削除します", Justification = "<保留中>" )]
     private void MidiOutDeviceListView_SelectionChanged( object aSender, SelectionChangedEventArgs aArgs )
     {
         try
         {
-            MidiNet.InitDeviceAsync( ConfigMedia.MidiOutDeviceName );
+            _ = MidiNet.InitDeviceAsync( ConfigMedia.MidiOutDeviceName );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -87,7 +108,7 @@ public sealed partial class PageConfigDevice : Page
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
