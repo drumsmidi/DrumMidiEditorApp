@@ -2,15 +2,69 @@
 using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
-using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pEditer;
 
 /// <summary>
 /// エディター描画アイテム：ドラム
 /// </summary>
-public partial class DmsItemMidiMap : DisposeBaseClass
+public partial class ItemMidiMap : ItemBase
 {
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+	/// <param name="aX">描画位置X座標</param>
+	/// <param name="aY">描画位置Y座標</param>
+	/// <param name="aWidth">横幅</param>
+	/// <param name="aHeight">高さ</param>
+    /// <param name="aGroup">MidiMapGroup</param>
+    /// <param name="aMidiMapGroupFlag">true:MidiMapGroup, false:MidiMapGroup ScaleKey</param>
+    public ItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMapGroup aGroup, bool aMidiMapGroupFlag )
+        : base( 0, aX, aY, aWidth, aHeight )
+    {
+        _MidiMapGroupFlag   = aMidiMapGroupFlag;
+        _MidiMapGroup       = aGroup;
+    }
+
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+	/// <param name="aX">描画位置X座標</param>
+	/// <param name="aY">描画位置Y座標</param>
+	/// <param name="aWidth">横幅</param>
+	/// <param name="aHeight">高さ</param>
+    /// <param name="aMidiMap">MidiMap</param>
+    public ItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMap aMidiMap )
+        : base( 0, aX, aY, aWidth, aHeight )
+    {
+        _MidiMap = aMidiMap;
+    }
+
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _MidiMapGroup   = null;
+            _MidiMap        = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// true:MidiMapGroup, false:MidiMapGroup ScaleKey
     /// </summary>
@@ -26,78 +80,7 @@ public partial class DmsItemMidiMap : DisposeBaseClass
     /// </summary>
 	private MidiMap? _MidiMap = null;
 
-    /// <summary>
-    /// 描画範囲
-    /// </summary>
-    private Rect _DrawRect = new();
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-	/// <param name="aX">描画位置X座標</param>
-	/// <param name="aY">描画位置Y座標</param>
-	/// <param name="aWidth">横幅</param>
-	/// <param name="aHeight">高さ</param>
-    /// <param name="aGroup">MidiMapGroup</param>
-    /// <param name="aMidiMapGroupFlag">true:MidiMapGroup, false:MidiMapGroup ScaleKey</param>
-    public DmsItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMapGroup aGroup, bool aMidiMapGroupFlag )
-    {
-        _MidiMapGroupFlag   = aMidiMapGroupFlag;
-        _MidiMapGroup       = aGroup;
-
-        SetValue( aX, aY, aWidth, aHeight );
-    }
-
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-	/// <param name="aX">描画位置X座標</param>
-	/// <param name="aY">描画位置Y座標</param>
-	/// <param name="aWidth">横幅</param>
-	/// <param name="aHeight">高さ</param>
-    /// <param name="aMidiMap">MidiMap</param>
-    public DmsItemMidiMap( float aX, float aY, float aWidth, float aHeight, MidiMap aMidiMap )
-    {
-        _MidiMap = aMidiMap;
-
-        SetValue( aX, aY, aWidth, aHeight );
-    }
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _MidiMapGroup   = null;
-                _MidiMap        = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
-
-    /// <summary>
-    /// 描画範囲再設定
-    /// </summary>
-	/// <param name="aX">描画位置X座標</param>
-	/// <param name="aY">描画位置Y座標</param>
-	/// <param name="aWidth">横幅</param>
-	/// <param name="aHeight">高さ</param>
-    private void SetValue( float aX, float aY, float aWidth, float aHeight )
-    {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
-    }
+    #endregion
 
     /// <summary>
     /// 描画
@@ -134,7 +117,7 @@ public partial class DmsItemMidiMap : DisposeBaseClass
         }
 
         // 描画範囲の左上の座標基準
-        var rect = _DrawRect;
+        var rect = DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 

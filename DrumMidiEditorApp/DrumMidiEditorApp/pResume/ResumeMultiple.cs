@@ -101,7 +101,7 @@ public class ResumeMultiple : IResume
     /// </summary>
     /// <param name="aRangeRef">変更後のノート範囲</param>
     /// <param name="aRangeBef">変更前のノート範囲</param>
-    public void SelectNoteRange( ref DmsItemNoteRange aRangeRef, DmsItemNoteRange aRangeBef )
+    public void SelectNoteRange( ref ItemNoteRange aRangeRef, ItemNoteRange aRangeBef )
         => _ResumeList.Add( new ResumeEditNoteRange( ref aRangeRef, aRangeBef ) );
 
     public void Undo()

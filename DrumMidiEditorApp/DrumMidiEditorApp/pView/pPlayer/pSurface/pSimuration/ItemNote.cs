@@ -13,8 +13,34 @@ namespace DrumMidiEditorApp.pView.pPlayer.pSurface.pSimuration;
 /// <param name="aNotePosX">１小節内のノート描画位置X座標</param>
 /// <param name="aFormatRect">描画書式</param>
 /// <param name="aDmsItemMidiMap">ヘッダアイテム</param>
-internal partial class DmsItemNote( float aNotePosX, FormatRect aFormatRect, DmsItemMidiMap aDmsItemMidiMap ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
+internal partial class ItemNote( float aNotePosX, FormatRect aFormatRect, ItemMidiMap aDmsItemMidiMap )
+    : ItemBase( 0, aNotePosX, 0, 0, 0 )
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _FormatRect     = null;
+            _DmsItemMidiMap = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// １小節内のノート描画位置X座標
     /// </summary>
@@ -28,28 +54,9 @@ internal partial class DmsItemNote( float aNotePosX, FormatRect aFormatRect, Dms
     /// <summary>
     /// MidiMapヘッダアイテム
     /// </summary>
-    private DmsItemMidiMap? _DmsItemMidiMap = aDmsItemMidiMap;
+    private ItemMidiMap? _DmsItemMidiMap = aDmsItemMidiMap;
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _FormatRect     = null;
-                _DmsItemMidiMap = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// 描画
@@ -92,41 +99,5 @@ internal partial class DmsItemNote( float aNotePosX, FormatRect aFormatRect, Dms
                     _FormatRect.Line.LineSize
                 );
         }
-    }
-
-    /// <summary>
-    /// ノート描画順 並替用
-    /// </summary>
-    /// <param name="aOther"></param>
-    /// <returns></returns>
-    public int CompareTo( DmsItemNote? aOther )
-    {
-        if ( aOther == null )
-        {
-            return 1;
-        }
-        else if ( _NotePosX > aOther._NotePosX )
-        {
-            return 1;
-        }
-        else if ( _NotePosX == aOther._NotePosX )
-        {
-            return 0;
-        }
-        return -1;
-    }
-
-    /// <summary>
-    /// ノート描画順 並替用
-    /// </summary>
-    /// <param name="aOther"></param>
-    /// <returns></returns>
-    public int CompareTo( object? aOther )
-    {
-        return aOther == null
-            ? 1
-            : GetType() != aOther.GetType()
-            ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
-            : CompareTo( aOther as DmsItemNote );
     }
 }

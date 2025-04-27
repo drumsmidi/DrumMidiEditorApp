@@ -9,8 +9,10 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：ノート範囲選択
 /// </summary>
-public partial class DmsItemNoteRange : DisposeBaseClass
+public partial class ItemNoteRange : DisposeBaseClass
 {
+    #region member
+
     /// <summary>
     /// 範囲選択開始ノート位置（絶対値）
     /// </summary>
@@ -70,6 +72,8 @@ public partial class DmsItemNoteRange : DisposeBaseClass
     /// 範囲選択 選択状態
     /// </summary>
     public bool Selected { get; private set; } = false;
+
+    #endregion
 
     /// <summary>
     /// 移動前後で範囲選択の左端のノート位置（絶対値）
@@ -304,7 +308,7 @@ public partial class DmsItemNoteRange : DisposeBaseClass
     /// 複製
     /// </summary>
     /// <returns>複製データ</returns>
-    public DmsItemNoteRange Clone()
+    public ItemNoteRange Clone()
     {
         return new()
         {
@@ -327,7 +331,7 @@ public partial class DmsItemNoteRange : DisposeBaseClass
     /// aObjの内容を設定
     /// </summary>
     /// <param name="aObj">コピー元</param>
-    public void Set( DmsItemNoteRange aObj )
+    public void Set( ItemNoteRange aObj )
     {
         _StartNotePosX      = aObj._StartNotePosX;
         _StartNotePosY      = aObj._StartNotePosY;

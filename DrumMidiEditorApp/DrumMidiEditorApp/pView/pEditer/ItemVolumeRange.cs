@@ -11,8 +11,32 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：音量選択範囲
 /// </summary>
-public partial class DmsItemVolumeRange : DisposeBaseClass
+public partial class ItemVolumeRange : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _VolumeList.Clear();
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// 表示フラグ
     /// </summary>
@@ -51,35 +75,14 @@ public partial class DmsItemVolumeRange : DisposeBaseClass
     /// <summary>
     /// 音量入力タイプ
     /// </summary>
-    public ConfigEditer.VolumeEditType EditType
-    {
-        get; private set;
-    } = ConfigEditer.VolumeEditType.FreeHand;
-
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _VolumeList.Clear();
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    public ConfigEditer.VolumeEditType EditType { get; private set; } = ConfigEditer.VolumeEditType.FreeHand;
 
     /// <summary>
     /// 音量入力 開始音量
     /// </summary>
     public int StartVolume { get; private set; } = 0;
+
+    #endregion
 
     /// <summary>
     /// 左から右順の入力音量リスト。

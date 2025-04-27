@@ -56,32 +56,32 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// 小節分割線リスト
     /// </summary>
-    private readonly List<DmsItemLine> _MeasureLineList = [];
+    private readonly List<ItemLine> _MeasureLineList = [];
 
     /// <summary>
     /// MidiMapGroupヘッダリスト（MidiMapGroupキー、MidiMapGroup描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,DmsItemMidiMap> _HeaderGroupList = [];
+    private readonly Dictionary<int,ItemMidiMap> _HeaderGroupList = [];
 
     /// <summary>
     /// MidiMapヘッダリスト（MidiMapキー、MidiMap描画アイテム）
     /// </summary>
-    private readonly Dictionary<int, DmsItemMidiMap> _HeaderMidiMapList = [];
+    private readonly Dictionary<int, ItemMidiMap> _HeaderMidiMapList = [];
 
     /// <summary>
     /// BPMリスト（小節番号、BPM描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemBpm>> _BpmList = [];
+    private readonly Dictionary<int,List<ItemBpm>> _BpmList = [];
 
     /// <summary>
     /// NOTEリスト（小節番号、NOTE描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
+    private readonly Dictionary<int,List<ItemNote>> _NoteList = [];
 
     /// <summary>
     /// NOTE-OFFリスト（NOTE描画アイテム、小節番号開始、終了）
     /// </summary>
-    private readonly Dictionary<DmsItemNote, Point> _NoteOffList = [];
+    private readonly Dictionary<ItemNote, Point> _NoteOffList = [];
 
     /// <summary>
     /// ノート背景色リスト＜MidiMapKey、背景色＞
@@ -91,12 +91,12 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// 小節番号
     /// </summary>
-    private DmsItemMeasure? _MeasureNo = null;
+    private ItemMeasure? _MeasureNo = null;
 
     /// <summary>
     /// 現在のBPM
     /// </summary>
-    private DmsItemLabel? _NowBpm = null;
+    private ItemLabel? _NowBpm = null;
 
     #endregion
 
@@ -278,7 +278,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
                 if ( group != null )
                 {
-                    var obj = new DmsItemMidiMap
+                    var obj = new ItemMidiMap
                         (
                             group,
                             (float)x,
@@ -326,7 +326,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     if ( !DrawSet.HeaderGroupOn )
                     {
                         // アイテム登録
-                        var obj = new DmsItemMidiMap
+                        var obj = new ItemMidiMap
                             (
                                 midiMap,
                                 (float)x,
@@ -347,7 +347,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
         #region Bpm now
         {
-            _NowBpm = new DmsItemLabel
+            _NowBpm = new ItemLabel
                 (
                     _BpmHeadRange._x,
                     _BpmHeadRange._y,
@@ -470,7 +470,7 @@ public class PlayerSurface : PlayerSurfaceBase
                     note_rect.X                     = ( info.NotePos * DrawSet.NoteTermWidthSize ) - ( note_rect.Width / 2.0F );
                     note_rect.Width                += distanceToNextNoteOffWidth;
 
-                    var obj = new DmsItemNote
+                    var obj = new ItemNote
                         (
                             note_rect._x,
                             note_rect._width,
@@ -548,7 +548,7 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 note_rect.X = body.X + ( info.NotePos * DrawSet.NoteTermWidthSize );
 
-                var obj = new DmsItemBpm
+                var obj = new ItemBpm
                     (
                         note_rect._x,
                         note_rect._y,

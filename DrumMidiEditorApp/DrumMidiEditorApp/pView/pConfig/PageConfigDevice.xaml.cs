@@ -124,35 +124,11 @@ public sealed partial class PageConfigDevice : Page
 
     /// <summary>
     /// BGM再生バッファの遅延時間（秒）変更
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void BgmDesiredLatencyNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
-    {
-        try
-        {
-            // 必須入力チェック
-            if ( !HelperXaml.NumberBox_RequiredInputValidation( aSender, aArgs ) )
-            {
-                return;
-            }
-
-            aSender.Value = ConfigMedia.CheckBgmDesiredLatency( aSender.Value );
-
-            EventManage.Event_Device_UpdateBgmLatency();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
-
-    /// <summary>
     /// BGM再生バッファ数変更
     /// </summary>
     /// <param name="aSender"></param>
     /// <param name="aArgs"></param>
-    private void BgmNumberOfBuffersNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
+    private void BgmLatencyNumberBox_ValueChanged( NumberBox aSender, NumberBoxValueChangedEventArgs aArgs )
     {
         try
         {
@@ -161,8 +137,6 @@ public sealed partial class PageConfigDevice : Page
             {
                 return;
             }
-
-            aSender.Value = ConfigMedia.CheckBgmNumberOfBuffers( (int)aSender.Value );
 
             EventManage.Event_Device_UpdateBgmLatency();
         }

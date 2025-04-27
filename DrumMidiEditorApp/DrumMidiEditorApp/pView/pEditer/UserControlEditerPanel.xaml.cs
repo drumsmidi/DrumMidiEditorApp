@@ -132,37 +132,37 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// 五線リスト
     /// </summary>
-	private readonly List<DmsItemLine> _StaffLineList = [];
+	private readonly List<ItemLine> _StaffLineList = [];
 
     /// <summary>
     /// 小節線リスト
     /// </summary>
-    private readonly List<DmsItemLine> _MeasureLineList    = [];
+    private readonly List<ItemLine> _MeasureLineList    = [];
 
     /// <summary>
     /// MidiMapGroup/MidiMapヘッダリスト
     /// </summary>
-    private readonly List<DmsItemMidiMap> _HeaderList = [];
+    private readonly List<ItemMidiMap> _HeaderList = [];
 
     /// <summary>
     /// BPMリスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemBpm>> _BpmList = [];
+    private readonly Dictionary<int,List<ItemBpm>> _BpmList = [];
 
     /// <summary>
     /// ノートリスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
+    private readonly Dictionary<int,List<ItemNote>> _NoteList = [];
 
     /// <summary>
     /// ノート予測リスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NotePredictList = [];
+    private readonly Dictionary<int,List<ItemNote>> _NotePredictList = [];
 
     /// <summary>
     /// ノート音量リスト＜小節番号、アイテム＞
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNoteVolume>> _VolumeList = [];
+    private readonly Dictionary<int,List<ItemNoteVolume>> _VolumeList = [];
 
     /// <summary>
     /// ノート背景色リスト＜MidiMapKey、背景色＞
@@ -172,22 +172,22 @@ public sealed partial class UserControlEditerPanel : UserControl
     /// <summary>
     /// サポート線
     /// </summary>
-    private readonly DmsItemSupportLine _SupportLine = new();
+    private readonly ItemSupportLine _SupportLine = new();
 
     /// <summary>
     /// ノート範囲選択
     /// </summary>
-    private DmsItemNoteRange _NoteRange = new();
+    private ItemNoteRange _NoteRange = new();
 
     /// <summary>
     /// ノート範囲選択（前回値）
     /// </summary>
-    private readonly DmsItemNoteRange _NoteRangeBef = new();
+    private readonly ItemNoteRange _NoteRangeBef = new();
 
     /// <summary>
     /// 音量入力
     /// </summary>
-    private readonly DmsItemVolumeRange _VolumeRange = new();
+    private readonly ItemVolumeRange _VolumeRange = new();
 
     /// <summary>
     /// マウス位置：ノート範囲移動時のタイマー処理用

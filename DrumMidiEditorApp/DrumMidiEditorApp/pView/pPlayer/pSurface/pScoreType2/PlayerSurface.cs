@@ -44,17 +44,17 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// 小節分割線リスト
     /// </summary>
-    private readonly List<DmsItemLine> _MeasureLineList = [];
+    private readonly List<ItemLine> _MeasureLineList = [];
 
     /// <summary>
     /// MidiMapGroupヘッダリスト（MidiMapGroupキー、横線描画アイテム）
     /// </summary>
-    private readonly Dictionary<string, DmsItemLine> _HeaderList = [];
+    private readonly Dictionary<string, ItemLine> _HeaderList = [];
 
     /// <summary>
     /// NOTEリスト（小節番号、NOTE描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
+    private readonly Dictionary<int,List<ItemNote>> _NoteList = [];
 
     /// <summary>
     /// ノート背景色リスト＜MidiMapKey、背景色＞
@@ -64,17 +64,17 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// 小節番号
     /// </summary>
-    private DmsItemMeasure? _MeasureNo = null;
+    private ItemMeasure? _MeasureNo = null;
 
     /// <summary>
     /// 現在のBPM
     /// </summary>
-    private DmsItemLabel? _NowBpm = null;
+    private ItemLabel? _NowBpm = null;
 
     /// <summary>
     /// カーソル表示
     /// </summary>
-    private DmsItemCursor? _NowPosition = null;
+    private ItemCursor? _NowPosition = null;
 
     #endregion
 
@@ -243,7 +243,7 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 if ( item != null )
                 {
-                    var obj = new DmsItemLine
+                    var obj = new ItemLine
                         (
                             (float)x,
                             (float)y,
@@ -287,7 +287,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
         #region Bpm now
         {
-            _NowBpm = new DmsItemLabel
+            _NowBpm = new ItemLabel
                 (
                     _NowBpmRange._x,
                     _NowBpmRange._y,
@@ -400,7 +400,7 @@ public class PlayerSurface : PlayerSurfaceBase
                         }
                     }
 
-                    var obj = new DmsItemNote
+                    var obj = new ItemNote
                         (
                             note_rect._x,
                             note_rect._y,

@@ -1,30 +1,14 @@
 ﻿using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas;
-using Windows.Foundation;
 
 namespace DrumMidiEditorApp.pView.pPlayer.pSurface;
 
 /// <summary>
 /// プレイヤー描画アイテム：小節ヘッダ
 /// </summary>
-internal partial class DmsItemMeasure : DisposeBaseClass
+internal partial class ItemMeasure : ItemBase
 {
-    /// <summary>
-    /// 描画範囲
-    /// </summary>
-    private Rect _DrawRect = new();
-
-    /// <summary>
-    /// 描画書式
-    /// </summary>
-    private FormatRect? _FormatRect = null;
-
-    /// <summary>
-    /// 描画書式
-    /// </summary>
-    private FormatRect? _FormatSelectRect = null;
-
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -33,12 +17,9 @@ internal partial class DmsItemMeasure : DisposeBaseClass
 	/// <param name="aWidth">横幅</param>
 	/// <param name="aHeight">高さ</param>
 	/// <param name="aFormatRect">描画書式</param>
-    public DmsItemMeasure( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
+    public ItemMeasure( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect )
+        : base( 0, aX, aY, aWidth, aHeight )
     {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
         _FormatRect         = aFormatRect;
         _FormatSelectRect   = aFormatRect;
     }
@@ -52,36 +33,49 @@ internal partial class DmsItemMeasure : DisposeBaseClass
 	/// <param name="aHeight">高さ</param>
 	/// <param name="aFormatRect">描画書式</param>
 	/// <param name="aFormatSelectRect">描画書式</param>
-    public DmsItemMeasure( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect, FormatRect aFormatSelectRect )
+    public ItemMeasure( float aX, float aY, float aWidth, float aHeight, FormatRect aFormatRect, FormatRect aFormatSelectRect )
+        : base( 0, aX, aY, aWidth, aHeight )
     {
-        _DrawRect.X         = aX;
-        _DrawRect.Y         = aY;
-        _DrawRect.Width     = aWidth;
-        _DrawRect.Height    = aHeight;
         _FormatRect         = aFormatRect;
         _FormatSelectRect   = aFormatSelectRect;
     }
 
     protected override void Dispose( bool aDisposing )
     {
-        if ( !_Disposed )
+        if ( _Disposed )
         {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _FormatRect         = null;
-                _FormatSelectRect   = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
+            return;
         }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _FormatRect         = null;
+            _FormatSelectRect   = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
     }
     private bool _Disposed = false;
+
+    #region member
+
+    /// <summary>
+    /// 描画書式
+    /// </summary>
+    private FormatRect? _FormatRect = null;
+
+    /// <summary>
+    /// 描画書式
+    /// </summary>
+    private FormatRect? _FormatSelectRect = null;
+
+    #endregion
 
     /// <summary>
     /// 描画
@@ -103,7 +97,14 @@ internal partial class DmsItemMeasure : DisposeBaseClass
     /// <param name="aSelectFlag">選択中フラグ</param>
     public void Draw( CanvasDrawingSession aGraphics, int aMeasureNo, float aDiffX, float aDiffY, bool aSelectFlag )
     {
-        var rect = _DrawRect;
+        var formatRect = aSelectFlag ? _FormatSelectRect : _FormatRect ;
+
+        if ( formatRect == null )
+        {
+            return;
+        }
+
+        var rect = DrawRect;
         rect.X += aDiffX;
         rect.Y += aDiffY;
 
@@ -111,7 +112,7 @@ internal partial class DmsItemMeasure : DisposeBaseClass
             ( 
                 aGraphics, 
                 rect,
-                aSelectFlag ? _FormatSelectRect : _FormatRect, 
+                formatRect, 
                 string.Format( " " + Config.System.MeasureNumberFormat, aMeasureNo ) 
             );
     }

@@ -43,12 +43,12 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// MidiMapGroupヘッダリスト（MidiMapGroupキー、MidiMapGroup描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,DmsItemMidiMap> _HeaderList = [];
+    private readonly Dictionary<int,ItemMidiMap> _HeaderList = [];
 
     /// <summary>
     /// NOTEリスト（小節番号、NOTE描画アイテム）
     /// </summary>
-    private readonly Dictionary<int,List<DmsItemNote>> _NoteList = [];
+    private readonly Dictionary<int,List<ItemNote>> _NoteList = [];
 
     /// <summary>
     /// ノート背景色リスト＜MidiMapKey、背景色＞
@@ -58,12 +58,12 @@ public class PlayerSurface : PlayerSurfaceBase
     /// <summary>
     /// 小節番号
     /// </summary>
-    private DmsItemLabel? _NowMeasureNo = null;
+    private ItemLabel? _NowMeasureNo = null;
 
     /// <summary>
     /// 現在のBPM
     /// </summary>
-    private DmsItemLabel? _NowBpm = null;
+    private ItemLabel? _NowBpm = null;
 
     #endregion
 
@@ -152,7 +152,7 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 case EActionState.MoveHeader:
                     {
-                        _HeaderList [ _MoveMidiMapKey ].SetMovePosition
+                        _HeaderList [ _MoveMidiMapKey ].SetDrawRectMovePosition
                             (
                                 (float)( p.Position.X - _MousePosBef.X ),
                                 (float)( p.Position.Y - _MousePosBef.Y )
@@ -186,7 +186,7 @@ public class PlayerSurface : PlayerSurfaceBase
             {
                 case EActionState.MoveHeader:
                     {
-                        _HeaderList [ _MoveMidiMapKey ].SetMovePosition
+                        _HeaderList [ _MoveMidiMapKey ].SetDrawRectMovePosition
                             (
                                 (float)( p.Position.X - _MousePosBef.X ),
                                 (float)( p.Position.Y - _MousePosBef.Y )
@@ -273,7 +273,7 @@ public class PlayerSurface : PlayerSurfaceBase
                 var dgp = Score.EditMidiMapSet
                     .GetMidiMapGroupPosition( ConfigSystem.PlayerSurfaceMode.Simuration, group.GroupKey );
 
-                var obj = new DmsItemMidiMap
+                var obj = new ItemMidiMap
                     (
                         group,
                         (float)( body.X + dgp.X ),
@@ -313,7 +313,7 @@ public class PlayerSurface : PlayerSurfaceBase
 
         #region Bpm now
         {
-            _NowBpm = new DmsItemLabel
+            _NowBpm = new ItemLabel
                 (
                     _NowBpmRange._x,
                     _NowBpmRange._y,
@@ -395,7 +395,7 @@ public class PlayerSurface : PlayerSurfaceBase
                         continue;
                     }
 
-                    var obj = new DmsItemNote
+                    var obj = new ItemNote
                         (
                             info.NotePos * DrawSet.NoteTermSize,
                             _MidiMapNoteFormatList[ midiMap.MidiMapKey ],

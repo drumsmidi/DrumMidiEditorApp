@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pModel.pScore;
 using DrumMidiLibrary.pUtil;
@@ -22,12 +21,34 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <param name="aHeight">高さ</param>
 /// <param name="aInfo">NOTE情報</param>
 /// <param name="aFormatRect">描画書式</param>
-public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeight, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass, IComparable, IComparable<DmsItemNote>
+public partial class ItemNote( float aX, float aY, float aWidth, float aHeight, InfoNote aInfo, FormatRect aFormatRect ) 
+    : ItemBase( 0, aX, aY, aWidth, aHeight )
 {
-    /// <summary>
-    /// 描画範囲
-    /// </summary>
-    public Rect DrawRect { get; private set; } = new( aX, aY, aWidth, aHeight );
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            InfoNote    = null;
+            _FormatRect = null;
+            NoteOnItem  = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
 
     /// <summary>
     /// NOTE情報
@@ -47,29 +68,9 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
     /// <summary>
     /// NoteOffに対応するNoteOnアイテム
     /// </summary>
-    public DmsItemNote? NoteOnItem { get; set; } = null;
+    public ItemNote? NoteOnItem { get; set; } = null;
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                InfoNote    = null;
-                _FormatRect = null;
-                NoteOnItem  = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// 描画
@@ -171,41 +172,5 @@ public partial class DmsItemNote( float aX, float aY, float aWidth, float aHeigh
             );
 
         HelperWin2D.DrawFormatRectOutlineEllipse( aGraphics, rect, Config.Editer.NotePredictRect );
-    }
-
-    /// <summary>
-    /// ノート描画順 並替用
-    /// </summary>
-    /// <param name="aOther"></param>
-    /// <returns></returns>
-    public int CompareTo( DmsItemNote? aOther )
-    {
-        if ( aOther == null )
-        {
-            return 1;
-        }
-        else if ( DrawRect.X > aOther.DrawRect.X )
-        {
-            return 1;
-        }
-        else if ( DrawRect.X == aOther.DrawRect.X )
-        {
-            return 0;
-        }
-        return -1;
-    }
-
-    /// <summary>
-    /// ノート描画順 並替用
-    /// </summary>
-    /// <param name="aOther"></param>
-    /// <returns></returns>
-    public int CompareTo( object? aOther )
-    {
-        return aOther == null
-                ? 1
-                : GetType() != aOther.GetType()
-                ? throw new ArgumentException( "Invalid aOther", nameof( aOther ) )
-                : CompareTo( aOther as DmsItemNote );
     }
 }

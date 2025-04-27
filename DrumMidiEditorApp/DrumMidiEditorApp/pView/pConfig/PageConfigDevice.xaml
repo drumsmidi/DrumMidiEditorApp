@@ -40,7 +40,7 @@
                 SmallChange="0.001" 
                 LargeChange="0.010" 
                 HorizontalAlignment="Left"
-                ValueChanged="BgmDesiredLatencyNumberBox_ValueChanged" />
+                ValueChanged="BgmLatencyNumberBox_ValueChanged" />
 
             <NumberBox x:Name="_BgmNumberOfBuffersNumberBox" x:Uid="InputBgmNumberOfBuffers" 
                 Value="{x:Bind ConfigMedia.BgmNumberOfBuffers,Mode=TwoWay}"
@@ -49,7 +49,7 @@
                 SmallChange="1" 
                 LargeChange="1" 
                 HorizontalAlignment="Left"
-                ValueChanged="BgmNumberOfBuffersNumberBox_ValueChanged" />
+                ValueChanged="BgmLatencyNumberBox_ValueChanged" />
 
         </StackPanel>
     </Grid>

@@ -12,24 +12,24 @@ internal partial class ResumeEditNoteRange : DisposeBaseClass, IResume
     /// <summary>
     /// Editタブのノート範囲オブジェクトへの参照
     /// </summary>
-    private DmsItemNoteRange? _RangeRef;
+    private ItemNoteRange? _RangeRef;
 
     /// <summary>
     /// ノート範囲変更後
     /// </summary>
-    private DmsItemNoteRange? _RangeAft;
+    private ItemNoteRange? _RangeAft;
 
     /// <summary>
     /// ノート範囲変更前
     /// </summary>
-    private DmsItemNoteRange? _RangeBef;
+    private ItemNoteRange? _RangeBef;
 
     /// <summary>
     /// コンストラクタ
     /// </summary>
     /// <param name="aRangeRef">ノート範囲変更後</param>
     /// <param name="aRangeBef">ノート範囲変更前</param>
-    public ResumeEditNoteRange( ref DmsItemNoteRange aRangeRef, DmsItemNoteRange aRangeBef )
+    public ResumeEditNoteRange( ref ItemNoteRange aRangeRef, ItemNoteRange aRangeBef )
     {
         _RangeRef = aRangeRef;
         _RangeAft = aRangeRef.Clone();

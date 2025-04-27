@@ -16,8 +16,33 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <param name="aBottom">描画位置 底位置</param>
 /// <param name="aInfo">NOTE情報</param>
 /// <param name="aFormatRect">書式設定</param>
-public partial class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass
+public partial class ItemNoteVolume( float aX, float aBottom, InfoNote aInfo, FormatRect aFormatRect ) : DisposeBaseClass
 {
+    protected override void Dispose( bool aDisposing )
+    {
+        if ( _Disposed )
+        {
+            return;
+        }
+
+        // マネージドリソースの解放
+        if ( aDisposing )
+        {
+            _NoteInfo   = null;
+            _FormatRect = null;
+        }
+
+        // アンマネージドリソースの解放
+        {
+        }
+
+        _Disposed = true;
+        base.Dispose( aDisposing );
+    }
+    private bool _Disposed = false;
+
+    #region member
+
     /// <summary>
     /// 描画位置
     /// </summary>
@@ -38,26 +63,7 @@ public partial class DmsItemNoteVolume( float aX, float aBottom, InfoNote aInfo,
     /// </summary>
     private FormatRect? _FormatRect = aFormatRect;
 
-    protected override void Dispose( bool aDisposing )
-    {
-        if ( !_Disposed )
-        {
-            if ( aDisposing )
-            {
-                // Dispose managed resources.
-                _NoteInfo   = null;
-                _FormatRect = null;
-            }
-
-            // Dispose unmanaged resources.
-
-            _Disposed = true;
-
-            // Note disposing has been done.
-            base.Dispose( aDisposing );
-        }
-    }
-    private bool _Disposed = false;
+    #endregion
 
     /// <summary>
     /// 表示位置の調整

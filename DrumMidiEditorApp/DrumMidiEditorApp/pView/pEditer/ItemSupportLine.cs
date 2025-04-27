@@ -9,8 +9,10 @@ namespace DrumMidiEditorApp.pView.pEditer;
 /// <summary>
 /// エディター描画アイテム：サポート線
 /// </summary>
-public partial class DmsItemSupportLine : DisposeBaseClass
+public partial class ItemSupportLine : DisposeBaseClass
 {
+    #region member
+
     /// <summary>
     /// サポート線表示フラグ
     /// </summary>
@@ -40,6 +42,8 @@ public partial class DmsItemSupportLine : DisposeBaseClass
     /// サポート線の間隔
     /// </summary>
     public int IntervalNotePosX => Math.Abs( _NotePosXEnd - _NotePosXStart );
+
+    #endregion
 
     /// <summary>
     /// ノートサイズ設定
