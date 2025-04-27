@@ -478,7 +478,9 @@ public static class DmsControl
                                 UpdateMidiMapSet();
                                 UpdateScore();
 
+                                // TASK: 再生バッファの遅延時間は期待値なので、使用しない方がいいかも
                                 _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition;
+                            //  _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition - ConfigLib.Media.BgmDesiredLatency;
                                 StartPlayTime   = 0;
                                 EndPlayTime     = _TimeTable.EndTime;
                                 _NoteSecPos     = 0;
@@ -520,7 +522,9 @@ public static class DmsControl
                                 UpdateMidiMapSet();
                                 UpdateScore();
 
+                                // TASK: 再生バッファの遅延時間は期待値なので、使用しない方がいいかも
                                 _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition;
+                            //  _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition - ConfigLib.Media.BgmDesiredLatency;
                                 StartPlayTime   = _TimeTable [ loop_start * ConfigLib.System.MeasureNoteNumber ];
                                 EndPlayTime     = _TimeTable [ loop_end   * ConfigLib.System.MeasureNoteNumber + 1 ];
                                 _NoteSecPos     = loop_start * ConfigLib.System.MeasureNoteNumber;
@@ -581,7 +585,9 @@ public static class DmsControl
 
                                 loop_end        = _TmpScore.GetMaxMeasureNo() + 3;
 
+                                // TASK: 再生バッファの遅延時間は期待値なので、使用しない方がいいかも
                                 _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition;
+                            //  _BgmStartTime   = _TmpScore.BgmPlaybackStartPosition - ConfigLib.Media.BgmDesiredLatency;
                                 StartPlayTime   = 0;
                                 EndPlayTime     = _TimeTable [ loop_end * ConfigLib.System.MeasureNoteNumber + 1 ];
                                 _NoteSecPos     = 0;
@@ -612,7 +618,7 @@ public static class DmsControl
                 }
                 catch ( Exception e )
                 {
-                    Log.Warning( $"{Log.GetThisMethodName}:{e.Message}" );
+                    Log.Error( e );
                     continue;
                 }
 
@@ -699,11 +705,11 @@ public static class DmsControl
         catch ( OperationCanceledException )
         {
             // タスクキャンセル
-            Log.Info( $"{Log.GetThisMethodName}:cancel thread" );
+            Log.Info( $"MusicTask Cancel" );
         }
         catch ( Exception e )
         {
-            Log.Error( $"{Log.GetThisMethodName}: {e.Message}" );
+            Log.Error( e );
         }
         finally
         {
@@ -733,7 +739,7 @@ public static class DmsControl
         }
         catch ( Exception e )
         {
-            Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 
@@ -769,7 +775,7 @@ public static class DmsControl
         }
         catch ( Exception e )
         {
-            Log.Info( $"{Log.GetThisMethodName}:{e.Message}" );
+            Log.Error( e );
         }
     }
 

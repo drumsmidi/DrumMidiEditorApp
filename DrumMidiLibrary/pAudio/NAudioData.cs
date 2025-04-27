@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
 using NAudio;
@@ -102,7 +103,11 @@ public partial class NAudioData : DisposeBaseClass
             {
                 _Reader = new( aFilePath );
                 _Sample = new( _Reader );
-                _Wave   = new();
+                _Wave   = new()
+                {
+                    DesiredLatency  = (int)( ConfigLib.Media.CheckBgmDesiredLatency( ConfigLib.Media.BgmDesiredLatency ) * 1000 ),
+                    NumberOfBuffers = ConfigLib.Media.CheckBgmNumberOfBuffers( ConfigLib.Media.BgmNumberOfBuffers ),
+                };
 
                 _Wave.Init( _Sample );
             }

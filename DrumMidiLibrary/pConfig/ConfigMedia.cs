@@ -174,6 +174,58 @@ public class ConfigMedia
     [JsonIgnore]
     public double BgmPlaybackStartMaxPosition { get; private set; } = 1000;
 
+    /// <summary>
+    /// BGM再生バッファの遅延時間（秒）
+    /// </summary>
+    [JsonIgnore]
+    public double BgmDesiredLatency { get; set; } = 0.100D;
+
+    /// <summary>
+    /// BGM再生バッファの遅延時間（秒）：最小値
+    /// </summary>
+    [JsonIgnore]
+    public double BgmDesiredLatencyMin { get; private set; } = 0.05D;
+
+    /// <summary>
+    /// BGM再生バッファの遅延時間（秒）：最大値
+    /// </summary>
+    [JsonIgnore]
+    public double BgmDesiredLatencyMax { get; private set; } = 0.50D;
+
+    /// <summary>
+    /// BGM再生バッファの遅延時間（秒）チェック
+    /// </summary>
+    /// <param name="aBgmDesiredLatency">BGM再生バッファの遅延時間（秒）</param>
+    /// <returns>範囲内のBGM再生バッファの遅延時間（秒）</returns>
+    public double CheckBgmDesiredLatency( double aBgmDesiredLatency )
+        => Math.Clamp( aBgmDesiredLatency, BgmDesiredLatencyMin, BgmDesiredLatencyMax );
+
+    /// <summary>
+    /// BGM再生バッファ数
+    /// </summary>
+    [JsonIgnore]
+    public int BgmNumberOfBuffers { get; set; } = 2;
+
+    /// <summary>
+    /// BGM再生バッファ数：最小値
+    /// </summary>
+    [JsonIgnore]
+    public int BgmNumberOfBuffersMin { get; private set; } = 2;
+
+    /// <summary>
+    /// BGM再生バッファ数：最大値
+    /// </summary>
+    [JsonIgnore]
+    public int BgmNumberOfBuffersMax { get; private set; } = 4;
+
+    /// <summary>
+    /// BGM再生バッファ数チェック
+    /// </summary>
+    /// <param name="aBgmNumberOfBuffers">BGM再生バッファ数</param>
+    /// <returns>範囲内のBGM再生バッファ数</returns>
+    public int CheckBgmNumberOfBuffers( int aBgmNumberOfBuffers )
+        => Math.Clamp( aBgmNumberOfBuffers, BgmNumberOfBuffersMin, BgmNumberOfBuffersMax );
+
     #endregion
 
     #region Video

@@ -15,9 +15,14 @@ public static class EventManage
     /// <summary>
     /// MIDI-OUT 遅延時間更新通知
     /// </summary>
-    public static void Event_Device_UpdateMidiOutLatency() =>
-        // Musicスレッドで更新
-        Config.Media.FlagUpdateDmsControlScore = true;
+    public static void Event_Device_UpdateMidiOutLatency() 
+        => Config.Media.FlagUpdateDmsControlScore = true;
+
+    /// <summary>
+    /// BGM 再生バッファ更新通知
+    /// </summary>
+    public static void Event_Device_UpdateBgmLatency() 
+        => Event_Score_ReloadBgm();
 
     #endregion
 
@@ -44,9 +49,8 @@ public static class EventManage
     /// <summary>
     /// チャンネル切替通知
     /// </summary>
-    public static void Event_Score_ChangeChannel() =>
-        // MidiMap再読み込みリクエスト
-        Event_Score_ReloadMidiMapSet();
+    public static void Event_Score_ChangeChannel() 
+        => Event_Score_ReloadMidiMapSet();
 
     /// <summary>
     /// BGM変更／再読込リクエスト
@@ -76,9 +80,8 @@ public static class EventManage
     /// <summary>
     /// BGM再生開始位置更新通知
     /// </summary>
-    public static void Event_Score_EditBgmPlaybackStartPosition() =>
-        // スコア更新リクエスト（専用のフラグを用意していない為）
-        Config.Media.FlagUpdateDmsControlScore = true;
+    public static void Event_Score_EditBgmPlaybackStartPosition()
+        => Config.Media.FlagUpdateDmsControlScore = true;
 
     /// <summary>
     /// MidiMapSet再読込通知

@@ -33,6 +33,24 @@
                 HorizontalAlignment="Left"
                 ValueChanged="MidiOutLatencyNumberBox_ValueChanged" />
 
+            <NumberBox x:Name="_BgmDesiredLatencyNumberBox" x:Uid="InputBgmDesiredLatency" 
+                Value="{x:Bind ConfigMedia.BgmDesiredLatency,Mode=TwoWay}"
+                Minimum="{x:Bind ConfigMedia.BgmDesiredLatencyMin,Mode=OneTime}"
+                Maximum="{x:Bind ConfigMedia.BgmDesiredLatencyMax,Mode=OneTime}"
+                SmallChange="0.001" 
+                LargeChange="0.010" 
+                HorizontalAlignment="Left"
+                ValueChanged="BgmDesiredLatencyNumberBox_ValueChanged" />
+
+            <NumberBox x:Name="_BgmNumberOfBuffersNumberBox" x:Uid="InputBgmNumberOfBuffers" 
+                Value="{x:Bind ConfigMedia.BgmNumberOfBuffers,Mode=TwoWay}"
+                Minimum="{x:Bind ConfigMedia.BgmNumberOfBuffersMin,Mode=OneTime}"
+                Maximum="{x:Bind ConfigMedia.BgmNumberOfBuffersMax,Mode=OneTime}"
+                SmallChange="1" 
+                LargeChange="1" 
+                HorizontalAlignment="Left"
+                ValueChanged="BgmNumberOfBuffersNumberBox_ValueChanged" />
+
         </StackPanel>
     </Grid>
 </Page>
