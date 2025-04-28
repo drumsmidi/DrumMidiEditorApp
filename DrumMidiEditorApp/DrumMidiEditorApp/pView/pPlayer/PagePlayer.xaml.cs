@@ -19,6 +19,8 @@ public sealed partial class PagePlayer : Page
         InitializeComponent();
 
         ControlAccess.PagePlayer = this;
+
+        UpdatePageSize();
     }
 
     #region member
@@ -34,23 +36,6 @@ public sealed partial class PagePlayer : Page
     private Thickness _PageMargin = new();
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            UpdatePageSize();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region Mouse Event
 

@@ -29,6 +29,11 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
     private ScreenPlayer? _ScreenPlayer;
 
     /// <summary>
+    /// スクリーン：曲再生
+    /// </summary>
+    private ScreenPlayerMobile? _ScreenPlayerMobile;
+
+    /// <summary>
     /// スクリーン：オプション
     /// </summary>
     private ScreenOptionMain? _ScreenOptionMain;
@@ -52,8 +57,9 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
         _SongScrollList ??= new();
 
         // 子スクリーン作成
-        AddChildScreen( _ScreenPlayer     ??= new() );
-        AddChildScreen( _ScreenOptionMain ??= new() );
+    //  AddChildScreen( _ScreenPlayer       ??= new() );
+        AddChildScreen( _ScreenPlayerMobile ??= new() );
+        AddChildScreen( _ScreenOptionMain   ??= new() );
 
         // 入力マップ設定
         _InputMap.KeyMap.Clear();
@@ -75,6 +81,7 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
     protected override void OnUnLoadSelf()
     {
         _ScreenPlayer       = null;
+        _ScreenPlayerMobile = null;
         _ScreenOptionMain   = null;
 
         // アイテム：曲スクロールリスト破棄
@@ -169,6 +176,8 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
 
                     _ScreenPlayer?.OnActivate( true );
 
+                    _ScreenPlayerMobile?.OnActivate( true );
+
                     State = States.PlayerMode;
                 }
                 break;
@@ -253,13 +262,11 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
                                     {
                                         if ( FileIO.LoadScore( item.FilePath, out var score ) )
                                         {
-                                            // TASK:見直しが必要
+                                            // NOTE:見直しが必要
                                             score.BgmFilePath = new( score.BgmFilePath.RelativeFilePath, score.FilePath.AbsoluteFolderPath );
                                             score.BgmFilePath.PrintPath();
 
                                             DMS.SCORE = score;
-
-
 
                                             Request = Requests.PlayerMode;
                                             return;

@@ -28,6 +28,9 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
         InitializeComponent();
 
         ControlAccess.UCMidiMapPanel = this;
+
+        // 初回表示時に読み込んでおく
+        ReloadMidiMapSet();
     }
 
     #region Member
@@ -63,24 +66,6 @@ public sealed partial class UserControlMidiMapPanel : UserControl, INotifyProper
 	private readonly ObservableCollection<MidiMap> _TmpMidiMapList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // 初回表示時に読み込んでおく
-            ReloadMidiMapSet();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

@@ -27,6 +27,53 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
         InitializeComponent();
 
         ControlAccess.PageEdit = this;
+
+        #region 小節番号リスト作成
+
+        var keta = Config.System.MeasureMaxNumber.ToString().Length;
+
+        for ( var measure_no = 0; measure_no <= Config.System.MeasureMaxNumber; measure_no++ )
+        {
+            _MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
+        }
+
+        #endregion
+
+        #region 音量入力モードリスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
+        {
+            _VolumeEditTypeList.Add( name );
+        }
+
+        #endregion
+
+        #region 範囲選択モードリスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigEditer.RangeSelectType>() )
+        {
+            _RangeSelectTypeList.Add( name );
+        }
+
+        #endregion
+
+        #region NumberBox の入力書式設定
+
+        _NoteHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        _VolumeLevelTopNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelHighNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelMidNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
+        _VolumeLevelLowNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
+
+        #endregion
     }
 
     #region Member
@@ -62,68 +109,6 @@ public sealed partial class PageEdit : Page, INotifyPropertyChanged
     private readonly ObservableCollection<string> _RangeSelectTypeList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region 小節番号リスト作成
-
-            var keta = Config.System.MeasureMaxNumber.ToString().Length;
-
-            for ( var measure_no = 0; measure_no <= Config.System.MeasureMaxNumber; measure_no++ )
-            {
-                _MeasureNoList.Add( measure_no.ToString().PadLeft( keta, '0' ) );
-            }
-
-            #endregion
-
-            #region 音量入力モードリスト作成
-
-            foreach ( var name in Enum.GetNames<ConfigEditer.VolumeEditType>() )
-            {
-                _VolumeEditTypeList.Add( name );
-            }
-
-            #endregion
-
-            #region 範囲選択モードリスト作成
-
-            foreach ( var name in Enum.GetNames<ConfigEditer.RangeSelectType>() )
-            {
-                _RangeSelectTypeList.Add( name );
-            }
-
-            #endregion
-
-            #region NumberBox の入力書式設定
-
-            _NoteHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            _VolumeLevelTopNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
-            _VolumeLevelHighNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
-            _VolumeLevelMidNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
-            _VolumeLevelLowNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.01 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

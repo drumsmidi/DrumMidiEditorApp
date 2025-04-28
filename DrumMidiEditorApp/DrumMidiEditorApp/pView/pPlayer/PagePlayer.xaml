@@ -14,7 +14,6 @@
     PointerExited="Page_PointerReleased"
     HorizontalAlignment="Left"
     VerticalAlignment="Top"
-    Loaded="Page_Loaded"
     Background="#00000000">
 
     <Grid>

@@ -3,7 +3,6 @@ using DrumMidiEditorApp.pConfig;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pConfig;
@@ -16,6 +15,13 @@ public sealed partial class PageConfigVideo : Page
     public PageConfigVideo()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _VideoFpsNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+        #endregion
     }
 
     #region member
@@ -26,28 +32,6 @@ public sealed partial class PageConfigVideo : Page
     private ConfigMedia ConfigMedia => Config.Media;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _VideoFpsNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region Video
 

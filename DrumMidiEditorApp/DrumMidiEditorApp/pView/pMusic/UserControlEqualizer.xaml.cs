@@ -23,6 +23,12 @@ public sealed partial class UserControlEqualizer : UserControl
         InitializeComponent();
 
         ControlAccess.UCEqualizer = this;
+
+        // イコライザ描画範囲初期化
+        UpdateRange();
+
+        // イコライザ反映処理設定
+        DmsControl.ApplyEqualizerCallback = ApplyEqulizer;
     }
 
     #region Member
@@ -53,27 +59,6 @@ public sealed partial class UserControlEqualizer : UserControl
     private PeriodicTimer? _Timer = null;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // イコライザ描画範囲初期化
-            UpdateRange();
-
-            // イコライザ反映処理設定
-            DmsControl.ApplyEqualizerCallback = ApplyEqulizer;
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// Win2D アンロード処理

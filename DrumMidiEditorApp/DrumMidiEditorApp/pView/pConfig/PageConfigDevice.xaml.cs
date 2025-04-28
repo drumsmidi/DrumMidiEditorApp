@@ -6,7 +6,6 @@ using DrumMidiLibrary.pAudio;
 using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pLog;
 using DrumMidiLibrary.pUtil;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 namespace DrumMidiEditorApp.pView.pConfig;
@@ -19,6 +18,22 @@ public sealed partial class PageConfigDevice : Page
     public PageConfigDevice()
     {
         InitializeComponent();
+
+        // Midiデバイス読込
+        LoadMidiDeviceList();
+
+        #region NumberBox の入力書式設定
+
+        _MidiOutLatencyNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+
+        _BgmDesiredLatencyNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+
+        _BgmNumberOfBuffersNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+        #endregion
     }
 
     #region member
@@ -34,37 +49,6 @@ public sealed partial class PageConfigDevice : Page
     private readonly ObservableCollection<string> _MidiDeviceList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // Midiデバイス読込
-            LoadMidiDeviceList();
-
-            #region NumberBox の入力書式設定
-
-            _MidiOutLatencyNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
-
-            _BgmDesiredLatencyNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
-
-            _BgmNumberOfBuffersNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region Midi device
 

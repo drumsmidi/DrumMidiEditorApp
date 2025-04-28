@@ -16,6 +16,15 @@ public sealed partial class PageScore : Page
     public PageScore()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _NoteHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
 
     #region member
@@ -26,30 +35,6 @@ public sealed partial class PageScore : Page
     private ConfigScore DrawSet => Config.Score;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _NoteHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// スコア更新フラグ設定

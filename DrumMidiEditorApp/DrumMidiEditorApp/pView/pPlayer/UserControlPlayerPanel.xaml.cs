@@ -27,6 +27,21 @@ public sealed partial class UserControlPlayerPanel : UserControl
         InitializeComponent();
 
         ControlAccess.UCPlayerPanel = this;
+
+        // スワップチェイン作成
+        _PlayerCanvas.SwapChain = new CanvasSwapChain
+            (
+                new CanvasDevice(),
+                DrawSet.ResolutionScreenWidth,
+                DrawSet.ResolutionScreenHeight,
+                Config.Window.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
+                DirectXPixelFormat.R8G8B8A8UIntNormalized,
+            //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
+                2,
+                CanvasAlphaMode.Premultiplied
+            );
+
+        DrawTaskStart();
     }
 
     #region Member
@@ -42,36 +57,6 @@ public sealed partial class UserControlPlayerPanel : UserControl
     private IPlayerSurface? _PlayerSurface = null;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // スワップチェイン作成
-            _PlayerCanvas.SwapChain = new CanvasSwapChain
-                (
-                    new CanvasDevice(),
-                    DrawSet.ResolutionScreenWidth,
-                    DrawSet.ResolutionScreenHeight,
-                    Config.Window.DefaultDpi,                    // DisplayInformation.GetForCurrentView().LogicalDpi
-                    DirectXPixelFormat.R8G8B8A8UIntNormalized,
-                //  DirectXPixelFormat.B8G8R8A8UIntNormalized,
-                    2,
-                    CanvasAlphaMode.Premultiplied
-                );
-
-            DrawTaskStart();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// Win2D アンロード処理

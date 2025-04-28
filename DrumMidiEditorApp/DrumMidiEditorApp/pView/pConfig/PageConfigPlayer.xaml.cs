@@ -19,6 +19,33 @@ public sealed partial class PageConfigPlayer : Page
     public PageConfigPlayer()
     {
         InitializeComponent();
+
+        #region プレイヤー描画モードリスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigSystem.PlayerSurfaceMode>() )
+        {
+            _PlayerSurfaceModeList.Add( name );
+        }
+
+        #endregion
+
+        #region プレイヤー描画エフェクトモードリスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceEffectMode>() )
+        {
+            _PlayerSurfaceEffectModeList.Add( name );
+        }
+
+        #endregion
+
+        #region スクリーンサイズ作成
+
+        foreach ( var size in DrawSet.ResolutionScreenList )
+        {
+            _PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
+        }
+
+        #endregion
     }
 
     #region Member
@@ -44,48 +71,6 @@ public sealed partial class PageConfigPlayer : Page
     private readonly ObservableCollection<string> _PlayerScreenSizeList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region プレイヤー描画モードリスト作成
-
-            foreach ( var name in Enum.GetNames<ConfigSystem.PlayerSurfaceMode>() )
-            {
-                _PlayerSurfaceModeList.Add( name );
-            }
-
-            #endregion
-
-            #region プレイヤー描画エフェクトモードリスト作成
-
-            foreach ( var name in Enum.GetNames<ConfigPlayer.PlayerSurfaceEffectMode>() )
-            {
-                _PlayerSurfaceEffectModeList.Add( name );
-            }
-
-            #endregion
-
-            #region スクリーンサイズ作成
-
-            foreach ( var size in DrawSet.ResolutionScreenList )
-            {
-                _PlayerScreenSizeList.Add( $"{size.Width} x {size.Height}" );
-            }
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// プレイヤー描画モード変更

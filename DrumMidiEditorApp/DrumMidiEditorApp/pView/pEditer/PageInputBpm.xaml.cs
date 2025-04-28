@@ -16,6 +16,13 @@ public sealed partial class PageInputBpm : Page
     public PageInputBpm()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _BpmNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
+
+        #endregion
     }
 
     #region member
@@ -36,28 +43,6 @@ public sealed partial class PageInputBpm : Page
     public double Bpm { get; set; } = Config.System.DefaultBpm;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _BpmNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// ＢＰＭ変更

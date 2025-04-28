@@ -15,7 +15,6 @@ public sealed partial class PageDebug : Page
     /// </summary>
     public PageDebug()
     {
-        // 初期化
         InitializeComponent();
     }
 

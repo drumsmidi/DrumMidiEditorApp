@@ -16,6 +16,25 @@ public sealed partial class PageConfigEditer : Page
     public PageConfigEditer()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _Line128NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line064NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line032NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line016NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line008NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line004NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line001NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
 
     #region Member
@@ -26,40 +45,6 @@ public sealed partial class PageConfigEditer : Page
     private ConfigEditer DrawSet => Config.Editer;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _Line128NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line064NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line032NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line016NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line008NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line004NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line001NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// 共通：トグル切替

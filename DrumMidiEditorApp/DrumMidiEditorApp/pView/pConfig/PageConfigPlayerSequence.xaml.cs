@@ -20,6 +20,43 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     public PageConfigPlayerSequence()
     {
         InitializeComponent();
+
+        #region 描画方向リスト作成
+
+        foreach ( var name in Enum.GetNames<ConfigPlayerSequence.DrawDirectionMode>() )
+        {
+            _DrawDirectionModeList.Add( name );
+        }
+
+        #endregion
+
+        #region NumberBox の入力書式設定
+
+        _NoteTermHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteTermWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        _Line128NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line064NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line032NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line016NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line008NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line004NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line001NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
 
     #region Member
@@ -35,58 +72,6 @@ public sealed partial class PageConfigPlayerSequence : Page, INotifyPropertyChan
     private readonly ObservableCollection<string> _DrawDirectionModeList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region 描画方向リスト作成
-
-            foreach ( var name in Enum.GetNames<ConfigPlayerSequence.DrawDirectionMode>() )
-            {
-                _DrawDirectionModeList.Add( name );
-            }
-
-            #endregion
-
-            #region NumberBox の入力書式設定
-
-            _NoteTermHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteTermWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            _Line128NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line064NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line032NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line016NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line008NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line004NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line001NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

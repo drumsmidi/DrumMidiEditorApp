@@ -16,6 +16,13 @@ public sealed partial class PageConfigPlayerSimuration : Page
     public PageConfigPlayerSimuration()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        //_Line128NumberBox.NumberFormatter
+        //	= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
 
     #region Member
@@ -26,28 +33,6 @@ public sealed partial class PageConfigPlayerSimuration : Page
     private ConfigPlayerSimuration DrawSet => Config.Player.Simuration;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            //_Line128NumberBox.NumberFormatter
-            //	= XamlHelper.CreateNumberFormatter( 1, 1, 0.1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     /// <summary>
     /// 色選択

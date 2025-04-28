@@ -24,6 +24,17 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
         InitializeComponent();
 
         ControlAccess.PageMusic = this;
+
+        #region NumberBox の入力書式設定
+
+        _MusicInfoBpmNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
+        _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
+        _MusicInfoBgmVolumeNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+        #endregion
     }
 
     #region Member
@@ -39,32 +50,6 @@ public sealed partial class PageMusic : Page, INotifyPropertyChanged
     private ConfigMedia ConfigMedia => Config.Media;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _MusicInfoBpmNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 2, 0.01 );
-            _MusicInfoBgmPlaybackStartPositionNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 3, 0.001 );
-            _MusicInfoBgmVolumeNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

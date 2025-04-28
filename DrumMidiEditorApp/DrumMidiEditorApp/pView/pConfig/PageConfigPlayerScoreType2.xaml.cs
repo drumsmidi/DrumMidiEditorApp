@@ -20,6 +20,36 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     public PageConfigPlayerScoreType2()
     {
         InitializeComponent();
+
+        #region NumberBox の入力書式設定
+
+        _MeasureNoHeightSizeNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteTermHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteTermWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteHeightNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _NoteWidthNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        _Line128NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line064NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line032NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line016NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line008NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line004NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+        _Line001NumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
+
+        #endregion
     }
 
     #region Member
@@ -35,51 +65,6 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     private ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _MeasureNoHeightSizeNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteTermHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteTermWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteHeightNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _NoteWidthNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            _Line128NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line064NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line032NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line016NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line008NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line004NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-            _Line001NumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 1, 0.1 );
-
-            #endregion
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

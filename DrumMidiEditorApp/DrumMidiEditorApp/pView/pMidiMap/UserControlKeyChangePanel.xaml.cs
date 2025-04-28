@@ -23,6 +23,9 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
         InitializeComponent();
 
         ControlAccess.UCKeyChangePanel = this;
+
+        // 初回表示時に読み込んでおく
+        ReloadMidiMapNoteList();
     }
 
     #region Member
@@ -38,24 +41,6 @@ public sealed partial class UserControlKeyChangePanel : UserControl, INotifyProp
 	private readonly ObservableCollection<string> _MidiMapNoteList = [];
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void UserControl_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            // 初回表示時に読み込んでおく
-            ReloadMidiMapNoteList();
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 

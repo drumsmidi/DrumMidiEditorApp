@@ -29,6 +29,26 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
         InitializeComponent();
 
         ControlAccess.PageMenuBar = this;
+
+        #region NumberBox の入力書式設定
+
+        _LoopPlayMeasureStartNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureEndNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureConnectNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureStartNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+        _LoopPlayMeasureEndNumberBox.NumberFormatter
+            = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
+
+        #endregion
+
+        if ( DMS.AppStartDmsPath.IsExistFile )
+        {
+            LoadSocre( DMS.AppStartDmsPath );
+        }
     }
 
     #region Member
@@ -64,41 +84,6 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     private Score Score => DMS.SCORE;
 
     #endregion
-
-    /// <summary>
-    /// ページロード完了後処理
-    /// </summary>
-    /// <param name="aSender"></param>
-    /// <param name="aArgs"></param>
-    private void Page_Loaded( object aSender, RoutedEventArgs aArgs )
-    {
-        try
-        {
-            #region NumberBox の入力書式設定
-
-            _LoopPlayMeasureStartNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-            _LoopPlayMeasureEndNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-            _LoopPlayMeasureConnectNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-            _LoopPlayMeasureStartNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-            _LoopPlayMeasureEndNumberBox.NumberFormatter
-                = HelperXaml.CreateNumberFormatter( 1, 0, 1 );
-
-            #endregion
-
-            if ( DMS.AppStartDmsPath.IsExistFile )
-            {
-                LoadSocre( DMS.AppStartDmsPath );
-            }
-        }
-        catch ( Exception e )
-        {
-            Log.Error( e );
-        }
-    }
 
     #region INotifyPropertyChanged
 
