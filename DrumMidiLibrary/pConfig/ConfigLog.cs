@@ -30,5 +30,5 @@ public class ConfigLog : IConfig
     /// アプリ終了時にトレースログファイルを開く
     /// </summary>
     [JsonInclude]
-    public bool OpenTraceLogFileWhenAppQuit { get; set; } = true;
+    public bool OpenTraceLogFileWhenAppQuit { get; set; } = false;
 }

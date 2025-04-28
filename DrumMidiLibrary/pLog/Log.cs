@@ -22,27 +22,27 @@ public static class Log
     /// <summary>
     /// 情報ログラベル
     /// </summary>
-    private static readonly string _LABEL_INFO = "■□□ [INFO]";
+    private static readonly string _LABEL_INFO = "[INFO]";
 
     /// <summary>
     /// 警告ログラベル
     /// </summary>
-    private static readonly string _LABEL_WARNING = "■■□ [WARN]";
+    private static readonly string _LABEL_WARNING = "[WARN]";
 
     /// <summary>
     /// エラーログラベル
     /// </summary>
-    private static readonly string _LABEL_ERROR = "■■■ [ERR] ";
+    private static readonly string _LABEL_ERROR = "[ERR] ";
 
     /// <summary>
     /// ブロックラベル開始
     /// </summary>
-    private static readonly string _LABEL_BLOCK_START = "▼▼▼ [INFO]";
+    private static readonly string _LABEL_BLOCK_START = "[INFO]";
 
     /// <summary>
     /// ブロックラベル終了
     /// </summary>
-    private static readonly string _LABEL_BLOCK_END = "▲▲▲ [INFO]";
+    private static readonly string _LABEL_BLOCK_END = "[INFO]";
 
     /// <summary>
     /// 情報ログ
@@ -144,7 +144,7 @@ public static class Log
     /// <param name="aBlockName">ブロック名</param>
     public static void BeginInfo( string aBlockName )
     {
-        SetLog( $"{_LABEL_BLOCK_START} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} === Begin ===" );
+        SetLog( $"{_LABEL_BLOCK_START} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlockStart} {aBlockName} === Begin ===" );
 
         _BlockTime.Push( DateTime.Now );
     }
@@ -159,11 +159,11 @@ public static class Log
         {
             var ms = ( DateTime.Now - startTime ).TotalMilliseconds;
 
-            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} ===  End  === {ms}ms " );
+            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlockEnd} {aBlockName} ===  End  === {ms}ms " );
         }
         else
         {
-            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlock} {aBlockName} ===  End  === " );
+            SetLog( $"{_LABEL_BLOCK_END} {Log.GetTimeAndThreadInfo} {GetBackMethodNameBlockEnd} {aBlockName} ===  End  === " );
         }
     }
 
@@ -300,7 +300,12 @@ public static class Log
     /// <summary>
     /// 呼び出し元のメソッド名を取得
     /// </summary>
-    private static string GetBackMethodNameBlock => GetMethodName( 4 );
+    private static string GetBackMethodNameBlockStart => GetMethodName( 4 );
+
+    /// <summary>
+    /// 呼び出し元のメソッド名を取得
+    /// </summary>
+    private static string GetBackMethodNameBlockEnd => GetMethodName( 5 );
 
     /// <summary>
     /// メソッド内を取得

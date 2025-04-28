@@ -5,6 +5,7 @@ using DrumMidiEditorApp.pView;
 using DrumMidiLibrary.pLog;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+using Microsoft.Windows.Globalization;
 using Windows.ApplicationModel.Activation;
 
 using LaunchActivatedEventArgs = Microsoft.UI.Xaml.LaunchActivatedEventArgs;
@@ -24,6 +25,10 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        // 検証用：言語設定を強制的に変更する
+        //ApplicationLanguages.PrimaryLanguageOverride = "ja-JP";
+        //ApplicationLanguages.PrimaryLanguageOverride = "en-US";
 
         Config.Log.SetTraceLog();
 

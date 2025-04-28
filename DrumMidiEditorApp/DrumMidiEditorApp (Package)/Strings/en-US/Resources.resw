@@ -118,83 +118,83 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AAA" xml:space="preserve">
-    <value>日本語</value>
+    <value>English</value>
   </data>
   <data name="ButtonAdd.Content" xml:space="preserve">
-    <value>追加</value>
+    <value>Add</value>
   </data>
   <data name="ButtonApply.Content" xml:space="preserve">
-    <value>適用</value>
+    <value>Apply</value>
   </data>
   <data name="ButtonCancel.Content" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="ButtonClearRange.Content" xml:space="preserve">
-    <value>範囲選択
-解除</value>
+    <value>Clear
+Selection</value>
   </data>
   <data name="ButtonEditerMachineLearning.Content" xml:space="preserve">
     <value>ML</value>
   </data>
   <data name="ButtonEditerWaveForm.Content" xml:space="preserve">
-    <value>波形作成</value>
+    <value>Create WaveForm</value>
   </data>
   <data name="ButtonEqualizer.Content" xml:space="preserve">
-    <value>イコライザ</value>
+    <value>Equalizer</value>
   </data>
   <data name="ButtonEqualizerReset.Content" xml:space="preserve">
-    <value>リセット</value>
+    <value>Reset</value>
   </data>
   <data name="ButtonEqualizerWaveForm.Content" xml:space="preserve">
-    <value>波形</value>
+    <value>WaveForm</value>
   </data>
   <data name="ButtonExport.Content" xml:space="preserve">
-    <value>エクスポート</value>
+    <value>Export</value>
   </data>
   <data name="ButtonFileSelect.Content" xml:space="preserve">
-    <value>選択</value>
+    <value>Select File</value>
   </data>
   <data name="ButtonImport.Content" xml:space="preserve">
-    <value>インポート</value>
+    <value>Import</value>
   </data>
   <data name="ButtonIncludeBpm.Content" xml:space="preserve">
     <value>範囲選択に
 BPMノートを含める</value>
   </data>
   <data name="ButtonKeyChange.Content" xml:space="preserve">
-    <value>キー変更</value>
+    <value>Change key</value>
   </data>
   <data name="ButtonLoopPlay.Content" xml:space="preserve">
-    <value>ループ
-再生</value>
+    <value>Loop
+Play</value>
   </data>
   <data name="ButtonOK.Content" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="ButtonPlay.Content" xml:space="preserve">
-    <value>再生</value>
+    <value>Play</value>
   </data>
   <data name="ButtonPlayerDisplay.Content" xml:space="preserve">
-    <value>プレイヤー
-表示</value>
+    <value>Player
+Display</value>
   </data>
   <data name="ButtonRedo.Content" xml:space="preserve">
     <value>Redo</value>
   </data>
   <data name="ButtonRemove.Content" xml:space="preserve">
-    <value>削除</value>
+    <value>Delete</value>
   </data>
   <data name="ButtonStop.Content" xml:space="preserve">
-    <value>停止</value>
+    <value>Stop</value>
   </data>
   <data name="ButtonUndo.Content" xml:space="preserve">
     <value>Undo</value>
   </data>
   <data name="ClickButton.Content" xml:space="preserve">
-    <value>日本語</value>
+    <value>English</value>
   </data>
   <data name="ColumnImportMidiMap.Text" xml:space="preserve">
-    <value>インポートMidiMapSet</value>
+    <value>Import MidiMapSet</value>
   </data>
   <data name="ColumnMidiMapColor.Text" xml:space="preserve">
     <value>Color</value>
@@ -251,7 +251,7 @@ BPMノートを含める</value>
 よろしいですか？</value>
   </data>
   <data name="DialogMenuItemNew.Title" xml:space="preserve">
-    <value>新規作成</value>
+    <value>New</value>
   </data>
   <data name="ErrMsgInitMidiDevice" xml:space="preserve">
     <value>Midi device の初期化に失敗しました。[{0}]</value>
@@ -434,7 +434,7 @@ BPMノートを含める</value>
     <value>MidiMapSet テンプレート取込</value>
   </data>
   <data name="LabelKeyChange" xml:space="preserve">
-    <value>キー変更</value>
+    <value>Change key</value>
   </data>
   <data name="LabelMeasureNo" xml:space="preserve">
     <value>Measure no</value>
@@ -476,34 +476,34 @@ BPMノートを含める</value>
     <value>SaveAs</value>
   </data>
   <data name="NaviConfigDevice.Text" xml:space="preserve">
-    <value>デバイス設定</value>
+    <value>Device Settings</value>
   </data>
   <data name="NaviConfigEditer.Text" xml:space="preserve">
-    <value>エディター設定</value>
+    <value>Editer Settings</value>
   </data>
   <data name="NaviConfigPlayer.Text" xml:space="preserve">
-    <value>プレイヤー共通設定</value>
+    <value>Player Settings : Common</value>
   </data>
   <data name="NaviConfigPlayerA.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：Sequence</value>
+    <value>Player Settings : Sequence</value>
   </data>
   <data name="NaviConfigPlayerB.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：SequenceVertical</value>
+    <value>Player Settings : SequenceVertical</value>
   </data>
   <data name="NaviConfigPlayerC.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：Score</value>
+    <value>Player Settings : Score</value>
   </data>
   <data name="NaviConfigPlayerD.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：Simuration</value>
+    <value>Player Settings : Simuration</value>
   </data>
   <data name="NaviConfigPlayerE.Text" xml:space="preserve">
-    <value>プレイヤー個別設定：ScoreType2</value>
+    <value>Player Settings : ScoreType2</value>
   </data>
   <data name="NaviConfigSystem.Text" xml:space="preserve">
-    <value>システム設定</value>
+    <value>System Settings</value>
   </data>
   <data name="NaviConfigVideo.Text" xml:space="preserve">
-    <value>ビデオ出力設定</value>
+    <value>Video Settings</value>
   </data>
   <data name="NaviDebug.Content" xml:space="preserve">
     <value>Debug</value>

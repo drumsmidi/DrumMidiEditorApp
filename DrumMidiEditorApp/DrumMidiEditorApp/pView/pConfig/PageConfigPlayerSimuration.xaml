@@ -14,7 +14,6 @@
                 Background="{x:Bind DrawSet.SheetColor.ColorBrush, Mode=TwoWay}"
                 Click="ColorButton_Click" />
 
-
         </StackPanel>
     </Grid>
 </Page>

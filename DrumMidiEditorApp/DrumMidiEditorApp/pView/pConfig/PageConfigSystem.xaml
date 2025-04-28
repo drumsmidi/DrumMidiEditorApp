@@ -10,6 +10,8 @@
     <Grid>
         <StackPanel Orientation="Vertical" Spacing="6">
 
+            <ToggleSwitch x:Uid="InputOpenTraceLog"
+                IsOn="{x:Bind ConfigLog.OpenTraceLogFileWhenAppQuit, Mode=TwoWay}" />
 
         </StackPanel>
     </Grid>
