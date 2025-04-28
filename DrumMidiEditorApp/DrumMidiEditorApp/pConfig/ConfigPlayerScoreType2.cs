@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
@@ -9,21 +11,29 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// プレイヤー設定
 /// </summary>
-public class ConfigPlayerScoreType2( bool aDarkMode )
+public class ConfigPlayerScoreType2 : IConfig
 {
+    public void CheckValidation()
+    {
+        BpmHeightSize        = Math.Max( BpmHeightSize          , 0 );
+        BpmWidthSize         = Math.Max( BpmWidthSize           , 0 );
+        MeasureNoHeightSize  = Math.Max( MeasureNoHeightSize    , 0 );
+        NoteHeightSize       = Math.Max( NoteHeightSize         , 0 );
+        NoteWidthSize        = Math.Max( NoteWidthSize          , 0 );
+        NoteTermWidthSize    = Math.Max( NoteTermWidthSize      , 0.1F );
+        NoteTermHeightSize   = Math.Max( NoteTermHeightSize     , 0.1F );
+    }
+
     #region Sheet
 
     /// <summary>
     /// 背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 
@@ -51,22 +61,19 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowRect
+    public FormatRect BpmNowRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ) ),
-            Line        = new( aDarkMode ? Color.FromArgb( 0, 0, 0, 0 ) : Color.FromArgb( 0, 0, 0, 0 ), 0F ),
-            Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255,  0,  0, 0 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb(   0,   0,   0,   0 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -82,43 +89,37 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoRect
+    public FormatRect MeasureNoRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( aDarkMode ? Color.FromArgb( 255, 150, 150, 150 ) : Color.FromArgb( 255, 100, 100, 100 ) ),
-            Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-            Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 255, 150, 150, 150 ) ),
+        Line        = new( Color.FromArgb( 255,   0,   0,   0 ), 1.0F ),
+        Text        = new( Color.FromArgb( 255,   0,   0,   0 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     /// <summary>
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoSelectRect
+    public FormatRect MeasureNoSelectRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            Line        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ), 1.0F ),
-            Text        = new( aDarkMode ? Color.FromArgb( 255, 0, 0, 0 ) : Color.FromArgb( 255, 255, 255, 255 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        Line        = new( Color.FromArgb( 255,   0,   0,   0 ), 1.0F ),
+        Text        = new( Color.FromArgb( 255,   0,   0,   0 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -128,27 +129,21 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatLine HeaderLineA
+    public FormatLine HeaderLineA { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            LineSize    = 1.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize    = 1.0F,
+    };
 
     /// <summary>
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatLine HeaderLineB
+    public FormatLine HeaderLineB { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 80, 80, 80 ) ),
-            LineSize    = 0.4F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 170, 170, 170 ) ),
+        LineSize    = 0.4F,
+    };
 
     #endregion
 
@@ -158,22 +153,19 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// NOTE描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect NoteRect
+    public FormatRect NoteRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            Line        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ), 3.0F ),
-            Text        = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 24F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        Line        = new( Color.FromArgb( 255, 255, 255, 255 ), 3.0F ),
+        Text        = new( Color.FromArgb( 255, 255, 255, 255 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 24F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     /// <summary>
     /// ノート高さ
@@ -225,35 +217,29 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// カーソルペン
     /// </summary>
     [JsonInclude]
-    public FormatLine CursorLine
+    public FormatLine CursorLine { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            LineSize    = 1.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize    = 1.0F,
+    };
 
     /// <summary>
     /// カーソル位置より前の塗りつぶり用
     /// </summary>
     [JsonInclude]
-    public FormatRect CursorRect
+    public FormatRect CursorRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( aDarkMode ? Color.FromArgb( 160,   0,   0,   0 ) : Color.FromArgb( 160, 255, 255, 255 ) ),
-            Line        = new( aDarkMode ? Color.FromArgb(   0, 255, 255, 255 ) : Color.FromArgb(   0,   0,   0,   0 ), 0.0F ),
-            Text        = new( aDarkMode ? Color.FromArgb(   0, 255, 255, 255 ) : Color.FromArgb(   0,   0,   0,   0 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 24F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb(   0, 255, 255, 255 ), 0.0F ),
+        Text        = new( Color.FromArgb(   0, 255, 255, 255 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 24F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     /// <summary>
     /// カーソル位置より前の塗りつぶり表示フラグ
@@ -265,103 +251,84 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
     /// 小節128分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure128Line
+    public FormatLine SheetMeasure128Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            LineSize    = 1.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize    = 1.0F,
+    };
 
     /// <summary>
     /// 小節64分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure064Line
+    public FormatLine SheetMeasure064Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            LineSize    = 0.5F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize    = 0.5F,
+    };
 
     /// <summary>
     /// 小節32分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure032Line
+    public FormatLine SheetMeasure032Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 255, 255, 255 ) : Color.FromArgb( 255, 0, 0, 0 ) ),
-            LineSize    = 0.3F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 255, 255, 255 ) ),
+        LineSize    = 0.3F,
+    };
 
     /// <summary>
     /// 小節16分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure016Line
+    public FormatLine SheetMeasure016Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 200, 200, 200 ) : Color.FromArgb( 255, 50, 50, 50 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節8分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure008Line
+    public FormatLine SheetMeasure008Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 190, 190, 190 ) : Color.FromArgb( 255, 40, 40, 40 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 190, 190, 190 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節4分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure004Line
+    public FormatLine SheetMeasure004Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 180, 180, 180 ) : Color.FromArgb( 255, 30, 30, 30 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 180, 180, 180 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節1分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure001Line
+    public FormatLine SheetMeasure001Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( aDarkMode ? Color.FromArgb( 255, 170, 170, 170 ) : Color.FromArgb( 255, 20, 20, 20 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 170, 170, 170 ) ),
+        LineSize    = 0.0F,
+    };
 
     #endregion
 
     /// <summary>
     /// スコア最大高さ
     /// </summary>
+    [JsonIgnore]
     public float ScoreMaxHeight => NoteTermHeightSize * ScaleList.Count;
 
     /// <summary>
     /// １小節の横幅
     /// </summary>
+    [JsonIgnore]
     public float MeasureSize => NoteTermWidthSize * Config.System.MeasureNoteNumber;
 
     #region 音階
@@ -378,11 +345,11 @@ public class ConfigPlayerScoreType2( bool aDarkMode )
         new ( "HH"   , "", false   ),
         new ( "SD"   , "", false   ),
         new ( "TM"   , "", false   ),
-      //new( "HT"   , "", true    ),
-      //new( "MT"   , "", false   ),
-      //new( "LT"   , "", false   ),
-      //new( "FT1"  , "", false   ),
-      //new( "FT2"  , "", true    ),
+      //new ( "HT"   , "", true    ),
+      //new ( "MT"   , "", false   ),
+      //new ( "LT"   , "", false   ),
+      //new ( "FT1"  , "", false   ),
+      //new ( "FT2"  , "", true    ),
         new ( "BD"   , "", true    ),
         new ( "PC"   , "", false   ),
     ];

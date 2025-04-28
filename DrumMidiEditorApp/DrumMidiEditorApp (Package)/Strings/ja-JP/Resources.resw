@@ -269,10 +269,10 @@ BPMノートを含める</value>
     <value>背景色</value>
   </data>
   <data name="InputBgmFilePath.Header" xml:space="preserve">
-    <value>BGM ファイルパス</value>
+    <value>BGMファイルパス</value>
   </data>
   <data name="InputBgmPlaybackStartPosition.Header" xml:space="preserve">
-    <value>BGM 再生開始位置（秒）</value>
+    <value>BGM再生開始位置（秒）</value>
   </data>
   <data name="InputBgmSwitch.Header" xml:space="preserve">
     <value>Bgm</value>
@@ -579,9 +579,9 @@ BPMノートを含める</value>
     <value>ビデオ出力中</value>
   </data>
   <data name="InputBgmDesiredLatency.Header" xml:space="preserve">
-    <value>BGM 再生バッファ遅延（秒）</value>
+    <value>BGM再生バッファ遅延（秒）</value>
   </data>
   <data name="InputBgmNumberOfBuffers.Header" xml:space="preserve">
-    <value>BGM 再生バッファ数</value>
+    <value>BGM再生バッファ数</value>
   </data>
 </root>

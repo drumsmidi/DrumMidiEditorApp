@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
@@ -8,21 +10,29 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// プレイヤー設定
 /// </summary>
-public class ConfigPlayerSimuration
+public class ConfigPlayerSimuration : IConfig
 {
+    public void CheckValidation()
+    {
+        BpmNowWidthSize     = Math.Max( BpmNowWidthSize     , 0 );
+        BpmNowHeightSize    = Math.Max( BpmNowHeightSize    , 0 );
+        MeasureNoWidthSize  = Math.Max( MeasureNoWidthSize  , 0 );
+        MeasureNoHeightSize = Math.Max( MeasureNoHeightSize , 0 );
+        HeaderSize          = Math.Max( HeaderSize          , 0 );
+        NoteTermSize        = Math.Max( NoteTermSize        , 0.1F );
+        DrawMeasureCount    = Math.Max( DrawMeasureCount    , 1 );
+    }
+
     #region Sheet
 
     /// <summary>
     /// 背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = Color.FromArgb( 255, 0, 0, 0 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 
@@ -50,22 +60,19 @@ public class ConfigPlayerSimuration
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowRect
+    public FormatRect BpmNowRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 18F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 18F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -93,22 +100,19 @@ public class ConfigPlayerSimuration
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoRect
+    public FormatRect MeasureNoRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 18F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 18F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -136,22 +140,19 @@ public class ConfigPlayerSimuration
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderRect
+    public FormatRect HeaderRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 0, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb(   0,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -174,5 +175,6 @@ public class ConfigPlayerSimuration
     /// <summary>
     /// １小節の横幅
     /// </summary>
+    [JsonIgnore]
     public float MeasureSize => NoteTermSize * Config.System.MeasureNoteNumber;
 }

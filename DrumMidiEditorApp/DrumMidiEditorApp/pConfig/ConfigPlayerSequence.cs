@@ -1,5 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 using DrumMidiEditorApp.pModel;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.UI;
@@ -9,21 +11,35 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// プレイヤー設定
 /// </summary>
-public class ConfigPlayerSequence
+public class ConfigPlayerSequence : IConfig
 {
+    public void CheckValidation()
+    {
+        DrawDirectionModeSelect     = (DrawDirectionMode)Math.Clamp( (int)DrawDirectionModeSelect, 0, 1 );
+        BpmHeightSize               = Math.Max( BpmHeightSize               , 0 );
+        BpmWidthSize                = Math.Max( BpmWidthSize                , 0 );
+        MeasureNoHeightSize         = Math.Max( MeasureNoHeightSize         , 0 );
+        HeaderGroupWidthSize        = Math.Max( HeaderGroupWidthSize        , 0 );
+        HeaderWidthSize             = Math.Max( HeaderWidthSize             , 0 );
+        NoteGroupOnHeightSize       = Math.Max( NoteGroupOnHeightSize       , 0 );
+        NoteGroupOffHeightSize      = Math.Max( NoteGroupOffHeightSize      , 0 );
+        NoteGroupOnWidthSize        = Math.Max( NoteGroupOnWidthSize        , 0 );
+        NoteGroupOffWidthSize       = Math.Max( NoteGroupOffWidthSize       , 0 );
+        NoteTermWidthSize           = Math.Max( NoteTermWidthSize           , 0.1F );
+        NoteGroupOnTermHeightSize   = Math.Max( NoteGroupOnTermHeightSize   , 0.1F );
+        NoteGroupOffTermHeightSize  = Math.Max( NoteGroupOffTermHeightSize  , 0.1F );
+    }
+
     #region Sheet
 
     /// <summary>
     /// 背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = Color.FromArgb( 255, 0, 0, 0 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 
@@ -74,22 +90,19 @@ public class ConfigPlayerSequence
     /// BPM描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmRect
+    public FormatRect BpmRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 255, 0, 200, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 255,   0, 200,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     /// <summary>
     /// 現在のBPM値表示フラグ
@@ -101,22 +114,19 @@ public class ConfigPlayerSequence
     /// 現在のBPM値描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect BpmNowRect
+    public FormatRect BpmNowRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -132,22 +142,19 @@ public class ConfigPlayerSequence
     /// 小節番号描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect MeasureNoRect
+    public FormatRect MeasureNoRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 255, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 255,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -180,7 +187,7 @@ public class ConfigPlayerSequence
     /// <summary>
     /// ヘッダー横幅
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public float HeaderTotalWidthSize
         => HeaderGroupOn ? HeaderWidthSize : HeaderWidthSize + HeaderGroupWidthSize;
 
@@ -188,22 +195,19 @@ public class ConfigPlayerSequence
     /// ヘッダー描画アイテム
     /// </summary>
     [JsonInclude]
-    public FormatRect HeaderRect
+    public FormatRect HeaderRect { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Background  = new( Color.FromArgb( 160, 0, 0, 0 ) ),
-            Line        = new( Color.FromArgb( 255, 60, 60, 60 ), 0.4F ),
-            Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
-                                new()
-                                {
-                                    FontFamily          = Config.Media.DefaultFontFamily,
-                                    FontSize            = 14F,
-                                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                                    VerticalAlignment   = CanvasVerticalAlignment.Center,
-                                } ),
-        };
+        Background  = new( Color.FromArgb( 160,   0,   0,   0 ) ),
+        Line        = new( Color.FromArgb( 255,  60,  60,  60 ), 0.4F ),
+        Text        = new( Color.FromArgb( 255, 100, 200, 100 ),
+                            new()
+                            {
+                                FontFamily          = Config.Media.DefaultFontFamily,
+                                FontSize            = 14F,
+                                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                                VerticalAlignment   = CanvasVerticalAlignment.Center,
+                            } ),
+    };
 
     #endregion
 
@@ -331,108 +335,90 @@ public class ConfigPlayerSequence
     /// 小節128分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure128Line
+    public FormatLine SheetMeasure128Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
-            LineSize    = 1.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 80, 80, 80 ) ),
+        LineSize    = 1.0F,
+    };
 
     /// <summary>
     /// 小節64分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure064Line
+    public FormatLine SheetMeasure064Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
-            LineSize    = 0.1F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 70, 70, 70 ) ),
+        LineSize    = 0.1F,
+    };
 
     /// <summary>
     /// 小節32分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure032Line
+    public FormatLine SheetMeasure032Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 60, 60, 60 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節16分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure016Line
+    public FormatLine SheetMeasure016Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 50, 50, 50 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節8分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure008Line
+    public FormatLine SheetMeasure008Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 40, 40, 40 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節4分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure004Line
+    public FormatLine SheetMeasure004Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 30, 30, 30 ) ),
+        LineSize    = 0.0F,
+    };
 
     /// <summary>
     /// 小節1分間隔の線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine SheetMeasure001Line
+    public FormatLine SheetMeasure001Line { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
-            LineSize    = 0.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 20, 20, 20 ) ),
+        LineSize    = 0.0F,
+    };
 
     #endregion
 
     /// <summary>
     /// スコア最大横幅
     /// </summary>
+    [JsonIgnore]
     public float ScoreMaxWidth => NoteTermWidthSize * Config.System.NoteCount;
 
     /// <summary>
     /// スコア最大高さ
     /// </summary>
+    [JsonIgnore]
     public float ScoreMaxHeight
         => NoteTermHeightSize * ( HeaderGroupOn ? DMS.SCORE.EditMidiMapSet.DisplayGroupCount : DMS.SCORE.EditMidiMapSet.DisplayMidiMapAllCount );
 
     /// <summary>
     /// １小節の横幅
     /// </summary>
+    [JsonIgnore]
     public float MeasureSize => NoteTermWidthSize * Config.System.MeasureNoteNumber;
 }

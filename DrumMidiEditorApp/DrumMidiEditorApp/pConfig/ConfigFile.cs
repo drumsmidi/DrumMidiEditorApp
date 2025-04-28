@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 
 namespace DrumMidiEditorApp.pConfig;
@@ -7,9 +8,14 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// ディレクトリ・ファイル関連設定
 /// </summary>
-public class ConfigFile
+public class ConfigFile : IConfig
 {
-    #region Folder Path
+    public void CheckValidation()
+    {
+        // 何もしない
+    }
+
+    #region Folder
 
     /// <summary>
     /// ドキュメントベースフォルダパス
@@ -22,7 +28,6 @@ public class ConfigFile
     /// </summary>
     [JsonIgnore]
     public GeneralPath FolderConfig
-     // => new( FolderDocBase.AbsoulteFolderPath );
         => new( FolderDocBase.CombineWithSubFolder( "Config\\" ) );
 
     /// <summary>
@@ -30,7 +35,6 @@ public class ConfigFile
     /// </summary>
     [JsonIgnore]
     public GeneralPath FolderModel
-     // => new( FolderDocBase.AbsoulteFolderPath );
         => new( FolderDocBase.CombineWithSubFolder( "Model\\" ) );
 
     /// <summary>
@@ -183,81 +187,67 @@ public class ConfigFile
     /// Bgm開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportBgm
-    {
-        get; private set;
-    } = [
-            ExtentionMp3,
-            ExtentionWav,
-        ];
+    public List<string> SupportBgm { get; private set; } = 
+    [
+        ExtentionMp3,
+        ExtentionWav,
+    ];
 
     /// <summary>
     /// Dms保存フィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportDmsSave
-    {
-        get; private set;
-    } = [
-            ExtentionDms,
-        ];
+    public List<string> SupportDmsSave { get; private set; } = 
+    [
+        ExtentionDms,
+    ];
 
     /// <summary>
     /// Dms開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportDmsOpen
-    {
-        get; private set;
-    } = [
-            ExtentionDms,
-            ExtentionMidi,
-            ExtentionDtx,
-        ];
+    public List<string> SupportDmsOpen { get; private set; } = 
+    [
+        ExtentionDms,
+        ExtentionMidi,
+        ExtentionDtx,
+    ];
 
     /// <summary>
     /// MidiMapSetフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportMidiMapSet
-    {
-        get; private set;
-    } = [
-            ExtentionDms,
-        ];
+    public List<string> SupportMidiMapSet { get; private set; } = 
+    [
+        ExtentionDms,
+    ];
 
     /// <summary>
     /// Midi開くフィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportMidi
-    {
-        get; private set;
-    } = [
-            ExtentionMidi,
-        ];
+    public List<string> SupportMidi { get; private set; } = 
+    [
+        ExtentionMidi,
+    ];
 
     /// <summary>
     /// Pdf保存フィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportPdf
-    {
-        get; private set;
-    } = [
-            ExtentionPdf,
-        ];
+    public List<string> SupportPdf { get; private set; } = 
+    [
+        ExtentionPdf,
+    ];
 
     /// <summary>
     /// Video保存フィルタ
     /// </summary>
     [JsonIgnore]
-    public List<string> SupportVideo
-    {
-        get; private set;
-    } = [
-            ExtentionMp4,
-        ];
+    public List<string> SupportVideo { get; private set; } = 
+    [
+        ExtentionMp4,
+    ];
 
     #endregion
 }

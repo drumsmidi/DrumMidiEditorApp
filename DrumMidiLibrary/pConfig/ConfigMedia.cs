@@ -8,8 +8,15 @@ namespace DrumMidiLibrary.pConfig;
 /// <summary>
 /// Audio/Midi/Video設定
 /// </summary>
-public class ConfigMedia
+public class ConfigMedia : IConfig
 {
+    public void CheckValidation()
+    {
+        OutputVideoFps      = CheckOutputVideoFps( OutputVideoFps );
+        OutputVideoCodec    = OutputVideoCodecList.Find( val => val.Equals( OutputVideoCodec ) ) ?? string.Empty ;
+        MidiOutLatency      = CheckMidiOutLatency( MidiOutLatency );
+    }
+
     #region フラグ
 
     /// <summary>

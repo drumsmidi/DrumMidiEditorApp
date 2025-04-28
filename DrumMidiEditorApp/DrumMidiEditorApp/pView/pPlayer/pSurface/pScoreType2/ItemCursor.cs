@@ -73,7 +73,7 @@ internal partial class ItemCursor( float aX, float aY, float aWidth, float aHeig
         rect.Y      += aDiffY;
         rect.Width   = aCursolX;
 
-        if ( Config.Player.ScoreType2SelectType.CursorRectOn && _FormatRect != null )
+        if ( Config.Player.ScoreType2.CursorRectOn && _FormatRect != null )
         {
             HelperWin2D.DrawFormatRect
                 (

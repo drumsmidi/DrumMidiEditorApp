@@ -7,8 +7,13 @@ namespace DrumMidiLibrary.pConfig;
 /// <summary>
 /// Log設定
 /// </summary>
-public class ConfigLog
+public class ConfigLog : IConfig
 {
+    public void CheckValidation()
+    {
+        // 何もしない
+    }
+
     /// <summary>
     /// トレースログパス
     /// </summary>

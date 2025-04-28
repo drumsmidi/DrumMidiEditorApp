@@ -7,8 +7,13 @@ namespace DrumMidiLibrary.pConfig;
 /// <summary>
 /// Window関連設定
 /// </summary>
-public abstract class ConfigWindowBase
+public abstract class ConfigWindowBase : IConfig
 {
+    public virtual void CheckValidation()
+    {
+        // 何もしない
+    }
+
     /// <summary>
     /// アプリケーション名
     /// </summary>
@@ -18,7 +23,7 @@ public abstract class ConfigWindowBase
     /// <summary>
     /// DPI
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public float DefaultDpi { get; set; } = 96;
 
     /// <summary>

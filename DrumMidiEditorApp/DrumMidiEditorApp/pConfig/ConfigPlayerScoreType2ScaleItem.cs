@@ -1,30 +1,12 @@
-﻿namespace DrumMidiEditorApp.pConfig;
+﻿using System.Text.Json.Serialization;
+
+namespace DrumMidiEditorApp.pConfig;
 
 /// <summary>
 /// 音階アイテム
 /// </summary>
 public class ConfigPlayerScoreType2ScaleItem
 {
-    /// <summary>
-    /// 音階キー
-    /// </summary>
-    public string ScaleKey { get; set; } = string.Empty;
-
-    /// <summary>
-    /// ラベル
-    /// </summary>
-    public string Label { get; set; } = string.Empty;
-
-    /// <summary>
-    /// ライン描画フラグ
-    /// </summary>
-    public bool LineDrawFlag { get; set; } = false;
-
-    /// <summary>
-    /// 音階キー＋ラベル
-    /// </summary>
-    public string ScaleKeyLabel => $"{ScaleKey}-{Label}";
-
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -55,4 +37,32 @@ public class ConfigPlayerScoreType2ScaleItem
         Label           = aScaleItem.Label;
         LineDrawFlag    = aScaleItem.LineDrawFlag;
     }
+
+    #region member
+
+    /// <summary>
+    /// 音階キー
+    /// </summary>
+    [JsonInclude]
+    public string ScaleKey { get; set; } = string.Empty;
+
+    /// <summary>
+    /// ラベル
+    /// </summary>
+    [JsonInclude]
+    public string Label { get; set; } = string.Empty;
+
+    /// <summary>
+    /// ライン描画フラグ
+    /// </summary>
+    [JsonInclude]
+    public bool LineDrawFlag { get; set; } = false;
+
+    /// <summary>
+    /// 音階キー＋ラベル
+    /// </summary>
+    [JsonIgnore]
+    public string ScaleKeyLabel => $"{ScaleKey}-{Label}";
+
+    #endregion
 }

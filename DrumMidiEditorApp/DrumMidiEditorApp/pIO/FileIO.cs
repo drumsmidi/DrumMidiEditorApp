@@ -89,22 +89,23 @@ public static class FileIO
     /// <typeparam name="T">Configクラス</typeparam>
     /// <param name="aGeneralPath">読込ファイルパス</param>
     /// <returns>読込済みConfigオブジェクト</returns>
-    private static T? LoadConfig<T>( GeneralPath aGeneralPath ) where T : class
+    private static T? LoadConfig<T>( GeneralPath aGeneralPath ) where T : IConfig
     {
-        T? config = null;
-
         try
         {
-            config = JsonIO.LoadFile<T>( aGeneralPath );
+            var config = JsonIO.LoadFile<T>( aGeneralPath );
+            config?.CheckValidation();
 
             Log.Info( $"Succeeded in reading [{aGeneralPath.AbsoluteFilePath}]" );
+
+            return config;
         }
         catch ( Exception e )
         {
             Log.Error( $"Failed to read [{aGeneralPath.AbsoluteFilePath}]" );
             Log.Error( e );
+            return default;
         }
-        return config;
     }
 
     /// <summary>

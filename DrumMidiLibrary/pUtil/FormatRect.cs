@@ -22,14 +22,34 @@ public class FormatRect()
     /// <summary>
     /// 角の丸み
     /// </summary>
-    [JsonInclude]
-    public float RadiusX { get; set; } = 5;
+    [JsonIgnore]
+    private float _RadiusX = 5;
 
     /// <summary>
     /// 角の丸み
     /// </summary>
     [JsonInclude]
-    public float RadiusY { get; set; } = 5;
+    public float RadiusX 
+    {
+        get => _RadiusX;
+        set => _RadiusX = ( value < 0 ) ? 0 : value ;
+    }
+
+    /// <summary>
+    /// 角の丸み
+    /// </summary>
+    [JsonIgnore]
+    private float _RadiusY = 5;
+
+    /// <summary>
+    /// 角の丸み
+    /// </summary>
+    [JsonInclude]
+    public float RadiusY
+    {
+        get => _RadiusY;
+        set => _RadiusY = ( value < 0 ) ? 0 : value;
+    }
 
     /// <summary>
     /// テキスト書式

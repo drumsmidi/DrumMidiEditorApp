@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Windows.UI;
 
@@ -7,8 +9,14 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// Scoreタブ設定
 /// </summary>
-public class ConfigScore
+public class ConfigScore : IConfig
 {
+    public void CheckValidation()
+    {
+        NoteWidthSize  = Math.Max( NoteWidthSize , 0.1F );
+        NoteHeightSize = Math.Max( NoteHeightSize, 0.1F );
+    }
+
     #region Update flag
 
     /// <summary>
@@ -25,13 +33,10 @@ public class ConfigScore
     /// シート背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = Color.FromArgb( 255, 0, 0, 0 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 
@@ -41,14 +46,11 @@ public class ConfigScore
     /// 小節囲い線ペン
     /// </summary>
     [JsonInclude]
-    public FormatLine MeasureLine
+    public FormatLine MeasureLine { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
-            LineSize    = 1.0F,
-        };
+        LineColor   = new( Color.FromArgb( 255, 200, 200, 200 ) ),
+        LineSize    = 1.0F,
+    };
 
     #endregion
 

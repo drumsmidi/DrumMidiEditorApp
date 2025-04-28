@@ -1,13 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 
 namespace DrumMidiEditorApp.pConfig;
 
 /// <summary>
 /// Scaleタブ設定
 /// </summary>
-public class ConfigScale
+public class ConfigScale : IConfig
 {
+    public void CheckValidation()
+    {
+        VolumeLevelTop      = Math.Clamp( VolumeLevelTop    , 0, 1 );
+        VolumeLevelHigh     = Math.Clamp( VolumeLevelHigh   , 0, 1 );
+        VolumeLevelMid      = Math.Clamp( VolumeLevelMid    , 0, 1 );
+        VolumeLevelLow      = Math.Clamp( VolumeLevelLow    , 0, 1 );
+        SensitivityLevel    = Math.Clamp( SensitivityLevel  , 0, 100 );
+    }
+
     #region 波形
 
     /// <summary>

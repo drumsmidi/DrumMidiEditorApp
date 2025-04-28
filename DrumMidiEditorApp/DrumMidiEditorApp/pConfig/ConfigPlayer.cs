@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Microsoft.UI.Xaml;
 using Windows.Foundation;
@@ -11,8 +13,20 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// プレイヤー設定
 /// </summary>
-public class ConfigPlayer
+public class ConfigPlayer : IConfig
 {
+    public void CheckValidation()
+    {
+        PlayerSurfaceModeSelect         = (PlayerSurfaceMode)Math.Clamp( (int)PlayerSurfaceModeSelect, 0, 2 );
+        PlayerSurfaceEffectModeSelect   = (PlayerSurfaceEffectMode)Math.Clamp( (int)PlayerSurfaceEffectModeSelect, 0, 61 );
+        Fps                             = Math.Clamp( Fps, 30, 999 );
+        ResolutionScreenIndex           = Math.Clamp( ResolutionScreenIndex, 0, ResolutionScreenList.Count - 1 );
+
+        Sequence.CheckValidation();
+        Simuration.CheckValidation();
+        ScoreType2.CheckValidation();
+    }
+
     #region 更新フラグ
 
     /// <summary>
@@ -173,7 +187,7 @@ public class ConfigPlayer
     /// <summary>
     /// 解像度リスト
     /// </summary>
-    [JsonInclude]
+    [JsonIgnore]
     public readonly List<Size> ResolutionScreenList =
     [
         new(  480,  360 ),
@@ -208,13 +222,10 @@ public class ConfigPlayer
     /// 背景色
     /// </summary>
     [JsonIgnore]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = Color.FromArgb( 255, 0, 0, 0 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 
@@ -236,11 +247,7 @@ public class ConfigPlayer
     /// プレイヤー描画モード別設定
     /// </summary>
     [JsonInclude]
-    public Dictionary<bool, ConfigPlayerScoreType2> ScoreType2 { get; set; } = new()
-    {
-        { false, new( false ) },  // White
-        { true , new( true  ) },  // Dart
-    };
+    public ConfigPlayerScoreType2 ScoreType2 { get; set; } = new();
 
     /// <summary>
     /// プレイヤー描画モード別設定
@@ -248,12 +255,12 @@ public class ConfigPlayer
     [JsonInclude]
     public bool ScoreType2DarkModeFlag { get; set; } = true;
 
-    /// <summary>
-    /// プレイヤー描画モード別設定
-    /// </summary>
-    [JsonIgnore]
-    public ConfigPlayerScoreType2 ScoreType2SelectType 
-        => ScoreType2[ ScoreType2DarkModeFlag ];
+    ///// <summary>
+    ///// プレイヤー描画モード別設定
+    ///// </summary>
+    //[JsonIgnore]
+    //public ConfigPlayerScoreType2 ScoreType2SelectType 
+    //    => ScoreType2[ ScoreType2DarkModeFlag ];
 
     #endregion
 }

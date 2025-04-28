@@ -9,7 +9,7 @@ namespace DrumMidiLibrary.pConfig;
 /// <summary>
 /// システム設定
 /// </summary>
-public class ConfigSystem
+public class ConfigSystem : IConfig
 {
     /// <summary>
     /// コンストラクタ
@@ -18,6 +18,11 @@ public class ConfigSystem
     {
         // MeasureMaxNumber の設定を元に計算
         SetMeasureMaxNumber( MeasureMaxNumber );
+    }
+
+    public void CheckValidation()
+    {
+        // 何もしない
     }
 
     #region Deault:Score

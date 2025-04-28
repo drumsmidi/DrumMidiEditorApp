@@ -32,7 +32,7 @@ public sealed partial class PageConfigPlayerScoreType2 : Page, INotifyPropertyCh
     /// <summary>
     /// 描画設定
     /// </summary>
-    private ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2SelectType;
+    private ConfigPlayerScoreType2 DrawSet => Config.Player.ScoreType2;
 
     #endregion
 

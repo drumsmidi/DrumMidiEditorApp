@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
+using DrumMidiLibrary.pConfig;
 using DrumMidiLibrary.pUtil;
 using Windows.UI;
 
@@ -7,8 +9,14 @@ namespace DrumMidiEditorApp.pConfig;
 /// <summary>
 /// 機械学習用設定
 /// </summary>
-public class ConfigMachine
+public class ConfigMachine : IConfig
 {
+    public void CheckValidation()
+    {
+        NoteWidthSize  = Math.Max( NoteWidthSize , 0.1F );
+        NoteHeightSize = Math.Max( NoteHeightSize, 0.1F );
+    }
+
     #region Update flag
 
     /// <summary>
@@ -25,13 +33,10 @@ public class ConfigMachine
     /// シート背景色
     /// </summary>
     [JsonInclude]
-    public FormatColor SheetColor
+    public FormatColor SheetColor { get; set; } = new()
     {
-        get; set;
-    } = new()
-        {
-            Color = Color.FromArgb( 255, 0, 0, 0 ),
-        };
+        Color = Color.FromArgb( 255, 0, 0, 0 ),
+    };
 
     #endregion
 

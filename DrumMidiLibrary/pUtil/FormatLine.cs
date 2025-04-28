@@ -35,6 +35,16 @@ public class FormatLine
     /// <summary>
     /// ラインサイズ
     /// </summary>
+    [JsonIgnore]
+    private float _LineSize = 1;
+
+    /// <summary>
+    /// ラインサイズ
+    /// </summary>
     [JsonInclude]
-    public float LineSize { get; set; } = 1;
+    public float LineSize 
+    { 
+        get => _LineSize;
+        set => _LineSize = ( value < 0 ) ? 0 : value ;
+    }
 }
