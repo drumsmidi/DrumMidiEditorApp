@@ -2,9 +2,6 @@
     x:Class="DrumMidiEditorApp.pView.pNavi.PageNavigation"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
     Loaded="Page_Loaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -17,7 +14,6 @@
         <NavigationView x:Name="_NaviControl"
             Grid.Column="0"
             PaneDisplayMode="LeftCompact" 
-            IsBackEnabled="False"
             IsBackButtonVisible="Collapsed"
             IsSettingsVisible="False"
             IsPaneToggleButtonVisible="False"
