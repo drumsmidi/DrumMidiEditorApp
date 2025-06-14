@@ -57,8 +57,8 @@ public class ScreenSongList() : ScreenBase( new(){ Processing = true } )
         _SongScrollList ??= new();
 
         // 子スクリーン作成
-    //  AddChildScreen( _ScreenPlayer       ??= new() );
-        AddChildScreen( _ScreenPlayerMobile ??= new() );
+        AddChildScreen( _ScreenPlayer       ??= new() );
+    //  AddChildScreen( _ScreenPlayerMobile ??= new() );
         AddChildScreen( _ScreenOptionMain   ??= new() );
 
         // 入力マップ設定

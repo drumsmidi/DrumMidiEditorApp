@@ -41,8 +41,8 @@
 
                 <NumberBox x:Name="_MusicInfoBpmNumberBox" x:Uid="InputBpm"
                     Value="{x:Bind MusicInfo.Bpm, Mode=TwoWay}" 
-                    Minimum="{x:Bind ConfigMedia.BpmMinVolume, Mode=OneTime}"
-                    Maximum="{x:Bind ConfigMedia.BpmMaxVolume, Mode=OneTime}"
+                    Minimum="{x:Bind ConfigMedia.BpmMin, Mode=OneTime}"
+                    Maximum="{x:Bind ConfigMedia.BpmMax, Mode=OneTime}"
                     SmallChange="1" 
                     LargeChange="10"        
                     ValueChanged="MusicInfoBpmNumberBox_ValueChanged" />

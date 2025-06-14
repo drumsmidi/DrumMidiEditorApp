@@ -151,16 +151,16 @@ public class ConfigMedia : IConfig
     public int BgmMaxVolume { get; private set; } = 100;
 
     /// <summary>
-    /// BPM最小音量
+    /// BPM最小値
     /// </summary>
     [JsonIgnore]
-    public double BpmMinVolume { get; private set; } = 1;
+    public double BpmMin { get; private set; } = 1;
 
     /// <summary>
-    /// BPM最大音量
+    /// BPM最大値
     /// </summary>
     [JsonIgnore]
-    public double BpmMaxVolume { get; private set; } = 999;
+    public double BpmMax { get; private set; } = 999;
 
     /// <summary>
     /// 小節番号書式フォーマット
@@ -185,7 +185,7 @@ public class ConfigMedia : IConfig
     /// BGM再生バッファの遅延時間（秒）
     /// </summary>
     [JsonIgnore]
-    public double BgmDesiredLatency { get; set; } = 0.100D;
+    public double BgmDesiredLatency { get; set; } = 0.200D;
 
     /// <summary>
     /// BGM再生バッファの遅延時間（秒）：最小値

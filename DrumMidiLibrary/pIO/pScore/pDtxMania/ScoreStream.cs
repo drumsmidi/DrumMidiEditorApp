@@ -14,8 +14,27 @@ namespace DrumMidiLibrary.pIO.pScore.pDtxMania;
 /// <summary>
 /// Score入出力：DtxMania（非推奨）
 /// </summary>
-internal partial class ScoreStream : IScoreReader
+internal partial class ScoreStream : IScoreReader, IScoreWriter
 {
+    /// <summary>
+    /// DTXのレーン情報
+    /// </summary>
+    private readonly Dictionary<string, string> _DtxLaneDic = new()
+    {
+        { "1A", "LeftCymbal"    },
+        { "11", "HiHatClose"    },
+        { "18", "HiHatOpen"     },
+        { "1B", "HiHatPedal"    },
+        { "1C", "LeftBaseDrum"  },
+        { "12", "Snare"         },
+        { "13", "RightBassDrum" },
+        { "14", "HighTom"       },
+        { "15", "LowTom"        },
+        { "17", "FloorTom"      },
+        { "16", "RightCymbal"   },
+        { "19", "RideCymbal"    },
+    };
+
     #region Reader
 
     public bool Validation( GeneralPath aGeneralPath )
@@ -33,16 +52,21 @@ internal partial class ScoreStream : IScoreReader
 
         var midiMapSet = aScore.Channels[ MidiNet.ChannelDrum ].MidiMapSet;
 
-        AddMidiMapGroup( ref midiMapSet, "11", "HiHatClose" );
-        AddMidiMapGroup( ref midiMapSet, "12", "Snare" );
-        AddMidiMapGroup( ref midiMapSet, "13", "BassDrum" );
-        AddMidiMapGroup( ref midiMapSet, "14", "HighTom" );
-        AddMidiMapGroup( ref midiMapSet, "15", "LowTom" );
-        AddMidiMapGroup( ref midiMapSet, "16", "Cymbal" );
-        AddMidiMapGroup( ref midiMapSet, "17", "FloorTom" );
-        AddMidiMapGroup( ref midiMapSet, "18", "HiHatOpen" );
-        AddMidiMapGroup( ref midiMapSet, "19", "RideCymbal" );
-        AddMidiMapGroup( ref midiMapSet, "1A", "LeftCymbal" );
+        foreach ( var item in _DtxLaneDic )
+        {
+            var group = new MidiMapGroup
+            {
+                GroupKey  = midiMapSet.GetMidiMapGroupNewKey(),
+                GroupName = $"{item.Key}:{item.Value}",
+            };
+            var midiMap = new MidiMap
+            {
+                MidiMapKey  = midiMapSet.GetMidiMapNewKey(),
+                MidiMapName = item.Value,
+            };
+            group.AddMidiMap( midiMap );
+            midiMapSet.AddMidiMapGroup( group );
+        }
 
         midiMapSet.UpdateInfo();
 
@@ -63,7 +87,7 @@ internal partial class ScoreStream : IScoreReader
 
             #region WAVzz
             {
-                if ( MyRegex().Match( line ).Success )
+                if ( RegexWAV().Match( line ).Success )
                 {
                     var zz      = items[ 0 ].Substring( 4, 2 );
                     var name    = items[ 1 ].Trim();
@@ -77,9 +101,9 @@ internal partial class ScoreStream : IScoreReader
 
             #region VOLUMEzz
             {
-                if ( MyRegex1().Match( line ).Success )
+                if ( RegexVOLUME().Match( line ).Success )
                 {
-                    var zz      = items[ 0 ].Substring( 4, 2 );
+                    var zz      = items[ 0 ].Substring( 7, 2 );
                     var volume  = Convert.ToInt32( items[ 1 ].Trim() );
 
                     volList [ zz ] = volume;
@@ -91,7 +115,7 @@ internal partial class ScoreStream : IScoreReader
 
             #region BPMzz
             {
-                if ( MyRegex2().Match( line ).Success )
+                if ( RegexBASEBPM().Match( line ).Success )
                 {
                     var zz  = items[ 0 ].Substring( 4, 2 );
                     var bpm = Convert.ToDouble( items[ 1 ].Trim() );
@@ -105,7 +129,7 @@ internal partial class ScoreStream : IScoreReader
 
             #region NOTE
             {
-                if ( MyRegex3().Match( line ).Success )
+                if ( RegexNOTE().Match( line ).Success )
                 {
                     var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
                     var chnl        = items[ 0 ].Substring( 4, 2 );
@@ -136,7 +160,7 @@ internal partial class ScoreStream : IScoreReader
 
                             if ( !volList.TryGetValue( note, out var volume ) )
                             {
-                                volume = 100;
+                                volume = ConfigLib.Media.BgmMaxVolume;
                             }
 
                             var key = -1;
@@ -176,7 +200,7 @@ internal partial class ScoreStream : IScoreReader
 
             #region BPM
             {
-                if ( MyRegex4().Match( line ).Success )
+                if ( RegexBPM().Match( line ).Success )
                 {
                     var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
                     var notes       = items[ 1 ].Trim();
@@ -208,42 +232,136 @@ internal partial class ScoreStream : IScoreReader
 
     public void Read( GeneralPath aGeneralPath, out MidiMapSet aMidiMapSet ) => aMidiMapSet = new();
 
-    /// <summary>
-    /// MidiMapGroupに未設定のMidiMap情報を追加
-    /// </summary>
-    /// <param name="aMidiMapSet">追加先MidiMapセット</param>
-    /// <param name="aGroupName">グループ名</param>
-    /// <param name="aMidiMapName">MidiMap名</param>
-    private static void AddMidiMapGroup( ref MidiMapSet aMidiMapSet, string aGroupName, string aMidiMapName )
-    {
-        var group = new MidiMapGroup
-        {
-            GroupKey    = aMidiMapSet.GetMidiMapGroupNewKey(),
-            GroupName   = aGroupName + " " + aMidiMapName,
-        };
-
-        var midiMap = new MidiMap
-        {
-            MidiMapKey  = aMidiMapSet.GetMidiMapNewKey(),
-            MidiMapName = aMidiMapName,
-        };
-
-        group.AddMidiMap( midiMap );
-
-        aMidiMapSet.AddMidiMapGroup( group );
-        aMidiMapSet.UpdateInfo();
-    }
-
     [GeneratedRegex( "^#WAV[0-9A-Z]{2}" )]
-    private static partial Regex MyRegex();
+    private static partial Regex RegexWAV();
+
     [GeneratedRegex( "^#VOLUME[0-9A-Z]{2}" )]
-    private static partial Regex MyRegex1();
+    private static partial Regex RegexVOLUME();
+
     [GeneratedRegex( "^#BPM[0-9A-Z]{2}" )]
-    private static partial Regex MyRegex2();
+    private static partial Regex RegexBASEBPM();
+
     [GeneratedRegex( "^[#][\\d]{3}[1][1-9A]" )]
-    private static partial Regex MyRegex3();
+    private static partial Regex RegexNOTE();
+
     [GeneratedRegex( "^[#][\\d]{3}08" )]
-    private static partial Regex MyRegex4();
+    private static partial Regex RegexBPM();
 
     #endregion
+
+    #region Writer
+
+    public void Write( GeneralPath aGeneralPath, Score aScore )
+    {
+#if false // 未実装
+        using var writer = File.CreateText( aGeneralPath.AbsoluteFilePath );
+
+        writer.WriteLine( "; Created by DrumMidiEditorApp" );
+
+        #region タイトルと製作者とコメントその他
+
+        writer.WriteLine();
+        writer.WriteLine( "#TITLE: (no title)" );
+        //writer.WriteLine( "#ARTIST: " );
+        //writer.WriteLine( "#COMMENT: " );
+        //writer.WriteLine( "#PANEL: " );
+        //writer.WriteLine( "#PREVIEW: " );
+        //writer.WriteLine( "#PREIMAGE: " );
+        //writer.WriteLine( "#STAGEFILE: " );
+        //writer.WriteLine( "#BACKGROUND: " );
+        //writer.WriteLine( "#RESULTIMAGE: " );
+        writer.WriteLine( $"#BPM: {string.Format( " " + $"{{0:000.00}}", aScore.Bpm )}" );
+        //writer.WriteLine( "#DLEVEL: " );
+        //writer.WriteLine( "#GLEVEL: " );
+        //writer.WriteLine( "#BLEVEL: " );
+        //writer.WriteLine( "#PATH_WAV: " );
+        //writer.WriteLine( "#DTXVPLAYSPEED: " );
+
+        #endregion
+
+        #region WAVリスト
+        {
+            foreach ( var midiMap in aScore.EditChannel.MidiMapSet.MidiMaps )
+            {
+                var dtxKey = midiMap.Group?.GroupName[ ..2 ];
+
+                if ( !_DtxLaneDic.ContainsKey( dtxKey ) )
+                {
+                    continue;
+                }
+
+                writer.WriteLine( $"#WAV{midiMap.MidiMapKey:X}: \t;{midiMap.MidiMapName}" );
+                //writer.WriteLine( $"#VOLUME{midiMap.MidiMapKey:X}: {xxx}" );
+                //writer.WriteLine( $"#PAN{0}: {1}" );
+            }
+
+            // BGM設定
+            writer.WriteLine( $"#WAVFF: {aScore.BgmFilePath.FileName}" );
+            writer.WriteLine( $"#VOLUMEFF: {aScore.BgmVolume}" );
+            writer.WriteLine( $"#BGMWAV: FF" );
+        }
+        #endregion
+
+        writer.WriteLine();
+
+        var data_list = new List<byte>();
+
+        {
+            var measureNoMax = aScore.GetMaxMeasureNo();
+
+            for ( var measure_no = 0; measure_no <= measureNoMax; measure_no++ )
+            {
+                #region bpm
+                {
+                    var bpmInfo = aScore.SysChannel.GetBpm( measure_no, note_pos );
+
+                    if ( bpmInfo != null )
+                    {
+                        writer.WriteLine( $"#BPM{measure_no}: {bpmInfo.Bpm}" );
+                    }
+                }
+                #endregion
+
+                #region note
+                {
+                    var measure = aScore.EditChannel.GetMeasure( measure_no );
+
+                    if ( measure == null )
+                    {
+                        continue;
+                    }
+
+                    foreach ( var line in measure.NoteLines.Values )
+                    {
+                        aScore.EditMidiMapSet.GetMidiMapGroup( line.InfoStates.)
+
+                        var dtxKey = midiMap.Group?.GroupName[ ..2 ];
+
+                        if ( !_DtxLaneDic.ContainsKey( dtxKey ) )
+                        {
+                            continue;
+                        }
+
+                        foreach ( var note in line.InfoStates.Values )
+                        {
+
+                            var volume = (byte)MidiNet.CheckMidiVolume( note.Volume + midiMap.VolumeAddIncludeGroup );
+
+
+
+                            writer.WriteLine( $"#{measure_no}{dtxKey}: {2}" );
+                        }
+                    }
+                }
+                #endregion
+            }
+        }
+#endif
+    }
+
+    public void Write( GeneralPath aGeneralPath, MidiMapSet aMidiMapSet )
+    {
+    }
+
+#endregion
 }
