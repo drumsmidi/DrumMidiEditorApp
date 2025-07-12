@@ -587,4 +587,7 @@ BPMノートを含める</value>
   <data name="InputOpenTraceLog.Header" xml:space="preserve">
     <value>アプリ終了時にログファイルを開く</value>
   </data>
+  <data name="MenuItemExportDtx.Text" xml:space="preserve">
+    <value>Dtx</value>
+  </data>
 </root>

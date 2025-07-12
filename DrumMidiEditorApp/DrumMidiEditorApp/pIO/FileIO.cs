@@ -561,6 +561,32 @@ public static class FileIO
     }
 
     /// <summary>
+    /// スコア - Dtx保存
+    /// </summary>
+    /// <param name="aFilePath">出力先ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    /// <returns>True:保存成功、False:保存失敗</returns>
+    public static bool SaveDtx( GeneralPath aFilePath, Score aScore )
+    {
+        using var _ = new LogBlock( "Save Dtx" );
+
+        try
+        {
+            ScoreIO.SaveDtxFile( aFilePath, aScore );
+
+            Log.Info( $"Succeeded in writing [{aFilePath.AbsoluteFilePath}]", true );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( $"Failed to write [{aFilePath.AbsoluteFilePath}]", true );
+            Log.Error( e );
+            return false;
+        }
+        return true;
+    }
+
+
+    /// <summary>
     /// MidiMapセットテンプレートの読込
     /// </summary>
     /// <param name="aFilePath">テンプレートファイルパス</param>

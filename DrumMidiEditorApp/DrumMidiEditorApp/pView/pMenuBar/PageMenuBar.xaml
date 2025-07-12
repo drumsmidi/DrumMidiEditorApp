@@ -64,6 +64,7 @@
                     <MenuFlyoutItem x:Uid="MenuItemExportMidi"  Click="MenuItemExportMidi_Click" />
                     <MenuFlyoutItem x:Uid="MenuItemExportPdf"   Click="MenuItemExportPdf_Click" />
                     <MenuFlyoutItem x:Uid="MenuItemExportVideo" Click="MenuItemExportVideo_Click" />
+                    <MenuFlyoutItem x:Uid="MenuItemExportDtx"   Click="MenuItemExportDtx_Click" />
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSeparator />
                 <MenuFlyoutSubItem  x:Uid="MenuItemImport" >

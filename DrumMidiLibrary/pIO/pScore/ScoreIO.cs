@@ -119,5 +119,13 @@ public static class ScoreIO
     public static void SaveMidiFile( GeneralPath aGeneralPath, Score aScore )
         => new pMidi.ScoreStream().Write( aGeneralPath, aScore );
 
+    /// <summary>
+    /// Dtxファイル保存
+    /// </summary>
+    /// <param name="aGeneralPath">出力ファイルパス</param>
+    /// <param name="aScore">保存スコア</param>
+    public static void SaveDtxFile( GeneralPath aGeneralPath, Score aScore )
+        => new pDtxMania.ScoreStream().Write( aGeneralPath, aScore );
+
     #endregion
 }

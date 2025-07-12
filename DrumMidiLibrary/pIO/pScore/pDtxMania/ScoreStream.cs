@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DrumMidiLibrary.pAudio;
@@ -66,6 +67,7 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
             };
             group.AddMidiMap( midiMap );
             midiMapSet.AddMidiMapGroup( group );
+            midiMapSet.UpdateInfo();
         }
 
         midiMapSet.UpdateInfo();
@@ -253,7 +255,6 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
 
     public void Write( GeneralPath aGeneralPath, Score aScore )
     {
-#if false // 未実装
         using var writer = File.CreateText( aGeneralPath.AbsoluteFilePath );
 
         writer.WriteLine( "; Created by DrumMidiEditorApp" );
@@ -283,14 +284,14 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
         {
             foreach ( var midiMap in aScore.EditChannel.MidiMapSet.MidiMaps )
             {
-                var dtxKey = midiMap.Group?.GroupName[ ..2 ];
+                var dtxKey = midiMap.Group?.GroupName[ ..2 ] ?? string.Empty;
 
                 if ( !_DtxLaneDic.ContainsKey( dtxKey ) )
                 {
                     continue;
                 }
 
-                writer.WriteLine( $"#WAV{midiMap.MidiMapKey:X}: \t;{midiMap.MidiMapName}" );
+                writer.WriteLine( $"#WAV{HelperMath.ToBase36( midiMap.MidiMapKey )}: \t;{midiMap.MidiMapName}" );
                 //writer.WriteLine( $"#VOLUME{midiMap.MidiMapKey:X}: {xxx}" );
                 //writer.WriteLine( $"#PAN{0}: {1}" );
             }
@@ -313,12 +314,32 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
             {
                 #region bpm
                 {
-                    var bpmInfo = aScore.SysChannel.GetBpm( measure_no, note_pos );
+                    //var measure = aScore.SysChannel.GetMeasure( measure_no );
 
-                    if ( bpmInfo != null )
-                    {
-                        writer.WriteLine( $"#BPM{measure_no}: {bpmInfo.Bpm}" );
-                    }
+                    //if ( measure == null )
+                    //{
+                    //    continue;
+                    //}
+
+                    //var bpm_line = measure.BpmLine;
+
+                    //if ( bpm_line == null )
+                    //{
+                    //    continue;
+                    //}
+
+                    //var val = string.Concat( Enumerable.Repeat( "00", ConfigLib.System.MeasureNoteNumber ) );
+
+                    //foreach ( var info in bpm_line.InfoStates )
+                    //{
+                    //    var bpm = info.Value.Bpm;
+
+                    //    val = val
+                    //        .Remove( info.Key * 2, 2 )
+                    //        .Insert( info.Key * 2, $"{bpm:X2}" );
+                    //}
+
+                    //writer.WriteLine( $"#BPM{measure_no}: {val}" );
                 }
                 #endregion
 
@@ -331,32 +352,37 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
                         continue;
                     }
 
-                    foreach ( var line in measure.NoteLines.Values )
+                    foreach ( var midiMap in aScore.EditChannel.MidiMapSet.MidiMaps )
                     {
-                        aScore.EditMidiMapSet.GetMidiMapGroup( line.InfoStates.)
-
-                        var dtxKey = midiMap.Group?.GroupName[ ..2 ];
+                        var dtxKey = midiMap.Group?.GroupName[ ..2 ] ?? string.Empty;
 
                         if ( !_DtxLaneDic.ContainsKey( dtxKey ) )
                         {
                             continue;
                         }
 
-                        foreach ( var note in line.InfoStates.Values )
+                        var measure_line = measure.NoteLine( midiMap.MidiMapKey );
+
+                        if ( measure_line == null )
                         {
-
-                            var volume = (byte)MidiNet.CheckMidiVolume( note.Volume + midiMap.VolumeAddIncludeGroup );
-
-
-
-                            writer.WriteLine( $"#{measure_no}{dtxKey}: {2}" );
+                            continue;
                         }
+
+                        var val = string.Concat( Enumerable.Repeat( "00", ConfigLib.System.MeasureNoteNumber ) );
+                        
+                        foreach ( var info in measure_line.InfoStates )
+                        {
+                            val= val
+                                .Remove( info.Key * 2, 2 )
+                                .Insert( info.Key * 2, $"{HelperMath.ToBase36( info.Value.MidiMapKey )}" );
+                        }
+
+                        writer.WriteLine( $"#{measure_no:D3}{dtxKey}: {val}" );
                     }
                 }
                 #endregion
             }
         }
-#endif
     }
 
     public void Write( GeneralPath aGeneralPath, MidiMapSet aMidiMapSet )

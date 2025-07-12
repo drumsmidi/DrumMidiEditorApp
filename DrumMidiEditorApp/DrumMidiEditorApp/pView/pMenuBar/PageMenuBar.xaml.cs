@@ -451,6 +451,40 @@ public sealed partial class PageMenuBar : Page, INotifyPropertyChanged
     }
 
     /// <summary>
+    /// メニュー：Export - Dtx
+    /// </summary>
+    /// <param name="aSender"></param>
+    /// <param name="aArgs"></param>
+    private void MenuItemExportDtx_Click( object aSender, RoutedEventArgs aArgs )
+    {
+        if ( ControlAccess.MainWindow == null )
+        {
+            return;
+        }
+
+        try
+        {
+            PlayerStop();
+
+            HelperXaml.SaveDialogAsync
+                (
+                    ControlAccess.MainWindow,
+                    Config.File.SupportDtx,
+                    DMS.OpenFilePath.FileNameWithoutExtension,
+                    PickerLocationId.DocumentsLibrary,
+                    ConfigFile.FolderExport,
+                    ( filepath ) => FileIO.SaveDtx( filepath, DMS.SCORE )
+                );
+        }
+        catch ( Exception e )
+        {
+            Log.Error( e );
+        }
+    }
+
+
+
+    /// <summary>
     /// メニュー：Import - Midi
     /// </summary>
     /// <param name="aSender"></param>

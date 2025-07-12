@@ -249,5 +249,15 @@ public class ConfigFile : IConfig
         ExtentionMp4,
     ];
 
+    /// <summary>
+    /// Dtx保存フィルタ
+    /// </summary>
+    [JsonIgnore]
+    public List<string> SupportDtx { get; private set; } =
+    [
+        ExtentionDtx,
+    ];
+
+
     #endregion
 }

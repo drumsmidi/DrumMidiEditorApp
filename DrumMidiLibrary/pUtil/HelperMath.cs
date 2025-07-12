@@ -47,4 +47,21 @@ public static class HelperMath
     }
 
     #endregion
+
+    /// <summary>
+    /// 36進数変換：整数（0-1295）を36進数（00～ZZ）で表現
+    /// </summary>
+    /// <param name="aValue">整数（0-1295）</param>
+    /// <returns>36進数（00～ZZ）</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static string ToBase36( int aValue )
+    {
+        const string chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        if ( aValue < 0 || aValue > 1295 )
+        {
+            throw new ArgumentOutOfRangeException( nameof( aValue ), "範囲は 0～1295 です" );
+        }
+        return $"{chars [ aValue / 36 ]}{chars [ aValue % 36 ]}";
+    }
 }
