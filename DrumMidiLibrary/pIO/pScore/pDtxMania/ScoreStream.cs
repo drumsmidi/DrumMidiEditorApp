@@ -20,20 +20,20 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
     /// <summary>
     /// DTXのレーン情報
     /// </summary>
-    private readonly Dictionary<string, string> _DtxLaneDic = new()
+    private readonly Dictionary<string, MidiMapGroup> _DtxLaneDic = new()
     {
-        { "1A", "LeftCymbal"    },
-        { "11", "HiHatClose"    },
-        { "18", "HiHatOpen"     },
-        { "1B", "HiHatPedal"    },
-        { "1C", "LeftBaseDrum"  },
-        { "12", "Snare"         },
-        { "13", "RightBassDrum" },
-        { "14", "HighTom"       },
-        { "15", "LowTom"        },
-        { "17", "FloorTom"      },
-        { "16", "RightCymbal"   },
-        { "19", "RideCymbal"    },
+        { "1A", new() { ScaleKey = "CY", GroupName = "1A:LeftCymbal"       } },
+        { "11", new() { ScaleKey = "HH", GroupName = "11:HiHatClose"       } },
+        { "18", new() { ScaleKey = "HH", GroupName = "18:HiHatOpen"        } },
+        { "1B", new() { ScaleKey = "HH", GroupName = "1B:HiHatPedal"       } },
+        { "1C", new() { ScaleKey = "BD", GroupName = "1C:LeftBaseDrum"     } },
+        { "12", new() { ScaleKey = "SD", GroupName = "12:Snare"            } },
+        { "13", new() { ScaleKey = "BD", GroupName = "13:RightBassDrum"    } },
+        { "14", new() { ScaleKey = "TM", GroupName = "14:HighTom"          } },
+        { "15", new() { ScaleKey = "TM", GroupName = "15:LowTom"           } },
+        { "17", new() { ScaleKey = "TM", GroupName = "17:FloorTom"         } },
+        { "16", new() { ScaleKey = "CY", GroupName = "16:RightCymbal"      } },
+        { "19", new() { ScaleKey = "RD", GroupName = "19:RideCymbal"       } },
     };
 
     #region Reader
@@ -55,15 +55,13 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
 
         foreach ( var item in _DtxLaneDic )
         {
-            var group = new MidiMapGroup
-            {
-                GroupKey  = midiMapSet.GetMidiMapGroupNewKey(),
-                GroupName = $"{item.Key}:{item.Value}",
-            };
+            var group = item.Value.Clone();
+            group.GroupKey = midiMapSet.GetMidiMapGroupNewKey();
+
             var midiMap = new MidiMap
             {
                 MidiMapKey  = midiMapSet.GetMidiMapNewKey(),
-                MidiMapName = item.Value,
+                MidiMapName = "Dummy",
             };
             group.AddMidiMap( midiMap );
             midiMapSet.AddMidiMapGroup( group );
@@ -88,124 +86,88 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
             }
 
             #region WAVzz
+            if ( RegexWAV().Match( line ).Success )
             {
-                if ( RegexWAV().Match( line ).Success )
-                {
-                    var zz      = items[ 0 ].Substring( 4, 2 );
-                    var name    = items[ 1 ].Trim();
+                var zz      = items[ 0 ].Substring( 4, 2 );
+                var name    = items[ 1 ].Trim();
 
-                    wavList [ zz ] = name;
+                wavList [ zz ] = name;
 
-                    continue;
-                }
+                continue;
             }
             #endregion
-
             #region VOLUMEzz
+            else if ( RegexVOLUME().Match( line ).Success )
             {
-                if ( RegexVOLUME().Match( line ).Success )
-                {
-                    var zz      = items[ 0 ].Substring( 7, 2 );
-                    var volume  = Convert.ToInt32( items[ 1 ].Trim() );
+                var zz      = items[ 0 ].Substring( 7, 2 );
+                var volume  = Convert.ToInt32( items[ 1 ].Trim() );
 
-                    volList [ zz ] = volume;
+                volList [ zz ] = volume;
 
-                    continue;
-                }
+                continue;
             }
             #endregion
-
             #region BPMzz
+            else if ( RegexBASEBPM().Match( line ).Success )
             {
-                if ( RegexBASEBPM().Match( line ).Success )
-                {
-                    var zz  = items[ 0 ].Substring( 4, 2 );
-                    var bpm = Convert.ToDouble( items[ 1 ].Trim() );
+                var zz  = items[ 0 ].Substring( 4, 2 );
+                var bpm = Convert.ToDouble( items[ 1 ].Trim() );
 
-                    bpmList [ zz ] = bpm;
+                bpmList [ zz ] = bpm;
 
-                    continue;
-                }
+                continue;
             }
             #endregion
-
-            #region NOTE
+            #region BPMTOP
+            else if ( RegexBPMTOP().Match( line ).Success )
             {
-                if ( RegexNOTE().Match( line ).Success )
+                var bpm = Convert.ToDouble( items[ 1 ].Trim() );
+
+                aScore.Bpm = bpm;
+
+                continue;
+            }
+            #endregion
+            #region BPM
+            else if ( RegexBPM().Match( line ).Success )
+            {
+                var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
+                var notes       = items[ 1 ].Trim();
+
+                var bunkainou = notes.Length / 2;
+
+                for ( var n = 0; n < bunkainou; n++ )
                 {
-                    var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
-                    var chnl        = items[ 0 ].Substring( 4, 2 );
-                    var notes       = items[ 1 ].Trim();
+                    var note = notes.Substring( n * 2, 2 );
 
-                    foreach ( var group in midiMapSet.MidiMapGroups )
+                    if ( note.Equals( "00" ) )
                     {
-                        if ( !group.GroupName [ ..2 ].Equals( chnl ) )
-                        {
-                            continue;
-                        }
-
-                        var bunkainou = notes.Length / 2;
-
-                        for ( var n = 0; n < bunkainou; n++ )
-                        {
-                            var note = notes.Substring( n * 2, 2 );
-
-                            if ( note.Equals( "00" ) )
-                            {
-                                continue;
-                            }
-
-                            if ( !wavList.TryGetValue( note, out var wavNm ) )
-                            {
-                                wavNm = note;
-                            }
-
-                            if ( !volList.TryGetValue( note, out var volume ) )
-                            {
-                                volume = ConfigLib.Media.BgmMaxVolume;
-                            }
-
-                            var key = -1;
-                            foreach ( var midiMap in group.MidiMaps )
-                            {
-                                if ( midiMap.MidiMapName.Equals( wavNm ) )
-                                {
-                                    key = midiMap.MidiMapKey;
-                                    break;
-                                }
-                            }
-
-                            if ( key == -1 )
-                            {
-                                key = midiMapSet.GetMidiMapNewKey();
-
-                                var midiMap = new MidiMap
-                                {
-                                    MidiMapKey  = key,
-                                    MidiMapName = wavNm,
-                                };
-
-                                group.AddMidiMap( midiMap );
-                                midiMapSet.UpdateInfo();
-                            }
-
-                            aScore.Channels [ MidiNet.ChannelDrum ]
-                                .AddNoteOn( key, measure_no, n * ConfigLib.System.MeasureNoteNumber / bunkainou, volume, false );
-                        }
-                        break;
+                        continue;
                     }
 
-                    continue;
+                    if ( !bpmList.TryGetValue( note, out var bpm ) )
+                    {
+                        bpm = ConfigLib.System.DefaultBpm;
+                    }
+
+                    aScore.SysChannel.AddBpm( measure_no, n * ConfigLib.System.MeasureNoteNumber / bunkainou, bpm, false );
                 }
+                continue;
             }
             #endregion
-
-            #region BPM
+            #region NOTE
+            else if ( RegexNOTE().Match( line ).Success )
             {
-                if ( RegexBPM().Match( line ).Success )
+                var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
+                var chnl        = items[ 0 ].Substring( 4, 2 );
+                var notes       = items[ 1 ].Trim();
+
+                foreach ( var group in midiMapSet.MidiMapGroups )
                 {
-                    var measure_no  = Convert.ToInt32( items[ 0 ].Substring( 1, 3 ) );
-                    var notes       = items[ 1 ].Trim();
+                    if ( !group.GroupName [ ..2 ].Equals( chnl ) )
+                    {
+                        continue;
+                    }
 
                     var bunkainou = notes.Length / 2;
 
@@ -218,15 +180,47 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
                             continue;
                         }
 
-                        if ( !bpmList.TryGetValue( note, out var bpm ) )
+                        if ( !wavList.TryGetValue( note, out var wavNm ) )
                         {
-                            bpm = ConfigLib.System.DefaultBpm;
+                            wavNm = note;
                         }
 
-                        aScore.SysChannel.AddBpm( measure_no, n * ConfigLib.System.MeasureNoteNumber / bunkainou, bpm, false );
+                        if ( !volList.TryGetValue( note, out var volume ) )
+                        {
+                            volume = ConfigLib.Media.BgmMaxVolume;
+                        }
+
+                        var key = -1;
+                        foreach ( var midiMap in group.MidiMaps )
+                        {
+                            if ( midiMap.MidiMapName.Equals( wavNm ) )
+                            {
+                                key = midiMap.MidiMapKey;
+                                break;
+                            }
+                        }
+
+                        if ( key == -1 )
+                        {
+                            key = midiMapSet.GetMidiMapNewKey();
+
+                            var midiMap = new MidiMap
+                            {
+                                MidiMapKey  = key,
+                                MidiMapName = wavNm,
+                            };
+
+                            group.AddMidiMap( midiMap );
+                            midiMapSet.UpdateInfo();
+                        }
+
+                        aScore.Channels [ MidiNet.ChannelDrum ]
+                            .AddNoteOn( key, measure_no, n * ConfigLib.System.MeasureNoteNumber / bunkainou, volume, false );
                     }
-                    continue;
+                    break;
                 }
+
+                continue;
             }
             #endregion
         }
@@ -242,6 +236,9 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
 
     [GeneratedRegex( "^#BPM[0-9A-Z]{2}" )]
     private static partial Regex RegexBASEBPM();
+
+    [GeneratedRegex( "^#BPM" )]
+    private static partial Regex RegexBPMTOP();
 
     [GeneratedRegex( "^[#][\\d]{3}[1][1-9A]" )]
     private static partial Regex RegexNOTE();
@@ -309,39 +306,47 @@ internal partial class ScoreStream : IScoreReader, IScoreWriter
 
         {
             var measureNoMax = aScore.GetMaxMeasureNo();
+            var bpm_cnt = 1;
 
             for ( var measure_no = 0; measure_no <= measureNoMax; measure_no++ )
             {
                 #region bpm
                 {
-                    //var measure = aScore.SysChannel.GetMeasure( measure_no );
+                    var measure = aScore.SysChannel.GetMeasure( measure_no );
 
-                    //if ( measure == null )
-                    //{
-                    //    continue;
-                    //}
+                    if ( measure == null )
+                    {
+                        continue;
+                    }
 
-                    //var bpm_line = measure.BpmLine;
+                    var bpm_line = measure.BpmLine;
 
-                    //if ( bpm_line == null )
-                    //{
-                    //    continue;
-                    //}
+                    if ( bpm_line == null )
+                    {
+                        continue;
+                    }
 
-                    //var val = string.Concat( Enumerable.Repeat( "00", ConfigLib.System.MeasureNoteNumber ) );
+                    var val = string.Concat( Enumerable.Repeat( "00", ConfigLib.System.MeasureNoteNumber ) );
 
-                    //foreach ( var info in bpm_line.InfoStates )
-                    //{
-                    //    var bpm = info.Value.Bpm;
+                    foreach ( var info in bpm_line.InfoStates )
+                    {
+                        var bpmKey = HelperMath.ToBase36( bpm_cnt++ );
+                        var bpm    = info.Value.Bpm;
 
-                    //    val = val
-                    //        .Remove( info.Key * 2, 2 )
-                    //        .Insert( info.Key * 2, $"{bpm:X2}" );
-                    //}
+                        writer.WriteLine( $"#BPM{bpmKey}: {bpm}" );
 
-                    //writer.WriteLine( $"#BPM{measure_no}: {val}" );
+                        val = val
+                            .Remove( info.Key * 2, 2 )
+                            .Insert( info.Key * 2, $"{bpmKey}" );
+                    }
+
+                    writer.WriteLine( $"#{measure_no}08: {val}" );
                 }
                 #endregion
+            }
+
+            for ( var measure_no = 0; measure_no <= measureNoMax; measure_no++ )
+            {
 
                 #region note
                 {
